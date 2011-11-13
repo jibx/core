@@ -14,11 +14,13 @@ build/docs/velocity.log
 build/temp.xml
 docs/api
 docs/*.html
+docs/axis2
 docs/binding
 docs/fromcode
 docs/fromschema
 docs/jibxota
 docs/jibxws
+docs/eclipse/*.html
 examples/codegen/jibx.log
 jibx_1_2_3_SNAPSHOT.zip
 

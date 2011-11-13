@@ -18,13 +18,13 @@
   <description>JiBX core code</description>
 
   <scm>
-    <url>http://jibx.svn.sourceforge.net/viewvc/jibx/trunk/core/build/</url>
-    <connection>scm:svn:https://jibx.svn.sourceforge.net/svnroot/jibx/trunk/core/build/</connection>
-    <developerConnection>scm:svn:https://jibx.svn.sourceforge.net/svnroot/jibx/trunk/core/build/</developerConnection>
+    <url>https://github.com/jibx/jibx-parent</url>
+    <connection>scm:git:git://github.com/jibx/jibx-parent.git</connection>
+    <developerConnection>scm:git:git@github.com:jibx/jibx-parent.git</developerConnection>
   </scm>
 
   <modules>
-    <module>maven</module>
+    <module>build/maven</module>
   </modules>
 
 </project>

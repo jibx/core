@@ -7,4 +7,18 @@ target
 *.releaseBackup
 release.properties
 lib/*.jar
+build/classes
+build/docs/classes
+build/docs/lib/site.jar
+build/docs/velocity.log
+build/temp.xml
+docs/api
+docs/*.html
+docs/binding
+docs/fromcode
+docs/fromschema
+docs/jibxota
+docs/jibxws
+examples/codegen/jibx.log
+jibx_1_2_3_SNAPSHOT.zip
 

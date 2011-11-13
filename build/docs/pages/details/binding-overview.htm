@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: JiBX Binding Definition</title>
+</head>
+<body class="composite">
+      <h1>JiBX: Binding Definition Overview</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">Binding Definition Overview</a></h3>
+
+<p>A <b>binding definition</b> is an XML document that defines the rules for
+converting your Java objects to and from XML. The JiBX binding compiler takes
+one or more binding definitions as input, along with your actual class files.
+It compiles the binding definitions into Java byte code that it adds to
+the class files. Once the class files have been enhanced with this compiled
+binding definition code, they're ready to work with the JiBX runtime.</p>
+
+<p>You can provide as many binding definitions as you want for the same set
+of classes (or for different classes). The binding compiler automatically
+generates code for all the bindings you provide. It even reuses added code
+between bindings, whereever possible. However, each time you marshal or
+unmarshal an XML document you'll first need to decide
+which particular binding you're going to use for this document. Each binding
+is independent of the others, so you can't switch between bindings within a
+single document.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

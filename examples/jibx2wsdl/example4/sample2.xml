@@ -1,0 +1,70 @@
+<getItemsByTypeResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://sosnoski.com/ws/library" xmlns="http://sosnoski.com/ws/library">
+  <ns1:itemList>
+    <ns1:book id="0061020052" type="scifi">
+      <ns1:title>Infinity Beach</ns1:title>
+      <ns1:authors>
+        <ns1:author>McDevitt, Jack</ns1:author>
+      </ns1:authors>
+      <ns1:format>POCKET_PAPERBACK</ns1:format>
+    </ns1:book>
+    <ns1:book id="0812514092" type="scifi">
+      <ns1:title>Aristoi</ns1:title>
+      <ns1:authors>
+        <ns1:author>Williams, Walter Jon</ns1:author>
+      </ns1:authors>
+      <ns1:format>POCKET_PAPERBACK</ns1:format>
+    </ns1:book>
+    <ns1:book id="0345253884" type="scifi">
+      <ns1:title>Roadmarks</ns1:title>
+      <ns1:authors>
+        <ns1:author>Zelazny, Roger</ns1:author>
+      </ns1:authors>
+      <ns1:format>POCKET_PAPERBACK</ns1:format>
+    </ns1:book>
+    <ns1:dvd id="786936185447" type="scifi">
+      <ns1:title>Imposter</ns1:title>
+    </ns1:dvd>
+    <ns1:dvd id="0767821629" type="scifi">
+      <ns1:title>The Thirteenth Floor</ns1:title>
+    </ns1:dvd>
+    <ns1:hdDvd id="025192784927" type="scifi" studio="Universal">
+      <ns1:title>Serenity</ns1:title>
+      <ns1:director>Wheden, Joss</ns1:director>
+      <ns1:stars>
+        <ns1:star>Baccarin, Morena</ns1:star>
+        <ns1:star>Baldwin, Adam</ns1:star>
+        <ns1:star>Fillion, Nathan</ns1:star>
+        <ns1:star>Torres, Gina</ns1:star>
+        <ns1:star>Tudyk, Alan</ns1:star>
+      </ns1:stars>
+    </ns1:hdDvd>
+    <ns1:bluRayDvd id="012236191551" type="scifi">
+      <ns1:title>Stargate</ns1:title>
+      <ns1:director>Emmerich, Roland</ns1:director>
+      <ns1:stars>
+        <ns1:star>Ackerman, Robert</ns1:star>
+        <ns1:star>Allen, Rae</ns1:star>
+        <ns1:star>Avari, Erick</ns1:star>
+        <ns1:star>Cruz, Alexis</ns1:star>
+        <ns1:star>Danziger, Kenneth</ns1:star>
+      </ns1:stars>
+      <ns1:releaseYear>2006</ns1:releaseYear>
+    </ns1:bluRayDvd>
+    <ns1:dvdFutureDvd id="999999999" type="scifi">
+      <ns1:title>Beyond Everything</ns1:title>
+      <ns1:director>Determined, Tobe</ns1:director>
+      <ns1:stars>
+        <ns1:star>Alda, Alan</ns1:star>
+        <ns1:star>Pitt, Brad</ns1:star>
+      </ns1:stars>
+      <ns1:format>SuperDVD</ns1:format>
+    </ns1:dvdFutureDvd>
+    <ns1:book id="0445203498" type="scifi">
+      <ns1:title>The Dragon Never Sleeps</ns1:title>
+      <ns1:authors>
+        <ns1:author>Cook, Glen</ns1:author>
+      </ns1:authors>
+      <ns1:format>POCKET_PAPERBACK</ns1:format>
+    </ns1:book>
+  </ns1:itemList>
+</getItemsByTypeResponse>

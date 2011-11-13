@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 4: Customizing individual values, pre-Java 5 code, and more</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>Pre-Java 5 sample code</h3>
+
+<p>The final customization example demonstrates several features, including the use of
+untyped collections and custom typesafe enumeration classes. The code used for this
+example is in the same source tree as that used for the previous examples, but in a
+different package (<code>org.jibx.starter2</code>). Here's a sample of this non-Java 5
+code, again with only a few of the classes shown and most of the get/set access
+methods left out:</p>
+
+<div id="source"><pre>/**
+ * Order information.
+ */
+public class Order
+{
+    private long m_orderNumber;
+    
+    private Customer m_customer;
+    
+    /** Billing address information. */
+    private Address m_billTo;
+    
+    private Shipping m_shipping;
+    
+    /** Shipping address information. If missing, the billing address is also used as the
+     shipping address. */
+    private Address m_shipTo;
+    
+    private List m_items;
+    
+    /** Date order was placed with server. */
+    private Date m_orderDate;
+    
+    /** Date order was shipped. This will be &lt;code>null&lt;/code> if the order has not
+     yet shipped. */
+    private Date m_shipDate;
+    
+    private Float total;
+
+    public long getOrderNumber() {
+        return m_orderNumber;
+    }
+
+    public void setOrderNumber(long orderId) {
+        this.m_orderNumber = orderId;
+    }
+    ...
+}
+
+/**
+ * Address information.
+ */
+public class Address
+{
+    /** First line of street information (required). */
+    private String m_street1;
+    
+    /** Second line of street information (optional). */
+    private String m_street2;
+    
+    private String m_city;
+    
+    /** State abbreviation (required for the U.S. and Canada, optional otherwise). */
+    private String m_state;
+    
+    /** Postal code (required for the U.S. and Canada, optional otherwise). */
+    private String m_postCode;
+    
+    /** Country name (optional, U.S. assumed if not supplied). */
+    private String m_country;
+
+    public String getStreet1() {
+        return m_street1;
+    }
+
+    public void setStreet1(String street1) {
+        this.m_street1 = street1;
+    }
+    ...
+}
+
+/**
+ * Supported shipment methods. The "INTERNATIONAL" shipment methods can only be used for
+ * orders with shipping addresses outside the U.S., and one of these methods is required
+ * in this case.
+ */
+public class Shipping
+{
+    private static final List values = new ArrayList();
+    
+    public static final Shipping STANDARD_MAIL = new Shipping("STANDARD_MAIL");
+    public static final Shipping PRIORITY_MAIL = new Shipping("PRIORITY_MAIL");
+    public static final Shipping INTERNATIONAL_MAIL = new Shipping("INTERNATIONAL_MAIL");
+    public static final Shipping DOMESTIC_EXPRESS = new Shipping("DOMESTIC_EXPRESS");
+    public static final Shipping INTERNATIONAL_EXPRESS = new Shipping("INTERNATIONAL_EXPRESS");
+    
+    private String text;
+    
+    private Shipping(String text) {
+        this.text = text;
+        values.add(this);
+    }
+    
+    public static Shipping fromString(String text) {
+        for (Iterator iter = values.iterator(); iter.hasNext();) {
+            Shipping value = (Shipping)iter.next();
+            if (value.text.equals(text)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("'" + text + " is not a legal value");
+    }
+    
+    public String toString() {
+        return text;
+    }
+}</pre></div>
+
+      </div>
+      <div class="h3">
+      <a name="schema"></a><h3>Customizing individual values and more</h3>
+
+<p>Here's <i>custom3.xml</i>, used by Example 4 with the above code:</p>
+
+<div id="source"><pre>&lt;custom namespace-style="fixed" namespace="http://www.jibx.org/starters/fromcode"
+    force-mapping="true" strip-prefixes="m_">
+  &lt;package name="org.jibx.starter2">
+    &lt;class name="Address" requireds="street1 city"/>
+    &lt;class name="Customer" requireds="lastName firstName /customerNumber">
+      &lt;value field="m_middleNames" item-type="java.lang.String"/>
+    &lt;/class>
+    &lt;class name="Item" excludes="description">
+      &lt;value get-method="getId" set-method="setId" attribute="id" required="true"/>
+      &lt;value property-name="quantity" attribute="quantity" required="true"/>
+      &lt;value field="m_price" required="true"/>
+    &lt;/class>
+    &lt;class name="Order" requireds="orderNumber customer billTo shipping orderDate">
+      &lt;value field="m_items" item-type="org.jibx.starter2.Item"/>
+    &lt;/class>
+    &lt;class name="Shipping" form="simple"
+        deserializer="org.jibx.starter2.Shipping.fromString"/>
+  &lt;/package>
+&lt;/custom></pre></div>
+
+<p>The <code>force-mapping="true"</code> attribute on the root 'custom' element modifies
+the structure of the generated binding and schema. This customization tells BindGen to
+create a separate schema complexType and corresponding abstract mapping definition for
+each class in the binding with any child elements or attributes (rather than taking the
+default approach of inlining those which are only used once). The
+<code>strip-prefixes="m_"</code> customization tells BindGen to strip off any 'm_' prefix
+on field names (there's also a 'strip-suffixes' customization, and both of these take a
+space-separated list of possible prefixes/suffixes rather than just a single text).</p>
+
+<p>The last nested 'class' element, for the 'Shipping' class, uses a pair of attributes to
+control how BindGen works with this class. The first attribute, <code>form="simple"</code>,
+says that instances of the class are to be represented in XML documents as a simple text
+string, which can take the form of either an attribute value or the content of an element.
+The second attribute, <code>deserializer="org.jibx.starter2.Shipping.fromString"</code>,
+tells BindGen to use the specified static static method to convert a text value into an
+instance of the class. This is necessary because the class implements a type-safe
+enumeration, and the existing instance for a particular value needs to be returned rather
+than a new instance. If the class implemented a constructor taking a single <code>String</code>
+argument that would be used by default. You can also use a 'serializer' attribute for a
+simple value class to tell BindGen how to get the text value for an instance of the class;
+by default, it just uses the <code>toString()</code> method value.</p>
+
+<p>The other differences from the <a href="%bgexample3%#custom">Example 3
+customizations</a> are in the details for three of the class customizations. The
+'Customer' and 'Order' class customizations each contain a nested 'value' customization
+element referencing a field of type <code>java.util.List</code>. The 'item-type'
+attributes on these nested elements tell BindGen what types of values are present in
+each list, information which was available directly from the typed generics in the Java
+5 version of the code. The 'Item' class customization also includes nested 'value'
+elements, in this case replacing the 'requireds' attribute used in the earlier
+customizations (so each nested value uses <code>required="true"</code>). These three
+value elements demonstrate all three different ways of referencing a particular value
+within a class: The first uses 'get-method' and 'set-method' attributes, the second uses
+a 'property-name' attribute, and the third uses a 'field' attribute. The first two of
+these elements also include 'attribute' attributes, each giving the name for the
+corresponding value to be represented as an attribute in XML documents (if you wanted to
+instead represent a value as an element, you'd use an 'element' attribute to specify the
+name). The third value customization, for the 'm_price' field, does not specify a
+representation and name, so the default representation and name (as an attribute named
+'price') is used for that value.</p>
+
+      </div>
+      <div class="h3">
+      <a name="schema"></a><h3>Generated schema</h3>
+
+<p>You can try out the above customization by again using the Ant 'compile' target to
+compile the sample code, followed by the 'custgen3' target to run BindGen using the
+above customizations. Here's the resulting schema (again with the longer lines split):</p>
+
+<div id="source"><pre>&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://www.jibx.org/starters/fromcode" elementFormDefault="qualified"
+    targetNamespace="http://www.jibx.org/starters/fromcode">
+  &lt;xs:complexType name="customer">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Customer information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element type="xs:string" name="lastName">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Family name.&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="firstName">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Personal name.&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:long" name="customerNumber"/>
+      &lt;xs:element type="xs:string" name="middleName" minOccurs="0"
+          maxOccurs="unbounded"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+  &lt;xs:complexType name="item">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Order line item information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence/>
+    &lt;xs:attribute type="xs:string" use="required" name="id">
+      &lt;xs:annotation>
+        &lt;xs:documentation>Stock identifier. This is expected to be 12 characters in length, with
+        two leading alpha characters followed by ten decimal digits.&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+    &lt;xs:attribute type="xs:int" use="required" name="quantity">
+      &lt;xs:annotation>
+        &lt;xs:documentation>Number of units ordered.&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+    &lt;xs:attribute type="xs:float" use="required" name="price">
+      &lt;xs:annotation>
+        &lt;xs:documentation>Price per unit.&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+  &lt;/xs:complexType>
+  &lt;xs:element type="tns:order" name="order"/>
+  &lt;xs:complexType name="address">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Address information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element type="xs:string" name="street1">
+        &lt;xs:annotation>
+          &lt;xs:documentation>First line of street information (required).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="city"/>
+      &lt;xs:element type="xs:string" name="street2" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Second line of street information (optional).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="state" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>State abbreviation (required for the U.S. and Canada, optional
+          otherwise).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="postCode" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Postal code (required for the U.S. and Canada, optional
+          otherwise).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="country" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Country name (optional, U.S. assumed if not
+          supplied).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+  &lt;xs:complexType name="order">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Order information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element type="tns:customer" name="customer"/>
+      &lt;xs:element type="tns:address" name="billTo">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Billing address information.&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="shipping"/>
+      &lt;xs:element type="tns:address" name="shipTo" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Shipping address information. If missing, the billing address is
+          also used as the shipping address.&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:item" name="item" minOccurs="0" maxOccurs="unbounded"/>
+    &lt;/xs:sequence>
+    &lt;xs:attribute type="xs:long" use="required" name="orderNumber"/>
+    &lt;xs:attribute type="xs:date" use="required" name="orderDate">
+      &lt;xs:annotation>
+        &lt;xs:documentation>Date order was placed with server.&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+    &lt;xs:attribute type="xs:date" name="shipDate">
+      &lt;xs:annotation>
+        &lt;xs:documentation>&lt;![CDATA[Date order was shipped. This will be &lt;code>null&lt;/code>
+        if the order has not yet shipped.]]>&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+    &lt;xs:attribute type="xs:float" name="total"/>
+  &lt;/xs:complexType>
+&lt;/xs:schema></pre></div>
+
+<p>The only significant changes to the schema from the <a href="%bgexample3%#schema">last
+example</a> are that the formerly-embedded complexTypes representing 'Item' and 'Customer'
+data are now global complexTypes (as requested by the <code>force-mapping="true"</code>
+customization), and the actual enumeration of 'Shipping' values is missing. This latter
+difference is a limitation of the current code for handling non-Java 5 enumerations, which
+does not support a way of accessing the possible enumeration values. Support for accessing
+the possible values will be added in a future release.</p>
+
+      </div>
+      <div class="h3">
+      <a name="testing"></a><h3>Testing the binding</h3>
+
+<p>Since the actual XML structure has not changed from the last example, the same
+<a href="%bgexample3%#testing">test document</a> as last time can be used with this
+example. Once you've run the Ant 'compile', 'custgen3', and 'bind' targets you can test the
+generated binding using 'run-alt1' (which runs the test program in the <code>org.jibx.starter2</code>
+package with <i>data2.xml</i> as input and <i>out2.xml</i> as output). You can
+also try out the full 'compile', 'custgen3', 'bind', and 'run-alt' sequence by using
+the Ant target 'custom3'.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<binding value-style="attribute" direction="input" track-source="true">
+  <mapping class="com.sosnoski.site.Component" abstract="true">
+    <value name="source-dir" field="m_sourceDir" usage="optional"/>
+    <value name="access-dir" field="m_accessDir" usage="optional"/>
+    <collection add-method="addValue">
+      <structure name="value" type="com.sosnoski.site.Value" usage="optional">
+        <value name="name" field="m_name"/>
+        <value style="text" field="m_value"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping class="com.sosnoski.site.MenuComponent" abstract="true"
+      extends="com.sosnoski.site.Component">
+    <value name="id" field="m_id" usage="optional"/>
+    <value name="label" field="m_label"/>
+    <value name="target" field="m_setTarget" usage="optional"/>
+    <structure map-as="com.sosnoski.site.Component"/>
+  </mapping>
+  <mapping name="menu" class="com.sosnoski.site.Menu"
+      extends="com.sosnoski.site.MenuComponent">
+    <value name="default" field="m_defaultId" usage="optional"/>
+    <structure map-as="com.sosnoski.site.MenuComponent"/>
+    <collection add-method="addChild" ordered="false">
+      <structure type="com.sosnoski.site.Menu" usage="optional"/>
+      <structure type="com.sosnoski.site.Item" usage="optional"/>
+      <structure type="com.sosnoski.site.Link" usage="optional"/>
+      <structure unmarshaller="com.sosnoski.site.IncludeHandler"
+          usage="optional"/>
+    </collection>
+  </mapping>
+  <mapping name="item" class="com.sosnoski.site.Item"
+      extends="com.sosnoski.site.MenuComponent">
+    <value name="file" field="m_fileName" usage="optional"/>
+    <structure map-as="com.sosnoski.site.MenuComponent"/>
+    <collection add-method="addChild" item-type="com.sosnoski.site.Item"/>
+  </mapping>
+  <mapping name="link" class="com.sosnoski.site.Link"
+      extends="com.sosnoski.site.MenuComponent">
+    <structure type="com.sosnoski.site.MenuComponent">
+      <value name="id" field="m_id" usage="optional"/>
+      <value name="target" field="m_setTarget" usage="optional"/>
+      <structure type="com.sosnoski.site.Component">
+        <value name="access-dir" field="m_accessDir" usage="optional"/>
+      </structure>
+    </structure>
+  </mapping>
+  <mapping name="site" class="com.sosnoski.site.Site"
+      extends="com.sosnoski.site.Component">
+    <structure map-as="com.sosnoski.site.Component"/>
+    <collection add-method="addChild" ordered="false">
+      <structure type="com.sosnoski.site.Menu" usage="optional"/>
+      <structure unmarshaller="com.sosnoski.site.IncludeHandler"
+          usage="optional"/>
+    </collection>
+  </mapping>
+</binding>

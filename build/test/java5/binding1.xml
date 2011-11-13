@@ -1,0 +1,15 @@
+<binding>
+  <mapping name="customer" class="java5.Customer1">
+    <structure name="name">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <value name="credit" field="credit"/>
+    <value name="quality" field="quality" usage="optional" default="UGLY"/>
+  </mapping>
+</binding>

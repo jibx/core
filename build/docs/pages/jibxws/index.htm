@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>JiBX/WS: Web Services with JiBX</title>
+</head>
+<body class="composite">
+
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+
+<h3><a name="jibx-intro">What is JiBX/WS?</a></h3>
+
+<p>JiBX/WS is a framework for creating fast, simple web services.</p>
+<p>It is built upon the <a href="http://jibx.sourceforge.net/">JiBX</a> data binding framework. It
+provides the same advantages of flexibility and performance for web services as the base JiBX
+project does for ordinary XML data binding.</p>
+
+<h4>Features</h4>
+<ul>
+	<li>supports SOAP 1.1 and POX (Plain Old XML) protocols, with planned support for REST and SOAP 1.2.</li>
+	<li>supports HTTP and TCP/IP transports (using DIME message exchange).</li>
+	<li>XML messages can be encoded as text or using the <a href="http://xbis.sourceforge.net/">XBIS</a> binary
+	format, for best performance.</li>
+	<li>SOAP support is limited to document/literal (doc/lit) web services, with no support for RPC/encoded.</li>
+	<li>supports JDK 1.3.1 or later.</li>
+	<li>supports the Spring Framework, but can also be used without Spring</li>
+</ul>
+
+<p>JiBX treats both Java classes and XML schema as first class objects, and uses a separate binding definition to specify
+the mapping between them.  This allows JiBX/WS services, and clients, to be developed in either a "code-first" or "schema-first"
+manner. If using a "code-first" approach, the JiBX BindGen tool allows you to create customized bindings and XML schema.
+If using "schema-first", the JiBX CodeGen tool will generate customized Java code and bindings. The binding definition
+can also be hand-crafted. </p> 
+
+<p>JiBX/WS is designed from the start to support document/literal (doc/lit) web services rather than the older 
+rpc/encoded (rpc/enc) style. This is an important distinction - the rpc/enc approach allows developers to easily expose 
+simple method calls as web services, but creates problems for interoperability, especially with more complex data 
+structures. Because of these problems, rpc/enc has been effectively deprecated by recommendations such as the Web Services
+ Interoperability Organization's Basic Profile (WS-I BP), and replaced by the doc/lit approach.</p>
+
+<p>The doc/lit approach to web services focuses on the actual XML data being exchanged. Rather than model method
+calls with parameters encoded in XML, the doc/lit approach uses W3C XML Schema definitions to fix the XML data formats.
+It's up to the participants in a web services interaction to process the XML payload of doc/lit SOAP messages in
+whatever manner is appropriate to their needs.</p> 
+
+<p>This focus on the XML formats is what allows JiBX/WS to apply the power of JiBX data binding to doc/lit web
+services. JiBX is designed to support fast and flexible conversions between XML and Java objects. With doc/lit web
+services the contents of SOAP messages are just XML document fragments, which can be converted to and from Java objects
+using JiBX just the same as any other XML. All that's needed to support this is a framework that handles the SOAP
+wrappers and actual transport, which is what JiBX/WS provides.</p>
+
+<p>In benchmark tests to date JiBX/WS performs 1.3 to 2.5 times faster than the Apache Axis2 implementation for doc/lit 
+web services. With the XBIS encoding, JiBX/WS is even faster over the wire than RMI! You can view the details of some
+ performance tests in Dennis's presentation on <a href="http://www.sosnoski.co.nz/wfws.pdf">The World's Fastest Web 
+ Services</a>. There's also a condensed <a href="http://www.youtube.com/watch?v=E1m9YQVGoNE">10-minute YouTube</a> of
+ this talk.</p>
+
+<p>JiBX/WS is an update to, and replacement for, the JibxSoap project, which is in use by a number of organizations.</p>
+
+
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+
+<tr class="b">
+<th>Module Name</th>
+<th>Primary Developer</th>
+<th>Status</th>
+</tr>
+
+<tr class="a">
+<td valign="top">jibxws (svn)</td>
+<td valign="top">Nigel Charman</td>
+<td valign="top">0.9 beta release June 21, 2009</td>
+</tr>
+
+</table>
+</div>
+</div>
+</div>
+
+</body>
+</html>

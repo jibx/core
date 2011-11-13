@@ -1,0 +1,15 @@
+<myelement>
+  <a>42</a> 
+  <b>&lt;![CDATAThe Answer]]&gt;</b>
+  <format minf="4" maxf="6"/>
+  <format>
+    <mini>22</mini>
+    <maxi>33</maxi>
+  </format>
+  <ints>
+    <int>1</int>
+    <int>2</int>
+    <int>3</int>
+    <int>1234567890</int>
+  </ints>
+</myelement>

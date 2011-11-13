@@ -1,0 +1,7 @@
+<binding>
+  <mapping name="contact" class="extras.JDOMContact0">
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+</binding>

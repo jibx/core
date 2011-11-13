@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Eclipse Plugin: Usage</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+
+<h3><a name="usage"></a>Using the org.jibx.eclipse Plug-in</h3>
+
+<h4>Create Java Project</h4>
+<p>Create a Java project <em>project1</em> using the project wizard.
+<br><br>
+<img src="images/Task_1.png" alt=""></p>
+
+<h4>Enable JiBX</h4>
+<p>Enable the JiBX plugin for <em>project1</em>.
+<br><br>
+<img src="images/Task_2.png" alt=""></p>
+
+<h4>JiBX Properties</h4>
+<p>At the project level are the following JiBX properties:
+</p><ol>
+<li>JiBX Mapping Folder: Location where mapping files are stored.</li>
+<li>Verbose compilation: Usefull for seeing what the binding compiler is up to</li>
+</ol>
+<br><br>
+<img src="images/Task_3.png" alt="">
+
+<p>The location of <em>src/main/config</em> is chosen by default to match the (non-Eclipse based) Maven plugin <b>maven-jibx-plugin</b>, so you would 
+then want a Mavenish classpath like this:
+<br><br>
+<img src="images/Task_4.png" alt=""></p>
+
+<h4>Done</h4>
+<ul>
+<li>The plugin will parse all xml files contained in your mappings folder to identify which java classes require bindings.
+</li><li>The JiBX binding process itself is a <b>full</b> binding of <b>all</b> bound classes every time(ie, there is no such thing as <em>incremental</em> JiBX binding).</li>
+<li>The plugin is invoked by Eclipse whenever
+<ol>
+<li>A "full compilation" (Project-&gt;Clean) of the workspace is performed</li>
+<li>Any bound java file is modified/saved</li>
+<li>Any mapping file is modified/saved</li>
+<li>A new mapping file is added to the mapping folder</li>
+</ol>
+</li><li>Any one of the previous events cause the plugin to re-bind all classes in the project</li>
+<li>The plugin allocates a new Eclipse console that will display details of the plugin operation</li>
+</ul>
+<br>
+<img alt="Add an Ant builder to a project" src="images/Task_5.png"></div>
+</div>
+</div>
+</div>
+</body>
+</html>

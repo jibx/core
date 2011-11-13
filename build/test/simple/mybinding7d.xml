@@ -1,0 +1,36 @@
+<!-- Collections with nillable elements, and multidimensional aray, abstract
+  mapping for List, while trimming whitespace from simple values. -->
+<binding trim-whitespace="true">
+  <mapping name="myelement" class="simple.MyClass7">
+    <structure name="ints" field="list" map-as="intlist" usage="optional"/>
+    <collection field="array" name="strings" type="java.lang.String[]"
+        usage="optional">
+      <value name="string" nillable="true" type="java.lang.String"/>
+    </collection>
+    <collection field="array2" name="strings" type="java.lang.String[]">
+      <value name="string" nillable="true" type="java.lang.String"/>
+    </collection>
+    <structure name="ints" field="list2" map-as="intlist"/>
+    <collection field="array3" name="intsints" usage="optional">
+      <collection name="ints" nillable="true">
+        <value name="int"/>
+      </collection>
+    </collection>
+    <collection field="array4" name="longslongs" usage="optional">
+      <collection name="longs" nillable="true">
+        <value name="long"/>
+      </collection>
+    </collection>
+    <collection field="array5" name="doublesdoubles" usage="optional">
+      <collection name="doubles" nillable="true">
+        <value name="double"/>
+      </collection>
+    </collection>
+  </mapping>
+  <mapping abstract="true" type-name="intlist" class="java.util.List"
+      create-type="java.util.ArrayList">
+    <collection>
+      <value name="int" nillable="true" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+</binding>

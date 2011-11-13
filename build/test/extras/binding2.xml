@@ -1,0 +1,14 @@
+<!-- Mapping using the ObjectArrayMapper class to map Object[] with wrapper -->
+<binding>
+  <mapping name="array" class="java.lang.Object[]"
+      marshaller="org.jibx.extras.ObjectArrayMapper"
+      unmarshaller="org.jibx.extras.ObjectArrayMapper"/>
+  <mapping name="names" class="extras.NameArray">
+    <structure field="m_names"/>
+  </mapping>
+  <mapping name="name" class="extras.NameArray$Name">
+    <value name="id" style="attribute" field="m_id" ident="def"/>
+    <value name="first-name" field="m_first"/>
+    <value name="last-name" field="m_last"/>
+  </mapping>
+</binding>

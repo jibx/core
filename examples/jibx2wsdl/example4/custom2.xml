@@ -1,0 +1,16 @@
+<custom force-classes="true" property-access="true"
+    add-constructors="true" namespace="http://sosnoski.com/ws/library"
+    namespace-style="fixed">
+  <package name="com.sosnoski.ws.library.jibx2wsdl" force-mapping="true">
+    <class name="Item" optionals="@id @type title"/>
+    <class name="Book" excludes="format" wrap-collections="true"
+        requireds="authors"/>
+    <class name="Dvd" excludes="director stars"/>
+    <package name="hd" wrap-collections="true" force-mapping="false">
+      <class name="IDvd"/>
+      <class name="HdDvd" requireds="@studio" force-mapping="true"/>
+      <class name="BluRayDvd" optionals="/releaseYear" force-mapping="true"/>
+      <class name="Dvd$FutureDvd" force-mapping="true"/>
+    </package>
+  </package>
+</custom>

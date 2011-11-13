@@ -1,0 +1,16 @@
+<myelement>42<b>The Answer</b>1.234134<dwrap d="true"/>
+  <e>123</e>
+  <f>456</f>
+  <gwrap><![CDATA[<b>this is bold text</b>]]></gwrap>
+  <j></j>
+  <k>d2hhdCAgd2lsbCAgIHByaW50ICAgICBvdXQgICAgICAa</k>
+  <l>127</l>
+  <n>&lt;</n>
+  <wrapper>abcd<split/></wrapper>
+  <int>1</int>
+  <int>2</int>
+  <int>3</int>
+  <int>1234567890</int>
+  <string>abc</string>
+  <string>def</string>
+</myelement>

@@ -1,0 +1,62 @@
+<!-- This adds handling of namespaces to the mix. It also defines an ignored
+  element (the <comments> element within the <carrier> element), which can
+  contain any content when unmarshalling but is always written as an empty
+  element when marshalling. Finally, this turns on source location tracking. -->
+<binding forwards="false" track-source="true">
+  <namespace uri="http://www.jibx.org/ns1" default="elements"/>
+  <namespace uri="http://www.jibx.org/ns2" prefix="ns2" default="attributes"/>
+  <namespace uri="http://www.jibx.org/ns3" prefix="ns3"/>
+  <mapping name="timetable" class="multiple.SplitTableBean">
+    <collection name="carriers" field="m_carriers"
+      item-type="multiple.CarrierBean"/>
+    <collection name="airports" field="m_airports"
+      item-type="multiple.AirportBean"/>
+    <collection field="m_routes" item-type="multiple.SplitRouteBean"/>
+  </mapping>
+  <mapping name="carrier" class="multiple.CarrierBean">
+    <value name="ident" field="m_ident" ident="def" style="attribute"/>
+    <value name="rating" field="m_rating" style="attribute"/>
+    <value name="URL" field="m_url"/>
+    <value name="name" field="m_name"/>
+    <structure name="comments"/>
+  </mapping>
+  <mapping name="airport" class="multiple.AirportBean">
+    <value name="ident" field="m_ident" ident="def" style="attribute"/>
+    <value name="location" field="m_location"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="route" class="multiple.SplitRouteBean">
+    <value name="from" field="m_from" ident="ref"/>
+    <value name="to" field="m_to" ident="ref"/>
+    <collection field="m_flights" item-type="multiple.SplitFlightBean"/>
+  </mapping>
+  <mapping name="flight" ns="http://www.jibx.org/ns5"
+      class="multiple.SplitFlightBean">
+    <namespace uri="http://www.jibx.org/ns4" prefix="ns4"/>
+    <namespace uri="http://www.jibx.org/ns5" prefix="ns5"/>
+    <format label="dateOnly" type="java.util.Date"
+      serializer="org.jibx.runtime.Utility.serializeDate"
+      deserializer="org.jibx.runtime.Utility.deserializeDate"/>
+    <structure name="identity" ns="http://www.jibx.org/ns5" field="m_identity"
+      pre-set="preset" post-set="postComplete">
+      <value name="carrier" ns="http://www.jibx.org/ns4" field="m_carrier"
+        ident="ref" style="attribute"/>
+      <value name="number" ns="http://www.jibx.org/ns5" field="m_number"
+        usage="optional" style="attribute"/>
+      <value name="start-date" ns="http://www.jibx.org/ns3" field="m_startDate"
+        usage="optional" format="dateOnly"/>
+      <value name="end-date" ns="http://www.jibx.org/ns3" field="m_endDate"
+        usage="optional" format="dateOnly"/>
+    </structure>
+    <structure field="m_times"/>
+  </mapping>
+  <mapping name="times" ns="http://www.jibx.org/ns4"
+      class="multiple.FlightTimesBean">
+    <namespace uri="http://www.jibx.org/ns4" prefix="ns4"/>
+    <format type="int"
+      serializer="multiple.Utils.minuteToTime"
+      deserializer="multiple.Utils.timeToMinute"/>
+    <value name="depart" ns="http://www.jibx.org/ns4" field="m_departure"/>
+    <value name="arrive" ns="http://www.jibx.org/ns4" field="m_arrival"/>
+  </mapping>
+</binding>

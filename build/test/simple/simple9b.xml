@@ -1,0 +1,12 @@
+<customer zip="98059">
+  <person cust-num="123456789" first-name="John">Smith</person>
+  <street>12345 Happy Lane</street>
+  <city>Plunk</city>
+  <state>WA</state>
+  <bill-address zip="98059">
+    <street>54321 Happy Lane</street>
+    <city>Plunk</city>
+    <state>WA</state>
+  </bill-address>
+  <phone>888.555.1234</phone>
+</customer>

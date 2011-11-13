@@ -1,0 +1,51 @@
+<!-- This uses the same XML document structure as binding2, but with a different
+ set of objects. The flight information in this case is split into three
+ separate objects, matching the structure of the XML document. This also adds
+ labeled formats. -->
+<binding forwards="false">
+  <mapping name="timetable" class="multiple.SplitTableBean">
+    <collection name="carriers" field="m_carriers"
+      item-type="multiple.CarrierBean"/>
+    <collection name="airports" field="m_airports"
+      item-type="multiple.AirportBean"/>
+    <collection field="m_routes" item-type="multiple.SplitRouteBean"/>
+  </mapping>
+  <mapping name="carrier" class="multiple.CarrierBean">
+    <value name="ident" field="m_ident" ident="def"/>
+    <value name="rating" field="m_rating"/>
+    <value name="URL" field="m_url"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="airport" class="multiple.AirportBean">
+    <value name="ident" field="m_ident" ident="def"/>
+    <value name="location" field="m_location"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="route" class="multiple.SplitRouteBean">
+    <value name="from" field="m_from" ident="ref"/>
+    <value name="to" field="m_to" ident="ref"/>
+    <collection field="m_flights"
+      item-type="multiple.SplitFlightBean"/>
+  </mapping>
+  <mapping name="flight" class="multiple.SplitFlightBean">
+    <format label="dateOnly" type="java.util.Date"
+      serializer="org.jibx.runtime.Utility.serializeDate"
+      deserializer="org.jibx.runtime.Utility.deserializeDate"/>
+    <format label="flightTime" type="int"
+      serializer="multiple.Utils.minuteToTime"
+      deserializer="multiple.Utils.timeToMinute"/>
+    <structure name="identity" field="m_identity" pre-set="preset"
+      post-set="postComplete">
+      <value name="carrier" field="m_carrier" ident="ref"/>
+      <value name="number" field="m_number"/>
+      <value name="start-date" field="m_startDate" usage="optional"
+        format="dateOnly"/>
+      <value name="end-date" field="m_endDate" usage="optional"
+        format="dateOnly"/>
+    </structure>
+    <structure name="times" field="m_times">
+      <value name="depart" field="m_departure" format="flightTime"/>
+      <value name="arrive" field="m_arrival" format="flightTime"/>
+    </structure>
+  </mapping>
+</binding>

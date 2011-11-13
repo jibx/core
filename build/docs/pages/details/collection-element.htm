@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: &lt;collection&gt; Element</title>
+</head>
+<body class="composite">
+  <h1>JiBX: &lt;collection&gt; Element</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">&lt;collection&gt; Element Definition</a></h3>
+      
+<p>The <b>collection</b> element defines the binding for a Java collection.
+Many variations of list-like collections are supported, including user-defined
+collection types. Arrays are also supported. Maps are not supported directly in
+JiBX 1.0 (but see the <a href="%extras%">JiBX extras</a> description for
+custom marshaller/unmarshaller classes which can help with this types of
+structures).</p>
+
+<p>Collections may consist of a single type of object or multiple types. The simplest
+form of collection just uses a single mapped item type. This may either be
+defined using the <b>item-type</b> attribute, in which case no child definitions
+are necessary, or implied by the absence of child definitions (equivalent to using
+<b>item-type=&quot;java.lang.Object&quot;</b>).</p>
+
+<p>Collections consisting of multiple types are defined using multiple child
+definitions within the <b>collection</b> element. These may be ordered
+(where the different types occur in a particular sequence) or unordered (where
+all are mixed together), as determined by the <b>ordered</b> attribute of the
+<a href="%bindingattrs%#structure">structure attribute group</a>. Child
+definitions within collections must define elements rather than text or
+attribute values (though the elements defined may themselves have attributes
+and/or text values). Child definitions within collections are always treated as
+optional, with any number of occurrances of the corresponding element allowed
+(zero or more).</p>
+
+<p>The <b>collection</b> element supports several unique attributes along with
+several common attribute groups, listed below. The unique attributes are used for
+special types of data access to the collection. These are all optional, and have
+defaults for common collection types, including <code>java.util.Vector</code> and
+<code>java.util.ArrayList</code> (as well as subclasses of these classes) along
+with collection classes implementing the <code>java.util.Collection</code>
+interface. You can use these attributes to select methods of the containing
+object for accessing data within a collection (with no property definition for
+the actual collection object).</p>
+
+<p>One potential issue in working with collections is that JiBX generally needs
+a way to create an instance of the collection when unmarshalling. If the
+collection is defined using an interface such as <code>java.util.List</code>
+you'll need to either define a concrete implementation type with a no-argument
+constructor to be used for the collection (using the <b>type</b> attribute of
+the <a href="%bindingattrs%#property">property attribute group</a>)
+or use the <b>factory</b> attribute of the <a
+href="%bindingattrs%#object">object attribute group</a> to define a
+factory method to call when an instance of the collection is needed. The
+<code>org.jibx.runtime.Utility.arrayListFactory</code> is an example of such a
+factory method, which can be used directly to supply instances of the
+<code>java.util.ArrayList</code> class.</p>
+
+<p>As with all object-valued properties, if the collection property is already
+initialized when JiBX begins unmarshalling the existing collection instance will
+be used to hold the unmarshalled items of the collection. JiBX does not clear
+items from the existing collection before unmarshalling, so if you want to reuse
+existing data structures with a collection you should clear the collection
+yourself before unmarshalling (one easy way of doing this is with a pre-set
+method on the containing object class). This is only necessary when reusing
+objects, not when unmarshalling to a new instance of an object (where any
+collections created by the object constructor will initially be empty in any
+case). If an element name is used with an optional collection, and that name is
+missing from an input XML document, the collection property will be set to
+<code>null</code>. If you don't want the collection property to ever be set to
+<code>null</code>, use a wrapper <b>structure</b> element for the optional
+element name around the <b>collection</b> element.</p>
+
+<h4><a name="Attributes">Attributes</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>load-method</td>
+<td><p>This is an indexed load item method for the collection. If used, the value must
+be the name of a member method of the collection class taking a single
+<code>int</code> argument and returning the indexed item value from the
+collection (which must be an instance of <code>java.lang.Object</code> unless
+the <b>item-type</b> attribute is used to specify the type of items in the
+collection). This attribute is only allowed in combination with
+<b>size-method</b>. The generated code will use the specified method for loading
+values from the collection when marshalling.</p></td>
+</tr>
+<tr class="a">
+<td>size-method</td>
+<td><p>This is an item count method for the collection. If used, the value must
+be the name of a no-argument member method of the collection class returning an
+<code>int</code> value giving the number of items in the collection. This
+attribute is only allowed in combination with <b>load-method</b>. The generated
+code will use the specified method for finding the count of items present in the
+collection when marshalling.</p></td>
+</tr>
+<tr class="b">
+<td>store-method</td>
+<td><p>This is an indexed store item method for the collection. If used, the value must
+be the name of a member method of the collection class taking an <code>int</code>
+argument and a <code>java.lang.Object</code> argument (or the type given by the
+<b>item-type</b> attribute, if present), with no return value. The
+generated code will use the specified method for storing values to the collection
+when unmarshalling.</b>.</p></td>
+</tr>
+<tr class="a">
+<td>add-method</td>
+<td><p>This is an append item method for the collection. If used, the value must
+be the name of a member method of the collection class taking a single
+<code>java.lang.Object</code> argument (or the type given by the
+<b>item-type</b> attribute, if present). Any return value from the method is
+ignored. The generated code will use the specified method to append values to
+the collection when unmarshalling.</b>.</p></td>
+</tr>
+<tr class="b">
+<td>iter-method</td>
+<td><p>This is an iterator method for the collection. If used, the value must
+be the name of a member method of the collection class taking no arguments and
+returning a <code>java.lang.Iterator</code> or <code>java.lang.Enumeration</code>
+object for the items in the collection. The generated code will use the specified
+method to iterate through the values in the collection when marshalling.</p></td>
+</tr>
+<tr class="a">
+<td>item-type</td>
+<td><p>If this attribute is used it must be the fully-qualified class name for
+items contained in the collection. If the specified type is an interface or a
+class with subclasses any of the implementations of that type can be
+used in the collection. The default is <code>java.lang.Object</code>,
+allowing any type of objects to be present in the collection.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#style">style</a></td>
+<td><p>A <b>value-style</b> attribute present on the <b>collection</b> element sets a
+default for all contained elements. See the <a
+href="%bindingattrs%#style">style attribute group</a> description
+for usage details.</p></td>
+</tr>
+<tr class="a">
+<td><a href="%bindingattrs%#name">name</a></td>
+<td><p>Attributes from the name group define an element mapped to the collection
+as a whole. The element defined in this way will be a wrapper for the XML
+representations of all item values from the collection. The name is optional
+unless a marshaller or unmarshaller is defined (see the <b>object</b> attribute
+group, below), in which case it's forbidden. See the <a
+href="%bindingattrs%#name">name attribute group</a> description
+for usage details.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#object">object</a></td>
+<td><p>Attributes from the object group define the way the collection object is
+created and used in marshalling and unmarshalling. See the <a
+href="%bindingattrs%#object">object attribute group</a> description
+for usage details.</p></td>
+</tr>
+<tr class="a">
+<td><a href="%bindingattrs%#property">property</a></td>
+<td><p>Attributes from the property group define a property value, including how
+it is accessed and whether it is optional or required. See the <a
+href="%bindingattrs%#property">property attribute group description</a>
+for usage details.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#structure">structure</a></td>
+<td><p>Attributes from the structure group define ordering and reuse of
+child binding components. See the
+<a href="%bindingattrs%#structure">structure attribute group</a>
+description for usage details.</p></td>
+</tr>
+</table>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

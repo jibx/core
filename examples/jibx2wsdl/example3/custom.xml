@@ -1,0 +1,5 @@
+<custom add-constructors="true" force-classes="true">
+  <package name="com.sosnoski.ws">
+    <class name="library.jibx2wsdl.Book$Format" enum-value-method="getText"/>
+  </package>
+</custom>

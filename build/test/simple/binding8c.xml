@@ -1,0 +1,37 @@
+<!-- Check nested abstract mapping for system class with name -->
+<binding track-source="true">
+  <mapping name="customers" class="simple.Customers8">
+    <mapping class="simple.ICustomer8" abstract="true">
+      <value name="id" style="attribute" get-method="getId"
+          set-method="setId" ident="def"/>
+      <structure name="name" get-method="getName" set-method="setName">
+        <value name="first-name" field="firstName"/>
+        <value name="last-name" field="lastName"/>
+      </structure>
+      <value name="street1" get-method="getStreet" set-method="setStreet"/>
+      <value name="city" get-method="getCity" set-method="setCity"/>
+      <value name="state" get-method="getState" set-method="setState"/>
+    </mapping>
+    <mapping class="simple.ICustomer8c" abstract="true"/>
+    <mapping name="customer8a" class="simple.Customer8a" extends="simple.ICustomer8">
+      <structure map-as="simple.ICustomer8"/>
+      <value name="zip" field="zip"/>
+    </mapping>
+    <mapping name="customer8b" class="simple.Customer8c" extends="simple.ICustomer8c">
+      <value name="id" style="attribute" get-method="getId"
+          set-method="setId" ident="def"/>
+      <structure name="name" get-method="getName" set-method="setName">
+        <value name="first-name" field="firstName"/>
+        <value name="last-name" field="lastName"/>
+      </structure>
+      <value name="street1" get-method="getStreet" set-method="setStreet"/>
+      <value name="city" get-method="getCity" set-method="setCity"/>
+      <value name="state" get-method="getState" set-method="setState"/>
+      <value name="zip" field="zip"/>
+    </mapping>
+    <mapping name="custcoll" class="java.util.ArrayList">
+      <collection/>
+    </mapping>
+    <structure field="customers" usage="optional"/>
+  </mapping>
+</binding>

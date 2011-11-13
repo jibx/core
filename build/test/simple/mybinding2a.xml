@@ -1,0 +1,37 @@
+<!-- Same as base version, except using a factory method for the List. Also try
+  using overloaded set methods for properties, and get/set methods for double -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass2">
+    <value name="a" get-method="getA" set-method="setA" style="attribute"/>
+    <value name="c" get-method="getC" set-method="setC" style="attribute"/>
+    <value name="b" get-method="getB" set-method="setB" style="attribute" usage="optional"/>
+    <value name="d" field="d" style="attribute" usage="optional"/>
+    <value name="e" field="e" style="attribute" usage="optional" type="java.lang.Integer"/>
+    <value name="f" field="f" style="attribute" usage="optional"/>
+    <value name="g" get-method="getG" set-method="setG" type="java.lang.Integer"/>
+    <structure name="format" field="format1" value-style="attribute" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <structure name="format" field="format2" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <collection name="ints" field="ints"
+        factory="simple.MyClass2.listFactory" usage="optional">
+      <value name="int" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+</binding>

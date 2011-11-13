@@ -1,0 +1,4 @@
+<ns1:qnames xmlns:ns1="urn:a" xmlns:ns2="urn:b" xmlns:ns3="urn:c" qname="qname">
+  <ns1:qname>ns1:qname</ns1:qname>
+  <ns1:qname>ns2:qname</ns1:qname>
+</ns1:qnames>

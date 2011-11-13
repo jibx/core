@@ -1,0 +1,300 @@
+<!-- Binding definition for extracted schema components. This is designed to be
+ used for generating the schema snippets corresponding to each generated class,
+ for documentation. -->
+<binding value-style="attribute" package="org.jibx.schema.codegen"
+    direction="output" force-classes="true">
+
+  <!-- All elements use the schema namespace. -->
+  <namespace uri="http://www.w3.org/2001/XMLSchema" prefix="xs" default="elements"/>
+  
+  <!-- Standard conversion for qualified names. -->
+  <format type="org.jibx.runtime.QName"
+      serializer="org.jibx.runtime.QName.serialize"/>
+  <format type="org.jibx.runtime.QName[]"
+      serializer="org.jibx.runtime.QName.serializeList"/>
+  
+  <!-- Common base classes. -->
+  <mapping class="org.jibx.schema.elements.AnnotatedBase" abstract="true">
+    <value name="id" get-method="getId" usage="optional"/>
+    <structure get-method="getAnnotation" usage="optional"/>
+  </mapping>
+  <mapping class="org.jibx.schema.elements.AnnotationItem" abstract="true">
+    <value name="source" get-method="getSource" usage="optional"/>
+    <structure get-method="getContent"
+        marshaller="org.jibx.extras.DomListMapper"/>
+  </mapping>
+  
+  <!-- Attribute class mappings. -->
+  <mapping class="org.jibx.schema.attributes.DefRefAttributeGroup"
+      abstract="true">
+    <value name="name" get-method="getName" usage="optional"/>
+    <value name="ref" get-method="getRef" usage="optional"/>
+  </mapping>
+  
+  <!-- Common base class mappings -->
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonTypeDerivation">
+    <value name="base" get-method="getBase" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonComplexModification">
+    <structure map-as="org.jibx.schema.elements.CommonTypeDerivation"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonCompositorBase">
+    <value name="minOccurs" get-method="getMinOccurs" usage="optional"/>
+    <value name="maxOccurs" get-method="getMaxOccurs" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonCompositorDefinition">
+    <structure map-as="org.jibx.schema.elements.CommonCompositorBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement">
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" 
+      class="org.jibx.schema.elements.FacetElement$NoFixedFacet">
+    <value name="value" get-method="getValue"/>
+    <structure map-as="org.jibx.schema.elements.FacetElement"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$FixedFacet">
+    <value name="fixed" get-method="getFixed" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.FacetElement"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$NumFacet">
+    <value name="value" get-method="getValue"/>
+    <structure map-as="org.jibx.schema.elements.FacetElement"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$TextFacet">
+    <value name="value" get-method="getValue"/>
+    <structure map-as="org.jibx.schema.elements.FacetElement$FixedFacet"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.CommonTypeDefinition">
+    <value name="name" get-method="getName" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.WildcardBase">
+    <value name="processContents" usage="optional"
+        get-method="getProcessContentsText"/>
+    <value name="namespace" get-method="getNamespaces" usage="optional"
+        serializer="org.jibx.runtime.Utility.serializeTokenList"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SelectionBase">
+    <value name="xpath" get-method="getXPath"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.KeyBase">
+    <value name="name" get-method="getName"/>
+    <structure name="selector" get-method="getSelector">
+      <structure map-as="org.jibx.schema.elements.SelectionBase"/>
+    </structure>
+    <collection get-method="getFieldList">
+      <structure name="field"
+          type="org.jibx.schema.elements.SelectionBase$FieldElement">
+        <structure map-as="org.jibx.schema.elements.SelectionBase"/>
+      </structure>
+    </collection>
+  </mapping>
+  
+  <!-- Reusable (non-top level) element abstract mappings. -->
+  <mapping abstract="true" class="org.jibx.schema.elements.AttributeGroupRefElement">
+    <value name="ref" get-method="getRef"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ComplexExtensionElement">
+    <structure map-as="org.jibx.schema.elements.CommonComplexModification"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ComplexRestrictionElement">
+    <structure map-as="org.jibx.schema.elements.CommonComplexModification"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.GroupRefElement">
+    <value name="ref" get-method="getRef"/>
+    <structure map-as="org.jibx.schema.elements.CommonCompositorBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SimpleExtensionElement">
+    <structure map-as="org.jibx.schema.elements.CommonTypeDerivation"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SimpleRestrictionElement">
+    <structure map-as="org.jibx.schema.elements.CommonTypeDerivation"/>
+  </mapping>
+  
+  <!-- Facet mappings. -->
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$Enumeration">
+    <structure map-as="org.jibx.schema.elements.FacetElement$NoFixedFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$FractionDigits">
+    <structure map-as="org.jibx.schema.elements.FacetElement$NumFacet"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$Length">
+    <structure map-as="org.jibx.schema.elements.FacetElement$NumFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$MaxExclusive">
+    <structure map-as="org.jibx.schema.elements.FacetElement$TextFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$MaxInclusive">
+    <structure map-as="org.jibx.schema.elements.FacetElement$TextFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$MaxLength">
+    <structure map-as="org.jibx.schema.elements.FacetElement$NumFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$MinExclusive">
+    <structure map-as="org.jibx.schema.elements.FacetElement$TextFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$MinInclusive">
+    <structure map-as="org.jibx.schema.elements.FacetElement$TextFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$MinLength">
+    <structure map-as="org.jibx.schema.elements.FacetElement$NumFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$Pattern">
+    <structure map-as="org.jibx.schema.elements.FacetElement$NoFixedFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$TotalDigits">
+    <value name="value" get-method="getValue"/>
+    <structure map-as="org.jibx.schema.elements.FacetElement$FixedFacet"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.FacetElement$WhiteSpace">
+    <structure map-as="org.jibx.schema.elements.FacetElement$TextFacet"/>
+  </mapping>
+  
+  <!-- Non-top level elements with fixed mappings. -->
+  <mapping abstract="true" class="org.jibx.schema.elements.AllElement">
+    <structure map-as="org.jibx.schema.elements.CommonCompositorDefinition"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.AnyElement">
+    <value name="minOccurs" get-method="getMinOccurs" usage="optional"/>
+    <value name="maxOccurs" get-method="getMaxOccurs" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.WildcardBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.AnyAttributeElement">
+    <structure map-as="org.jibx.schema.elements.WildcardBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ChoiceElement">
+    <structure map-as="org.jibx.schema.elements.CommonCompositorDefinition"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.ComplexContentElement">
+    <value name="mixed" get-method="getMixed" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.AppInfoElement">
+    <structure map-as="org.jibx.schema.elements.AnnotationItem"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.DocumentationElement">
+    <value name="lang" ns="http://www.w3.org/XML/1998/namespace"
+        get-method="getXmlLang" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotationItem"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ListElement">
+    <value name="itemType" get-method="getItemType" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SequenceElement">
+    <structure map-as="org.jibx.schema.elements.CommonCompositorDefinition"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SimpleContentElement">
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.UnionElement">
+    <value name="memberTypes" get-method="getMemberTypes" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  
+  <!-- Top-levels schema element mappings. -->
+  <mapping abstract="true" class="org.jibx.schema.elements.AnnotationElement">
+    <value name="id" get-method="getId" usage="optional"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.AttributeElement">
+    <value name="type" get-method="getType" usage="optional"/>
+    <value name="use" usage="optional" get-method="getUseText"/>
+    <value name="default" get-method="getDefault" usage="optional"/>
+    <value name="fixed" get-method="getFixed" usage="optional"/>
+    <value name="form" get-method="getFormText" usage="optional"/>
+    <value name="name" get-method="getName" usage="optional"/>
+    <value name="ref" get-method="getRef" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.AttributeGroupElement">
+    <value name="name" get-method="getName" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ElementElement">
+    <value name="type" get-method="getType" usage="optional"/>
+    <value name="default" get-method="getDefault" usage="optional"/>
+    <value name="fixed" get-method="getFixed" usage="optional"/>
+    <value name="abstract" get-method="isAbstract" usage="optional"/>
+    <value name="nillable" get-method="isNillable" usage="optional"/>
+    <value name="substitutionGroup" get-method="getSubstitutionGroup"
+        usage="optional"/>
+    <structure get-method="getFinal">
+      <value name="final" test-method="isPresent" get-method="toString"
+          usage="optional"/>
+    </structure>
+    <structure get-method="getBlock">
+      <value name="block" test-method="isPresent" get-method="toString"
+          usage="optional"/>
+    </structure>
+    <value name="form" get-method="getFormText" usage="optional"/>
+    <value name="name" get-method="getName" usage="optional"/>
+    <value name="ref" get-method="getRef" usage="optional"/>
+    <value name="minOccurs" get-method="getMinOccurs" usage="optional"/>
+    <value name="maxOccurs" get-method="getMaxOccurs" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection get-method="getIdentityConstraintList" ordered="false">
+      <structure name="key" type="org.jibx.schema.elements.KeyBase$KeyElement">
+        <structure map-as="org.jibx.schema.elements.KeyBase"/>
+      </structure>
+      <structure name="keyref" type="org.jibx.schema.elements.KeyBase$KeyrefElement">
+        <value name="refer" get-method="getRefer"/>
+        <structure map-as="org.jibx.schema.elements.KeyBase"/>
+      </structure>
+      <structure name="unique" type="org.jibx.schema.elements.KeyBase$UniqueElement">
+        <structure map-as="org.jibx.schema.elements.KeyBase"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ComplexTypeElement">
+    <value name="abstract" get-method="getAbstract" usage="optional"/>
+    <value name="mixed" get-method="getMixed" usage="optional"/>
+    <structure get-method="getFinal">
+      <value name="final" test-method="isPresent" get-method="toString"
+          usage="optional"/>
+    </structure>
+    <structure get-method="getBlock">
+      <value name="block" test-method="isPresent" get-method="toString"
+          usage="optional"/>
+    </structure>
+    <structure map-as="org.jibx.schema.elements.CommonTypeDefinition"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.GroupElement">
+    <value name="name" get-method="getName" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.NotationElement">
+    <value name="name" get-method="getName" usage="optional"/>
+    <value name="public" get-method="getPublic" usage="optional"/>
+    <value name="system" get-method="getSystem" usage="optional"/>
+    <structure map-as="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SimpleTypeElement">
+    <structure get-method="getFinal">
+      <value name="final" test-method="isPresent" get-method="toString"
+          usage="optional"/>
+    </structure>
+    <structure map-as="org.jibx.schema.elements.CommonTypeDefinition"/>
+  </mapping>
+  
+</binding>

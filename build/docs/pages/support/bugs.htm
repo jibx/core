@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Bugs and Bug Reporting</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="problems">Known issues</a></h3>
+
+<p>There's a known inconsistency in the way certain
+combinations of optional components are handled. This is not really a bug, but
+rather an ambiguity in the way optional items are interpreted. It's likely to
+remain until JiBX 2.0:</p>
+
+<ul>
+<li>Optional structures are not handled consistently unless they have an associated
+property value. In other words, structures that just define a wrapper element
+around some content that's part of a containing object won't always work as
+expected if you make them optional. This creates problems in trying to wrap
+text or CDATA values with elements to make them optional using binding constructs like:
+<div id="source"><pre>&lt;structure name="wrapper" usage="optional">
+  &lt;value style="cdata" field="m_rawText" usage="optional"/>
+&lt;/structure></pre></div>
+The result is that if the <b>m_rawText</b> field is <code>null</code> an empty
+<b>&lt;wrapper></b> element will be generated when marshalling, which will then
+be converted to an empty string value when unmarshalling. There is a work-around
+for this, which is to use a <b>test-method</b> on the <b>structure</b>. The test
+method can check if the field value is null, and if so return false.</li>
+</ul>
+
+      </div>
+      <div class="h3">
+      <h3><a name="reporting">Reporting Problems</a></h3>
+
+<p>If you run into problems with the code please check existing bug reports for
+information on fixes, and enter a new bug report if you don't find one matching
+your problem. JiBX uses the <a
+href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10410">Jira issue
+tracking system</a> hosted by <a href="http://www.codehaus.org/">The
+Codehaus</a>. Please note that JiBX is not otherwise affiliated with The
+Codehaus, and other aspects of the project remain hosted on <a href="http://sf.net">
+SourceForge</a>. You can browse the Jira bug list without restriction, but will
+need to register in order to enter new issues.</p>
+
+<p>You can help make sure your problem is addressed quickly and completely by
+attaching sample code to demonstrate the problem. The sample code should be
+packaged as a <i>zip</i> or <i>tar.gz</i> file, and should
+include an Ant <i>build.xml</i> script to compile the code, run the binding
+compiler, and (for runtime problems) execute a test of the binding. The
+<i>starter</i> example included in the JiBX distribution shows how this can
+work.</p>
+
+	  </div>
+      </div>
+      </div>
+</body>
+</html>

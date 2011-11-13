@@ -1,0 +1,33 @@
+<!-- Second layer include (which references the first layer include). -->
+<binding>
+  <include path="binding5a-include1.xml"/>
+  <mapping name="flight" ns="http://www.jibx.org/ns5"
+      class="multiple.SplitFlightBean">
+    <namespace uri="http://www.jibx.org/ns4" prefix="ns4"/>
+    <namespace uri="http://www.jibx.org/ns5" prefix="ns5"/>
+    <format label="dateOnly" type="java.util.Date"
+      serializer="org.jibx.runtime.Utility.serializeDate"
+      deserializer="org.jibx.runtime.Utility.deserializeDate"/>
+    <structure name="identity" ns="http://www.jibx.org/ns5" field="m_identity"
+      pre-set="preset" post-set="postComplete">
+      <value name="carrier" ns="http://www.jibx.org/ns4" field="m_carrier"
+        ident="ref" style="attribute"/>
+      <value name="number" ns="http://www.jibx.org/ns5" field="m_number"
+        usage="optional" style="attribute"/>
+      <value name="start-date" ns="http://www.jibx.org/ns3" field="m_startDate"
+        usage="optional" format="dateOnly"/>
+      <value name="end-date" ns="http://www.jibx.org/ns3" field="m_endDate"
+        usage="optional" format="dateOnly"/>
+    </structure>
+    <structure field="m_times"/>
+  </mapping>
+  <mapping name="times" ns="http://www.jibx.org/ns4"
+      class="multiple.FlightTimesBean">
+    <namespace uri="http://www.jibx.org/ns4" prefix="ns4"/>
+    <format type="int"
+      serializer="multiple.Utils.minuteToTime"
+      deserializer="multiple.Utils.timeToMinute"/>
+    <value name="depart" ns="http://www.jibx.org/ns4" field="m_departure"/>
+    <value name="arrive" ns="http://www.jibx.org/ns4" field="m_arrival"/>
+  </mapping>
+</binding>

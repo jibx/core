@@ -1,0 +1,49 @@
+<!-- variation with only attributes in abstract base mapping, abstract non-base
+  mappings, abstract mapping reference by type-name -->
+<binding>
+  <mapping name="customers" class="simple.Customers6">
+    <value name="count" get-method="getCustomerCount"
+        set-method="setCustomerCount"/>
+    <collection add-method="addCustomer" iter-method="getCustomerIterator"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6aBase"
+    value-style="attribute">
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customerA" class="simple.Customer6a"
+      extends="simple.Customer6aBase" value-style="attribute">
+    <value name="customer-id" field="customerId"/>
+    <value name="repeat-customer" field="repeat"/>
+    <structure map-as="simple.Customer6aBase"/>
+    <value name="order-count" field="orderCount" default="0"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6bBase"
+    value-style="attribute">
+    <structure name="name" field="name" map-as="full-name"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customerB" class="simple.Customer6b"
+      extends="simple.Customer6bBase">
+    <value name="customer-id" field="customerId"/>
+    <value style="attribute" name="repeat-customer" field="repeat"/>
+    <value style="attribute" name="discount" field="discount" default="0.0"/>
+    <structure map-as="simple.Customer6bBase"/>
+    <value name="order-count" field="orderCount" default="0"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Name" type-name="full-name"
+      value-style="attribute">
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Name" value-style="attribute">
+    <value name="fname" field="firstName"/>
+    <value name="lname" field="lastName"/>
+  </mapping>
+  <mapping class="java.util.ArrayList" abstract="true">
+    <collection ordered="false">
+      <value name="order" type="java.lang.String"/>
+    </collection>
+  </mapping>
+</binding>

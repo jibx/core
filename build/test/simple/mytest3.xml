@@ -1,0 +1,19 @@
+<myelement>
+  <a>42</a>
+  <b>The Answer</b>
+  <c>1.234134</c>
+  <d>true</d>
+  <format1 minf="4" maxf="6"/>
+  <format2>
+    <mini>22</mini>
+    <maxi>33</maxi>
+    <minf>1</minf>
+    <maxf>4</maxf>
+  </format2>
+<!--  <ints>  -->
+    <int>1</int>
+    <int>2</int>
+    <int>3</int>
+    <int>1234567890</int>
+<!--  </ints>  -->
+</myelement>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="org.jibx" module="jibx-run" />
+
+  <configurations>
+    <conf name="compile" description="Describes modules needed to compile the source of this project, excluding the test source." />
+    <conf name="runtime" extends="compile" description="Describes modules needed to execute this project." />
+    <conf name="optional" description="Optional modules." />
+    <conf name="test" visibility="private" extends="runtime" description="Describes modules needed to compile and run the tests for this project." />
+    <conf name="default" extends="compile, optional, runtime" description="All dependencies"/>
+  </configurations>
+
+  <dependencies>
+    <dependency org="xpp3" name="xpp3" rev="1.1.3.4.O" transitive="false" conf="compile->default" />
+    <dependency org="joda-time" name="joda-time" rev="2.0" transitive="false" conf="compile->default"/>
+    <dependency org="javax.xml.stream" name="stax-api" rev="1.0" conf="optional->default" />
+    <dependency org="woodstox" name="wstx-asl" rev="2.8" conf="optional->default" />
+    <dependency org="junit" name="junit" rev="4.10" conf="test->default" />
+  </dependencies>
+</ivy-module>

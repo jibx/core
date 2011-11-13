@@ -1,0 +1,12 @@
+<!-- Binding with nothing but namespaces and includes. -->
+<binding forwards="false" track-source="true">
+  <namespace uri="http://www.jibx.org/ns1" default="elements"/>
+  <namespace uri="http://www.jibx.org/ns2" prefix="ns2" default="attributes"/>
+  <namespace uri="http://www.jibx.org/ns3" prefix="ns3"/>
+  <format label="dateOnly" type="java.util.Date"
+    serializer="org.jibx.runtime.Utility.serializeDate"
+    deserializer="org.jibx.runtime.Utility.deserializeDate"/>
+  <include path="binding5c-include1.xml"/>
+  <include path="binding5c-include2.xml"/>
+  <include path="binding5c-include3.xml"/>
+</binding>

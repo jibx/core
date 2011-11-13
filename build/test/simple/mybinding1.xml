@@ -1,0 +1,23 @@
+<!-- This adds bindings for core Java classes (requiring the binding code to go
+ into a separate class), and also has JiBX add a default constructor. -->
+<binding add-constructors="true">
+  <mapping name="myelement" class="simple.MyClass1">
+    <value name="a" get-method="getA" set-method="setA"/>
+    <value name="b" get-method="getB" set-method="setB"/>
+    <structure name="format" field="format1" value-style="attribute">
+      <value name="minf" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <structure name="format" field="format2">
+      <value name="mini" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi"  get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+    </structure>
+    <collection name="ints" field="ints">
+      <value name="int" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+</binding>

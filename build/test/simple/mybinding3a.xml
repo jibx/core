@@ -1,0 +1,38 @@
+<!-- This checks using a <structure> to change only the ordering state, and
+ using a homogeneous collection without specifying a type on the child value.
+ Also trims whitespace on simple values. -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass3">
+    <structure ordered="false">
+      <value name="a" field="a" usage="optional" whitespace="trim"/>
+      <value name="b" field="b" usage="optional" whitespace="collapse"/>
+      <value name="c" field="c" usage="optional" whitespace="trim"/>
+      <value name="d" field="d" usage="optional" whitespace="trim"/>
+    </structure>
+    <value name="e" field="e" usage="optional" format="char.string" whitespace="collapse"/>
+    <structure name="format1" field="format1" value-style="attribute" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits" whitespace="trim"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits" whitespace="trim"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits" whitespace="trim"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits" whitespace="trim"/>
+    </structure>
+    <structure name="format2" field="format2" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits" whitespace="collapse"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits" whitespace="collapse"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits" whitespace="collapse"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits" whitespace="collapse"/>
+    </structure>
+    <collection item-type="java.lang.Integer" add-method="addInt"
+        size-method="sizeInts" load-method="getInt">
+      <value name="int" whitespace="trim"/>
+    </collection>
+  </mapping>
+</binding>

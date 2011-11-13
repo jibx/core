@@ -1,0 +1,30 @@
+<!-- Checking abstract mapping references within a choice, one an empty -->
+<binding>
+  <mapping name="customer" class="simple.Customer10">
+    <structure choice="true" ordered="false">
+      <structure field="identity1" name="identity" map-as="identity" usage="optional"/>
+      <structure field="identity2" name="person" map-as="person" usage="optional"/>
+      <structure field="identity3" name="company" map-as="company" usage="optional"/>
+    </structure>
+    <value name="street" field="street" usage="optional"/>
+    <value name="city" field="city" usage="optional"/>
+    <value name="state" field="state" usage="optional"/>
+    <value name="zip" field="zip" usage="optional"/>
+    <value name="phone" field="phone" usage="optional"/>
+    <structure name="marker" field="marker" map-as="marker" usage="optional"/>
+  </mapping>
+  <mapping type-name="identity" class="simple.Identity10" abstract="true">
+    <value style="attribute" name="cust-num" field="customerNumber" usage="optional"/>
+  </mapping>
+  <mapping type-name="person" class="simple.Person10" abstract="true">
+    <structure map-as="identity"/>
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+  </mapping>
+  <mapping type-name="company" class="simple.Company10" abstract="true">
+    <value name="name" field="name"/>
+    <value name="tax-id" field="taxId"/>
+    <structure map-as="identity"/>
+  </mapping>
+  <mapping type-name="marker" class="simple.Customer10$Marker" abstract="true"/>
+</binding>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: &lt;format&gt; Element</title>
+</head>
+<body class="composite">
+  <h1>JiBX: &lt;format&gt; Element</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">&lt;format&gt; Element Definition</a></h3>
+      
+<p>The <b>format</b> element defines a conversion between some primitive or
+object type and the text representation used for that type. Any type with a
+format defined can be used with simple element (one with no child
+elements), text, or attribute values. During unmarshalling, the text content of the
+element or attribute is passed to the deserializer defined for that
+format, which returns a value of the appropriate type. During
+marshalling, the typed value is passed to the serializer for that format,
+which returns a text string used as the element content or attribute value.</p>
+
+<p>This flexibility for conversion handling is also available without using a
+<b>format</b> element definition, by directly specifying the serializer and/or
+deserializer in a <b>value</b> definition. The advantage to using a
+<b>format</b> definition is that it can be easily reused. There are two ways
+of doing this. When a <b>format</b> element does not have a <b>label</b> attribute, it
+automatically becomes the default for values of the associated type. When a
+<b>format</b> element is defined <em>with</em> a label, that label can be used
+to reference it as needed.</p>
+
+<p>The <b>format</b> element supports a pair of unique attributes along with
+one common attribute group, listed below.</p>
+
+<h4><a name="Attributes">Attributes</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>label</td>
+<td><p>The label for this format. If supplied, the format can only be used when
+referenced by label. If not supplied, this format automatically becomes the
+default for handling the specified type within the context. As of JiBX 1.1, the
+value of this attribute is interpreted as namespace qualified.</p></td>
+</tr>
+<tr class="a">
+<td>type</td>
+<td><p>This required attribute gives the fully qualified class name or the
+primitive type for the values handled by this format. For instance, for a
+format handling instances of the <code>java.util.Date</code> class this would
+be &apos;java.util.Date&apos;, and for one handling <code>int</code> primitive
+values it would be &apos;int&apos;.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#string">string</a></td>
+<td><p>Attributes from the string group set the default conversion of a value
+type for all contained elements. See the <a
+href="%bindingattrs%#string">string attribute group</a> description
+for usage details.</p></td>
+</tr>
+</table>
+
+<p><b>format</b> elements are subject to the restriction that labels must be
+unique, and unlabeled formats with the
+same type cannot be defined in the same context.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

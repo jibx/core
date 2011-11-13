@@ -1,0 +1,32 @@
+<!-- binding testing collection as mapped object with structure children of
+ inner interface type implemented by inner class type, also optional structure
+ with name and field, and flag methods of various types -->
+<binding>
+  <mapping name="customers" class="simple.Customers7">
+    <value name="count" get-method="getCustomerCount"
+        set-method="setCustomerCount"/>
+    <collection add-method="wrappedAddCustomer"
+        iter-method="wrappedGetCustomerIterator"
+        test-method="wrappedHasCustomer" usage="optional">
+      <structure name="customer" type="simple.Customers7$CustomerInterface"
+          value-style="attribute" factory="simple.Customers7.createCustomer">
+        <structure name="name" get-method="getName" set-method="setName"
+            usage="optional" flag-method="flagName" test-method="isName">
+          <value name="first-name" field="firstName" flag-method="flagFirst"/>
+          <value name="last-name" field="lastName" usage="optional"
+              test-method="isLast" flag-method="flagLast"/>
+        </structure>
+        <value name="street1" get-method="getStreet1" set-method="setStreet1"
+            style="element"/>
+        <value name="city" get-method="getCity" set-method="setCity"
+            style="element"/>
+        <value name="state" get-method="getState" set-method="setState"/>
+        <value name="zip" get-method="getZip" set-method="setZip"/>
+        <structure name="extra" usage="optional" test-method="isExtra"
+            flag-method="flagExtra"/>
+        <value style="element" name="skipped" usage="optional"
+            test-method="isSkipped" flag-method="flagSkipped"/>
+      </structure>
+    </collection>
+  </mapping>
+</binding>

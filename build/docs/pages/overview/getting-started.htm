@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Getting Started</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>Getting started</h3>
+
+<p>To get started using JiBX, you just need to download the distribution zip file from
+the <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">SourceForge
+downloads page</a> and unzip it to a convenient location on your system. The distribution
+comes with all the core components of JiBX, including the binding compiler, runtime,
+extras, and various flavors of generation tools. There are also convenient examples to
+help get you going, in four flavors:</p>
+<ul>
+<li><i>bindgen</i> - use JiBX binding and schema generation from code</li>
+<li><i>codegen</i> - use JiBX binding and code generation from schema</li>
+<li><i>jibx2wsdl</i> - use JiBX binding, WSDL, and schema generation from code</li>
+<li><i>starter</i> - use JiBX with supplied (or hand-written) binding definition</li>
+</ul>
+<p>All the examples are set up to use the Ant build tool. If you don't already
+have Ant installed on your system, you can get it from the <a href="http://ant.apache.org/">Ant
+Project page</a>.</p>
+
+<p>Once you've installed the distribution on your system, open the <i>readme.html</i>
+file located in the root of the JiBX distribution. This will provide some details of
+what's new in the JiBX release, and also links to both the above examples and the
+offline version of this documentation, also included in the distribution.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="basic"></a>Basic use of JiBX</h3>
+
+<p>Whether you're using JiBX directly, with a binding definition you've
+constructed on your own, or using one of the generator tools to create a
+binding, you're going to need to go through certain steps every time you build
+your application:</p>
+<ol>
+<li>Compile your source code (only if compiled class files are out of date)</li>
+<li>Run the JiBX binding compiler on your compiled class files</li>
+<li>Use the JiBX runtime and some form of parser when you run your application</li>
+</ol>
+<p>This sequence doesn't mean you can't do other steps in between. You may want
+to assemble your class files into jar files, for instance, after you've run the
+binding compiler (which currently requires the class files in un-jarred form).
+You can even use other bytecode manipulation tools along with JiBX, as long as
+those tools obey the JVM rules for bytecode handling.</p>
+
+<p>The starter examples all include these steps as Ant targets. You can also see
+the separate pages in this section of the documentation for details on the
+<a href="%usecomp%">binding compiler</a> and <a href="%userun%">runtime</a> usage.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="fromcode">Start from code</a></h3>
+
+<p>If you're starting from existing Java code, you can use the <a href="%bindgen%">BindGen</a>
+tool included in the JiBX distribution to automatically generate a binding definition and
+corresponding XML schema definition from your code. BindGen uses default behaviors which will
+give good XML structure for most data models - but if the default generation is not satisfactory
+for your needs you can easily customize the generation handling at every level, with features
+such as:</p>
+<ul>
+<li>Support for both Java 5-style enum and typed collections, and pre-Java 5 alternatives</li>
+<li>Specify which class properties are to be included in the XML</li>
+<li>Control XML representation as attributes or elements, and required or optional</li>
+<li>Format JavaDocs for export to XML schema definition documentation</li>
+<li>Change XML naming conventions and namespace usage</li>
+</ul>
+
+<p>You can also use the <a href="%jibx2wsdl%">Jibx2Wsdl</a> tool to generate a WSDL web
+service definition based on an existing service class. Jibx2Wsdl builds on BindGen and
+supports all the same customization features for data model classes, along with some added
+customizations for the service class and WSDL usage.</p>
+
+<p>The <i>bindgen</i> examples show how to use BindGen for binding and schema generation,
+both with and without customizations. The <i>jibx2wsdl</i> examples do the same for the
+Jibx2Wsdl tool. For more details of using JiBX with existing Java code, including full
+details of the customizations structure, see the <a href="%startcode%">Start from Code</a>
+section of this documentation.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="fromschema"></a>Start from schema</h3>
+
+<p>If you're starting from an existing XML schema definition, you can use the
+<a href="%codegen%">CodeGen</a> tool included in the JiBX distribution to automatically
+generate a Java data model and corresponding JiBX binding definition to match your XML
+documents. Here again, the code and binding generation uses default behaviors which will
+give a good data model for most schemas, but can be customized at every level to improve
+handling with features including:</p>
+<ul>
+<li>Simplify the data model by excluding schema definition components not used in your documents</li>
+<li>Selectively ignore the content of portions of input documents</li>
+<li>Inline schema definitions which are only used in one place</li>
+<li>Support for generating both Java 5-style enum and typed collections, and pre-Java 5 versions</li>
+<li>Change Java naming conventions and package usage</li>
+<li>Add your own custom extensions to the code generation for special handling</li>
+</ul>
+
+<p>The <i>codegen</i> examples show how to use the code and binding generation from schema,
+both with and without customizations. For more details of using JiBX with existing XML
+schemas, including full details of the customizations structure, see the
+<a href="%startschema%">Start from Schema</a> section of this documentation.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

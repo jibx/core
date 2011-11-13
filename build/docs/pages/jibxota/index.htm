@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>JiBX/OTA: OTA Message Exchange with JiBX</title>
+</head>
+<body class="composite">
+
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+
+<h3><a name="intro"></a>What is JiBX/OTA?</h3>
+
+<p>JiBX/OTA is a set of examples and sample code intended to help developers working with
+the <a href="http://www.opentravel.org/">Open Travel Alliance</a> schemas. It includes
+two different examples of JiBX code generation from the OTA schemas, an example of WSDL
+generation from a Java interface for a web service based on OTA messages, and two different
+sample implementations of a client and server for the web service.</p>
+
+<p>JiBX offers a number of advantages over alternative data binding frameworks for working
+with the OTA schemas. For starters, it does a better job of handling schema definitions:</p>
+
+<ul>
+<li>&lt;xs:documentation> items in schema definitions are converted to JavaDocs, making
+relevant documentation directly available to developers</li>
+<li>&lt;xs:choice> components are converted to type-safe representations with (optionally)
+checked get/set methods to prevent usage errors</li>
+<li>Repeated components in the schema definition, including repeated &lt;xs:choice>
+components, are represented with type-safe arrays or (for Java 5 and above) typed lists</li>
+<li>Unused common definitions are ignored, and definitions used only in one place are
+inlined, where possible, avoiding the creation of unnecessary added classes</li>
+</ul>
+
+<p>JiBX also provides much greater flexibility than other alternatives, including easy
+ways to:</p>
+
+<ul>
+<li>Selectively generate only the schema components required for specific messages</li>
+<li>Simplify schema definitions by deleting components not needed for your application
+(without any modification to the actual schemas)</li>
+<li>Use the popular Joda date/time types for better representations of schema data/time
+types</li>
+<li>Substitute one schema type for another, allowing the use of simpler Java equivalents
+(such as <code>int</code> or <code>long</code> in place of <code>java.math.BigInteger</code></li>
+<li>Extend the code generation with supplied decorators for purposes such as adding
+<code>java.io.Serializable</code> handling to generated classes (or with your own custom
+decorators)</li>
+<li>Choose between Java 5 typed lists and arrays or untyped lists, and between Java 5
+enums and custom enumeration types, for compatibility with older JVMs</li>
+<li>Build modular representations, so that development teams can control the portions of
+the data model relevant to their own work without effecting other teams</li>
+</ul>
+
+<p>On the web services side, JiBX gives the best support for generating WSDL service
+definitions from code (even if you're not actually using JiBX at runtime). When used with
+the JiBX/WS web services framework JiBX also provides the fastest web services available,
+including support for <a href="http://www.xbis.org">XBIS encoding</a> which doubles your
+speed in converting to and from XML while cutting data volumes in half. JiBX/WS also
+gives the flexibility of using direct XML document exchanges (without SOAP wrappers), and
+efficient TCP socket transport (both with and without SOAP).</p>
+
+
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+
+<tr class="b">
+<th>Module Name</th>
+<th>Primary Developer</th>
+<th>Status</th>
+</tr>
+
+<tr class="a">
+<td valign="top">jibx-ota (svn)</td>
+<td valign="top">Dennis Sosnoski</td>
+<td valign="top">1.0 release February 14, 2010</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

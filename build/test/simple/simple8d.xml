@@ -1,0 +1,44 @@
+<customers>
+  <custcoll>
+    <customer8a id="0001">
+      <name>
+        <first-name>John</first-name>
+        <last-name>Smith</last-name>
+      </name>
+      <street1>12345 Happy Lane</street1>
+      <city>Plunk</city>
+      <state>WA</state>
+      <zip>98022</zip>
+    </customer8a>
+    <customer8b id="0002">
+      <name>
+        <first-name>Mary</first-name>
+        <last-name>Smith</last-name>
+      </name>
+      <street1>12345 Happy Lane</street1>
+      <city>Plunk</city>
+      <state>WA</state>
+      <zip>98022</zip>
+    </customer8b>
+    <customer8b id="0003">
+      <name>
+        <first-name>Larry</first-name>
+        <last-name>Adams</last-name>
+      </name>
+      <street1>12345 Plunket Lane</street1>
+      <city>Happy</city>
+      <state>WA</state>
+      <zip>98095</zip>
+    </customer8b>
+    <customer8a id="0004">
+      <name>
+        <first-name>Gary</first-name>
+        <last-name>Adams</last-name>
+      </name>
+      <street1>12345 Plunket Lane</street1>
+      <city>Happy</city>
+      <state>WA</state>
+      <zip>98095</zip>
+    </customer8a>
+  </custcoll>
+</customers>

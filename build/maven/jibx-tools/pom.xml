@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jibx.config</groupId>
+    <artifactId>main-reactor</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.jibx</groupId>
+  <artifactId>jibx-tools</artifactId>
+  <packaging>bundle</packaging>
+
+  <name>jibx-tools - JiBX tools</name>
+  <description>JiBX tools code</description>
+
+  <profiles>
+    <profile> 
+      <id>sonatype-oss-release</id>
+      <build>
+      <!-- ***CAREFUL*** This logic moves the source code to the current project, then
+      does NOT compile it. This way, the api and source are in the repo. -->
+	    <plugins>
+	      <plugin>
+	        <inherited>true</inherited>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+	          <excludes>
+	            <exclude>**/**</exclude>	<!-- This will not compile any, but include the source in the dist -->
+	          </excludes>
+	        </configuration>
+	      </plugin>
+	      <plugin>
+	        <artifactId>maven-resources-plugin</artifactId>
+	        <version>2.4.3</version>
+	        <executions>
+          <execution>
+            <id>copy-jibx-tools</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/src/main/java</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>${coreSourceDir}</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>org/jibx/schema/codegen/**/*.java</include>
+                    <include>org/jibx/schema/generator/**/*.java</include>
+                    <include>org/jibx/binding/generator/**/*.java</include>
+                    <include>org/jibx/custom/**/*.java</include>
+                    <include>org/jibx/ws/wsdl/**/*.java</include>
+                  </includes>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+	        </executions>
+	      </plugin>
+	    </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>
+                org.jibx.schema.codegen.*;version=${project.version},  <!-- In jibx-tools -->
+                org.jibx.schema.generator.*;version=${project.version},  <!-- In jibx-tools -->
+                org.jibx.binding.generator.*;version=${project.version},  <!-- In jibx-tools -->
+                org.jibx.custom.*;version=${project.version},  <!-- In jibx-tools -->
+                org.jibx.ws.*;version=${project.version},  <!-- In jibx-tools -->
+            </Export-Package>
+	    <Include-Resource>@${jibxLibDir}/jibx-tools.jar;inline=**</Include-Resource>
+	    <Main-Class>org.jibx.ws.wsdl.tools.Jibx2Wsdl</Main-Class>
+	    <Class-Path>bcel.jar jibx-run.jar jibx-bind.jar jibx-extras.jar
+	    jibx-schema.jar xpp3.jar stax-api.jar wstx-asl.jar joda-time.jar log4j.jar
+	    qdox.jar org.eclipse.core.contenttype.jar org.eclipse.core.jobs.jar
+	    org.eclipse.core.resources.jar org.eclipse.core.runtime.jar
+	    org.eclipse.equinox.common.jar org.eclipse.equinox.preferences.jar
+	    org.eclipse.jdt.core.jar org.eclipse.jdt.core.manipulation.jar org.eclipse.osgi.jar
+	    org.eclipse.text.jar</Class-Path>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>jibx-schema</artifactId>
+      <version>1.2.4-SNAPSHOT</version>
+    </dependency>
+
+      <!-- Eclipse dependencies -->
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.core.contenttype</artifactId>
+          <version>3.4.100.v20110423-0524</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.core.jobs</artifactId>
+          <version>3.5.100.v20110404</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.core.resources</artifactId>
+          <version>3.7.100.v20110510-0712</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.core.runtime</artifactId>
+          <version>3.7.0.v20110110</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.equinox.common</artifactId>
+          <version>3.6.0.v20110523</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.equinox.preferences</artifactId>
+          <version>3.4.0.v20110502</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.jdt.core</artifactId>
+          <version>3.7.0.v_B61</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.osgi</artifactId>
+          <version>3.7.0.v20110613</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
+          <artifactId>org.eclipse.text</artifactId>
+          <version>3.5.100.v20110505-0800</version>
+      </dependency>
+  </dependencies>
+
+</project>

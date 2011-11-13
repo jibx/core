@@ -1,0 +1,9 @@
+<!-- Included format definitions. -->
+<binding>
+  <format label="dateOnly" type="java.util.Date"
+    serializer="org.jibx.runtime.Utility.serializeDate"
+    deserializer="org.jibx.runtime.Utility.deserializeDate"/>
+  <format label="timeMinutes" type="int"
+    serializer="multiple.Utils.minuteToTime"
+    deserializer="multiple.Utils.timeToMinute"/>
+</binding>

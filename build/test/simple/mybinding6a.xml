@@ -1,0 +1,17 @@
+<!-- Test mixing attributes with optional unordered collections. -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass6">
+    <value style="attribute" name="a" field="a"/>
+    <value style="attribute" name="b" field="b"/>
+    <structure ordered="false">
+      <collection field="ints" factory="simple.MyClass6.createList"
+          set-method="setInts" usage="optional" >
+        <value name="int" type="java.lang.Integer"/>
+      </collection>
+      <collection field="strings" factory="simple.MyClass6.createList"
+          usage="optional">
+        <value name="string" type="java.lang.String"/>
+      </collection>
+    </structure>
+  </mapping>
+</binding>

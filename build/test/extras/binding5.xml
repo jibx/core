@@ -1,0 +1,15 @@
+<!-- Mapping typed array with TypedArrayMapper and Object[] base property. -->
+<binding>
+  <mapping name="names" class="extras.TypedArray">
+    <structure get-method="getObjects" set-method="setObjects"
+        type="extras.TypedArray$Name[]"/>
+  </mapping>
+  <mapping class="extras.TypedArray$Name[]"
+      marshaller="org.jibx.extras.TypedArrayMapper"
+      unmarshaller="org.jibx.extras.TypedArrayMapper"/>
+  <mapping name="name" class="extras.TypedArray$Name">
+    <value name="id" style="attribute" field="m_id" ident="def"/>
+    <value name="first-name" field="m_first"/>
+    <value name="last-name" field="m_last"/>
+  </mapping>
+</binding>

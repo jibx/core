@@ -1,0 +1,9 @@
+<a:customer xmlns:a="urn:a">
+  <a:person cust-num="123456789" first-name="John">Smith</a:person>
+  <a:bill-address zip="98059" xmlns="urn:c">
+    <street>54321 Happy Lane</street>
+    <city>Plunk</city>
+    <state>WA</state>
+  </a:bill-address>
+  <a:phone>888.555.1234</a:phone>
+</a:customer>

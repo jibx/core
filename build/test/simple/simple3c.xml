@@ -1,0 +1,25 @@
+<customer>
+  <name>
+    <first-name>John</first-name>
+    <last-name>Smith</last-name>
+  </name>
+  <street1>12345 Happy Lane</street1>
+  <city>Plunk</city>
+  <state>WA</state>
+  <zip>98059</zip>
+  <phone>888.555.1234</phone>
+  <customer>
+    <name>
+      <first-name>Mary</first-name>
+      <last-name>Smith</last-name>
+    </name>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+    <state>WA</state>
+    <zip>98059</zip>
+    <phone>888.555.4321</phone>
+  </customer>
+  <order id="N313414"/>
+  <order id="N314566"/>
+  <order id="N418833"/>
+</customer>

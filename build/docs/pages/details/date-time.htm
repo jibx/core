@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Date/time conversions</title>
+</head>
+<body class="composite">
+<h1>Date/time conversions</h1>
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3><a name="issues">Issues with date/time values</a></h3>
+
+<p>W3C XML Schema defines 9 different datatypes for various forms of time-related
+values. Most of these are not very useful for data exchange between applications.
+Consider gMonthDay, for instance, which represents a particular month and day of
+the month without regard to a year - although this could be useful for some specialized
+applications, most applications need full date specifications including a year. Three
+of the schema time-related datatypes are widely used for data exchange: dateTime, date,
+and time. The dateTime datatype is effectively the "core" type, with date and time
+types just trimmed versions of the dateTime representation.</p>
+
+<p>Unfortunately, the dateTime/date/time datatypes all suffer from one severe
+limitation when it comes to their use for data exchange:  Schema allows the values to
+be specified either in UTC time (or with a fixed offset from UTC, equivalent to UTC)
+or without reference to any time zone. The latter case is what usually causes problems
+for data exchange. Applications always want to work either with fully-specified
+date/time values, representing a particular instant of time which can be converted at
+will into any time zone, or with date/time values without reference to time zone (such
+as a birthday). Very few applications are written to work interchangably with both
+types of values.</p>
+
+<p>In Java the standard date/time representation uses either a <code>java.util.Date</code>
+value or a <code>java.util.Calendar</code> value. The former corresponds to a
+fully-specified dateTime value in schema terms, since it is a specific millisecond in
+UTC. The latter has no schema equivalent,
+since it includes actual time zone information (rather than just an offset from GMT for
+a particular instant of time, as allowed by the schema representation). Various methods
+are used by different data binding tools to convert these two Java types to and from
+XML representations, but no method can correct the inherent differences.</p>
+
+</div>
+<div class="h3">
+<h3><a name="issues">Date/time conversions in JiBX</a></h3>
+
+<p>Because of these issues of date/time representations in schema, and the problems in matching
+the schema datatypes to Java types, JiBX supports working with both standard Java classes
+and Joda date/time classes. The Joda library provides a much richer set of representations
+for date/time values than standard Java, and the richer representations allow more ways
+of handling the conversions. This still doesn't correct for the fundamental flaws in the
+schema representation of date/times, but it at least allows you to easily control how the
+conversions are handled for your code.</p>
+
+<p>The following table gives the full range of date/time formats built into the JiBX
+handling, including both default formats (as indicated) and formats you can specify by
+name for use in your bindings:</p>
+
+<h4>Date/time Formats</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th>Type</th>
+<th>Format Label</th>
+<th>Conversion</th>
+</tr>
+<tr class="a">
+<td><code>java.util.Date</code></td>
+<td>Date.default</td>
+<td><p>Converts instances of <code>java.util.Date</code> to and from the schema
+dateTime representation (a text representation like "2000-03-21T01:33:00", with
+optional trailing fractional seconds, and difference from UTC). Since schema
+doesn't have any concept equivalent to Java time zones, this conversion always
+serializes times as UTC values (identified by a trailing "Z"). When
+deserializing times which do not include a "Z" or offset from UTC it treats the
+values as UTC. <b>Default</b></p></td>
+</tr>
+<tr class="b">
+<td><code>java.sql.Date</code></td>
+<td>SqlDate.default</td>
+<td><p>Converts instances of <code>java.sql.Date</code> to and from the schema
+date representation (a text representation like &quot;2000-03-21&quot;, with
+optional trailing time offset). Time zones and offsets are ignored by this
+conversion - any time offset is ignored when unmarshalling, and the output is
+generated without an offset or 'Z' UTC indicator when marshalling. <b>Default</b>
+</p></td>
+</tr>
+<tr class="a">
+<td><code>java.sql.Time</code></td>
+<td>SqlTime.default</td>
+<td><p>Converts instances of <code>java.sql.Time</code> to and from the schema
+time representation (a text representation like &quot;01:33:00&quot; with optional
+trailing fractional seconds and time offset). Time zones and offsets are ignored
+by this conversion - any time offset is ignored when unmarshalling, and the output
+is generated without an offset or 'Z' UTC indicator when marshalling.
+<b>Default</b></p></td>
+</tr>
+<tr class="b">
+<td><code>java.sql.Timestamp</code></td>
+<td>Timestamp.default</td>
+<td><p>Converts instances of <code>java.sql.Timestamp</code> to and from the
+schema dateTime representation, just as the <b>Date:default</b> conversion does
+for <code>java.util.Date</code> instances. The only difference is that using the
+timestamp value permits greater precision in the time value represented, down to
+the nanosecond level. <b>Default</b></p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.LocalDate</code></td>
+<td>LocalDate.default</td>
+<td><p>Converts instances of <code>org.joda.time.LocalDate</code> to and from the
+schema date representation, ignoring time zones (any time offset is ignored when
+unmarshalling, and the output is generated without an offset or 'Z' UTC indicator
+when marshalling). <b>Default</b></p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateMidnight</code></td>
+<td>DateMidnight.zoned</td>
+<td><p>Converts instances of <code>org.joda.time.DateMidnight</code> to and from the
+schema date representation, including time zone (which is part of the <code>DateMidnight</code>
+structure). The local zone is used when deserializing a schema representation with no
+time zone information.</p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateMidnight</code></td>
+<td>DateMidnight.local</td>
+<td><p>Converts instances of <code>org.joda.time.DateMidnight</code> to and from the
+schema date representation, with the local zone used for all deserialized values (even
+if the schema representation includes time zone information) and no zone specified on
+output. <b>Default</b></p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateMidnight</code></td>
+<td>DateMidnight.UTC</td>
+<td><p>Converts instances of <code>org.joda.time.DateMidnight</code> to and from the
+schema date representation, with the UTC zone used for all deserialized values (even
+if the schema representation includes time zone information) and zone always specified
+as UTC on output (even if that doesn't match the zone information set on the
+<code>org.joda.time.DateMidnight</code> value).</p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.LocalTime</code></td>
+<td>LocalTime.local</td>
+<td><p>Converts instances of <code>org.joda.time.LocalTime</code> to and from the
+schema time representation, ignoring any time zone information when deserializing from
+a schema representation and leaving off any time zone information when serializing to
+a schema representation. <b>Default</b></p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.LocalTime</code></td>
+<td>LocalTime.UTC</td>
+<td><p>Converts instances of <code>org.joda.time.LocalTime</code> to and from the
+schema time representation, ignoring any time zone information when deserializing from
+a schema representation and setting the time zone as UTC (with a 'Z' suffix) when
+serializing to a schema representation.</p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateTime</code></td>
+<td>DateTime.zoned</td>
+<td><p>Converts instances of <code>org.joda.time.DateTime</code> to and from the schema
+dateTime representation. When a schema dateTime value with time zone information
+included is deserialized, the time zone from the schema value is used for the
+constructed <code>DateTime</code> instance; if no time zone information is included,
+the local time zone is used. The actual zone set on the <code>DateTime</code> instance
+is used when serializing.</p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateTime</code></td>
+<td>DateTime.UTC</td>
+<td><p>Converts instances of <code>org.joda.time.DateTime</code> to and from the schema
+dateTime representation. The UTC time zone is used when deserializing a schema dateTime
+value with no time zone information supplied. Values are always adjusted to UTC and
+specified as UTC (using a 'Z' suffix) when serializing.</p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateTime</code></td>
+<td>DateTime.local</td>
+<td><p>Converts instances of <code>org.joda.time.DateTime</code> to and from the schema
+dateTime representation. Deserialized values always use the local time zone. When
+deserializing a schema dateTime value with time zone information included the value is
+converted to the local equivalent; if no time zone information is included in the schema
+value the local time zone is assumed. The actual zone set on the <code>DateTime</code>
+instance is used when serializing. <b>Default</b></p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateTime</code></td>
+<td>DateTime.strict-local</td>
+<td><p>Like the <b>DateTime.local</b> conversion, above, but requires time zone information
+in schema dateTime values being deserialized (throwing an exception if no time zone
+information is present).</p></td>
+</tr>
+<tr class="a">
+<td><code>org.joda.time.DateTime</code></td>
+<td>DateTime.strict-UTC</td>
+<td><p>Like the <b>DateTime.UTC</b> conversion, above, but requires time zone information
+in schema dateTime values being deserialized (throwing an exception if no time zone
+information is present).</p></td>
+</tr>
+</table>
+
+<p>The actual implementations of the conversions for standard Java date/time classes
+are in the <code>org.jibx.runtime.Utility</code> class, while those for the Joda
+date/time classes are in the <code>org.jibx.runtime.JodaConvert</code> class. You can
+use the methods in these classes to construct your own custom combinations of
+serialization and deserialization handling.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

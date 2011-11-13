@@ -1,0 +1,27 @@
+<!-- Test using abstract mappings with type-names inside collections -->
+<binding value-style="attribute" track-source="true" force-classes="true">
+  <mapping name="top" class="simple.MyClass5" post-set="unmarshalDone">
+    <collection field="childs1">
+      <structure name="b" map-as="b"/>
+    </collection>
+    <collection field="childs2">
+      <structure name="d" map-as="d"/>
+    </collection>
+    <collection field="childs3">
+      <structure name="c" map-as="c"/>
+    </collection>
+  </mapping>
+  <mapping class="simple.MyClass5a" abstract="true" type-name="b">
+    <value name="value" field="value"/>
+  </mapping>
+  <mapping class="simple.MyClass5a" abstract="true" type-name="c">
+    <value name="value" field="value"/>
+  </mapping>
+  <mapping class="simple.MyClass5d" abstract="true" type-name="d"
+    factory="simple.MyClass5.dFactory" pre-set="preset" post-set="postset"
+    pre-get="preget">
+    <value name="value" field="altvalue"/>
+    <value name="text1" field="text1"/>
+    <value name="text2" style="element" field="text2"/>
+  </mapping>
+</binding>

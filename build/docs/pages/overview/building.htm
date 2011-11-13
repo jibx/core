@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Building</title>
+</head>
+<body class="composite">
+  <h1>JiBX: Building</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">Building JiBX</a></h3>
+
+<p>To build JiBX, either from the distribution or from a CVS image, use the Ant
+<i>build.xml</i> file in the <i>/build</i> directory. JiBX is compatible with
+1.3 and 1.4 JDKs, but must be built using 1.5 or later. The default Ant target
+compiles the full JiBX code with debug information enabled, runs the full set of
+tests, and creates the actual distribution zip file. Since this default build
+includes a variety of unit tests, you must have JUnit available for use from Ant
+in order to use the default build (which can be done by adding a recent <i>junit.jar</i>
+to your Ant <i>lib</i> directory, or by adding it to the CLASSPATH environmental
+variable). The "current" target just rebuilds the jars
+(in the <i>/lib</i> directory) without running the tests, so you can use this
+target even if JUnit is not installed. The "small-jars" target does the same as
+"current", but builds the jars with debug information turned off (useful if
+the jar sizes are a concern for your project).</p>
+
+<!-- <p>The Ant build also supports a "j2me" target. This uses
+the <a href="http://www.sosnoski.com/opensrc/jenable/index.html">JEnable</a>
+tool to selectively disable portions of the JiBX source code in order to build a
+distribution that's compatible with J2ME environments. The jar files generated
+by this target (which go in the <i>/lib</i> directory of the JiBX distribution,
+just like the standard jars) all include "<i>-j2me-</i>" in their names in order
+to distinguish them from the standard JiBX jars. The "j2me" target compiles with
+debug information disabled in order to keep jar sizes to a minimum.</p> -->
+
+<p>Note that the JiBX source code repository may contain classes which are not
+actually used in the current JiBX distribution, and these classes may not even
+compile properly. The Ant build specifies which classes to include and exclude
+when compiling the project. If you use an IDE or other tool to build JiBX, you
+will need to exclude the unused source files from your project. Most modern IDEs
+will allow you to create a project based on an Ant build, and this is generally
+the best way to start out.</p>
+
+<p>The Ant build looks for <i>dom4j.jar</i> and <i>jdom.jar</i> files in the
+<i>/lib</i> directory. If these jar file are present the build will include the
+classes in the <i>jibx-extras.jar</i> that support working with these
+document models. If the jars are not found these classes will be missing from the
+generated <i>jibx-extras.jar</i>. Additionally, building the JavaDocs without these
+jars will result in some error messages. These error messages can be ignored.</p>
+
+<p>The build has been tested on JDK versions 1.3 through 1.6. JDK 1.3 does not
+include the JAXP library (used by the JiBX extras code for DOM document model
+support) in the distribution, so to build with JDK 1.3 you need a JAXP
+implementation. As a convenience, the supplied build file will look for Xerces
+jar files in the <i>/lib</i> directory and include these in the classpath if
+the jars are present. The jar files needed for this purpose are
+<i>xercesImpl.jar</i> and <i>xml-apis.jar</i>.</p>
+
+<p>To build the internal JavaDocs, use the Ant "devdoc" target. This will
+generate the full JavaDocs for all JiBX code (rather than just the user-visible
+classes included in the normal JavaDocs) to the <i>/build/docs/dev</i> directory.</p>
+
+<p>If you're building JiBX within an IDE environment, you can use the Ant
+<i>build-binding.xml</i> file in the <i>/build</i> directory to compile the
+JiBX bindings used by the binding compiler itself. You'll need to recompile
+these bindings any time classes in the <code>org.jibx.compiler.model</code>
+package are recompiled by the IDE.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

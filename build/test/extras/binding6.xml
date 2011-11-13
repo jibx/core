@@ -1,0 +1,12 @@
+<!-- Basic mapping using the DiscardElementMapper to handle an arbitrary element
+ -->
+<binding>
+  <mapping name="contact" class="extras.Contact0">
+    <value name="first-name" field="m_firstName"/>
+    <value name="last-name" field="m_lastName"/>
+    <value name="phone" field="m_phone"/>
+    <structure usage="optional" get-method="getIgnored" set-method="setIgnored"
+        marshaller="org.jibx.extras.DiscardElementMapper"
+        unmarshaller="org.jibx.extras.DiscardElementMapper"/>
+  </mapping>
+</binding>

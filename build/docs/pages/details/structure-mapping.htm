@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Structure Mapping</title>
+</head>
+<body class="composite">
+  <h1>JiBX: Structure Mapping</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">Structure Mapping</a></h3>
+      
+<p>JiBX's binding definition file provides great flexibility for
+converting between XML documents and Java object structures. Other data
+binding frameworks generally limit customization to just the names and
+the style (attribute or element) of XML representations. JiBX goes
+further by allowing <em>structure mapping</em> between XML and object
+structures.</p>
+
+<p>To see what's meant by structure mapping, consider the
+following XML fragment:</p>
+<pre><code>&lt;customer&gt;
+  &lt;name&gt;
+    &lt;first-name&gt;John&lt;/first-name&gt;
+    &lt;last-name&gt;Smith&lt;/last-name&gt;
+  &lt;/name&gt;
+  &lt;street1&gt;12345 Happy Lane&lt;/street1&gt;
+  &lt;city&gt;Plunk&lt;/city&gt;
+  &lt;state&gt;WA&lt;/state&gt;
+  &lt;zip&gt;98059&lt;/zip&gt;
+  &lt;phone&gt;888.555.1234&lt;/phone&gt;
+&lt;/customer&gt;
+</code></pre>
+
+<p>Most data binding frameworks will support mapping this fragment to
+instances of classes along the lines of:</p>
+<pre><code>  public class Customer {
+    public Name name;
+    public String street1;
+    public String city;
+    public String state;
+    public String zip;
+    public String phone;
+  }
+  
+  public class Name {
+    public String firstName;
+    public String lastName;
+  }
+</code></pre>
+
+<p>Here's a JiBX binding that handles this base case, with some color coding to
+show related items (blue for the binding of the <b>&lt;name></b> element to the
+<code>Name</code> class, green for the binding of the values within the
+<b>&lt;name></b> element to fields of the <code>Name</code> class:</p>
+
+<img src="images/direct-binding.gif" width="970" height="380" alt="Direct binding"/>
+
+<p>Most frameworks will allow you to change the names of the fields in the
+mapping - to use <code>customerName</code> instead of <code>name</code>, and
+<code>first</code> rather than <code>firstName</code>, for example. Some
+frameworks will use get/set methods rather than public fields, but the
+principle remains the same. JiBX supports both types of access, as well as
+allowing renaming. That's just the start of JiBX features, though.</p>
+
+<p>What most frameworks will <em>not</em> allow you to do is to bring
+the values within the <b>name</b> element into the the object that corresponds
+to the <b>customer</b> element. In other words, you can't map the XML to this
+class:</p>
+<pre><code>  public class Customer {
+    public String firstName;
+    public String lastName;
+    public String street1;
+    public String city;
+    public String state;
+    public String zip;
+    public String phone;
+  }
+</code></pre>
+
+<p>Nor can you map the XML to a pair of classes like these:</p>
+
+<pre><code>  public class Customer {
+    public String firstName;
+    public String lastName;
+    public Address address;
+    public String phone;
+  }
+  
+  public class Address {
+    public String street1;
+    public String city;
+    public String state;
+    public String zip;
+  }
+</code></pre>
+
+<p>JiBX <em>does</em> allow you to do this type of mapping. This means
+the structure of your objects is not tied to the structure of the XML - you
+can restructure your object classes without needing to change the XML format
+used for external data transfer. The diagram below shows a binding definition
+for the first case above:</p>
+
+<img src="images/flattened-binding.gif" width="970" height="375" alt="Flattened binding"/>
+
+<p>The only difference in this binding definition from the first example is that
+I've removed the <b>field</b> attribute from the <b>structure</b> element.
+The structure still defines an XML element name, but without the <b>field</b>
+attribute the values within that XML element are treated as properties of the
+containing object (the <code>Customer</code> class instance).</p>
+
+<p>Adding a new <b>structure</b> element to the binding definition
+handles the second structure change case, as shown in the diagram below:</p>
+
+<img src="images/split-binding.gif" width="970" height="417" alt="Split binding"/>
+
+<p>Here the added <b>structure</b> element uses a <b>field</b> attribute
+but no <b>name</b> attribute. This tells JiBX that the properties from the
+<code>Address</code> class instance referenced by the <code>address</code>
+field should be included directly as children of the <b>&lt;customer></b>
+element in the XML document.</p>
+
+<p>The flexibility provided by structure mapping allows you to decouple your
+XML data representations from your actual Java class structure. It lets you interface
+existing code to new XML representations, and also lets you preserve an existing
+XML representation while refactoring your code to better represent the use of
+data within your application. This decoupling of XML structure from code structure
+is one of the most powerful features of the JiBX framework.</p>
+
+<div><p align="center"><a href="%bindadvanced%"><b>Next: Advanced Binding Features</b></a></p></div>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

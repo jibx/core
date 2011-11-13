@@ -1,0 +1,33 @@
+<!-- This checks using required elements with unordered, along with flexible. -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass3">
+    <structure ordered="false">
+      <value name="a" field="a"/>
+      <value name="b" field="b"/>
+      <value name="c" field="c"/>
+      <value name="d" field="d"/>
+    </structure>
+    <value name="e" field="e" usage="optional" format="char.string"/>
+    <structure name="format1" field="format1" value-style="attribute" usage="optional">
+      <value name="minf" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <structure name="format2" field="format2" usage="optional"
+        ordered="false" flexible="true">
+      <value name="mini" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <collection item-type="java.lang.Integer" add-method="addInt"
+        size-method="sizeInts" load-method="getInt">
+      <value name="int"/>
+    </collection>
+  </mapping>
+</binding>

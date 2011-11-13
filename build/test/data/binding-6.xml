@@ -1,0 +1,48 @@
+<!-- Same as binding4, but with no types given for carriers and airports,
+  no add methods used on any of the collections, and the flight binding defined
+  inline under the route. Finally, this turns on source location tracking, and
+  uses a single-digit binding name. -->
+<binding name="6" forwards="false" track-source="true">
+  <format type="java.util.Date"
+    serializer="org.jibx.runtime.Utility.serializeDate"
+    deserializer="org.jibx.runtime.Utility.deserializeDate"/>
+  <mapping name="timetable" class="multiple.SplitTableBean">
+    <collection name="carriers" field="m_carriers"/>
+    <collection name="airports" field="m_airports"/>
+    <collection field="m_routes" item-type="multiple.SplitRouteBean"/>
+  </mapping>
+  <mapping name="carrier" class="multiple.CarrierBean">
+    <value name="ident" field="m_ident" ident="def"/>
+    <value name="rating" field="m_rating"/>
+    <value name="URL" field="m_url"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="airport" class="multiple.AirportBean">
+    <value name="ident" field="m_ident" ident="def"/>
+    <value name="location" field="m_location"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="route" class="multiple.SplitRouteBean">
+    <value name="from" field="m_from" ident="ref"/>
+    <value name="to" field="m_to" ident="ref"/>
+    <collection field="m_flights">
+      <structure name="flight" type="multiple.SplitFlightBean">
+        <structure field="m_identity" pre-set="preset" post-set="postComplete">
+          <value name="carrier" field="m_carrier" ident="ref"/>
+          <value name="number" field="m_number"/>
+          <value name="on-time" field="m_onTime"/>
+          <value name="start-date" field="m_startDate" usage="optional"/>
+          <value name="end-date" field="m_endDate" usage="optional"/>
+        </structure>
+        <structure field="m_times"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping name="times" class="multiple.FlightTimesBean">
+    <format type="int"
+      serializer="multiple.Utils.minuteToTime"
+      deserializer="multiple.Utils.timeToMinute"/>
+    <value name="depart" field="m_departure"/>
+    <value name="arrive" field="m_arrival"/>
+  </mapping>
+</binding>

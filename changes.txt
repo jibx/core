@@ -1,0 +1,70 @@
+Main changes from 1.2.2 to 1.2.3
+
+1. Corrected several related issues in code generation from schema for schema using substitution groups, or group reference as base for complexType extension or restriction.
+2. Corrected code generation from schema when using the xml.xsd definitions from the http://www.w3.org/XML/1998/namespace namespace.
+3. Corrected bug in schema validation which required a base='...' attribute for a simpleType restriction element (inline base type allowed as alternative).
+4. Fixed broken WSDL generation from Jibx2Wsdl, which generated empty <wsdl:message> definitions for output messages.
+5. Add support for xs:list types.
+6. Better naming algorithm for nested schema components (if only one child component, pass the outer name down to the child component).
+7. Fixed repeated-type="array" CodeGen customization.
+8. Corrected problem with using existing bindings with redundant includes with CodeGen (NPE).
+9. Changed Java 5 enum default serialization to use the name() method, rather than the toString() method.
+10. Changed Java 5 enum code generation from schema to add an xmlValue() method where needed to supply the actual text to be used in a document, rather than overriding toString().
+11. Fixed several problems with embedded schema components in CodeGen JavaDocs, including use of ref="..." attributes to components in other namespaces.
+
+Main changes from 1.2.1 to 1.2.2:
+
+1. Fixed namespace handling for concrete mappings in precompiled binding.
+2. Added option to set the generated binding name for CodeGen.
+3. Added new ExtensionDecorator for setting a base class to be extended by the generated class, and also allowing pre-get/pre-set/post-set methods to be specified (from the base class, normally).
+4. Correct a problem with <structure> being used in binding, instead of <collection>, when an <xs:any> is repeated with 'mapped' handling.
+5. Fixed problem with element definition using wrong namespace in binding when the element type is in a different namespace.
+6. Added binding-file-name, binding-per-schema, and prefix attributes for <schema> and <schemaset> customizations, to control binding generation; now uses namespace prefix from schemas by default.
+7. Added -i CodeGen command line parameter, to use pregenerated bindings and code for referenced schemas.
+8. Added -u CodeGen command line parameter, to allow generating no-namespace schemas in a namespace.
+9. Changed handling so <xs:attributeGroup> and <xs:group> get separate classes when generate-all='true'.
+10. Added labels matching global <xs:simpleType> names for matching <format>s, to support modular code generation from schema.
+11. Added <schema-type> customization to allow overrides to the default handling of predefined schema datatypes.
+12. Added Joda time conversions in org.jibx.runtime.JodaConvert class.
+13. Corrected issue with namespaces when concrete mappings from precompiled binding are used (directly, or as generic mappings).
+14. Fixed stack overflow resulting from circular schema references.
+15. Corrected issues with prefix assignment when generating bindings from schema, while also using default namespaces where appropriate.
+16. Fixed code generation using multiple schemas with the same name (but different paths).
+17. Removed error report when a schema element definition uses an abstract complexType, since this is allowed by schema.
+18. Fixed enum name generation for empty string as a schema enumeration value (to use "_" as name).
+19. Added support for circular schema includes.
+20. Fixed code generation for attribute with no type definition to use String representation (for xs:anySimpleType).
+21. Added support for schema xs:all compositor to code generation.
+22. Added inline="default/block/prefer" customization attribute for schema components, to give more control over whether components are represented inline or by a separate class.
+23. Corrected binding generated for a global element definition with simple type in schema.
+24. Changed code generation to follow JavaBean conventions with isXXX() method rather than getXXX() for a boolean value.
+25. Added support for classpath: URLs for binding include paths.
+26. Changed CodeGen to set the target package for the generated root binding to the most specific package which contains (directly, or in subpackages) all the generated classes.
+27. Fixed handling of test-method on a <structure> with no name.
+28. Added support for using existing bindings and schemas with Jibx2Wsdl.
+29. Added customizations for service method parameters and return values with Jibx2Wsdl.
+30. Fixed schema namespace handling to only use service name as part of the URI if derivation allowed by schema customizations.
+31. Fixed issue with marshaller/unmarshaller specified in precompiled binding not being found when using extension binding.
+32. Added schema definition for CodeGen customizations (docs/schemas/codegen-customizations.xsd).
+33. Corrected marshalling issues around DOM namespace references using org.jibx.extras.Dom*Mapper.
+34. Fixed problems with Windows build.
+
+Incompatible changes:
+
+1. Added pluralize()/depluralize() methods to org.jibx.schema.codegen.extend.NameConverter interface.
+2. Changed org.jibx.schema.codegen.extend.ClassDecorator finish() method to take a binding component, allowing this method to modify the generated binding.
+3. Changed org.jibx.schema.codegen.extend.CollectionMethodsDecorator to use plural form of name (as obtained from the getXXX() method) for sizeXXX() and clearXXX() methods.
+
+Main changes from 1.2 to 1.2.1:
+
+1. Handle xs:annotation child elements of xs:schema
+2. Fix some cases where element name was set on concrete mapping reference.
+3. Skip the nonamespace namespace in set needing to be defined when generating documentation (avoiding NPE).
+4. Fix handling of schema URLs (rather than file paths) passed on command line.
+5. Fix binding compiler issues in namespace handling, including detecting when the nonamespace namespace cannot be used because some other namespace has been made the default.
+6. Loosen <binding> attribute matching test for precompiled binding being included, only testing cases where compatibility is an issue.
+7. Allow for precompiled bindings to include other bindings, and only check for package on direct precompiled includes.
+8. Change to arbitrary content for both xs:documentation and xs:appinfo element.
+9. Check for absolute file path provided for schema, before assuming relative.
+10. Report an error when the type specified for a schema element is an abstract type.
+11. Add reference item for complexType restriction base type, rather than just ignoring (necessary so that schema extract handling will pick up namespace reference).

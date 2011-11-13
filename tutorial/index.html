@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Tutorial Example Code</title>
+      <style type="text/css">
+        @import url("../docs/style/tigris.css");
+        @import url("../docs/style/maven.css");
+    .dtd-comment {
+      color: #993399;
+      font-weight: bold;
+      </style>
+      <script type="text/javascript">
+        if (document.layers) {
+          document.writeln('<link rel="stylesheet" type="text/css" href="../docs/style/ns4_only.css" media="screen" /><link rel="stylesheet" type="text/css" href="../docs/style/maven_ns4_only.css" media="screen" />')
+        }
+      </script>
+      <link rel="stylesheet" type="text/css" href="../docs/style/print.css" media="print" />
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body class="composite">
+<div id="banner">
+<table border="0" cellspacing="0" cellpadding="8" width="100%">
+  <tbody>
+    <tr>
+      <td><h1>Tutorial Example Code</h1>
+      </td>
+      <td>
+      <div align="right" id="login"><a href="http://sourceforge.net">
+      <img src="http://sourceforge.net/sflogo.php?group_id=69358&amp;type=5"
+        width="210" height="62" border="0" alt="SourceForge.net Logo"></a></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="breadcrumbs">
+<table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div align="right">
+          <a href="../readme.html">Home Page</a> |
+          <a href="http://www.sourceforge.net/projects/jibx/">SourceForge Page</a> |
+          <a href="http://sourceforge.net/mail/?group_id=69358">Mailing Lists</a> |
+          <a href="http://wiki.jibx.org">Wiki</a> |
+          <a href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10410">Bugs</a> |
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">Downloads</a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="8" width="100%" id="main">
+  <tbody>
+        <tr valign="top">
+      <td>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3>Tutorial Example Code</h3>
+
+<p>This area has the full code for the examples shown in the <a
+href="../docs/tutorial/binding-tutorial.html">binding tutorial</a>. The
+subdirectories correspond to the sequence of tutorial diagrams. The source code
+has been modified from the diagrams shown in the tutorial to use a separate
+package for each example, but should otherwise match what you see in the
+diagrams. Here's the list of code examples:</p>
+
+<ul>
+<li><a href="example1"><b>A basic binding</b></a></li>
+<li><a href="example2"><b>Attributes, optional access, and more</b></a></li>
+<li><a href="example3"><b>Unordered elements</b></a></li>
+<li><a href="example4"><b>Structure mapping - flattened binding</b></a></li>
+<li><a href="example6"><b>Structure mapping - split binding</b></a></li>
+<li><a href="example7"><b>Structure mapping - ignored components</b></a></li>
+<li><a href="example8"><b>Basic collection handling</b></a></li>
+<li><a href="example9"><b>Heterogeneous collection, with factory</b></a></li>
+<li><a href="example10"><b>Collections with mappings</b></a></li>
+<li><a href="example11"><b>Working with IDs</b></a></li>
+<li><a href="example12"><b>Normal multiple mapping</b></a></li>
+<li><a href="example13"><b>Normal multiple mapping</b></a></li>
+<li><a href="example14"><b>Simple abstract mapping</b></a></li>
+<li><a href="example15"><b>Named abstract mappings</b></a></li>
+<li><a href="example16"><b>Abstract and extension mappings</b></a></li>
+<li><a href="example17"><b>Extending a concrete mapping</b></a></li>
+<li><a href="example18"><b>Namespaces</b></a></li>
+<li><a href="example19"><b>User extension method hooks</b></a></li>
+<li><a href="example20"><b>Custom value serialization</b></a></li>
+<li><a href="example21"><b>Custom marshallers and unmarshallers</b></a>
+<br/>Note that the test for this example may not operate properly on all JVMs
+because the order in which values are retrieved from a hashmap iterator is not
+consistent across JVMs. This is only a problem with the test, though, which looks for an
+exact round-tripping of the input document (including the order of child
+elements). If the test fails with an error message like "Different attributes -
+from line ... to line ..." it means that this issue occurs with the JVM you're
+using.</li>
+<li><a href="example22"><b>Controlling JiBX with front-end code</b></a></li>
+</ul>
+
+<p>The Ant <i>build.xml</i> file in this directory gives targets for compiling
+and running each example. Most don't supply any interesting output (unless
+there's an error), but if you want to experiment with code based on a particular
+example (or try out variations of the sample XML documents) the <i>build.xml</i>
+should at least get you started.</p>
+
+<h3>Disclaimer</h3>
+<p>This code gives samples of working with JiBX data binding. It may be reused
+and redistributed without restriction, but is supplied subject to the following
+disclaimer. If you do not accept the terms of the disclaimer, do not use this
+code.</p>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+      </div>
+      </div>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" cellspacing="0" cellpadding="4">
+  <tbody>
+    <tr>
+      <td> &copy; 2003-2005, Dennis M. Sosnoski (<a href="http://www.sosnoski.com">Sosnoski Software Solutions, Inc.</a>).
+      Licensed to the JiBX Project for free distribution and use. </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+</body>
+</html>

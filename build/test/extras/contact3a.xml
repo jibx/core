@@ -1,0 +1,61 @@
+<contact xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <first-name>Tom</first-name><last-name>Sawyer</last-name><phone>1-800-555-1212</phone>
+  <?xml-stylesheet type="text/xsl" href="article.xsl"?>
+  <!-- the following text is taken from my IBM developerWorks article discussing
+    data binding framework performance -->
+  <p><heading refname="h1" type="major" toc="yes">Performance tests</heading>
+  For performance tests of the data binding frameworks I generated documents 
+  containing mock airline flight timetable information. These are based
+  on the same structure I defined in the earlier article on mapped
+  data binding with Castor. Here's a sample of that structure, herein referred
+  to as the "compact" format because it uses mainly attributes for data:</p>
+  
+  <code type="section"><heading refname="code1" type="code" toc="no">Listing 1. Compact document format</heading>&lt;?xml version=&quot;1.0&quot;?&gt;
+  &lt;timetable&gt;
+      &lt;carrier ident=&quot;AR&quot; rating=&quot;9&quot;&gt;
+          &lt;URL&gt;http://www.arcticairlines.com&lt;/URL&gt;
+          &lt;name&gt;Arctic Airlines&lt;/name&gt;
+      &lt;/carrier&gt;
+      &lt;carrier ident=&quot;CA&quot; rating=&quot;7&quot;&gt;
+          &lt;URL&gt;http://www.combinedlines.com&lt;/URL&gt;
+          &lt;name&gt;Combined Airlines&lt;/name&gt;
+      &lt;/carrier&gt;
+      &lt;airport ident=&quot;SEA&quot;&gt;
+          &lt;location&gt;Seattle, WA&lt;/location&gt;
+          &lt;name&gt;Seattle-Tacoma International Airport&lt;/name&gt;
+      &lt;/airport&gt;
+      &lt;airport ident=&quot;LAX&quot;&gt;
+          &lt;location&gt;Los Angeles, CA&lt;/location&gt;
+          &lt;name&gt;Los Angeles International Airport&lt;/name&gt;
+      &lt;/airport&gt;
+      &lt;route from=&quot;SEA&quot; to=&quot;LAX&quot;&gt;
+          &lt;flight carrier=&quot;AR&quot; depart=&quot;6:23a&quot; arrive=&quot;8:42a&quot; number=&quot;426&quot;/&gt;
+          &lt;flight carrier=&quot;CA&quot; depart=&quot;8:10a&quot; arrive=&quot;10:52a&quot; number=&quot;833&quot;/&gt;
+          &lt;flight carrier=&quot;AR&quot; depart=&quot;9:00a&quot; arrive=&quot;11:36a&quot; number=&quot;433&quot;/&gt;
+      &lt;/route&gt;
+      &lt;route from=&quot;LAX&quot; to=&quot;SEA&quot;&gt;
+          &lt;flight carrier=&quot;CA&quot; depart=&quot;7:45a&quot; arrive=&quot;10:20a&quot; number=&quot;311&quot;/&gt;
+          &lt;flight carrier=&quot;AR&quot; depart=&quot;9:27a&quot; arrive=&quot;12:04p&quot; number=&quot;593&quot;/&gt;
+          &lt;flight carrier=&quot;AR&quot; depart=&quot;12:30p&quot; arrive=&quot;3:07p&quot; number=&quot;102&quot;/&gt;
+      &lt;/route&gt;
+  &lt;/timetable&gt;</code>
+  <soapenv:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+    <soapenv:Body>  
+      <ns1:handleQuery soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="urn:axis.sosnoski.com">   
+        <in0 href="#id0"/>  
+      </ns1:handleQuery>  
+      <multiRef id="id0" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns2:Query" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns2="http://seismic.sosnoski.com">   
+        <maxDateTime xsi:type="xsd:dateTime">2001-07-02T04:33:22.610Z</maxDateTime>   
+        <maxDepth xsi:type="soapenc:float" xsi:nil="true"/>   
+        <maxLatitude xsi:type="soapenc:float">152.46613</maxLatitude>   
+        <maxLongitude xsi:type="soapenc:float">78.09824</maxLongitude>   
+        <maxMagnitude xsi:type="soapenc:float" xsi:nil="true"/>   
+        <minDateTime xsi:type="xsd:dateTime">2001-05-04T02:31:00.601Z</minDateTime>   
+        <minDepth xsi:type="soapenc:float" xsi:nil="true"/>   
+        <minLatitude xsi:type="soapenc:float">-48.434654</minLatitude>   
+        <minLongitude xsi:type="soapenc:float">-91.997185</minLongitude>   
+        <minMagnitude xsi:type="soapenc:float" xsi:nil="true"/>  
+      </multiRef> 
+    </soapenv:Body>
+  </soapenv:Envelope>
+</contact>

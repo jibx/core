@@ -1,0 +1,53 @@
+<customer version="1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="false"
+    customer-id="12345" repeat-customer="true" order-count="3" discount="0.9">
+  <extended ssn="19834910834">
+    <name>
+      <first-name>John</first-name>
+      <last-name>Smith</last-name>
+    </name>
+  </extended>
+  <street1>12345 Happy Lane</street1>
+  <city>Plunk</city>
+  <state>WA</state>
+  <zip>98059</zip>
+  <phone>888.555.1234</phone>
+  <subversion>A</subversion>
+  <customer5b>
+    <name>
+      <first-name>Mary</first-name>
+      <last-name>Smith</last-name>
+    </name>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+    <state>WA</state>
+    <zip>98059</zip>
+    <phone>888.555.4321</phone>
+  </customer5b>
+  <customer5b>
+    <name>
+      <first-name>Mary</first-name>
+      <last-name>Lamb</last-name>
+    </name>
+    <street1>333 Fleece St.</street1>
+    <city>Highlant</city>
+    <state>WA</state>
+    <zip>98088</zip>
+    <phone>888.555.8321</phone>
+  </customer5b>
+  <customer5c version="1.0" customer-id="12346">
+    <extended ssn="9813414090">
+      <name>
+        <first-name>Larry</first-name>
+        <last-name>Adams</last-name>
+      </name>
+    </extended>
+    <street1>12345 Plunket Lane</street1>
+    <city>Happy</city>
+    <state>WA</state>
+    <zip>98095</zip>
+    <phone>888.555.9999</phone>
+    <subversion>A</subversion>
+    <quality>5</quality>
+  </customer5c>
+</customer>

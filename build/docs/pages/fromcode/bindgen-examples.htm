@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: BindGen Examples</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>BindGen example code</h3>
+
+<p>The <i>/examples/bindgen</i> directory of the JiBX distribution contains some
+samples for demonstrating the use of BindGen. The samples use two versions of the
+same code, the first (in the package <code>org.jibx.starter1</code>) using Java 5
+typed collections and an <code>enum</code> type, and the second (in the package
+<code>org.jibx.starter2</code>) using untyped collections and a custom type-safe
+enumeration type.</p>
+
+<p>Both versions of the code model the data which would be used for order processing
+by an online store. Here's a sample from the Java 5 version, with only a few of the
+classes shown and most of the get/set access methods left out:</p>
+
+<div id="source"><pre>/**
+ * Order information.
+ */
+public class Order
+{
+    private long orderNumber;
+    
+    private Customer customer;
+    
+    /** Billing address information. */
+    private Address billTo;
+    
+    private Shipping shipping;
+    
+    /** Shipping address information. If missing, the billing address is also used as the
+     shipping address. */
+    private Address shipTo;
+    
+    private List items;
+    
+    /** Date order was placed with server. */
+    private Date orderDate;
+    
+    /** Date order was shipped. This will be &lt;code>null&lt;/code> if the order has not
+     yet shipped. */
+    private Date shipDate;
+
+    public long getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(long orderId) {
+        this.orderNumber = orderId;
+    }
+    ...
+}
+
+/**
+ * Address information.
+ */
+public class Address
+{
+    /** First line of street information (required). */
+    private String street1;
+    
+    /** Second line of street information (optional). */
+    private String street2;
+    
+    private String city;
+    
+    /** State abbreviation (required for the U.S. and Canada, optional otherwise). */
+    private String state;
+    
+    /** Postal code (required for the U.S. and Canada, optional otherwise). */
+    private String postCode;
+    
+    /** Country name (optional, U.S. assumed if not supplied). */
+    private String country;
+
+    public String getStreet1() {
+        return street1;
+    }
+
+    public void setStreet1(String street1) {
+        this.street1 = street1;
+    }
+    ...
+}
+
+/**
+ * Supported shipment methods. The "INTERNATIONAL" shipment methods can only be used for
+ * orders with shipping addresses outside the U.S., and one of these methods is required
+ * in this case.
+ */
+public enum Shipping
+{
+    STANDARD_MAIL, PRIORITY_MAIL, INTERNATIONAL_MAIL, DOMESTIC_EXPRESS, INTERNATIONAL_EXPRESS
+}
+</pre></div>
+
+      </div>
+      <div class="h3">
+      <h3>Generation examples</h3>
+
+<p>The Ant <i>build.xml</i> file in the <i>/examples/bindgen</i> defines build targets for
+four different ways of generating a binding and schema from the example code. These are
+discussed in more detail in the other pages of this section:</p>
+
+<ul>
+<li><a href="%bgexample1%"><b>'bindgen' target</b></a> - default generation</li>
+<li><a href="%bgexample2%"><b>'custgen1' target</b></a> - controlling value usage
+and required status</li>
+<li><a href="%bgexample3%"><b>'custgen2' target</b></a> - controlling namespaces
+and element vs attribute</li>
+<li><a href="%bgexample4%"><b>'custgen3' target</b></a> - property vs field access,
+customizing individual values (including non-Java 5 usage)</li>
+</ul>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

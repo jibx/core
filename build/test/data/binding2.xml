@@ -1,0 +1,13 @@
+<!-- This makes everything into elements, and also adds wrapper elements around
+  the collections and around groupings of values in the flight information. Also
+  test basic include handling  -->
+<binding forwards="false">
+  <include path="binding2-shared.xml"/>
+  <mapping name="timetable" class="multiple.TimeTableBean">
+    <collection name="carriers" field="m_carriers"
+      item-type="multiple.CarrierBean"/>
+    <collection name="airports" field="m_airports"
+      item-type="multiple.AirportBean"/>
+    <collection field="m_routes" item-type="multiple.RouteBean"/>
+  </mapping>
+</binding>

@@ -1,0 +1,11 @@
+<!-- Using the hashmap custom marshaller/unmarshaller for values of classes
+ corresponding to simple schema types, with a namespace on the custom mapping -->
+<binding>
+  <namespace prefix="mns" uri="urn:myNs"/>
+  <mapping class="java.util.Map" name="map" ns="urn:myNs"
+      marshaller="org.jibx.extras.HashMapperStringToSchemaType"
+      unmarshaller="org.jibx.extras.HashMapperStringToSchemaType"/>
+  <mapping name="values" class="extras.ValueMap" post-set="postSet">
+    <structure field="m_map"/>
+  </mapping>
+</binding>

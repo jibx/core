@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+
+Ant build file for JiBX data binding code to schema starter example.
+
+=================================================================== -->
+
+<project basedir="." default="help">
+  
+  <!-- The following block is intended to set the jibx-home location. It first
+   checks the relative location of the JiBX libraries when this starter example
+   is run directly from the JiBX distribution, then (if that fails), looks for
+   an environmental variable JIBX_HOME with the installation path. If you prefer
+   to just set the path directly in this file, uncomment the following line and
+   set the value to the appropriate directory, then delete the rest of the Ant
+   commands down to the end of this block. -->
+<!--  <property name="jibx-home" value="jibx-home-directory-path"/> -->
+  <available file="../../lib/jibx-bind.jar" property="jibx-home" value="../.."/>
+  <property environment="env"/>
+  <condition property="jibx-home" value="${env.JIBX_HOME}">
+    <and>
+      <not>
+        <isset property="jibx-home"/>
+      </not>
+      <available file="${env.JIBX_HOME}/lib"/>
+    </and>
+  </condition>
+  <!-- End of jibx-home location setting block. -->
+  
+  <!-- make sure required jars are present -->
+  <condition property="runtime-jars-found">
+    <available file="${jibx-home}/lib/jibx-run.jar"/>
+  </condition>
+  <condition property="binding-jars-found">
+    <and>
+      <available file="${jibx-home}/lib/bcel.jar"/>
+      <available file="${jibx-home}/lib/jibx-bind.jar"/>
+      <available file="${jibx-home}/lib/jibx-run.jar"/>
+    </and>
+  </condition>
+  <available property="extras-jar-found" file="${jibx-home}/lib/jibx-extras.jar"/>
+  
+  <!-- set classpath for compiling and running application with JiBX -->
+  <path id="classpath">
+    <fileset dir="${jibx-home}/lib" includes="*.jar"/>
+    <pathelement location="bin"/>
+  </path>
+  
+  <!-- make sure runtime jars are present -->
+  <target name="check-runtime">
+    <fail unless="jibx-home">JiBX home directory not found - define JIBX_HOME system property or set path directly in build.xml file.</fail>
+    <fail unless="runtime-jars-found">Required JiBX runtime jar jibx-run.jar was not found in JiBX home lib directory (${jibx-home}/lib)</fail>
+  </target>
+  
+  <!-- make sure extras jars are present -->
+  <target name="check-extras" depends="check-runtime">
+    <fail unless="extras-jar-found">Required JiBX extras jar jibx-extras.jar was not found in JiBX home lib directory (${jibx-home}/lib)</fail>
+  </target>
+  
+  <!-- make sure binding jars are present -->
+  <target name="check-binding" depends="check-runtime">
+    <fail unless="binding-jars-found">Required JiBX binding jar jibx-bind.jar or bcel.jar was not found in JiBX home lib directory (${jibx-home}/lib)</fail>
+  </target>
+  
+  <!-- clean compiled class files and output file -->
+  <target name="clean">
+    <delete quiet="true" dir="${basedir}/bin"/>
+    <delete quiet="true" file="${basedir}/binding.xml"/>
+    <delete quiet="true">
+      <fileset dir="${basedir}" includes="out*.xml"/>
+      <fileset dir="${basedir}" includes="*.xsd"/>
+    </delete>
+  </target>
+  
+  <!-- compile the classes -->
+  <target name="compile" depends="clean,check-runtime">
+  
+    <echo message="Compiling Java source code"/>
+    <delete quiet="true" dir="${basedir}/bin"/>
+    <mkdir dir="${basedir}/bin"/>
+    <javac srcdir="${basedir}/src" destdir="${basedir}/bin" debug="on">
+      <classpath refid="classpath"/>
+    </javac>
+    
+  </target>
+  
+  <!-- generate default binding and schema -->
+  <target name="bindgen">
+  
+    <echo message="Running BindGen tool"/>
+    <java classpathref="classpath" fork="true" failonerror="true"
+        classname="org.jibx.binding.generator.BindGen">
+      <arg value="-s"/>
+      <arg value="${basedir}/src"/>
+      <arg value="org.jibx.starter1.Order"/>
+    </java>
+    
+  </target>
+  
+  <!-- generate custom binding and schema -->
+  <target name="custgen">
+  
+    <echo message="Running BindGen tool"/>
+    <java classpathref="classpath" fork="true" failonerror="true"
+        classname="org.jibx.binding.generator.BindGen">
+      <arg value="-c"/>
+      <arg value="${basedir}/custom${number}.xml"/>
+      <arg value="-s"/>
+      <arg value="src"/>
+      <arg value="${package}.Order"/>
+    </java>
+    
+  </target>
+  
+  <target name="custgen1" depends="check-runtime">
+    <antcall target="custgen">
+      <param name="number" value="1"/>
+      <param name="package" value="org.jibx.starter1"/>
+    </antcall>
+  </target>
+  
+  <target name="custgen2" depends="check-runtime">
+    <antcall target="custgen">
+      <param name="number" value="2"/>
+      <param name="package" value="org.jibx.starter1"/>
+    </antcall>
+  </target>
+  
+  <target name="custgen3" depends="check-runtime">
+    <antcall target="custgen">
+      <param name="number" value="3"/>
+      <param name="package" value="org.jibx.starter2"/>
+    </antcall>
+  </target>
+  
+  <!-- bind as a separate step -->
+  <target name="bind" depends="check-binding">
+    
+    <echo message="Running JiBX binding compiler"/>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${jibx-home}/lib" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind binding="${basedir}/binding.xml">
+      <classpath refid="classpath"/>
+    </bind>
+    
+  </target>
+  
+  <!-- run the included test program to read and then write to separate file -->
+  <target name="run" depends="check-runtime">
+    <echo message="Running the sample application..."/>
+    <java classname="${package}.Test"
+        fork="true" failonerror="true">
+      <classpath refid="classpath" />
+      <arg value="${basedir}/data${number}.xml"/>
+      <arg value="${basedir}/out${number}.xml"/>
+    </java>
+    <echo message="Generated output document out${number}.xml"/>
+  </target>
+  
+  <target name="run-base">
+    <antcall target="run">
+      <param name="number" value="1"/>
+      <param name="package" value="org.jibx.starter1"/>
+    </antcall>
+  </target>
+  
+  <target name="run-alt">
+    <antcall target="run">
+      <param name="number" value="2"/>
+      <param name="package" value="org.jibx.starter1"/>
+    </antcall>
+  </target>
+  
+  <target name="run-alt1">
+    <antcall target="run">
+      <param name="number" value="2"/>
+      <param name="package" value="org.jibx.starter2"/>
+    </antcall>
+  </target>
+  
+  <!-- compile, generate default, compile binding, run test -->
+  <target name="full" depends="compile,bindgen,bind,run-base"/>
+  
+  <!-- compile, generate using first customizations, compile binding, run test -->
+  <target name="custom1" depends="compile,custgen1,bind,run-base"/>
+  
+  <!-- compile, generate using second customizations, compile binding, run test -->
+  <target name="custom2" depends="compile,custgen2,bind,run-alt"/>
+  
+  <!-- compile, generate using first customizations, compile binding, run test -->
+  <target name="custom3" depends="compile,custgen3,bind,run-alt1"/>
+  
+  <!-- show list of targets -->
+  <target name="help">
+    <echo message="Targets are:"/>
+    <echo/>
+    <echo message="clean         delete all class files and generated code"/>
+    <echo message="compile       compile class files"/>
+    <echo message="bindgen       generate default binding and schema"/>
+    <echo message="custgen1      generate binding and schema using custom1.xml"/>
+    <echo message="custgen2      generate binding and schema using custom2.xml"/>
+    <echo message="custgen3      generate binding and schema using custom3.xml"/>
+    <echo message="bind          compile JiBX bindings"/>
+    <echo message="run-base      run test application with data1.xml as input"/>
+    <echo message="run-alt       run test application with data2.xml as input"/>
+    <echo message="run-alt1      run alternative test application with data2.xml"/>
+    <echo message="full          compile, generate using defaults, bind, and test"/>
+    <echo message="custom1       compile, generate using custom1.xml, bind, and test"/>
+    <echo message="custom2       compile, generate using custom2.xml, bind, and test"/>
+    <echo message="custom3       compile, generate using custom3.xml, bind, and test"/>
+  </target>
+
+</project>

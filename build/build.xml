@@ -1,0 +1,1420 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+
+Ant build file for JiBX Java data binding to XML
+
+This is a build file for use with the Ant build tool.  See
+http://jakarta.apache.org/ant/index.html for more info.  This build.xml
+file has been tested with ant version 1.6.1.
+
+===================================================================+ -->
+
+<project name="jibx" default="distrib" basedir="..">
+
+  <!-- The directories -->
+  <property name="root" value="${basedir}"/>
+  <property name="lib" value="${basedir}/lib"/>
+  <property name="build" value="${basedir}/build"/>
+  <property name="src" value="${build}/src"/>
+  <property name="extrassrc" value="${build}/extras"/>
+  <property name="rundest" value="${build}/classes/run"/>
+  <property name="extrasdest" value="${build}/classes/extras"/>
+  <property name="binddest" value="${build}/classes/bind"/>
+  <property name="schemadest" value="${build}/classes/schema"/>
+  <property name="toolsdest" value="${build}/classes/tools"/>
+  <property name="testdest" value="${build}/classes/test"/>
+  <property name="testdata" value="${build}/test/data"/>
+  <property name="testsrc" value="${build}/test"/>
+  <property name="simpledata" value="${build}/test/simple"/>
+  <property name="java5data" value="${build}/test/java5"/>
+  <property name="extrasdata" value="${build}/test/extras"/>
+  <property name="userdocs" value="${basedir}/docs/api"/>
+  <property name="devdocs" value="${build}/api"/>
+  <property name="binddocs" value="${basedir}/docs"/>
+  <property name="tutorial" value="${basedir}/tutorial"/>
+  <property name="target" value="1.3"/>
+  <property name="source" value="1.3"/>
+
+  <!-- Other definitions -->
+  <property name="project" value="JiBX Java data binding to XML"/>
+  <property name="projname" value="jibx"/>
+  <property name="version" value="1.2.3-SNAPSHOT"/>
+  <property name="distribname" value="jibx_1_2_3_SNAPSHOT"/>
+  <property name="packages" value="org.jibx"/>
+  <property environment="env"/>
+  <condition property="skip21">
+    <not>
+      <equals arg1="${env.FORCE21}" arg2="true"/>
+    </not>
+  </condition>
+  <condition property="java5">
+    <or>
+      <equals arg1="${ant.java.version}" arg2="1.5"/>
+      <equals arg1="${ant.java.version}" arg2="1.6"/>
+      <equals arg1="${ant.java.version}" arg2="1.7"/>
+    </or>
+  </condition>
+
+  <!-- Common classpaths -->
+  <path id="support-classpath">
+    <fileset dir="${lib}" includes="*.jar" excludes="asm*.jar,org.eclipse.*.jar,qdox*.jar,jibx*.jar"/>
+  </path>
+  
+  <!-- Optional components -->
+  <available property="dom4j" file="${lib}/dom4j.jar"/>
+  <available property="jdom" file="${lib}/jdom.jar"/>
+
+  <!-- Set options for release build -->
+  <target name="setrelease">
+    <property name="optimize" value="on"/>
+    <property name="enable-debug" value="off"/>
+  </target>
+  
+  <!-- Set options for debug build -->
+  <target name="setdebug">
+    <property name="optimize" value="off"/>
+    <property name="enable-debug" value="on"/>
+  </target>
+  
+  <!-- Set jar names for normal build -->
+  <target name="basenames">
+    <property name="bindname" value="jibx-bind"/>
+    <property name="runname" value="jibx-run"/>
+    <property name="extrasname" value="jibx-extras"/>
+    <property name="schemaname" value="jibx-schema"/>
+    <property name="toolsname" value="jibx-tools"/>
+  </target>
+  
+  <!-- Set jar names for J2ME build -->
+  <target name="j2menames">
+    <property name="bindname" value="jibx-j2me-bind"/>
+    <property name="runname" value="jibx-j2me-run"/>
+    <property name="extrasname" value="jibx-j2me-extras"/>
+    <property name="j2me-build" value=""/>
+  </target>
+  
+  <!-- Modify code for J2ME build -->
+  <target name="enablej2me" depends="j2menames">
+    <java classname="JEnable" classpath="${build}/jenable">
+      <arg value="-e"/>
+      <arg value="j2me"/>
+      <arg value="-p"/>
+      <arg value="${build}/src/**/*"/>
+      <arg value="${build}/extras/**/*"/>
+      <arg value="${build}/test/**/*"/>
+    </java>
+  </target>
+  
+  <!-- Set tests classpath (need to be done after jars are built) -->
+  <target name="set-tests-classpath">
+    <path id="tests-classpath">
+      <pathelement location="${testdest}"/>
+      <fileset dir="${lib}" includes="*.jar" excludes="jibx*.jar"/>
+      <fileset dir="${lib}"
+          includes="${bindname}.jar,${runname}.jar,${extrasname}.jar"/>
+    </path>
+  </target>
+  
+  <!-- Modify code for standard build -->
+  <target name="disablej2me" depends="basenames">
+    <java classname="JEnable" classpath="${build}/jenable">
+      <arg value="-d"/>
+      <arg value="j2me"/>
+      <arg value="-p"/>
+      <arg value="${build}/src/**/*"/>
+      <arg value="${build}/extras/**/*"/>
+      <arg value="${build}/test/**/*"/>
+    </java>
+  </target>
+  
+  <!-- Check JDK version -->
+  <target name="check-jdk">
+    <fail unless="java5">JDK 1.5 or later is required for building JiBX</fail>
+  </target>
+
+  <!-- Compile the runtime code -->
+  <target name="compile-run" depends="check-jdk">
+    <delete quiet="true" dir="${rundest}"/>
+    <mkdir dir="${rundest}"/>
+    <tempfile property="temp.file"/>
+    <copy file="${src}/org/jibx/runtime/IBindingFactory.java"
+      tofile="${temp.file}" preservelastmodified="true"/>
+    <replace file="${src}/org/jibx/runtime/IBindingFactory.java"
+      token="@distrib@" value="${distribname}"/>
+    <javac srcdir="${src}"
+      destdir="${rundest}"
+      target="${target}"
+      includes="org/jibx/runtime/**/*.java"
+      optimize="${optimize}"
+      debug="${enable-debug}"
+      source="${source}"
+      sourcepath=""
+      deprecation="on">
+      <classpath refid="support-classpath"/>
+    </javac>
+    <move file="${temp.file}" preservelastmodified="true"
+      tofile="${src}/org/jibx/runtime/IBindingFactory.java"/>
+  </target>
+
+  <!-- Compile the extras code -->
+  <target name="compile-extras" depends="compile-run">
+    <delete quiet="true" dir="${extrasdest}"/>
+    <mkdir dir="${extrasdest}"/>
+    <javac srcdir="${extrassrc}"
+      destdir="${extrasdest}"
+      target="${target}"
+      includes="org/jibx/extras/**/*.java"
+      optimize="${optimize}"
+      debug="${enable-debug}"
+      source="${source}"
+      sourcepath=""
+      deprecation="on">
+      <classpath>
+        <pathelement path="${rundest}"/>
+        <path refid="support-classpath"/>
+      </classpath>
+      <exclude name="**/org/jibx/extras/Dom4J*.java" unless="dom4j"/>
+      <exclude name="**/org/jibx/extras/JDOM*.java" unless="jdom"/>
+    </javac>
+  </target>
+  
+  <!-- Compile the binding code -->
+  <target name="compile-bind" depends="compile-run">
+    <delete quiet="true" dir="${binddest}"/>
+    <mkdir dir="${binddest}"/>
+    <tempfile property="temp.file"/>
+    <copy file="${src}/org/jibx/binding/def/BindingDefinition.java"
+      tofile="${temp.file}" preservelastmodified="true"/>
+    <replace file="${src}/org/jibx/binding/def/BindingDefinition.java"
+      token="@distrib@" value="${distribname}"/>
+    <javac srcdir="${src}"
+      destdir="${binddest}"
+      target="${target}"
+      includes="org/jibx/binding/**/*.java,org/jibx/util/**/*.java"
+      excludes="org/jibx/binding/generator/**/*.java,org/jibx/binding/schema*/**/*.java,org/jibx/custom/**/*.java"
+      optimize="${optimize}"
+      debug="${enable-debug}"
+      source="${source}"
+      sourcepath=""
+      deprecation="on">
+      <classpath>
+        <pathelement path="${rundest}"/>
+        <path refid="support-classpath"/>
+      </classpath>
+    </javac>
+    <java classname="org.jibx.binding.Compile" fork="yes" failonerror="true">
+      <!-- This command line argument should only be used when binding JiBX.
+        It skips the step of validating the binding using the binding definition
+        model (because the model itself uses JiBX binding, which can create
+        bootstrapping problems in development. -->
+      <classpath>
+        <pathelement path="${rundest}"/>
+        <pathelement path="${binddest}"/>
+        <path refid="support-classpath"/>
+      </classpath>
+      <arg value="-s"/>
+      <arg value="${src}/binding-normal.xml"/>
+      <arg value="${src}/binding-precomp.xml"/>
+    </java> 
+    <move file="${temp.file}" preservelastmodified="true"
+      tofile="${src}/org/jibx/binding/def/BindingDefinition.java"/>
+  </target>
+  
+  <!-- Compile the schema code -->
+  <target name="compile-schema" depends="jar-run,jar-bind,jar-extras">
+    <delete quiet="true" dir="${schemadest}"/>
+    <mkdir dir="${schemadest}"/>
+    <javac srcdir="${src}"
+      destdir="${schemadest}"
+      target="${target}"
+      includes="org/jibx/schema/**/*.java"
+      excludes="org/jibx/schema/codegen/**/*.java,org/jibx/schema/generator/**/*.java"
+      optimize="${optimize}"
+      debug="${enable-debug}"
+      source="${source}"
+      sourcepath=""
+      deprecation="on">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar" excludes="asm*.jar,org.eclipse.*.jar,qdox*.jar,${schemaname}.jar,${toolsname}.jar"/>
+      </classpath>
+    </javac>
+    <java classname="org.jibx.binding.Compile" fork="yes" failonerror="true">
+      <classpath>
+        <pathelement path="${schemadest}"/>
+        <fileset dir="${lib}" includes="*.jar" excludes="asm*.jar,org.eclipse.*.jar,qdox*.jar,${schemaname}.jar,${toolsname}.jar"/>
+      </classpath>
+      <arg value="${src}/schema-noprefix-binding.xml"/>
+      <arg value="${src}/schema-xsprefix-binding.xml"/>
+    </java>
+  </target>
+  
+  <!-- Compile the tools code -->
+  <target name="compile-tools" depends="jar-schema">
+    <delete quiet="true" dir="${toolsdest}"/>
+    <mkdir dir="${toolsdest}"/>
+    <javac srcdir="${src}"
+      destdir="${toolsdest}"
+      target="${target}"
+      includes="org/jibx/schema/codegen/**/*.java,org/jibx/schema/generator/**/*.java,org/jibx/binding/generator/**/*.java,org/jibx/custom/**/*.java,org/jibx/ws/wsdl/**/*.java"
+      optimize="${optimize}"
+      debug="${enable-debug}"
+      source="${source}"
+      sourcepath=""
+      deprecation="on">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar" excludes="asm*.jar,${toolsname}.jar"/>
+      </classpath>
+    </javac>
+    <java classname="org.jibx.binding.Compile" fork="yes" failonerror="true">
+      <classpath>
+        <pathelement path="${toolsdest}"/>
+        <fileset dir="${lib}" includes="*.jar" excludes="asm*.jar,${toolsname}.jar"/>
+      </classpath>
+      <arg value="${src}/class-customs-binding.xml"/>
+      <arg value="${src}/schema-extract-binding.xml"/>
+      <arg value="${src}/xsdcodegen-customs-binding.xml"/>
+      <arg value="${src}/wsdl-binding.xml"/>
+      <arg value="${src}/wsdlgen-customs-binding.xml"/>
+    </java>
+  </target>
+
+  <!-- Clean files generated by the tests. -->
+  <target name="clean-tests">
+    <delete quiet="true" dir="${testdest}"/>
+    <mkdir dir="${testdest}"/>
+  </target>
+
+  <!-- Compile and prepare the test code. -->
+  <target name="prepare-tests">
+    
+    <!-- Compile the test code and copy resources. -->
+    <echo message="Compiling the test code"/>
+    <javac srcdir="${testsrc}"
+      destdir="${testdest}"
+      target="${target}"
+      excludes="extras/Dom4J*.java,extras/JDOM*.java,java5/**/*,org/jibx/binding/generator/**/*.java,org/jibx/ws/**/*.java"
+      optimize="off"
+      debug="on"
+      source="${source}"
+      deprecation="on">
+      <classpath>
+        <fileset dir="${lib}" includes="${runname}.jar,${extrasname}.jar,${bindname}.jar,${schemaname}.jar,${toolsname}.jar,asm*.jar,joda*.jar,qdox*.jar,log4j*.jar,org.eclipse.*.jar,junit*.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${testdest}">
+      <fileset dir="${testsrc}" includes="**/*.xml,**/*.txt"/>
+    </copy>
+  </target>
+  
+  <!-- Run the full set of junit tests. -->
+  <target name="junit-tests">
+    <echo message="Beginning basic jUnit tests"/>
+    <junit haltonfailure="true">
+      <classpath>
+        <fileset dir="${lib}" includes="${runname}.jar,${extrasname}.jar,${bindname}.jar,${schemaname}.jar,${toolsname}.jar,asm*.jar,joda*.jar,qdox*.jar,log4j*.jar,org.eclipse.*.jar,junit*.jar"/>
+        <path location="${testdest}"/>
+      </classpath>
+      <formatter type="brief" usefile="false"/>
+      <batchtest fork="yes" todir="${testdest}">
+        <fileset dir="${testdest}">
+          <include name="**/*Suite.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- Test multiple bindings to same classes (flight timetable tests). -->
+  <target name="run-multiple-tests">
+    
+    <!-- Add all the bindings used in multiple binding tests (twice on some, to
+      check double-bind handling). -->
+    <echo message="Beginning multiple binding compiler run"/>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind>
+      <classpathset dir="${testdest}"/>
+      <bindingfileset dir="${testdata}">
+        <include name="binding0.xml"/>
+        <include name="binding1.xml"/>
+        <include name="binding2.xml"/>
+      </bindingfileset>
+    </bind>
+    <bind load="true">
+      <classpathset dir="${testdest}"/>
+      <bindingfileset dir="${testdata}">
+        <include name="binding0.xml"/>
+        <include name="binding1.xml"/>
+        <include name="binding2.xml"/>
+        <include name="binding2a.xml"/>
+        <include name="binding3.xml"/>
+<!--        <include name="binding3a.xml"/> -->
+        <include name="binding4.xml"/>
+        <include name="binding-5.xml"/>
+        <include name="binding5a.xml"/>
+        <include name="binding5b.xml"/>
+        <include name="binding5c.xml"/>
+        <include name="binding5d.xml"/>
+        <include name="binding-6.xml"/>
+      </bindingfileset>
+    </bind>
+    
+    <!-- Run the actual multiple binding tests. -->
+    <echo message="Beginning multiple binding test run"/>
+    <java classname="org.jibx.match.TestMultiple" fork="yes" dir="${testdata}"
+        failonerror="true">
+      <classpath>
+        <pathelement path="${testdest}"/>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+      
+      <!-- This is the full set of crossbar tests with most combinations included -->
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding0"/>
+      <arg value="timetable0.xml"/>
+      <arg value="binding0"/>
+      <arg value="timetable0.xml"/>
+      
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding0"/>
+      <arg value="timetable0.xml"/>
+      <arg value="binding1"/>
+      <arg value="timetable1.xml"/>
+      
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding0"/>
+      <arg value="timetable0.xml"/>
+      <arg value="binding2"/>
+      <arg value="timetable2.xml"/>
+      
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding1"/>
+      <arg value="timetable1.xml"/>
+      <arg value="binding0"/>
+      <arg value="timetable0.xml"/>
+      
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding1"/>
+      <arg value="timetable1.xml"/>
+      <arg value="binding2"/>
+      <arg value="timetable2.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3"/>
+      <arg value="timetable2.xml"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      
+<!--      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      <arg value="binding3a"/>
+      <arg value="splittable3a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3a"/>
+      <arg value="splittable3a.xml"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>  -->
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      <arg value="binding4"/>
+      <arg value="splittable4.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      <arg value="binding5a"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding4"/>
+      <arg value="splittable4.xml"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding4"/>
+      <arg value="splittable4.xml"/>
+      <arg value="binding4"/>
+      <arg value="splittable4.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding4"/>
+      <arg value="splittable4.xml"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5.xml"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding5a"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding5a"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding4"/>
+      <arg value="splittable4.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding_5"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding3"/>
+      <arg value="splittable3.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding5a"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding5a"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding5b"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding5b"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding5c"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding5c"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="binding5d"/>
+      <arg value="splittable5a.xml"/>
+      <arg value="binding5d"/>
+      <arg value="splittable5a.xml"/>
+      
+      <arg value="multiple.SplitTableBean"/>
+      <arg value="6"/>
+      <arg value="splittable4.xml"/>
+      <arg value="6"/>
+      <arg value="splittable4.xml"/>
+      
+      <!-- Handle simple tests for variations of standard run -->
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding2"/>
+      <arg value="timetable2.xml"/>
+      <arg value="binding2a"/>
+      <arg value="timetable2a.xml"/>
+      
+      <arg value="multiple.TimeTableBean"/>
+      <arg value="binding2a"/>
+      <arg value="timetable2a.xml"/>
+      <arg value="binding2"/>
+      <arg value="timetable2.xml"/>
+    </java>
+  </target>
+
+  <!-- Test full set of conditions in single-binding test library. -->
+  <target name="run-single-tests">
+    
+    <!-- Run single binding tests directly. -->
+    <echo message="Checking asymmetric bindings --"/>
+    <echo message="Will generate warnings for no way to load prior value"/>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind load="true">
+      <classpath>
+        <pathelement path="${testdest}"/>
+        <pathelement location="${lib}/${runname}.jar"/>
+      </classpath>
+      <bindingfileset dir="${simpledata}">
+        <include name="binding3d.xml"/>
+        <include name="binding0.xml"/>
+        <include name="binding0a.xml"/>
+        <include name="binding6b.xml"/>
+        <include name="mybinding2.xml"/>
+        <include name="mybinding2a.xml"/>
+      </bindingfileset>
+    </bind>
+    <java classname="org.jibx.match.TestMultiple" fork="yes" dir="${simpledata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg value="simple.Customer0"/>
+      <arg value="binding0a"/>
+      <arg value="simple0a.xml"/>
+      <arg value="binding0"/>
+      <arg value="simple.xml"/>
+    </java>
+    <java classname="org.jibx.match.TestMultipleStAX" fork="yes" dir="${simpledata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg value="simple.Customer0"/>
+      <arg value="binding0a"/>
+      <arg value="simple0a.xml"/>
+      <arg value="binding0"/>
+      <arg value="simple.xml"/>
+    </java>
+    <echo message="Beginning single bind on load test run --"/>
+    <echo message="Will generate warnings for deprecated label/using and no object"/>
+    <java classname="org.jibx.match.TestLoader" fork="yes" dir="${simpledata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="simple/binding0.xml simple.Customer0 simple.xml"/>
+      <arg line="simple/binding0b.xml simple.Customer0 simple.xml"/>
+      <arg line="simple/binding0b.xml simple.Customer0 simple0c.xml"/>
+      <arg line="simple/binding0c.xml simple.Customer0 simple0b.xml"/>
+      <arg line="simple/binding0d.xml simple.Customer0 simple0c.xml"/>
+      <arg line="simple/binding0d.xml simple.Customer0 simple0c.xml"/>
+      <arg line="simple/binding1.xml simple.Customer1 simple.xml"/>
+      <arg line="simple/binding1a.xml simple.Customer1 simple.xml"/>
+      <arg line="simple/binding1a.xml simple.Customer1 simple1a.xml"/>
+      <arg line="simple/binding1a.xml simple.Customer1 simple1b.xml"/>
+      <arg line="simple/binding1b.xml simple.Customer1 simple1c.xml"/>
+      <arg line="simple/binding2.xml simple.Customer2 simple2.xml"/>
+      <arg line="simple/binding2.xml simple.Customer2 simple2a.xml"/>
+      <arg line="simple/binding2.xml simple.Customer2 simple2b.xml"/>
+      <arg line="simple/binding2a.xml simple.Customer2 simple2b.xml"/>
+      <arg line="simple/binding2a.xml simple.Customer2 simple2c.xml"/>
+      <arg line="simple/binding2c.xml simple.Customer2 simple2b.xml"/>
+      <arg line="simple/binding0.xml simple.Customer0 simple1.xml"/>
+      <arg line="simple/binding0.xml simple.Customer0 simple2.xml"/>
+      <arg line="simple/binding3.xml simple.Customer3 simple3.xml"/>
+      <arg line="simple/binding3a.xml simple.Customer3 simple3.xml"/>
+      <arg line="simple/binding3b.xml simple.Customer3 simple3b.xml"/>
+      <arg line="simple/binding3d.xml simple.Customer3 simple3d.xml"/>
+      <arg line="simple/binding3e.xml simple.Customer3 simple3c.xml"/>
+      <arg line="simple/binding4.xml simple.Customer4 simple4.xml"/>
+      <arg line="simple/binding4a.xml simple.Customer4 simple4.xml"/>
+      <arg line="simple/binding4b.xml simple.Customer4 simple4b.xml"/>
+      <arg line="simple/binding4c.xml simple.Customer4 simple4b.xml"/>
+      <arg line="simple/binding4c.xml simple.Customer4 simple4c.xml"/>
+      <arg line="simple/binding4e.xml simple.Customer4 simple4.xml"/>
+      <arg line="simple/binding4e.xml simple.Customer4 simple4e.xml"/>
+      <arg line="simple/binding5.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5a.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5b.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5c.xml simple.Customer5 simple5b.xml"/>
+      <arg line="simple/binding5c.xml simple.Customer5 simple5d.xml"/>
+      <arg line="simple/binding5d.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5d.xml simple.Customer5 simple5b.xml"/>
+      <arg line="simple/binding5e.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5e.xml simple.Customer5 simple5b.xml"/>
+      <arg line="simple/binding5f.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5g.xml simple.Customer5 simple5c.xml"/>
+      <arg line="simple/binding6.xml simple.Customers6 simple6.xml"/>
+      <arg line="simple/binding6a.xml simple.Customers6 simple6a.xml"/>
+      <arg line="simple/binding6b.xml simple.Customers6 simple6a.xml"/>
+      <arg line="simple/binding6c.xml simple.Customers6 simple6b.xml"/>
+      <arg line="simple/binding7.xml simple.Customers7 simple7.xml"/>
+      <arg line="simple/binding7.xml simple.Customers7 simple7a.xml"/>
+      <arg line="simple/binding7a.xml simple.Customers7 simple7.xml"/>
+      <arg line="simple/binding7a.xml simple.Customers7 simple7a.xml"/>
+      <arg line="simple/binding7b.xml simple.Customers7 simple7.xml"/>
+      <arg line="simple/binding7b.xml simple.Customers7 simple7a.xml"/>
+      <arg line="simple/binding7c.xml simple.Customers7 simple7c.xml"/>
+      <arg line="simple/binding8.xml simple.Customer8a simple8a.xml"/>
+      <arg line="simple/binding8.xml simple.Customer8b simple8b.xml"/>
+      <arg line="simple/binding8.xml simple.Customers8 simple8.xml"/>
+      <arg line="simple/binding8a.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding8b.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding8c.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding8d.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding9.xml simple.Customer9 simple9.xml"/>
+      <arg line="simple/binding9.xml simple.Subscriber9 simple9a.xml"/>
+      <arg line="simple/binding9.xml simple.Customer9 simple9b.xml"/>
+      <arg line="simple/binding9.xml simple.Customer9 simple9c.xml"/>
+      <arg line="simple/binding9d.xml simple.Customer9 simple9d.xml"/>
+      <arg line="simple/binding9d.xml simple.Customer9 simple9e.xml"/>
+      <arg line="simple/binding10.xml simple.Customer10 simple10.xml"/>
+      <arg line="simple/binding10.xml simple.Customer10 simple10a.xml"/>
+      <arg line="simple/binding10a.xml simple.Customer10 simple10.xml"/>
+      <arg line="simple/binding10a.xml simple.Customer10 simple10a.xml"/>
+      <arg line="simple/binding10a.xml simple.Customer10 simple10b.xml"/>
+      <arg line="simple/mybinding1.xml simple.MyClass1 mytest1.xml"/>
+      <arg line="simple/mybinding2.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding2a.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2a.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding2b.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2b.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding2c.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2c.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding3.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3a.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3a.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3b.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3b.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3b.xml simple.MyClass3 mytest3c.xml"/>
+      <arg line="simple/mybinding3c.xml simple.MyClass3 mytest3c.xml"/>
+      <arg line="simple/mybinding3c.xml simple.MyClass3 mytest3d.xml"/>
+      <arg line="simple/mybinding3d.xml simple.MyClass3 mytest3d.xml"/>
+      <arg line="simple/mybinding3d.xml simple.MyClass3 mytest3e.xml"/>
+<!--      <arg line="simple/mybinding3e.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3e.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3e.xml simple.MyClass3 mytest3c.xml"/> -->
+      <arg line="simple/mybinding3f.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3f.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3f.xml simple.MyClass3 mytest3c.xml"/>
+      <arg line="simple/mybinding3g.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3h.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding5.xml simple.MyClass5 mytest5.xml"/>
+      <arg line="simple/mybinding5.xml simple.MyClass5 mytest5a.xml"/>
+      <arg line="simple/mybinding5a.xml simple.MyClass5 mytest5a.xml"/>
+      <arg line="simple/mybinding5a.xml simple.MyClass5 mytest5b.xml"/>
+      <arg line="simple/mybinding5b.xml simple.MyClass5 mytest5a.xml"/>
+      <arg line="simple/mybinding5b.xml simple.MyClass5 mytest5b.xml"/>
+      <arg line="simple/mybinding6.xml simple.MyClass6 mytest6.xml"/>
+      <arg line="simple/mybinding6.xml simple.MyClass6 mytest6a.xml"/>
+      <arg line="simple/mybinding6a.xml simple.MyClass6 mytest6a.xml"/>
+      <arg line="simple/mybinding6a.xml simple.MyClass6 mytest6b.xml"/>
+      <arg line="simple/mybinding6b.xml simple.MyClass6 mytest6a.xml"/>
+      <arg line="simple/mybinding6c.xml simple.MyClass6 mytest6e.xml"/>
+      <arg line="simple/mybinding6d.xml simple.MyClass6 mytest6e.xml"/>
+      <arg line="simple/mybinding6e.xml simple.MyClass6 mytest6e.xml"/>
+      <arg line="simple/mybinding7.xml simple.MyClass7 mytest7.xml"/>
+      <arg line="simple/mybinding7a.xml simple.MyClass7 mytest7.xml"/>
+      <arg line="simple/mybinding7b.xml simple.MyClass7 mytest7.xml"/>
+      <arg line="simple/mybinding7d.xml simple.MyClass7 mytest7b.xml"/>
+      <arg line="simple/mybinding7d.xml simple.MyClass7 mytest7c.xml"/>
+    </java>
+    <java classname="org.jibx.match.TestLoaderStAX" fork="yes" dir="${simpledata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="simple/binding0.xml simple.Customer0 simple.xml"/>
+      <arg line="simple/binding0b.xml simple.Customer0 simple.xml"/>
+      <arg line="simple/binding0b.xml simple.Customer0 simple0c.xml"/>
+      <arg line="simple/binding0c.xml simple.Customer0 simple0b.xml"/>
+      <arg line="simple/binding0d.xml simple.Customer0 simple0c.xml"/>
+      <arg line="simple/binding0d.xml simple.Customer0 simple0c.xml"/>
+      <arg line="simple/binding2.xml simple.Customer2 simple2.xml"/>
+      <arg line="simple/binding3.xml simple.Customer3 simple3.xml"/>
+      <arg line="simple/binding3a.xml simple.Customer3 simple3.xml"/>
+      <arg line="simple/binding3b.xml simple.Customer3 simple3b.xml"/>
+      <arg line="simple/binding3d.xml simple.Customer3 simple3d.xml"/>
+      <arg line="simple/binding3e.xml simple.Customer3 simple3c.xml"/>
+      <arg line="simple/binding4.xml simple.Customer4 simple4.xml"/>
+      <arg line="simple/binding4a.xml simple.Customer4 simple4.xml"/>
+      <arg line="simple/binding4b.xml simple.Customer4 simple4b.xml"/>
+      <arg line="simple/binding4c.xml simple.Customer4 simple4b.xml"/>
+      <arg line="simple/binding4c.xml simple.Customer4 simple4c.xml"/>
+      <arg line="simple/binding4e.xml simple.Customer4 simple4.xml"/>
+      <arg line="simple/binding4e.xml simple.Customer4 simple4e.xml"/>
+      <arg line="simple/binding5.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5a.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5b.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5c.xml simple.Customer5 simple5b.xml"/>
+      <arg line="simple/binding5c.xml simple.Customer5 simple5d.xml"/>
+      <arg line="simple/binding5d.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5d.xml simple.Customer5 simple5b.xml"/>
+      <arg line="simple/binding5e.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding5e.xml simple.Customer5 simple5b.xml"/>
+      <arg line="simple/binding5f.xml simple.Customer5 simple5.xml"/>
+      <arg line="simple/binding6.xml simple.Customers6 simple6.xml"/>
+      <arg line="simple/binding6a.xml simple.Customers6 simple6a.xml"/>
+      <arg line="simple/binding6b.xml simple.Customers6 simple6a.xml"/>
+      <arg line="simple/binding6c.xml simple.Customers6 simple6b.xml"/>
+      <arg line="simple/binding7.xml simple.Customers7 simple7.xml"/>
+      <arg line="simple/binding7.xml simple.Customers7 simple7a.xml"/>
+      <arg line="simple/binding7a.xml simple.Customers7 simple7.xml"/>
+      <arg line="simple/binding7a.xml simple.Customers7 simple7a.xml"/>
+      <arg line="simple/binding7b.xml simple.Customers7 simple7.xml"/>
+      <arg line="simple/binding7b.xml simple.Customers7 simple7a.xml"/>
+      <arg line="simple/binding7c.xml simple.Customers7 simple7c.xml"/>
+      <arg line="simple/binding8.xml simple.Customer8a simple8a.xml"/>
+      <arg line="simple/binding8.xml simple.Customer8b simple8b.xml"/>
+      <arg line="simple/binding8.xml simple.Customers8 simple8.xml"/>
+      <arg line="simple/binding8a.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding8b.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding8c.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding8d.xml simple.Customers8 simple8d.xml"/>
+      <arg line="simple/binding9.xml simple.Customer9 simple9.xml"/>
+      <arg line="simple/binding9.xml simple.Subscriber9 simple9a.xml"/>
+      <arg line="simple/binding9.xml simple.Customer9 simple9b.xml"/>
+      <arg line="simple/binding9.xml simple.Customer9 simple9c.xml"/>
+      <arg line="simple/binding10.xml simple.Customer10 simple10.xml"/>
+      <arg line="simple/binding10.xml simple.Customer10 simple10a.xml"/>
+      <arg line="simple/mybinding1.xml simple.MyClass1 mytest1.xml"/>
+      <arg line="simple/mybinding2.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding2a.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2a.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding2b.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2b.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding2c.xml simple.MyClass2 mytest2.xml"/>
+      <arg line="simple/mybinding2c.xml simple.MyClass2 mytest2a.xml"/>
+      <arg line="simple/mybinding3.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3a.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3a.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3b.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3b.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3b.xml simple.MyClass3 mytest3c.xml"/>
+      <arg line="simple/mybinding3c.xml simple.MyClass3 mytest3c.xml"/>
+      <arg line="simple/mybinding3c.xml simple.MyClass3 mytest3d.xml"/>
+      <arg line="simple/mybinding3d.xml simple.MyClass3 mytest3d.xml"/>
+      <arg line="simple/mybinding3d.xml simple.MyClass3 mytest3e.xml"/>
+<!--      <arg line="simple/mybinding3e.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3e.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3e.xml simple.MyClass3 mytest3c.xml"/> -->
+      <arg line="simple/mybinding3f.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3f.xml simple.MyClass3 mytest3a.xml"/>
+      <arg line="simple/mybinding3f.xml simple.MyClass3 mytest3c.xml"/>
+      <arg line="simple/mybinding3g.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding3h.xml simple.MyClass3 mytest3.xml"/>
+      <arg line="simple/mybinding5.xml simple.MyClass5 mytest5.xml"/>
+      <arg line="simple/mybinding5.xml simple.MyClass5 mytest5a.xml"/>
+      <arg line="simple/mybinding5a.xml simple.MyClass5 mytest5a.xml"/>
+      <arg line="simple/mybinding5a.xml simple.MyClass5 mytest5b.xml"/>
+      <arg line="simple/mybinding6.xml simple.MyClass6 mytest6.xml"/>
+      <arg line="simple/mybinding6.xml simple.MyClass6 mytest6a.xml"/>
+      <arg line="simple/mybinding6a.xml simple.MyClass6 mytest6a.xml"/>
+      <arg line="simple/mybinding6a.xml simple.MyClass6 mytest6b.xml"/>
+      <arg line="simple/mybinding6b.xml simple.MyClass6 mytest6a.xml"/>
+      <arg line="simple/mybinding6c.xml simple.MyClass6 mytest6e.xml"/>
+      <arg line="simple/mybinding6d.xml simple.MyClass6 mytest6e.xml"/>
+      <arg line="simple/mybinding6e.xml simple.MyClass6 mytest6e.xml"/>
+      <arg line="simple/mybinding7.xml simple.MyClass7 mytest7.xml"/>
+      <arg line="simple/mybinding7a.xml simple.MyClass7 mytest7.xml"/>
+      <arg line="simple/mybinding7b.xml simple.MyClass7 mytest7.xml"/>
+      <arg line="simple/mybinding7d.xml simple.MyClass7 mytest7c.xml"/>
+    </java>
+    <java classname="org.jibx.match.TestLoaderDiff" fork="yes"
+        dir="${simpledata}" failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="simple/binding2b.xml simple.Customer2 simple2d.xml simple2c.xml"/>
+      <arg line="simple/binding4a.xml simple.Customer4 simple4a.xml simple4.xml"/>
+      <arg line="simple/binding4d.xml simple.Customer4 simple4d.xml simple4.xml"/>
+      <arg line="simple/binding5.xml simple.Customer5 simple5a.xml simple5.xml"/>
+      <arg line="simple/binding5a.xml simple.Customer5 simple5a.xml simple5.xml"/>
+      <arg line="simple/binding5b.xml simple.Customer5 simple5a.xml simple5.xml"/>
+      <arg line="simple/binding7c.xml simple.Customers7 simple7d.xml simple7c.xml"/>
+      <arg line="simple/mybinding3.xml simple.MyClass3 mytest3b.xml mytest3a.xml"/>
+      <arg line="simple/mybinding3a.xml simple.MyClass3 mytest3b.xml mytest3a.xml"/>
+      <arg line="simple/mybinding3g.xml simple.MyClass3 mytest3f.xml mytest3.xml"/>
+      <arg line="simple/mybinding3h.xml simple.MyClass3 mytest3f.xml mytest3.xml"/>
+      <arg line="simple/mybinding3h.xml simple.MyClass3 mytest3g.xml mytest3.xml"/>
+      <arg line="simple/mybinding6a.xml simple.MyClass6 mytest6c.xml mytest6b.xml"/>
+      <arg line="simple/mybinding7c.xml simple.MyClass7 mytest7a.xml mytest7.xml"/>
+      <arg line="simple/mybinding7d.xml simple.MyClass7 mytest7d.xml mytest7c.xml"/>
+    </java>
+  </target>
+
+  <!-- Run tests which use non-J2ME features. -->
+  <target name="run-nonj2me-tests" unless="j2me-build">
+    
+    <!-- Compile the test code and copy resources. -->
+    <echo message="Compiling the Java 5 specific code"/>
+    <javac srcdir="${testsrc}"
+      destdir="${testdest}"
+      target="1.5"
+      includes="org/jibx/match/**/*.java,java5/**/*.java,org/jibx/binding/generator/*.java,org/jibx/ws/**/*.java"
+      optimize="off"
+      debug="on"
+      source="1.5"
+      deprecation="on">
+      <classpath>
+        <fileset dir="${lib}" includes="${runname}.jar,${extrasname}.jar,${bindname}.jar,${schemaname}.jar,${toolsname}.jar,asm*.jar,joda*.jar,qdox*.jar,log4j*.jar,org.eclipse.*.jar,junit*.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${testdest}">
+      <fileset dir="${testsrc}" includes="**/*.xml,**/*.txt"/>
+    </copy>
+    
+    <!-- Run the jUnit tests. -->
+    <echo message="Beginning non-J2ME jUnit tests"/>
+    <junit haltonfailure="true">
+      <classpath>
+        <fileset dir="${lib}" includes="${runname}.jar,${extrasname}.jar,${bindname}.jar,${schemaname}.jar,${toolsname}.jar,asm*.jar,joda*.jar,qdox*.jar,log4j*.jar,org.eclipse.*.jar,junit*.jar"/>
+        <path location="${testdest}"/>
+      </classpath>
+      <formatter type="brief" usefile="false"/>
+      <batchtest fork="yes" todir="${testdest}">
+        <!-- Don't know why these need to be separate, but doesn't find any tests if they're not. -->
+        <fileset dir="${testdest}">
+          <include name="**/GeneratorSuite.class"/>
+        </fileset>
+        <fileset dir="${testdest}">
+          <include name="**/WsdlSuite.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    
+    <echo message="Beginning non-J2ME roundtrip tests"/>
+    <java classname="org.jibx.match.TestLoader" fork="yes" dir="${simpledata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="simple/mybinding4.xml simple.MyClass4 mytest4.xml"/>
+      <arg line="simple/mybinding4.xml simple.MyClass4 mytest4a.xml"/>
+      <arg line="simple/mybinding4.xml simple.MyClass4 mytest4b.xml"/>
+      <arg line="simple/mybinding4a.xml simple.MyClass4 mytest4.xml"/>
+      <arg line="simple/mybinding4a.xml simple.MyClass4 mytest4a.xml"/>
+      <arg line="simple/mybinding4a.xml simple.MyClass4 mytest4b.xml"/>
+      <arg line="simple/mybinding4a.xml simple.MyClass4 mytest4c.xml"/>
+      <arg line="simple/mybinding4b.xml simple.MyClass4 mytest4.xml"/>
+      <arg line="simple/mybinding4b.xml simple.MyClass4 mytest4a.xml"/>
+      <arg line="simple/mybinding4b.xml simple.MyClass4 mytest4b.xml"/>
+      <arg line="simple/mybinding4b.xml simple.MyClass4 mytest4c.xml"/>
+      <arg line="simple/mybinding4c.xml simple.MyClass4 mytest4.xml"/>
+      <arg line="simple/mybinding4c.xml simple.MyClass4 mytest4d.xml"/>
+    </java>
+    <java classname="org.jibx.match.TestLoader" fork="yes" dir="${java5data}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="java5/binding1.xml java5.Customer1 simple1.xml"/>
+      <arg line="java5/binding2.xml java5.Customer2 simple2.xml"/>
+    </java>
+  </target>
+
+  <!-- Test code from extras (except dom4j and jdom). -->
+  <target name="run-extras-tests" depends="run-dom4j-tests,run-jdom-tests">
+    
+    <!-- Run extras binding tests directly. -->
+    <echo message="Beginning extras bind on load test run"/>
+    <java classname="org.jibx.match.TestLoader" fork="yes" dir="${extrasdata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="extras/binding0.xml extras.NameArray names0.xml"/>
+      <arg line="extras/binding0.xml extras.NameArray names1.xml"/>
+      <arg line="extras/binding1.xml extras.NameArray names0.xml"/>
+      <arg line="extras/binding1.xml extras.NameArray names1.xml"/>
+      <arg line="extras/binding2.xml extras.NameArray names0.xml"/>
+      <arg line="extras/binding2.xml extras.NameArray names2.xml"/>
+      <arg line="extras/binding3.xml extras.NameArray names0.xml"/>
+      <arg line="extras/binding3.xml extras.NameArray names2.xml"/>
+      <arg line="extras/binding3a.xml extras.NameArray names3.xml"/>
+      <arg line="extras/binding3b.xml extras.NameArray names3b.xml"/>
+      <arg line="extras/binding4.xml extras.TypedArray names1.xml"/>
+      <arg line="extras/binding5.xml extras.TypedArray names1.xml"/>
+      <arg line="extras/binding8.xml extras.ValueMap values0.xml"/>
+      <arg line="extras/binding9.xml extras.ValueMap values1.xml"/>
+      <arg line="extras/binding10.xml extras.QNameReference qnames1.xml"/>
+      <arg line="extras/binding10.xml extras.QNameReference qnames2.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact0.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact0a.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact0b.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact0c.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact1.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact1a.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact1b.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact2.xml"/>
+      <arg line="extras/bindingdom0.xml extras.DomContact0 contact2a.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact0.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact0a.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact0b.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact0c.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact1.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact1a.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact1b.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact2.xml"/>
+      <arg line="extras/bindingdom1.xml extras.DomContact1 contact2a.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact0.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact0a.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact0b.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact0c.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact1.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact1a.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact1b.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact2.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact2a.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact3.xml"/>
+      <arg line="extras/bindingdom2.xml extras.DomContact2 contact3a.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact0.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact0a.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact0b.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact0c.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact1.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact1a.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact1b.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact2.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact2a.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact3.xml"/>
+      <arg line="extras/bindingdom3.xml extras.DomContact3 contact3a.xml"/>
+    </java>
+    <java classname="org.jibx.match.TestLoaderDiff" fork="yes"
+        dir="${extrasdata}" failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="extras/binding6.xml extras.Contact0 contact0.xml contact0.xml"/>
+      <arg line="extras/binding6.xml extras.Contact0 contact1.xml contact0.xml"/>
+      <arg line="extras/binding6.xml extras.Contact0 contact2.xml contact0.xml"/>
+      <arg line="extras/binding7.xml extras.Contact0 contact0.xml contact0.xml"/>
+      <arg line="extras/binding7.xml extras.Contact0 contact1.xml contact0.xml"/>
+      <arg line="extras/binding7.xml extras.Contact0 contact2.xml contact0.xml"/>
+      <arg line="extras/binding7.xml extras.Contact0 contact3.xml contact0.xml"/>
+    </java>
+  </target>
+
+  <!-- Run dom4j blackbox tests. -->
+  <target name="run-dom4j-tests" if="dom4j">
+    
+    <!-- Now compile the test code and copy resources. -->
+    <echo message="Compiling the test code"/>
+    <javac srcdir="${testsrc}"
+      destdir="${testdest}"
+      target="${target}"
+      includes="org/jibx/match/**/*.java,extras/Dom4J*.java"
+      optimize="off"
+      debug="on"
+      source="${source}"
+      deprecation="on">
+      <classpath refid="tests-classpath"/>
+    </javac>
+    <copy todir="${testdest}">
+      <fileset dir="${testsrc}" includes="**/*.xml,**/*.txt"/>
+    </copy>
+    
+    <!-- Run the actual tests. -->
+    <echo message="Beginning dom4j load test run"/>
+    <java classname="org.jibx.match.TestLoader" fork="yes" dir="${extrasdata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="extras/bindingdom4j0.xml extras.Dom4JContact0 contact0.xml"/>
+      <arg line="extras/bindingdom4j0.xml extras.Dom4JContact0 contact1.xml"/>
+      <arg line="extras/bindingdom4j0.xml extras.Dom4JContact0 contact2.xml"/>
+      <arg line="extras/bindingdom4j1.xml extras.Dom4JContact1 contact0.xml"/>
+      <arg line="extras/bindingdom4j1.xml extras.Dom4JContact1 contact1.xml"/>
+      <arg line="extras/bindingdom4j1.xml extras.Dom4JContact1 contact2.xml"/>
+      <arg line="extras/bindingdom4j2.xml extras.Dom4JContact2 contact0.xml"/>
+      <arg line="extras/bindingdom4j2.xml extras.Dom4JContact2 contact1.xml"/>
+      <arg line="extras/bindingdom4j2.xml extras.Dom4JContact2 contact2.xml"/>
+      <arg line="extras/bindingdom4j2.xml extras.Dom4JContact2 contact3.xml"/>
+    </java>
+  </target>
+
+  <!-- Run jdom blackbox tests. -->
+  <target name="run-jdom-tests" if="jdom">
+    
+    <!-- Now compile the test code and copy resources. -->
+    <echo message="Compiling the test code"/>
+    <javac srcdir="${testsrc}"
+      destdir="${testdest}"
+      target="${target}"
+      includes="org/jibx/match/**/*.java,extras/JDOM*.java"
+      optimize="off"
+      debug="on"
+      source="${source}"
+      deprecation="on">
+      <classpath refid="tests-classpath"/>
+    </javac>
+    <copy todir="${testdest}">
+      <fileset dir="${testsrc}" includes="**/*.xml,**/*.txt"/>
+    </copy>
+    
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind>
+      <classpathset dir="${testdest}"/>
+      <bindingfileset dir="${extrasdata}">
+        <include name="bindingjdom*.xml"/>
+      </bindingfileset>
+    </bind>
+  	
+    <!-- Run the actual tests. -->
+    <echo message="Beginning jdom junit test run"/>
+    <junit haltonfailure="true">
+      <classpath refid="tests-classpath"/>
+      <formatter type="brief" usefile="false"/>
+      <batchtest fork="yes" todir="${testdest}">
+        <fileset dir="${testdest}">
+          <include name="**/JDOM*Test.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  
+  <!-- Compile tutorial code samples. -->
+  <target name="compile-tutorial">
+    <echo message="Compiling the tutorial examples"/>
+    <javac srcdir="${tutorial}"
+      destdir="${testdest}"
+      target="${target}"
+      includes="**/*.java"
+      optimize="off"
+      debug="on"
+      source="${source}"
+      deprecation="on">
+      <classpath refid="tests-classpath"/>
+    </javac>
+  </target>
+
+  <!-- Test tutorial code (except example21, which may not work on all JVMs). -->
+  <target name="run-tutorial-tests" depends="run-tutorial-example21">
+    
+    <!-- Add the bindings for tutorial examples. -->
+    <echo message="Beginning tutorial binding compiler run"/>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind>
+      <classpathset dir="${testdest}"/>
+      <bindingfileset dir="${tutorial}">
+        <include name="example1/binding.xml"/>
+        <include name="example2/binding.xml"/>
+        <include name="example3/binding.xml"/>
+        <include name="example5/binding.xml"/>
+        <include name="example6/binding.xml"/>
+        <include name="example7/binding.xml"/>
+        <include name="example8/binding.xml"/>
+        <include name="example9/binding.xml"/>
+        <include name="example10/binding.xml"/>
+        <include name="example11/binding.xml"/>
+        <include name="example12/binding.xml"/>
+        <include name="example13/binding.xml"/>
+        <include name="example14/binding.xml"/>
+        <include name="example15/binding.xml"/>
+        <include name="example16/binding.xml"/>
+        <include name="example17/binding.xml"/>
+        <include name="example18/binding.xml"/>
+        <include name="example19/binding.xml"/>
+        <include name="example20/binding.xml"/>
+        <include name="example22/binding0.xml"/>
+        <include name="example22/binding1.xml"/>
+        <include name="example22/binding2.xml"/>
+      </bindingfileset>
+    </bind>
+    
+    <!-- Run the tutorial example tests. -->
+    <echo message="Beginning tutorial examples test run"/>
+    <java classname="org.jibx.extras.TestRoundtrip" fork="yes" dir="${tutorial}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="example1.Customer example1/data.xml example1/data.xml"/>
+      <arg line="example2.Customer example2/data.xml example2/data.xml"/>
+      <arg line="example3.Customer example3/data.xml example3/out.xml"/>
+      <arg line="example5.Customer example5/data.xml example5/data.xml"/>
+      <arg line="example6.Customer example6/data.xml example6/data.xml"/>
+      <arg line="example7.Customer example7/data.xml example7/out.xml"/>
+      <arg line="example8.TimeTable example8/data.xml example8/data.xml"/>
+      <arg line="example9.TimeTable example9/data.xml example9/data.xml"/>
+      <arg line="example10.TimeTable example10/data.xml example10/data.xml"/>
+      <arg line="example11.TimeTable example11/data.xml example11/data.xml"/>
+      <arg line="example12.Customer example12/data.xml example12/data.xml"/>
+      <arg line="example13.Customer example13/data.xml example13/data.xml"/>
+      <arg line="example14.Customer example14/data1.xml example14/data1.xml"/>
+      <arg line="example14.Subscriber example14/data2.xml example14/data2.xml"/>
+      <arg line="example14.Customer example14/data3.xml example14/data3.xml"/>
+      <arg line="example15.Customer example15/data1.xml example15/data1.xml"/>
+      <arg line="example15.Subscriber example15/data2.xml example15/data2.xml"/>
+      <arg line="example15.Customer example15/data3.xml example15/data3.xml"/>
+      <arg line="example16.Customer example16/data1.xml example16/data1.xml"/>
+      <arg line="example16.Customer example16/data2.xml example16/data2.xml"/>
+      <arg line="example17.Customer example17/data1.xml example17/data1.xml"/>
+      <arg line="example17.Customer example17/data2.xml example17/data2.xml"/>
+      <arg line="example17.Customer example17/data3.xml example17/data3.xml"/>
+      <arg line="example18.Customer example18/data.xml example18/data.xml"/>
+      <arg line="example19.Order example19/data.xml example19/data.xml"/>
+      <arg line="example20.Customer example20/data.xml example20/data.xml"/>
+    </java>
+    <java classname="example22.Test" fork="yes" dir="${tutorial}/example22"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg value="data0.xml"/>
+    </java>
+    <java classname="example22.Test" fork="yes" dir="${tutorial}/example22"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg value="data1.xml"/>
+    </java>
+    <java classname="example22.Test" fork="yes" dir="${tutorial}/example22"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg value="data2.xml"/>
+    </java>
+  </target>
+
+  <!-- Test example21, which may not work on all JVMs. -->
+  <target name="run-tutorial-example21" depends="compile-tutorial" unless="skip21">
+    
+    <!-- Add the bindings for example21. -->
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind>
+      <classpathset dir="${testdest}"/>
+      <bindingfileset dir="${tutorial}">
+        <include name="example21/binding1.xml"/>
+      </bindingfileset>
+    </bind>
+    
+    <!-- Run the example21 tests. -->
+    <echo message="Running example21 test"/>
+    <java classname="org.jibx.extras.TestRoundtrip" fork="yes" dir="${tutorial}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+      <arg line="example21.Directory example21/data1.xml example21/data1.xml"/>
+    </java>
+  </target>
+
+  <!-- Test example builds. -->
+  <target name="run-basic-examples">
+    <ant dir="${basedir}/examples/starter">
+      <target name="build"/>
+      <target name="roundtrip"/>
+    </ant>
+    <ant dir="${basedir}/examples/starter" target="clean"/>
+    <ant dir="${basedir}/examples/bindgen" target="full"/>
+    <ant dir="${basedir}/examples/bindgen" target="custom1"/>
+    <ant dir="${basedir}/examples/bindgen" target="custom2"/>
+    <ant dir="${basedir}/examples/bindgen" target="custom3"/>
+    <ant dir="${basedir}/examples/bindgen" target="clean"/>
+    <ant dir="${basedir}/examples/codegen" target="full"/>
+    <ant dir="${basedir}/examples/codegen" target="custom1"/>
+    <ant dir="${basedir}/examples/codegen" target="custom2"/>
+    <ant dir="${basedir}/examples/codegen" target="modular"/>
+    <ant dir="${basedir}/examples/codegen" target="clean"/>
+  </target>
+
+  <!-- Test example builds. -->
+  <target name="run-jibx2wsdl-examples">
+    <ant dir="${basedir}/examples/jibx2wsdl/example1">
+      <target name="clean"/>
+      <target name="generate-wsdl"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/example1" target="clean"/>
+    <ant dir="${basedir}/examples/jibx2wsdl/example2">
+      <target name="clean"/>
+      <target name="generate-wsdl"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/example2" target="clean"/>
+    <ant dir="${basedir}/examples/jibx2wsdl/example3">
+      <target name="clean"/>
+      <target name="generate-wsdl"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/example3" target="clean"/>
+    <ant dir="${basedir}/examples/jibx2wsdl/example4">
+      <target name="clean"/>
+      <target name="generate-wsdl"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/example4">
+      <target name="clean"/>
+      <target name="generate-wsdl1"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/example4" target="clean"/>
+<!--    <ant dir="${basedir}/examples/jibx2wsdl/example4">
+      <target name="clean"/>
+      <target name="generate-wsdl2"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/example4" target="clean"/>
+    <ant dir="${basedir}/examples/jibx2wsdl/infoq-example">
+      <target name="clean"/>
+      <target name="generate-wsdl"/>
+      <target name="build-shared"/>
+    </ant>
+    <ant dir="${basedir}/examples/jibx2wsdl/infoq-example" target="clean"/>   -->
+  </target>
+
+  <!-- Build the user javadocs -->
+  <target name="javadoc">
+    <delete quiet="true">
+      <fileset dir="${userdocs}" includes="*"/>
+    </delete>
+    <mkdir dir="${userdocs}"/>
+    <javadoc packagenames="org.jibx.runtime,org.jibx.runtime.impl,org.jibx.extras"
+       sourcepath="${src}:${extrassrc}"
+       destdir="${userdocs}"
+       author="true"
+       version="true"
+       noindex="true"
+       nohelp="true"
+       notree="true"
+       access="public"
+       windowtitle="${project} - Version ${version}"
+       doctitle="${project} - Version ${version}">
+      <bottom>&lt;table width='80%%'&gt;&lt;tr&gt;&lt;td width='50%%'&gt;&lt;p align='center'&gt;&lt;a href='http://www.jibx.org/' target='_top'&gt;&lt;font size='3'&gt;&lt;b&gt;Project Web Site&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/td&gt;&lt;td width='50%%'&gt;&lt;p align='center'&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</bottom>
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </javadoc>
+  </target>
+
+  <!-- Build the internal javadocs -->
+  <target name="devdoc">
+    <delete quiet="true">
+      <fileset dir="${devdocs}" includes="*"/>
+    </delete>
+    <mkdir dir="${devdocs}"/>
+    <javadoc packagenames="org.jibx.*"
+       excludepackagenames="org.jibx.binding.ant"
+       sourcepath="${src}:${extrassrc}"
+       destdir="${devdocs}"
+       author="true"
+       version="true"
+       noindex="true"
+       nohelp="true"
+       notree="true"
+       access="private"
+       windowtitle="${project} - Version ${version}"
+       doctitle="${project} - Version ${version}">
+      <bottom>&lt;table width='80%%'&gt;&lt;tr&gt;&lt;td width='50%%'&gt;&lt;p align='center'&gt;&lt;a href='http://www.jibx.org/' target='_top'&gt;&lt;font size='3'&gt;&lt;b&gt;Project Web Site&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/td&gt;&lt;td width='50%%'&gt;&lt;p align='center'&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</bottom>
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </javadoc>
+  </target>
+  
+  <!-- Build the project documentation -->
+  <target name="project-docs">
+    <ant dir="${build}/docs">
+      <target name="jar"/>
+      <target name="jibx"/>
+    </ant>
+  </target>
+
+  <!-- Build only the runtime class file jar -->
+  <target name="jar-run" depends="compile-run">
+    <delete file="${lib}/${runname}.jar" quiet="true"/>
+    <jar jarfile="${lib}/${runname}.jar" basedir="${rundest}">
+      <manifest>
+        <attribute name="Main-Class" value="org.jibx.runtime.PrintInfo"/>
+        <attribute name="Class-Path" value="xpp3.jar stax-api.jar wstx-asl.jar"/>
+        <attribute name="Implementation-Version" value="${version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Build only the extras class file jar -->
+  <target name="jar-extras" depends="compile-extras">
+    <delete file="${lib}/${extrasname}.jar" quiet="true"/>
+    <jar jarfile="${lib}/${extrasname}.jar" basedir="${extrasdest}">
+      <manifest>
+        <attribute name="Main-Class" value="org.jibx.extras.TestRoundtrip"/>
+        <attribute name="Class-Path" value="${runname}.jar xpp3.jar stax-api.jar wstx-asl.jar"/>
+        <attribute name="Implementation-Version" value="${version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Build only the binding class file jar -->
+  <target name="jar-bind" depends="compile-bind">
+    <delete file="${lib}/${bindname}.jar" quiet="true"/>
+    <jar jarfile="${lib}/${bindname}.jar" basedir="${binddest}">
+      <manifest>
+        <attribute name="Main-Class" value="org.jibx.binding.Compile"/>
+        <attribute name="Class-Path" value="bcel.jar ${runname}.jar xpp3.jar stax-api.jar wstx-asl.jar"/>
+        <attribute name="Implementation-Version" value="${version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Build only the schema class file jar -->
+  <target name="jar-schema" depends="compile-schema">
+    <delete file="${lib}/${schemaname}.jar" quiet="true"/>
+    <jar jarfile="${lib}/${schemaname}.jar" basedir="${schemadest}">
+      <manifest>
+        <!-- Note that dependency on binding jar is only because that contains the
+         org.jibx.util classes, which should really be in a separate jar -->
+        <attribute name="Class-Path" value="${runname}.jar ${bindname}.jar xpp3.jar stax-api.jar wstx-asl.jar"/>
+        <attribute name="Implementation-Version" value="${version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Build only the tools class file jar -->
+  <target name="jar-tools" depends="disablej2me,setdebug,compile-tools" unless="j2me-build">
+    <delete file="${lib}/${toolsname}.jar" quiet="true"/>
+    <copy file="${build}/default-log4j.properties"
+        tofile="${toolsdest}/log4j.properties"/>
+    <jar jarfile="${lib}/${toolsname}.jar" basedir="${toolsdest}">
+      <manifest>
+        <attribute name="Main-Class" value="org.jibx.ws.wsdl.tools.Jibx2Wsdl"/>
+        <attribute name="Class-Path" value="bcel.jar ${runname}.jar ${bindname}.jar ${extrasname}.jar ${schemaname}.jar xpp3.jar stax-api.jar wstx-asl.jar joda-time.jar log4j.jar qdox.jar org.eclipse.core.contenttype.jar org.eclipse.core.jobs.jar org.eclipse.core.resources.jar org.eclipse.core.runtime.jar org.eclipse.equinox.common.jar org.eclipse.equinox.preferences.jar org.eclipse.jdt.core.jar org.eclipse.jdt.core.manipulation.jar org.eclipse.osgi.jar org.eclipse.text.jar"/>
+        <attribute name="Implementation-Version" value="${version}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Build the zip file for distribution -->
+  <target name="zip-distrib">
+    <delete file="${root}/${distribname}.zip" quiet="true"/>
+    <zip zipfile="${root}/${distribname}.zip">
+      <zipfileset prefix="jibx" dir="${root}" includes="build/**/*,docs/**/*,examples/**/*,lib/**/*,tutorial/**/*,changes.txt,readme.html"
+          excludes="*.zip,**/CVS,lib/asm*.jar,lib/jibx-javatools.jar,lib/dom4j*.jar,lib/xercesImpl.jar,lib/xml-apis.jar,lib/jdom*.jar,lib/jibx-gen*.jar,build/classes/**/*,build/docs/classes/**/*,build/temp.xml,**/.*,**/*.launch,**/.*/**/*,build/**/*.txt,build/maven2,build/maven2/**/*,**/*.log"/>
+    </zip>
+  </target>
+  
+  <!-- Copy jar files to maven1 repository (only usable by developers - with
+    sourceforge user name substitution), and requires jsch.jar in Ant lib
+    directory) -->
+  <target name="maven1" depends="basenames">
+    <scp keyfile="${user.home}/.ssh/id_dsa" passphrase="" localFile="${lib}/${bindname}.jar" remoteToFile="dsosnoski,jibx@web.sourceforge.net:htdocs/maven/jibx/jars/${bindname}-${version}.jar"/>
+    <scp keyfile="${user.home}/.ssh/id_dsa" passphrase="" localFile="${lib}/${runname}.jar" remoteToFile="dsosnoski,jibx@web.sourceforge.net:htdocs/maven/jibx/jars/${runname}-${version}.jar"/>
+    <scp keyfile="${user.home}/.ssh/id_dsa" passphrase="" localFile="${lib}/${extrasname}.jar" remoteToFile="dsosnoski,jibx@web.sourceforge.net:htdocs/maven/jibx/jars/${extrasname}-${version}.jar"/>
+    <scp keyfile="${user.home}/.ssh/id_dsa" passphrase="" localFile="${lib}/${schemaname}.jar" remoteToFile="dsosnoski,jibx@web.sourceforge.net:htdocs/maven/jibx/jars/${schemaname}-${version}.jar"/>
+    <scp keyfile="${user.home}/.ssh/id_dsa" passphrase="" localFile="${lib}/${toolsname}.jar" remoteToFile="dsosnoski,jibx@web.sourceforge.net:htdocs/maven/jibx/jars/${toolsname}-${version}.jar"/>
+  </target>
+  
+  <!-- Test run targets, used during normal build steps -->
+  <target name="run-basic-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-nonj2me-tests,run-extras-tests,clean-tests"/>
+  <target name="run-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-nonj2me-tests,run-extras-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
+  <target name="junit" depends="disablej2me,clean-tests,prepare-tests,junit-tests"/>
+  
+  <!-- Targets for running blackbox tests on framework - these should be run
+    only after building the code using the "current" target, but are not
+    dependent on it to allow selective testing (modify test code or documents
+    between test runs, etc.). -->
+  <target name="test-tutorial" depends="basenames,set-tests-classpath,clean-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
+  <target name="test-multiples" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,clean-tests"/>
+  <target name="test-singles" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-single-tests,run-nonj2me-tests,clean-tests"/>
+  <target name="test-extras" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-extras-tests,clean-tests"/>
+  <target name="basic-blackbox" depends="basenames,run-basic-blackbox"/>
+  <target name="blackbox" depends="basenames,run-blackbox"/>
+  
+  <!-- Intermediate targets, not to be run directly. -->
+  <target name="build-jibx" depends="compile-run,compile-bind,compile-extras"/>
+  <target name="tojars" depends="build-jibx,jar-run,jar-bind,jar-extras,jar-schema,jar-tools"/>
+
+  <!-- Targets for building and testing the framework. -->
+  <target name="debug" depends="setdebug,build-jibx"/>
+  <target name="current" depends="disablej2me,setdebug,tojars"/>
+  <target name="develop" depends="current,devdoc"/>
+  <target name="testing" depends="current,junit-tests,blackbox"/>
+  <target name="small-jars" depends="disablej2me,setrelease,tojars"/>
+  <target name="distrib" depends="current,junit,run-blackbox,run-basic-examples,run-jibx2wsdl-examples,project-docs,javadoc,zip-distrib"/>
+  <target name="j2me" depends="enablej2me,setrelease,build-jibx,jar-run,jar-bind,jar-extras,disablej2me"/>
+  
+</project>

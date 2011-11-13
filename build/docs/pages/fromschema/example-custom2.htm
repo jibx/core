@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 3: More extensive customizations</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <a name="custom"></a><h3>Going further with customizations</h3>
+
+<p>The <a href="%cgexample2%#custom">Example 2 customizations</a> showed some basic
+modifications to CodeGen default behavior. The third example goes further, using
+<i>custom2.xml</i>:</p>
+
+<div id="source"><pre>&lt;schema-set prefer-inline="true" generate-all="false" package="org.ota.air"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    repeated-type="array" enumeration-type="simple"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float">
+  &lt;name-converter strip-prefixes="OTA_"
+      strip-suffixes="Type AttributeGroup Group Attributes"/>
+  &lt;class-decorator
+      class="org.jibx.schema.codegen.extend.CollectionMethodsDecorator"/>
+  &lt;schema-type type-name="dateTime" java-class="org.joda.time.DateTime"
+      serializer="org.jibx.runtime.JodaConvert.serializeUTCDateTime"
+      deserializer="org.jibx.runtime.JodaConvert.deserializeUTCDateTime"/>
+  &lt;schema-type type-name="date" format-name="LocalDate.default"/>
+  &lt;schema-type type-name="time" format-name="LocalTime.local"/>
+  &lt;schema name="OTA_AirLowFareSearchRQ.xsd" includes="OTA_AirLowFareSearchRQ">
+    &lt;element name="OTA_AirLowFareSearchRQ" class-name="LowFareSearchRequest">
+      &lt;element path="**" name="AlternateLocationInfo" ignore="true"/>
+      &lt;element path="**" name="SpecificFlightInfo" ignore="true"/>
+      &lt;element path="**" name="ProcessingInfo" ignore="true"/>
+    &lt;/element>
+  &lt;/schema>
+  &lt;schema name="OTA_AirLowFareSearchRS.xsd" includes="OTA_AirLowFareSearchRS">
+    &lt;element name="OTA_AirLowFareSearchRS" class-name="LowFareSearchResponse"/>
+  &lt;/schema>
+  &lt;schema name="OTA_AirCommonTypes.xsd">
+    &lt;complexType name="FareType">
+      &lt;element path="**" name="Taxes" ignore="true"/>
+      &lt;element path="**" name="Fees" ignore="true"/>
+      &lt;element path="**" name="FareConstruction" ignore="true"/>
+      &lt;element path="**" name="UnstructuredFareCalc" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="FareInfoType">
+      &lt;element path="**" name="Date" ignore="true"/>
+      &lt;element path="**" name="FareInfo" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="PricedItinerariesType">
+      &lt;attribute path="**" name="OriginDestinationRefNumber"
+          value-name="refNumber"/>
+    &lt;/complexType>
+    &lt;complexType name="PricedItineraryType">
+      &lt;element path="**" name="AirItinerary" ignore="true"/>
+      &lt;element path="**" name="AirItineraryPricingInfo"
+          value-name="pricingInfo"/>
+      &lt;element path="**" name="Notes" ignore="true"/>
+      &lt;element path="**" name="TicketingInfo" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="AirItineraryPricingInfoType">
+      &lt;element path="**" name="PTC_FareBreakdowns" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="TravelerInformationType">
+      &lt;element path="**" name="AirTraveler" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="TravelerInfoSummaryType">
+      &lt;element path="**" name="PriceRequestInformation" ignore="true"/>
+    &lt;/complexType>
+  &lt;/schema>
+  &lt;schema name="OTA_AirPreferences.xsd">
+    &lt;complexType name="AirSearchPrefsType">
+      &lt;element path="**" name="VendorPref" ignore="true"/>
+      &lt;element path="**" name="FlightTypePref" ignore="true"/>
+      &lt;element path="**" name="EquipPref" ignore="true"/>
+      &lt;element path="**" name="CabinPref" ignore="true"/>
+      &lt;element path="**" name="TicketDistribPref" ignore="true"/>
+    &lt;/complexType>
+  &lt;/schema>
+  &lt;schema name="OTA_CommonTypes.xsd" excludes="ConnectionType">
+    &lt;complexType name="SourceType">
+      &lt;element path="**" name="Position" ignore="true"/>
+      &lt;element path="**" name="BookingChannel" ignore="true"/>
+    &lt;/complexType>
+  &lt;/schema>
+&lt;/schema-set>
+</pre></div>
+
+<p>These customizations effect both the form of the generated code and the actual schema
+structure used to drive the code and binding generation.</p>
+
+<p>On the root &lt;schema-set> element, the <a href="%cgcustoms%#repeated-type"><code>repeated-type="array"</code></a>
+attribute changes the representation of repeated values from the default Java 5 typed lists
+(inappropriately called "generics") to arrays, and the <a href="%cgcustoms%#enumeration-type"><code> enumeration-type="simple"</code></a>
+attribute changes the representation of enumerations from the default Java 5 <code>enum</code>
+format to custom type-safe enumerations. Together these changes make the generated code
+compatible with pre-Java 5 JDKs (you could also do this by using <code>repeated-type="list"</code>
+in place of <code>repeated-type="array"</code>, generating simple untyped lists).</p>
+
+<p>The <a href="%cgcustoms%#type-substitutions"><code>type-substitutions="xs:integer
+xs:int xs:decimal xs:float"</code></a> attribute gives pairs of types, with the second
+type in each pair substituted for the first wherever referenced in the schema definitions.
+This allows you to easily replace a simple type with an awkward Java representation (such
+as <code>xs:integer</code>, which uses <code>java.math.BigInteger</code>) with one which
+has a more convenient representation (such as <code>xs:int</code>, represented by an
+<code>int</code> primitive for a required value or a <code>java.lang.Integer</code> for
+an optional value). Naturally, you need to be careful when using this type of substitution
+that you maintain compatibility for the documents you're going to be using.</p>
+
+<p>The first group of child elements within the root &lt;schema-set> element (&lt;name-converter>,
+&lt;class-decorator>, and several &lt;schema-type> elements) configures
+<a href="%cgextends%">extensions to the standard code generation</a>. The
+<a href="%cgextends%#naming">&lt;name-converter> element</a> modifies name handling,
+in this case stripping some leading and trailing text from XML names before they're
+converted to Java names. The <a href="%cgextends%#extend">&lt;class-decorator> element</a>
+adds some useful support methods for each collection value in the generated classes,
+using an extension class provided as part of the JiBX distribution. You can also write
+and use your own code generation extensions in the same way. Finally, the
+<a href="%cgextends%#types">&lt;schema-type> elements</a> change the classes and/or
+conversion methods used for built-in schema types. In this case the changes are to
+use Joda date/time classes rather than Java standard classes for date/time values, with
+the first customization naming specific serializer/deserializer methods and the other two
+just referencing <a href="%datetime%">predefined formats</a>.</p>
+
+<p>The rest of the customizations dig down into specific schema definitions and either
+eliminate components which are not needed for the sample documents (by specifically
+<a href="%cgcustoms%#includes">including</a> or <a href="%cgcustoms%#exclude">excluding</a>
+particular type definitions from a schema, or by telling CodeGen to
+<a href="%cgcustoms%#ignore">ignore</a> specific elements embedded within a schema
+definition) or specify a particular <a href="%cgcustoms%#class-name">Java class name</a> or
+<a href="%cgcustoms%#value-name">value name</a> to be used for a component. The ignored
+elements will be accepted when unmarshalling XML documents but their content will not
+be processed, and they will never be generated when marshalling XML documents.</p>
+
+      </div>
+      <div class="h3">
+      <a name="code"></a><h3>Generated code</h3>
+
+<p>Run the 'custgen2' target and see the <i>gen/src</i> directory (or use the
+'custom2' target to generate and compile the code, run the binding compiler, and finally run
+a supplied test program which roundtrips the sample documents from the <i>samples</i>
+directory). The number of generated classes is now reduced to just 15 top-level classes
+and 35 inner classes, or a total of 50, while still maintaining all the components needed
+for the sample documents. The generated class names have also been simplified by
+eliminating the repetitive name suffixes used in the schemas, and usage has been improved
+by replacing <code>java.math.BigDecimal</code> and  <code>java.math.BigInteger</code>
+references with <code>java.lang.Float</code> and <code>java.lang.Integer</code> references,
+respectively.</p>
+
+<p>Here's a sample of the generated code (reformated for a reasonable page width, and
+leaving out the methods), showing the same classes as in the
+<a href="%cgexample2%#code">Example 2 generated code</a> (with the significant differences
+shown in bold):</p>
+
+<div id="source"><pre>
+/** 
+ * 
+ The Low Fare Search Response message contains a number of 'Priced Itinerary'
+ options. Each includes:
+ - A set of available flights matching the client's request.
+ - Pricing information including taxes and full fare breakdown for each passenger
+ type
+ - Ticketing information
+ - Fare Basis Codes and the information necessary to make a rules entry.
+ This message contains similar information to a standard airline CRS or GDS Low
+ Fare Search Response message.
+ 
+ * 
+ * Schema fragment(s) for this class:
+ * &lt;pre>
+ * &amp;lt;xs:element xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="OTA_AirLowFareSearchRS">
+ *   &amp;lt;xs:complexType>
+ *     &amp;lt;xs:sequence>
+ *       &amp;lt;xs:choice>
+ *         &amp;lt;xs:sequence>
+ *           &amp;lt;xs:element type="ns:SuccessType" name="Success"/>
+ *           &amp;lt;xs:element type="ns:WarningsType" name="Warnings"
+                 minOccurs="0">
+ *             &amp;lt;!-- Reference to inner class Warnings -->
+ *           &amp;lt;/xs:element>
+ *           &amp;lt;xs:element type="ns:PricedItinerariesType"
+                 name="PricedItineraries"/>
+ *         &amp;lt;/xs:sequence>
+ *         &amp;lt;xs:element type="ns:ErrorsType" name="Errors"/>
+ *       &amp;lt;/xs:choice>
+ *     &amp;lt;/xs:sequence>
+ *     &amp;lt;xs:attributeGroup ref="ns:OTA_PayloadStdAttributes"/>
+ *   &amp;lt;/xs:complexType>
+ * &amp;lt;/xs:element>
+ * 
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="SuccessType"/>
+ * 
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItinerariesType">
+ *   &amp;lt;xs:sequence>
+ *     &amp;lt;xs:element name="PricedItinerary" maxOccurs="unbounded">
+ *       &amp;lt;!-- Reference to inner class PricedItinerary -->
+ *     &amp;lt;/xs:element>
+ *   &amp;lt;/xs:sequence>
+ * &amp;lt;/xs:complexType>
+ * 
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ErrorsType">
+ *   &amp;lt;xs:sequence>
+ *     &amp;lt;xs:element type="ns:ErrorType" name="Error" maxOccurs="99">
+ *       &amp;lt;!-- Reference to inner class _Error -->
+ *     &amp;lt;/xs:element>
+ *   &amp;lt;/xs:sequence>
+ * &amp;lt;/xs:complexType>
+ * &lt;/pre>
+ */
+public class <b>LowFareSearchResponse</b>
+{
+    private int choiceSelect = -1;
+    private static final int SUCCESS_CHOICE = 0;
+    private static final int ERRORS_CHOICE = 1;
+    private Warnings warnings;
+    private <b>PricedItinerary[] pricedItineraries</b>;
+    private <b>_Error[] errors</b>;
+    private <b>PayloadStd payloadStd</b>;
+    ...
+    /** 
+     *  Itinerary with pricing information.
+     * 
+     * Schema fragment(s) for this class:
+     * &lt;pre>
+     * &amp;lt;xs:element xmlns="http://www.opentravel.org/OTA/2003/05"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItinerary"
+           maxOccurs="unbounded">
+     *   &amp;lt;xs:complexType>
+     *     &amp;lt;xs:complexContent>
+     *       &amp;lt;xs:extension base="PricedItineraryType">
+     *         &amp;lt;xs:attribute type="xs:int" use="optional"
+                   name="OriginDestinationRefNumber"/>
+     *       &amp;lt;/xs:extension>
+     *     &amp;lt;/xs:complexContent>
+     *   &amp;lt;/xs:complexType>
+     * &amp;lt;/xs:element>
+     * 
+     * &amp;lt;xs:complexType xmlns="http://www.opentravel.org/OTA/2003/05"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItineraryType">
+     *   &amp;lt;xs:sequence>
+     *     &amp;lt;xs:element type="AirItineraryPricingInfoType"
+               name="AirItineraryPricingInfo" minOccurs="0">
+     *       &amp;lt;!-- Reference to inner class PricingInfo -->
+     *     &amp;lt;/xs:element>
+     *   &amp;lt;/xs:sequence>
+     *   &amp;lt;xs:attribute type="xs:string" use="required"
+             name="SequenceNumber"/>
+     * &amp;lt;/xs:complexType>
+     * &lt;/pre>
+     */
+    public static class PricedItinerary
+    {
+        private <b>PricingInfo pricingInfo</b>;
+        private String sequenceNumber;
+        private <b>Integer refNumber</b>;
+        ...
+</pre></div>
+
+<p>The differences from the generated code shown for the last example are the names used
+for the top-level class and some of the other classes, arrays in place of typed lists,
+the names of some of the fields
+and the simplified form of the <code>PricedItinerary</code> class (which only includes
+three fields rather than six, due to components eliminated by customizations), and the
+use of a <code>java.lang.Integer</code> in place of a <code>java.math.BigInteger</code>
+for the referemce number within the <code>PricedItinerary</code> class.</p>
+
+<p>Next: <a href="%cgexample4%">Example 4: Modular code generation</a></p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

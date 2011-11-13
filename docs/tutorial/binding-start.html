@@ -1,0 +1,479 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>A basic binding</title>
+      <style type="text/css">
+        @import url("../style/tigris.css");
+        @import url("../style/maven.css");
+    .dtd-comment {
+      color: #993399;
+      font-weight: bold;
+      </style>
+      <script type="text/javascript">
+        if (document.layers) {
+          document.writeln('<link rel="stylesheet" type="text/css" href="../style/ns4_only.css" media="screen" /><link rel="stylesheet" type="text/css" href="../style/maven_ns4_only.css" media="screen" />')
+        }
+      </script>
+      <link rel="stylesheet" type="text/css" href="../style/print.css" media="print" />
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body class="composite">
+<div id="banner">
+<table border="0" cellspacing="0" cellpadding="8" width="100%">
+  <tbody>
+    <tr>
+      <td><h1>A basic binding</h1>
+      </td>
+      <td>
+      <div align="right" id="login"><a href="http://sourceforge.net">
+      <img src="http://sourceforge.net/sflogo.php?group_id=69358&amp;type=5"
+        width="210" height="62" border="0" alt="SourceForge.net Logo"></a></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="breadcrumbs">
+<table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div align="right">
+          <a href="../index.html">Home Page</a> |
+          <a href="http://www.sourceforge.net/projects/jibx/">SourceForge Page</a> |
+          <a href="../mail-lists.html">Mailing Lists</a> |
+          <a href="http://wiki.jibx.org">Wiki</a> |
+          <a href="../bugs.html">Bugs</a> |
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">Downloads</a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="8" width="100%" id="main">
+  <tbody>
+	<tr valign="top">
+	  <td id="leftcol" width="20%">
+		<div id="navcolumn">
+
+
+                  <div>
+            <strong>JiBX Basics</strong>
+                              <div>
+            <small>
+                    <a href="../index.html">Overview</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../flexibility.html">Flexibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../performance.html">Performance</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../clean-code.html">Clean code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../status.html">News and Status</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../comments.html">User Comments</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../sponsors.html">Sponsors</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../support.html">Support and Training</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bugs.html">Bugs</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../start.html">Getting Started</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="binding-tutorial.html">Binding Tutorial</a>
+                  </small>
+                              <div>
+            <small>
+                    <span class="menu-selection">A basic binding</span>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-extras.html">Binding extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-structures.html">Structure mapping</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-collects.html">Collections and arrays</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-mappings.html">Using mappings</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-advanced.html">Advanced binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-extend.html">Method hooks</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-custom.html">Custom code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../bindcomp.html">Binding Compiler</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bindonload.html">Binding on Load</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../runtime.html">Runtime</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../extras.html">JiBX Extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../building.html">Building JiBX</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../schema.html">Schema Compatibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../mail-lists.html">Mailing Lists</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../faq.html">FAQ</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../contributing.html">Contributing</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibx-license.html">License</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Binding Definition</strong>
+                              <div>
+            <small>
+                    <a href="../details/binding-overview.html">Definition details</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../details/contexts.html">Definition contexts</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/conversions.html">Conversions</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/xml-summary.html">XML summary</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/binding-element.html">&lt;binding&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/include-element.html">&lt;include&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/format-element.html">&lt;format&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/namespace-element.html">&lt;namespace&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/mapping-element.html">&lt;mapping&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/value-element.html">&lt;value&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/structure-element.html">&lt;structure&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/collection-element.html">&lt;collection&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/binding-attributes.html">Attribute groups</a>
+                  </small>
+                </div>
+                      </div>
+                      </div>
+                        <div>
+            <strong>Usage API</strong>
+                              <div>
+            <small>
+                    <a href=".././api/index.html">Runtime JavaDocs</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Subprojects</strong>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Eclipse Plug-in</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Introduction</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/install.html">Install</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/usage.html">Usage</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../jibxtools/index.html">Generator Tools</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../axis2/index.html">Axis2 Usage</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibxsoap/index.html">JibxSoap</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../xsd2jibx/index.html">Xsd2Jibx</a>
+                  </small>
+                </div>
+                      </div>
+      
+
+        </div>
+      </td>
+      <td>
+
+
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">Getting Started</a></h3>
+      
+<p>Here's a simple example of using JiBX. Suppose you have the following XML
+customer information document structure:</p>
+<div id="source"><pre>&lt;customer&gt;
+  &lt;person&gt;
+    &lt;cust-num&gt;123456789&lt;/cust-num&gt;
+    &lt;first-name&gt;John&lt;/first-name&gt;
+    &lt;last-name&gt;Smith&lt;/last-name&gt;
+  &lt;/person&gt;
+  &lt;street&gt;12345 Happy Lane&lt;/street&gt;
+  &lt;city&gt;Plunk&lt;/city&gt;
+  &lt;state&gt;WA&lt;/state&gt;
+  &lt;zip&gt;98059&lt;/zip&gt;
+  &lt;phone&gt;888.555.1234&lt;/phone&gt;
+&lt;/customer&gt;
+</pre></div>
+
+<p>JiBX provides great flexibility in binding your XML document structure to
+Java objects, so there are really many different ways you can represent this
+data using JiBX. For right now I'll stay with a Java object model that matches the
+XML document structure, and I'll just use plain Java data classes (fields only)
+to keep everything compact. Here's what these might look like for my
+customer document:</p>
+<div id="source"><pre>  public class Customer {
+    public Person person;
+    public String street;
+    public String city;
+    public String state;
+    public Integer zip;
+    public String phone;
+  }
+  
+  public class Person {
+    public int customerNumber;
+    public String firstName;
+    public String lastName;
+  }
+</pre></div>
+
+<p>This is keeping almost all the data as <code>String</code>s, with the
+exception of the customer number and the zip code. These are both values with
+natural representations as numbers, so I've gone ahead and expressed them that
+way in the Java classes. I used an <code>int</code> for the customer number
+because I can be sure I've got one of those. For the zip code I've instead used
+an <code>Integer</code>, as an example of a simple object type.</p>
+
+<p><a href="#figure1">Figure 1</a> shows the XML document, the Java classes, and a JiBX binding that
+connects the two. I've highlighted in green the top-level connection between the
+<b>customer</b> element and the <code>Customer</code> class, linked by the
+<b>mapping</b> element in the binding definition; and in blue the connection
+between the <b>person</b> element and the <code>Person</code> class, linked by
+the <b>structure</b> element in the binding definition.</p>
+
+<a name="figure1"><b>Figure 1. Simple binding example</b></a><br>
+<img src="images/example1.gif" width="578" height="296" alt="Simple binding example"/>
+
+      </div>
+      <div class="h3">
+      <h3><a name="diggingin">Digging into the binding</a></h3>
+
+<p>The <b>mapping</b> element in the <a href="#figure1">Figure 1</a> binding definition
+relates the named element (in this case <b>customer</b>) to a particular class
+(<code>Customer</code>). JiBX uses the defined mapping as a default for both marshalling
+instances of the class and unmarshalling occurrences of the element. Mappings can
+be nested, in which case the inner mappings are only active while marshalling or
+unmarshalling with the outer mapping. <b><i>Global</i></b> mappings - ones which are
+<i>not</i> nested inside other mappings - define elements that can be root
+elements of the XML document, and classes that can be root objects of the object
+structure. In <a href="#figure1">Figure 1</a>, the mapping from element <b>customer</b> to Java
+class <code>Customer</code> is a global mapping.</p>
+
+<p>The <b>structure</b> element in the binding definition defines the handling
+of an element or object class within a particular context. In this case the
+context of the <b>structure</b> element is the <b>mapping</b> from element
+<b>customer</b> to class <code>Customer</code>. The <b>structure</b> element is
+a very versatile player in JiBX binding definitions, with variations used for
+several purposes. In the <a href="#figure1">Figure 1</a> binding it's playing its basic role, with both
+an element name and an object reference (to the <code>person</code> field of the
+<code>Customer</code> class) supplied. This works very similarly to a
+<b>mapping</b> definition, but is specific to the context rather than setting a
+general rule.</p>
+
+<p>This can be a confusing issue. Since <b>mapping</b> and <b>structure</b> have
+a lot in common, why use one instead of the other? Well, there are cases where
+you <i>have</i> to use one or the other. The root element for a document to be
+unmarshalled must have a <b>mapping</b>, as must the class of a root object to
+be marshalled. On the other hand, there are things you can do with a
+<b>structure</b> element that you can't do with a <b>mapping</b> (some of which
+you'll see in a later section of this tutorial, <a href="binding-structures.html">Structure mapping</a>).
+A good principle to start with is to use a <b>mapping</b> only for the root
+element of your document (or the class of your root object, whichever way you
+prefer to see this). Later in this tutorial you'll learn about other
+circumstances where a <b>mapping</b> should be used, but only using it for the
+root element/class works fine for now.</p>
+
+<p>JiBX bindings include a number of elements with attributes that reference
+classes, such as the <b>mapping</b> element in the <a href="#figure1">Figure
+1</a> binding. In this tutorial I've kept the bindings as simple as possible by
+using the default package for all the sample classes. When you're using JiBX
+with your own classes you'll need to remember to use <i>fully-qualified</i>
+names for all your classes (with leading package information, such as
+<code>org.jibx.runtime.Utility</code>).</p>
+
+<p>Just to finish up with the <a href="#figure1">Figure 1</a> binding, besides the <b>mapping</b> and
+<b>structure</b> elements I've already discussed, all the other components
+of the binding definition are <b>value</b> elements. These are the grunt workers
+of the binding definition, handling a single text component. In XML terms, the
+text component may be an attribute, element, ordinary character data, or CDATA
+section. On the Java side, the text component may be a value of any primitive or
+object type that has a defined conversion to and from a simple
+<code>String</code> value (JiBX has a set of built-in <a href="../details/conversions.html">basic
+conversions</a>, and you can easily <a href="binding-extend.html#serdeser">define extensions</a>
+using static serialize and deserialize methods). In the <a href="#figure1">Figure 1</a> binding, all the
+<b>value</b> elements are defining bindings between an XML element name and a
+corresponding Java class field.</p>
+
+<div><p align="center"><a href="binding-extras.html"><b>Next: Binding Extras</b></a></p></div>
+
+      </div>
+      </div>
+      </div>
+
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" cellspacing="0" cellpadding="4">
+  <tbody>
+    <tr>
+      <td> &copy; 2003-2008, Dennis M. Sosnoski (<a href="http://www.sosnoski.com">Sosnoski Software Solutions, Inc.</a>).
+      Licensed to the JiBX Project for free distribution and use. </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+</body>
+</html>

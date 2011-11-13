@@ -1,0 +1,48 @@
+<!-- binding testing abstract mappings used as optional components in
+  collection -->
+<binding track-source="true">
+  <namespace prefix="xsi" uri="http://www.w3.org/2001/XMLSchema-instance"/>
+  <mapping abstract="true" class="simple.Customer5Base">
+    <structure field="name" name="name"
+        marshaller="simple.NameAliasableMarshallerUnmarshaller"
+        unmarshaller="simple.NameAliasableMarshallerUnmarshaller"/>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+  <mapping name="customer" class="simple.Customer5" value-style="attribute"
+      extends="simple.Customer5Base">
+    <value name="nil" ns="http://www.w3.org/2001/XMLSchema-instance"
+        constant="false" usage="optional"/>
+    <structure label="customer5-definition">
+      <structure map-as="simple.Customer5Base"/>
+      <value name="version" constant="1.0"/>
+      <value name="subversion" constant="A" style="element" usage="optional"/>
+      <value name="customer-id" field="customerId"/>
+      <value name="repeat-customer" field="repeat" default="false"/>
+      <value name="order-count" field="orderCount" default="0"/>
+      <value name="discount" field="discount" default="1.0"/>
+      <collection usage="optional" field="referrals">
+        <structure name="customer5a" map-as="simple.Customer5a"
+            usage="optional"/>
+        <structure name="customer5b" map-as="simple.Customer5b"
+            usage="optional"/>
+        <structure name="customer5c" map-as="simple.Customer5c"
+            usage="optional"/>
+      </collection>
+    </structure>
+  </mapping>
+  <mapping class="simple.Customer5a" abstract="true">
+    <value name="source" field="sourceCode"/>
+    <structure map-as="simple.Customer5Base"/>
+  </mapping>
+  <mapping class="simple.Customer5b" abstract="true">
+    <structure map-as="simple.Customer5Base"/>
+  </mapping>
+  <mapping class="simple.Customer5c" abstract="true">
+    <structure using="customer5-definition"/>
+    <value name="quality" field="qualityCode"/>
+  </mapping>
+</binding>

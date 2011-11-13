@@ -1,0 +1,60 @@
+<schema-set prefer-inline="true" generate-all="false" package="org.ota.air"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float">
+  <name-converter strip-prefixes="OTA_"
+      strip-suffixes="Type AttributeGroup Group Attributes"/>
+  <schema-type type-name="dateTime" java-class="org.joda.time.DateTime"
+      serializer="org.jibx.runtime.JodaConvert.serializeUTCDateTime"
+      deserializer="org.jibx.runtime.JodaConvert.deserializeUTCDateTime"/>
+  <schema-type type-name="date" format-name="LocalDate.default"/>
+  <schema-type type-name="time" format-name="LocalTime.local"/>
+  <schema name="OTA_AirLowFareSearchRQ.xsd" includes="OTA_AirLowFareSearchRQ">
+    <element name="OTA_AirLowFareSearchRQ" class-name="LowFareSearchRequest">
+      <element path="**" name="AlternateLocationInfo" ignore="true"/>
+      <element path="**" name="SpecificFlightInfo" ignore="true"/>
+      <element path="**" name="ProcessingInfo" ignore="true"/>
+    </element>
+  </schema>
+  <schema name="OTA_AirLowFareSearchRS.xsd" includes="OTA_AirLowFareSearchRS">
+    <element name="OTA_AirLowFareSearchRS" class-name="LowFareSearchResponse"/>
+  </schema>
+  <schema name="OTA_AirCommonTypes.xsd">
+    <complexType name="FareType">
+      <element path="**" name="Taxes" ignore="true"/>
+      <element path="**" name="Fees" ignore="true"/>
+      <element path="**" name="FareConstruction" ignore="true"/>
+      <element path="**" name="UnstructuredFareCalc" ignore="true"/>
+    </complexType>
+    <complexType name="FareInfoType">
+      <element path="**" name="Date" ignore="true"/>
+      <element path="**" name="FareInfo" ignore="true"/>
+    </complexType>
+    <complexType name="PricedItinerariesType">
+      <attribute path="**" name="OriginDestinationRefNumber" value-name="refNumber"/>
+    </complexType>
+    <complexType name="PricedItineraryType">
+      <element path="**" name="AirItinerary" ignore="true"/>
+      <element path="**" name="AirItineraryPricingInfo" value-name="pricingInfo"/>
+      <element path="**" name="Notes" ignore="true"/>
+      <element path="**" name="TicketingInfo" ignore="true"/>
+    </complexType>
+    <complexType name="AirItineraryPricingInfoType">
+      <element path="**" name="PTC_FareBreakdowns" ignore="true"/>
+    </complexType>
+    <complexType name="TravelerInformationType">
+      <element path="**" name="AirTraveler" ignore="true"/>
+    </complexType>
+    <complexType name="TravelerInfoSummaryType">
+      <element path="**" name="PriceRequestInformation" ignore="true"/>
+    </complexType>
+  </schema>
+  <schema name="OTA_AirPreferences.xsd">
+    <complexType name="AirSearchPrefsType">
+      <element path="**" name="VendorPref" ignore="true"/>
+      <element path="**" name="FlightTypePref" ignore="true"/>
+      <element path="**" name="EquipPref" ignore="true"/>
+      <element path="**" name="CabinPref" ignore="true"/>
+      <element path="**" name="TicketDistribPref" ignore="true"/>
+    </complexType>
+  </schema>
+</schema-set>

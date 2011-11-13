@@ -1,0 +1,87 @@
+<!-- <binding value-style="attribute" track-source="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="binding.xsd">	-->
+<!-- Binding definition shared between normal and precompiled bindings. -->
+<binding value-style="attribute" track-source="true">
+  
+  <mapping abstract="true" type-name="binding-base"
+      class="org.jibx.binding.model.BindingElement"
+      pre-set="preSet" pre-get="preGet">
+    <value field="m_name" name="name" usage="optional"/>
+    <value field="m_direction" name="direction" usage="optional" default="both"/>
+    <value field="m_forwardReferences" name="forwards" default="true"/>
+    <value field="m_targetPackage" name="package" usage="optional"/>
+    <value field="m_trackSource" name="track-source" usage="optional"/>
+    <value field="m_forceClasses" name="force-classes" usage="optional"/>
+    <value field="m_addConstructors" name="add-constructors" usage="optional"/>
+    <value field="m_trimWhitespace" name="trim-whitespace" usage="optional"/>
+    <value field="m_majorVersion" name="major-version" usage="optional"/>
+    <value field="m_minorVersion" name="minor-version" usage="optional"/>
+    <structure type="org.jibx.binding.model.NestingElementBase">
+      <structure field="m_nestingAttrs"/>
+    </structure>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.NameAttributes" abstract="true">
+    <value name="name" field="m_name" usage="optional"/>
+    <value name="prefix" field="m_prefix" usage="optional"/>
+    <value name="ns" field="m_uri" usage="optional"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.NestingAttributes" abstract="true">
+    <value name="value-style" field="m_styleName" usage="optional"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.ObjectAttributes" abstract="true">
+    <value name="factory" field="m_factoryName" usage="optional"/>
+    <value name="pre-set" field="m_preSetName" usage="optional"/>
+    <value name="post-set" field="m_postSetName" usage="optional"/>
+    <value name="pre-get" field="m_preGetName" usage="optional"/>
+    <value name="marshaller" field="m_marshallerName" usage="optional"/>
+    <value name="unmarshaller" field="m_unmarshallerName" usage="optional"/>
+    <value name="nillable" field="m_isNillable" usage="optional"/>
+    <value name="create-type" field="m_createType" usage="optional"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.StringAttributes" abstract="true">
+    <value name="serializer" field="m_serializerName" usage="optional"/>
+    <value name="deserializer" field="m_deserializerName" usage="optional"/>
+    <value name="enum-value-method" field="m_enumValueName" usage="optional"/>
+    <value name="default" field="m_defaultText" usage="optional"/>
+    <value name="format" get-method="getQualifiedFormat"
+        set-method="setQualifiedFormat" usage="optional"/>
+    <value name="whitespace" field="m_whitespaceName" usage="optional"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.StructureAttributes" abstract="true">
+    <value name="ordered" field="m_isOrdered" usage="optional" default="true"/>
+    <value name="choice" field="m_isChoice" usage="optional"/>
+    <value name="flexible" field="m_isFlexible" usage="optional"/>
+    <value name="allow-repeats" field="m_isAllowRepeats" usage="optional"/>
+    <value name="label" field="m_labelName" usage="optional"/>
+    <value name="using" field="m_usingName" usage="optional"/>
+  </mapping>
+  
+  <mapping name="namespace" pre-set="preSet"
+      class="org.jibx.binding.model.NamespaceElement">
+    <value name="uri" field="m_uri"/>
+    <value name="default" field="m_defaultName" default="none"/>
+    <value name="prefix" field="m_prefix" usage="optional"/>
+  </mapping>
+  
+  <mapping name="format" class="org.jibx.binding.model.FormatElement"
+      pre-set="preSet" post-set="postSet">
+    <value name="label" get-method="getQualifiedLabel"
+        set-method="setQualifiedLabel" usage="optional"/>
+    <value name="type" field="m_typeName"/>
+<!--    <value name="is-default" field="m_isDefault" usage="optional" default="true"/>  -->
+    <structure field="m_stringAttrs"/>
+  </mapping>
+  
+  <mapping name="include" pre-set="preSet"
+      class="org.jibx.binding.model.IncludeElement">
+    <value name="path" field="m_includePath" usage="required"/>
+    <value name="precompiled" field="m_precompiled" usage="optional"/>
+  </mapping>
+  
+</binding>

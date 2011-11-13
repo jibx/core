@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Jibx2Wsdl Tool</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro"></a>Jibx2Wsdl tool</h3>
+
+<p>Jibx2Wsdl is the tool used to generate a binding definition and matching WSDL and schema
+definitions from existing Java code. It includes support for Java 5 enumerations and typed
+collections, JavaDoc extraction for use in service definitions, and all the data model
+customizations of <a href="%bindgen%">BindGen</a>. Jibx2Wsdl allows you to expose existing
+code as web services using Axis2 and JiBX data binding, while retaining the flexibility to
+modify your data model and adjust the JiBX bindings so that the XML is unchanged.
+Alternatively, you can just generate a WSDL and schema using Jibx2Wsdl and throw away the
+JiBX binding definitions, using the generated WSDL and schema as a quick start on a
+start-from-WSDL approach. The generated doc/lit wrapped WSDLs are compatible with Apache
+Axis2 and other major web service frameworks.</p>
+
+      </div>
+      <div class="h3">
+      <h3>Running Jibx2Wsdl</h3>
+      
+<p>Jibx2Wsdl executes as a Java application, meaning it needs to be run directly from a
+console window using the "java" command, or though some equivalent technique (such as
+an Ant <code>&lt;java></code> task, discussed below). However it's being run, you need
+to include <i>jibx-tools.jar</i> from your JiBX installation <i>lib</i> directory in the
+Java classpath, along with the path for the compiled class files you'll use as input to
+the generation. You'll also need several of the other jars from the JiBX <i>lib</i>
+directory (including <i>jibx-bind.jar</i>, <i>jibx-schema.jar</i>, and <i>jibx-run.jar</i>).
+As long as these jars are in the same directory as <i>jibx-tools.jar</i> you don't need to
+list them in the classpath, though - they'll be picked up automatically.</p>
+
+<p>The Jibx2Wsdl application main class is <code>org.jibx.ws.wsdl.tools.Jibx2Wsdl</code>,
+and it takes as parameters the fully-qualified names of one or more root class(es) to be
+to be included in the binding generation. In schema terms, each of these root classes will
+be treated as a separate global definition.</p>
+
+<p>Here's a sample of running Jibx2Wsdl on Unix/Linux systems from the <i>examples/jibx2wsdl/example1</i>
+directory of the distribution (in a single line, shown split here only for formatting):</p>
+
+<div id="source"><pre>java -cp ../../../lib/jibx-tools.jar:start/bin org.jibx.ws.wsdl.tools.Jibx2Wsdl
+ com.sosnoski.ws.library.jibx2wsdl.BookServer1</pre></div>
+
+<p>On Windows, the corresponding command line is:</p>
+
+<div id="source"><pre>java -cp ..\..\..\lib\jibx-tools.jar;start\bin org.jibx.ws.wsdl.tools.Jibx2Wsdl
+ com.sosnoski.ws.library.jibx2wsdl.BookServer1</pre></div>
+
+<p>By default, Jibx2Wsdl output just goes to the current directory where it was executed. The
+generated root binding definition is named <i>binding.xml</i>, and the generated WSDL and schema
+name is derived from the target namespace (which in turn is derived from the Java package
+name).</p>
+
+      </div>
+      <div class="h3">
+      <h3>Using build tools</h3>
+
+<p>You can easily run Jibx2Wsdl from an Ant build, just as you would any other Java application.
+The <i>build.xml</i> in the <i>examples/jibx2wsdl/example1</i> directory gives an example of this
+(which passes an optional source directory path parameter, in addition to a root class name),
+as shown below:</p>
+
+<div id="source"><pre>  &lt;path id="jibx-classpath">
+    &lt;fileset dir="${jibx-home}/lib" includes="**/*.jar"/>
+    &lt;pathelement location="bin"/>
+  &lt;/path>
+  ...
+  &lt;!-- Generate bindings, schemas, and WSDL -->
+  &lt;target name="generate-wsdl" depends="compile-starter">
+    &lt;delete quiet="true" dir="${basedir}/gen"/>
+    &lt;mkdir dir="${basedir}/gen"/>
+    &lt;echo message="Running Jibx2Wsdl tool"/>
+    &lt;java classpathref="jibx-classpath"
+        classname="org.jibx.ws.wsdl.tools.Jibx2Wsdl" fork="true" failonerror="true">
+      &lt;arg value="-p"/>
+      &lt;arg value="${basedir}/start/bin"/>
+      &lt;arg value="-s"/>
+      &lt;arg value="${basedir}/start/src"/>
+      &lt;arg value="-t"/>
+      &lt;arg value="${basedir}/gen"/>
+      &lt;arg value="--strip-prefixes=m_"/>
+      &lt;arg value="com.sosnoski.ws.library.jibx2wsdl.BookServer1"/>
+    &lt;/java>
+  &lt;/target>
+</pre></div>
+
+<p>Most IDEs allow you to directly execute an Ant build target, so you can use the Ant
+approach to running Jibx2Wsdl from within your IDE.</p>
+
+      </div>
+      <div class="h3">
+      <h3>Command line parameters</h3>
+
+<p>You can pass a variety of command line parameters to Jibx2Wsdl, as listed below in
+alphabetical order:</p>
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th scope="col">Parameter</th>
+<th scope="col">Purpose</th>
+</tr>
+<tr class="a">
+<td><code>-b&nbsp;name</code></td>
+<td>Generated root binding definition file name (default name is binding.xml)</td>
+</tr>
+<tr class="b">
+<td><code>-c&nbsp;path</code></td>
+<td>Path to input customizations file</td>
+</tr>
+<tr class="a">
+<td><code>-d</code></td>
+<td>Use pure doc/lit style (rather than the wrapped style default, where individual
+method parameters are combined to form a request message). When this flag is used, each
+service method must take only one parameter. The XML representation of that parameter is
+used directly as the request message for the operation, and the XML representation of the
+return value is used directly as the response message for the operation.</td>
+</tr>
+<tr class="b">
+<td><code>-n&nbsp;uri=name,...</code></td>
+<td>Schema namespace URI and file name pairs (default generates file names from URIs)</td>
+</tr>
+<tr class="a">
+<td><code>-p&nbsp;path,...</code></td>
+<td>Paths for loading Java class files (default is the classpath used to run Jibx2Wsdl)</td>
+</tr>
+<tr class="b">
+<td><code>-s&nbsp;path,...</code></td>
+<td>Paths for loading Java source files (source is not used by default)</td>
+</tr>
+<tr class="a">
+<td><code>-t&nbsp;path</code></td>
+<td>Target directory path for generated output (default is current directory)</td>
+</tr>
+<tr class="b">
+<td><code>-u binding,...;schema,...</code></td>
+<td>Use existing bindings and schemas. This allows specifying one or more bindings and
+one or more schemas to be used for WSDL generation. The supplied bindings and schema
+definitions are used for service method parameter and return values with matching types,
+and any schemas containing definitions used are copied into the target directory for
+direct reference from the generated WSDL.</td>
+</tr>
+<tr class="a">
+<td><code>-v</code></td>
+<td>Verbose output</td>
+</tr>
+<tr class="b">
+<td><code>-w</code></td>
+<td>Wipe all files from target directory before generating output (ignored if the target directory is the same as the current directory)</td>
+</tr>
+<tr class="a">
+<td><code>-x&nbsp;class,...</code></td>
+<td>Names of extra classes to be included in the binding and schema generation (useful when
+the service definition class methods use interfaces or abstract classes as parameter
+types)</td>
+</tr>
+</table>
+
+<p>You need to specify one or more service definition class names as command line parameters
+to Jibx2Wsdl. Each class you name is used as a starting point for generating service
+definitions. Jibx2Wsdl examines each class listed to find methods to be exposed as web
+service operations. Each parameter type passed to a service method, or result type returned
+from a method, is then included in the binding and schema generation. These are recursively
+examined to find the complete set of classes necessary to represent your data. Jibx2Wsdl
+then generates binding and schema definitions for all of these classes. The service
+definition class names must be at the end of the command line, following any other command
+line parameters.</p>
+
+<p>You can pass global customizations to Jibx2Wsdl as command-line parameters,
+by using <code>--</code> as a special prefix to the customization attribute name.
+This is explained in more detail in the Jibx2Wsdl <a href="%j2wcustoms%#command">customization
+reference page</a>. Before digging into the details of customizations you may find
+it useful to review the Jibx2Wsdl <a href="%j2wexamples%">examples</a> to learn how Jibx2Wsdl
+works and see some basic applications of customizations.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

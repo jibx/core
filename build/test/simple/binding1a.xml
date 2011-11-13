@@ -1,0 +1,14 @@
+<!-- Try using a test-method for a structure with no associated object -->
+<binding>
+  <mapping name="customer" class="simple.Customer1">
+    <structure name="name" usage="optional" test-method="hasName">
+      <value name="first-name" field="firstName" usage="optional"/>
+      <value name="last-name" field="lastName" usage="optional"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+</binding>

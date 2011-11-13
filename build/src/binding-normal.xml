@@ -1,0 +1,151 @@
+<!-- <binding value-style="attribute" track-source="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="binding.xsd">	-->
+<!-- Binding applied when reading a normal binding definition. -->
+<binding value-style="attribute" track-source="true" name="normal"
+   package="org.jibx.binding.model">
+  
+  <include path="binding-shared.xml"/>
+  
+  <mapping name="binding" class="org.jibx.binding.model.BindingElement">
+    <structure map-as="binding-base"/>
+    <collection add-method="addTopChild" iter-method="topChildIterator">
+      <structure usage="optional" type="org.jibx.binding.model.NamespaceElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.FormatElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.IncludeElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.MappingElement"/>
+    </collection>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.PropertyAttributes" abstract="true">
+    <value name="field" field="m_fieldName" usage="optional"/>
+    <value name="type" field="m_declaredType" usage="optional"/>
+    <value name="test-method" field="m_testName" usage="optional"/>
+    <value name="flag-method" field="m_flagName" usage="optional"/>
+    <value name="get-method" field="m_getName" usage="optional"/>
+    <value name="set-method" field="m_setName" usage="optional"/>
+    <value name="usage" field="m_usageName" usage="optional" default="required"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.NestingElementBase" abstract="true">
+    <structure field="m_nestingAttrs"/>
+    <collection add-method="addChild" iter-method="childIterator"
+    	ordered="false">
+      <structure usage="optional"
+          type="org.jibx.binding.model.CollectionElement"/>
+      <structure usage="optional"
+          type="org.jibx.binding.model.StructureElement"/>
+      <structure usage="optional"
+          type="org.jibx.binding.model.ValueElement"/>
+    </collection>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.ContainerElementBase" abstract="true">
+    <value name="label" style="attribute" field="m_label" usage="optional"/>
+    <value name="using" style="attribute" field="m_using" usage="optional"/>
+    <structure field="m_objectAttrs"/>
+    <structure field="m_structureAttrs"/>
+    <structure map-as="org.jibx.binding.model.NestingElementBase"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.StructureElementBase" abstract="true">
+    <structure field="m_propertyAttrs"/>
+    <structure field="m_nameAttrs"/>
+    <structure map-as="org.jibx.binding.model.ContainerElementBase"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.TemplateElementBase" abstract="true">
+    <collection add-method="addTopChild" iter-method="topChildIterator">
+      <structure usage="optional" type="org.jibx.binding.model.NamespaceElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.FormatElement"/>
+      <!-- this should replace the MappingElement reference for 2.0
+      <structure usage="optional" type="org.jibx.binding.model.TemplateElement"/>
+      -->
+      <structure usage="optional" type="org.jibx.binding.model.MappingElement"/>
+    </collection>
+    <structure map-as="org.jibx.binding.model.ContainerElementBase"/>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.MappingElementBase" abstract="true"
+      pre-set="preSet">
+    <value name="abstract" field="m_isAbstract" usage="optional"/>
+    <value field="m_extendsName" name="extends" usage="optional"/>
+    <value name="type-name" get-method="getQualifiedTypeName"
+        set-method="setQualifiedTypeName" usage="optional"/>
+    <!-- "class" should really be in TemplateElementBase for 2.0 -->
+    <value name="class" get-method="getClassName" set-method="setClassName"
+        usage="optional"/>
+    <structure field="m_nameAttrs"/>
+    <structure map-as="org.jibx.binding.model.TemplateElementBase"/>
+  </mapping>
+  
+  <mapping name="mapping" class="org.jibx.binding.model.MappingElement">
+    <structure map-as="org.jibx.binding.model.MappingElementBase"/>
+  </mapping>
+  
+  <!-- 2.0 only
+  <mapping name="template" class="org.jibx.binding.model.TemplateElement">
+    <value name="label" field="m_label" usage="optional"/>
+    <value name="is-default" field="m_isDefault" usage="optional" default="true"/>
+    <value name="type-name" get-method="getTypeName" set-method="setTypeName"
+        usage="optional"/>
+    <value name="type-prefix" get-method="getTypePrefix"
+        set-method="setTypePrefix" usage="optional"/>
+    <value name="type-ns" get-method="getTypeUri" set-method="setTypeUri"
+        usage="optional"/>
+    <value name="base-name" get-method="getBaseName" set-method="setBaseName"
+        usage="optional"/>
+    <value name="base-prefix" get-method="getBasePrefix"
+        set-method="setBasePrefix" usage="optional"/>
+    <value name="base-ns" get-method="getBaseUri" set-method="setBaseUri"
+        usage="optional"/>
+    <structure map-as="org.jibx.binding.model.TemplateElementBase"/>
+  </mapping>
+  -->
+  
+  <mapping name="structure" class="org.jibx.binding.model.StructureElement"
+      pre-set="preSet">
+    <value name="map-as" get-method="getQualifiedMapAs"
+        set-method="setQualifiedMapAs" usage="optional"/>
+    <structure map-as="org.jibx.binding.model.StructureElementBase"/>
+  </mapping>
+  
+  <mapping name="collection" class="org.jibx.binding.model.CollectionElement"
+      pre-set="preSet">
+    <value name="load-method" field="m_loadMethodName" usage="optional"/>
+    <value name="size-method" field="m_sizeMethodName" usage="optional"/>
+    <value name="store-method" field="m_storeMethodName" usage="optional"/>
+    <value name="add-method" field="m_addMethodName" usage="optional"/>
+    <value name="iter-method" field="m_iterMethodName" usage="optional"/>
+    <value name="item-type" field="m_itemTypeName" usage="optional"/>
+    <structure map-as="org.jibx.binding.model.StructureElementBase"/>
+  </mapping>
+  
+  <mapping name="value" pre-set="preSet"
+      class="org.jibx.binding.model.ValueElement">
+    <value name="style" field="m_styleName" usage="optional"/>
+    <value name="constant" field="m_constantValue" usage="optional"/>
+    <value name="ident" field="m_identName" usage="optional" default="none"/>
+    <value name="nillable" field="m_isNillable" usage="optional"/>
+    <structure field="m_nameAttrs"/>
+    <structure field="m_propertyAttrs"/>
+    <structure field="m_stringAttrs"/>
+  </mapping>
+  
+  <!-- 2.0 only
+  <mapping name="input" class="org.jibx.binding.model.InputElement">
+    <structure map-as="org.jibx.binding.model.NestingElementBase"/>
+  </mapping>
+  
+  <mapping name="output" class="org.jibx.binding.model.OutputElement">
+    <structure map-as="org.jibx.binding.model.NestingElementBase"/>
+  </mapping>
+  
+  <mapping name="split" class="org.jibx.binding.model.SplitElement">
+    <structure map-as="org.jibx.binding.model.NestingElementBase"/>
+    <structure field="m_inputSide" usage="optional"/>
+    <structure field="m_outputSide" usage="optional"/>
+  </mapping>
+  -->
+  
+</binding>

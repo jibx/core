@@ -1,0 +1,500 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: BindGen Customizations</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3><a name="intro"></a>Introduction to customizations</h3>
+
+<p>BindGen supports extensive customizations for modifying the default conversions
+between Java data structures and XML schema representations. The customizations use
+an XML representation with a nested structure that matches how your Java classes are
+organized into packages. Here's a simple example:</p>
+
+<div id="source"><pre>&lt;custom force-mapping="true" strip-prefixes="m_">
+  &lt;package name="org.jibx.starter2" namespace="http://www.jibx.org/starters/fromcode">
+    &lt;class name="Address" requireds="street1 city"/>
+    &lt;class name="Customer" requireds="lastName firstName customerNumber">
+      &lt;value field="m_customerNumber" attribute="customerNumber"/>
+    &lt;/class>
+    &lt;class name="Item" requireds="id quantity price">
+      &lt;value get-method="getId" set-method="setId" attribute="id"/>
+      &lt;value property-name="quantity" attribute="quantity"/>
+    &lt;/class>
+  &lt;/package>
+&lt;/custom></pre></div>
+
+<p>This example defines four levels of customizations. The top level, those defined as
+attributes of the &lt;custom> element, apply to <b class="bold">all</b> classes which
+BindGen will process. In this case the first option, <i>force-mapping="true"</i>,
+tells BindGen to use global xs:complexType definitions for all classes other than simple
+text values, while the second one, <i>strip-prefixes="m_"</i> tells BindGen
+to ignore the prefix "m_" when converting Java field names to value names.</p>
+
+<p>The second level of customizations are defined by the &lt;package> element in the
+example. On this element, the required <i>name</i> attribute gives the
+name of the package, while the <i>namespace</i> attribute defines a
+namespace to be used for classes within that package.</p>
+
+<p>The third level of customizations are defined by the &lt;class> elements nested within
+the &lt;package> element. On these elements, the required <i>name</i>
+attribute gives the name of the class (relative to the containing &lt;package> element,
+if any), while the other attributes set options that apply to that class. In this
+example, the only options used at this level are telling BindGen that some of the values
+defined by the classes are required.</p>
+
+<p>Finally, the fourth level of customizations are defined by the &lt;value> elements
+within some of the &lt;class> elements. The <i>field</i>, 
+<i>get-method</i>/<i>set-method</i> pair, or <i>property-name</i> attributes both
+identify the value and tell BindGen how it is to be accessed, while the <i>attribute</i>
+attributes tell BindGen to use attribute to represent the values in XML, with the
+supplied names. If it seems like a lot of effort to have these separate elements just to
+say that a value is to be an attribute rather than an element, you'll be relieved to know
+that there's actually a simpler approach to do the same thing, using flag characters on
+names in the <i>requireds</i> list (or <i>optionals</i> list, if appropriate) of the
+containing &lt;class> element - but the &lt;value> element is also useful for other
+purposes, and this usage is a way to include them in this simple example.</p>
+
+</div>
+<div class="h3">
+<h3><a name="nesting"></a>Nesting in customizations</h3>
+
+<p>&lt;package> elements can be nested inside other &lt;package> elements. When
+&lt;package> and &lt;class> elements are nested within the customizations, the
+names used are always relative to the containing &lt;package> element. You can also
+use a &lt;class> element directly as a child of the &lt;custom> element, but in
+this case you need to specify the fully-qualified class name.</p>
+
+<p>You might expect inner classes to be handled the same way, nesting the &lt;class>
+element for the inner class within that for the containing class - but at least for now,
+that's not the case. BindGen instead requires a separate &lt;class> element as a
+sibling of that for the containing class, using a '$' separator for the inner class name
+(with the inner class name given as "Outer$Inner", for instance).</p>
+
+<p>There are three nesting customization elements: The &lt;custom> element
+itself, the &lt;package> element, and the &lt;class> element. As mentioned in the
+last section, the &lt;custom> element is always the root element of a customization
+document, and can have &lt;package> child elements, &lt;class> child elements,
+or both. &lt;package> elements can in turn contain other &lt;package> and/or
+&lt;class> child elements. The only restriction is that you need to nest these in
+a way that reflects the package structure - so if you have a &lt;package> element
+present for a particular package, any &lt;package> elements referring to subpackages
+and any &lt;class> elements referring to classes in that package or in subpackages
+must be nested inside the original &lt;package> element.</p>
+
+<p>An example might help explain this part: If you have a &lt;package> element
+referencing the "com.sosnoski.ws.library" package, and another &lt;package> element
+referencing the "com.sosnoski.ws.library.data" package, and a &lt;class> element
+referencing the "com.sosnoski.ws.library.data.Book" class, then these elements would
+need to be nested in that order. If you have another &lt;class> element referencing
+the "com.sosnoski.ws.store.Item" class, that's outside the package hierarchy for the
+first three elements. So these would be structured as:</p>
+
+<div id="source"><pre>  &lt;package name="com.sosnoski.ws.library" ...>
+    &lt;package name="data" ...>
+      &lt;class name="Book" .../>
+    &lt;/package>
+  &lt;/package>
+  &lt;class name="com.sosnoski.ws.store.Item" .../>
+</pre></div>
+
+<p>Note again that the names used for these nested &lt;package> and &lt;class> elements
+are always relative to the containing &lt;package>, if any.</p>
+
+</div>
+<div class="h3">
+<h3><a name="attrs"></a>Customization attributes</h3>
+
+<p>All the different nesting customization elements share a common basic set of attributes,
+and any values set for these attributes are inherited by child elements (unless overridden
+by a new setting at the child level). Here's the list:</p>
+
+<a name="nesting-attributes"></a>
+<h4>Nesting customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="force-mapping"></a>force-mapping</p></td>
+<td><p>Control whether mapping definitions (and corresponding schema xs:complexType
+or xs:simpleType definitions) are generated for each class. Normally BindGen only
+generates mapping definitions for classes specified on the command line, and for
+referenced classes used in more than one place in the data structure; this flag lets
+you change this behavior. Allowed values are "true" (meaning all classes should be
+handled as global schema types) and "false" (the default).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="force-names"></a>force-names</p></td>
+<td><p>Control whether element names are used as wrappers around the content of every
+class reference. By default, wrapper element names are not used when the reference is
+a required value unless the referenced class has a mapping definition, so classes which
+are only referenced in one place may be effectively inlined into the XML representation
+of the referencing class. Allowed values are "true" (meaning always use a wrapper
+element, the default) and "false".</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="javadoc-formatter"></a>javadoc-formatter</p></td>
+<td><p>Fully-qualified class name for JavaDoc formatter to be used, which must implement
+the <code>org.jibx.custom.classes.IDocumentFormatter</code>. The function of the
+formatter is to retrieve JavaDoc text from classes, fields, or methods, and to format
+the text for use in schema documentation, so by using your own formatter you can make
+selective changes in cases where JavaDoc conventions (such as the standard "Get the XXX
+value" text generally used at the start of read access method JavaDocs) don't match the
+form of documentation needed in schema definitions. The default implementation is
+<code>org.jibx.schema.generator.DocumentFormatter</code>, which can easily be used as
+a base class for your own customized implementation.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="map-abstract"></a>map-abstract</p></td>
+<td><p>Use abstract mappings (corresponding to xs:complexType definitions) for classes
+if "true", or concrete mappings (corresponding to xs:element definitions) if "false".</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="namespace"></a>namespace</p></td>
+<td><p>Basic namespace URI used for definitions. Note that by default, this will just be
+a base value which will be extended for child packages (see <b class="bold">namespace-style</b>
+attribute, below).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="namespace-style"></a>namespace-style</p></td>
+<td><p>Technique used to derive namespace URIs. Values are "none", "package", or "fixed".
+The default is "package", meaning namespaces are derived from package names. To set a
+fixed namespace for a package and all child packages, you need to both specify the
+namespace (see <b class="bold">namespace</b> attribute, above) and set this values "fixed".</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="name-style"></a>name-style</p></td>
+<td><p>Technique used to derive XML names from Java value names. This can be "camel-case",
+"upper-camel-case", "hyphenated", "dotted", or "underscored" (all hopefully somewhat
+self-explanatory). "camel-case" is the default.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="property-access"></a>property-access</p></td>
+<td><p>Control how values within a class are found by BindGen and accessed by the
+generated binding. Allowed values are "true" (meaning to use get/set access methods,
+as defined for JavaBean properties) and "false" (meaning use fields directly, the
+default).</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="require"></a>require</p></td>
+<td><p>Types to be treated as required values (unless otherwise specified). This can be
+"none", "primitives", "objects", or "all". The default is "primitives".</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="strip-prefixes"></a>strip-prefixes</p></td>
+<td><p>Prefix strings to be stripped from Java field names before converting to XML
+element or attribute names. The value is a list of prefix strings, separated by whitespace
+characters.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="strip-suffixes"></a>strip-suffixes</p></td>
+<td><p>Suffix strings to be stripped from Java field names before converting to XML
+element or attribute names. The value is a list of suffix strings, separated by whitespace
+characters.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="use-javadocs"></a>use-javadocs</p></td>
+<td><p>Control whether JavaDocs are exported to generated schemas. Possible values are
+"true" (the default) and "false".</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="value-style"></a>value-style</p></td>
+<td><p>Set the type of representation to be used for simple text values. The allowed
+values are "attribute" and "element". The default is to use attribute representation for
+primitive values and a few selected object types (the standard <code>java.lang</code>
+wrapper classes for primitive values, along with <code>java.math.BigDecimal</code> and
+<code>java.math.BigInteger</code> and date/time types), while using element representation
+for all other object types.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="wrap-collections"></a>wrap-collections</p></td>
+<td><p>Control whether wrapper elements (an element which contains the repeating child
+elements representing individual items in the collection) should be used for collection
+values. Possible values are "true" and "false" (the default).</p></td>
+</tr>
+</table>
+
+<p>Besides these common nesting customization attributes, each of the nesting elements
+defines its own customization attributes. The &lt;custom> element itself defines the
+following attributes, which are passed through to the generated binding definition as
+the corresponding attributes of the binding definition <a href="%binding%">&lt;binding>
+root element</a>:</p>
+
+<a name="custom-attributes"></a>
+<h4>&lt;custom> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="add-constructors"></a>add-constructors</p></td>
+<td><p>If the value of this customization attribute is "true", the binding compiler will
+add a default constructor to a bound class when necessary to make it usable in the
+binding. The allowed values are "true" and "false", with no default.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="direction"></a>direction</p></td>
+<td><p>This customization attribute is passed through to the generated binding to specify
+the types of conversions to and from XML to be supported. The allowed values are "input"
+(unmarshalling only), "output" (marshalling only), or "both" (both marshalling and
+unmarshalling). There is no default for this customization attribute, but the generated
+binding will by default operate as though the value "both" were set.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="force-classes"></a>force-classes</p></td>
+<td><p>If the value of this customization attribute is "true", it forces generation of
+marshaller/unmarshaller classes for top-level abstract mappings which are not extended
+by other mappings. Normally these classes would not be generated, since such mappings
+are never used directly within the binding. The generated classes can be used at runtime
+by custom code, though, as the equivalent of type mappings. The allowed values are
+"true" and "false", with no default.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="track-source"></a>track-source</p></td>
+<td><p>When this customization attribute is present with value "true", the binding
+compiler will add code to each bound object class to implement the
+<code>org.jibx.runtime.ITrackSource</code> interface and store source position
+information when instance objects are unmarshalled. This interface lets you retrieve
+information about the source document and specific line and column location of the
+document component associated with that object. The allowed values are "true" and
+"false", with no default.</p></td>
+</tr>
+</table>
+
+<p>The &lt;package> element defines only one attribute, besides the nesting attributes
+defined above:</p>
+
+<a name="package-attributes"></a>
+<h4>&lt;package> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="package-name"></a>name</p></td>
+<td><p>This required attribute gives the package name, relative to the containing
+&lt;package> element (if any).</p></td>
+</tr>
+</table>
+
+<p>The &lt;class> element defines the following attributes, in addition to the standard
+nesting customization attributes:</p>
+
+<a name="class-attributes"></a>
+<h4>&lt;class> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="create-type"></a>create-type</p></td>
+<td><p>Gives the type to be used when creating an instance of the class, as a
+fully-qualified class name. This customization is mostly useful in cases where the
+class is abstract or an interface, in which case some way of constructing instances
+of the class must be defined if the generated binding is going to be used for
+unmarshalling XML.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="deserializer"></a>deserializer</p></td>
+<td><p>Fully-qualifed class and method name for a static method used to deserialize a
+text string representing an instance of the class (see the corresponding
+attribute in the binding definition <a href="%bindingattrs%#string">string attribute
+group</a> for details). This may only be used in combination
+with the attribute <a href="#form">form="simple"</a>.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="element-name"></a>element-name</p></td>
+<td><p>Element name to be used for this class when generating a concrete mapping,
+corresponding to a schema global element definition.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="enum-value-method"></a>enum-value-method</p></td>
+<td><p>This attribute is only relevant for Java 5 enum classes which have XML text values
+different from the enum value names. The value of the attribute must be the name of a
+method in the enum class which returns the XML text value. See the corresponding
+attribute in the binding definition <a href="%bindingattrs%#string">string attribute
+group</a> for details.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="excludes"></a>excludes</p></td>
+<td><p>List of value names to be excluded from the XML representation of the class. Names
+in the list are separated by whitespace characters.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="factory"></a>factory</p></td>
+<td><p>Gives a factory method to be used for creating an instance of the class, as a
+fully-qualified class and method name. This customization is mostly useful in cases
+where the class is abstract or an interface, in which case some way of constructing
+instances of the class must be defined if the generated binding is going to be used for
+unmarshalling XML.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="form"></a>form</p></td>
+<td><p>Form of XML representation to be used for the class. The allowed values are
+"default" (meaning a concrete mapping corresponding to a schema global element definition
+for classes specified as input to BindGen, and an abstract mapping corresponding to a
+schema complex type definition for referenced classes), "abstract-mapping" (meaning an
+abstract mapping is required), "concrete-mapping" (meaning a concrete mapping is
+required), and "simple" (meaning the class represents a simple text value corresponding
+to a schema simple type).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="includes"></a>includes</p></td>
+<td><p>List of value names to be included in the XML representation of the class. Names
+in the list are separated by whitespace characters, and optionally prefixed with leading
+'@' (to indicate an attribute representation) or '/' (to indicate an element
+representation) characters. When this attribute is used, only the
+values in the list will be included in the XML representation.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="name"></a>name</p></td>
+<td><p>This required attribute gives the class name, relative to the containing
+&lt;package> element (if any).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="optionals"></a>optionals</p></td>
+<td><p>List of value names to be treated as optional in the XML representation of the
+class. Names in the list are separated by whitespace characters, and optionally prefixed
+with leading '@' (to indicate an attribute representation) or '/' (to indicate an element
+representation) characters.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="requireds"></a>requireds</p></td>
+<td><p>List of value names to be treated as required in the XML representation of the
+class. Names in the list are separated by whitespace characters, and optionally prefixed
+with leading '@' (to indicate an attribute representation) or '/' (to indicate an element
+representation) characters.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="serializer"></a>serializer</p></td>
+<td><p>Fully-qualifed class and method name for a static method used to serialize an
+instance of the class to a text string (see the corresponding
+attribute in the binding definition <a href="%bindingattrs%#string">string attribute
+group</a> for details). This may only be used in combination
+with the attribute <a href="#form">form="simple"</a>.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="type-name"></a>type-name</p></td>
+<td><p>Complex type name to be used for this class when generating an abstract mapping,
+corresponding to a schema global complex type definition.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="use-super"></a>use-super</p></td>
+<td><p>Controls whether the values from the superclass will be included in the XML
+representation of this class. The allowed values are "true" (the default) and "false".</p></td>
+</tr>
+</table>
+
+<p>The &lt;value> element uses a separate set of customization attributes. Here's the
+list of those attributes:</p>
+
+<a name="value-attributes"></a>
+<h4>&lt;value> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="actual-type"></a>actual-type</p></td>
+<td><p>Gives the type of a value, as a fully-qualified class name. This overrides the
+declared type for a field or property.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="attribute"></a>attribute</p></td>
+<td><p>This customization makes the XML representation of the value an attribute. The
+value of this attribute is the name to be used for the value. If this attribute is
+used, the <a href="#element">element</a> attribute cannot be used.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="value-create"></a>create-type</p></td>
+<td><p>Gives the type to be used when creating an instance of the value, as a
+fully-qualified class name. This customization is mostly useful in cases where the
+value type is an abstract class or interface which cannot be created directly, in
+which case some alternative way of constructing instances of the class must be defined
+(which may be done at the point of reference, by using this attribute to specify an
+implementation class or the <a href="#value-factory">factory</a> attribute to specify a
+constuction method, or at the class level by the &lt;class> customization attribute
+<a href="#create-type">create-type</a> or <a href="#factory">factory</a>). As a
+convenience, the special case of values of type <code>java.util.List</code> by default
+use the create-type <code>java.util.ArrayList.</code>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="element"></a>element</p></td>
+<td><p>This customization makes the XML representation of the value an element. The
+value of this attribute is the name to be used for the value. If this attribute is
+used, the <a href="#attribute">attribute</a> attribute cannot be used.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="value-factory"></a>factory</p></td>
+<td><p>Gives a static factory method to be used for creating an instance of the value,
+as a fully-qualified class and method name. As with the <a href="value-create">create-type</a>
+customization, this is mostly useful in cases where the value type is an abstract class
+or interface which cannot be created directly. See the corresponding
+attribute in the binding definition <a href="%bindingattrs%#object">object attribute
+group</a> for details.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="field"></a>field</p></td>
+<td><p>Defines the value as a field of the class. Either this attribute, a
+<a href="#property-name">property-name attribute</a>, or a
+<a href="#get-method">get-method</a>/<a href="#set-method">set-method</a> attribute
+pair is required.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="get-method"></a>get-method</p></td>
+<td><p>Defines the value by a read access method name. When this attribute is used,
+a <a href="#set-method">set-method</a> attribute must also be used unless the XML
+conversions are output-only (see the <a href="#direction">direction attribute</a>).
+Either this attribute pair, a <a href="#field">field attribute</a>, or a
+<a href="#property-name">property-name attribute</a> is required.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="item-name"></a>item-name</p></td>
+<td><p>This attribute only applies when the value is an array or collection. In this
+case, the attribute value is the name used for each item in the collection. If not
+specified, the name "item" is used by default.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="item-type"></a>item-type</p></td>
+<td><p>This attribute only applies when the value is an array or collection. In this
+case, the attribute value is the actual type of items in the collection (as a
+fully-qualified class name). This attribute is mainly useful when working with untyped
+(pre-Java 5) collection classes, where the item type cannot be found by examination of
+the Java code.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="property-name"></a>property-name</p></td>
+<td><p>Defines the value by property name, which must have matching "get"/"set" (or
+"is"/"set", in the case of a boolean value) methods. Either this attribute, a
+<a href="#field">field attribute</a>, or a
+<a href="#get-method">get-method</a>/<a href="#set-method">set-method</a> attribute
+pair is required.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="required"></a>required</p></td>
+<td><p>Specifies whether the value is treated as a required component ("true") or
+optional component ("false") of the XML representation.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="set-method"></a>set-method</p></td>
+<td><p>Defines the value by a write access method name. When this attribute is used,
+a <a href="#get-method">get-method</a> attribute must also be used unless the XML
+conversions are input-only (see the <a href="#direction">direction attribute</a>).
+Either this attribute pair, a <a href="#field">field attribute</a>, or a
+<a href="#property-name">property-name attribute</a> is required.</p></td>
+</tr>
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="command"></a>Command line customizations</h3>
+
+<p>You can also pass global customizations to BindGen as command-line parameters,
+without the need to create a customizations file, by using "--" as a special prefix to
+the customization attribute value. So to set the same global options as used in the
+<a href="#intro">introductory example</a> customizations, you'd use <code>--strip-prefixes=m_</code>
+and <code>--force-mapping=true</code> on the BindGen command line. No quotes are needed for
+the attribute value when you use this technique. If you want to set a customization
+that takes a list of multiple values, just use commas rather than spaces as
+separators between the individual values (so to ignore the prefixes "m_" and "s_" on
+field names, for instance, you'd use the command line parameter <code>--strip-prefixes=m_,s_</code>).
+This technique only allows you to set global customizations,
+though, so if you're doing anything at the individual package or class level you'll
+still need to use a customizations file.</p>
+
+
+</div>
+</div>
+</div>
+</body>
+</html>

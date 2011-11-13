@@ -1,0 +1,12 @@
+<!-- Basic mapping using the DomFragmentMapper to handle arbitrary content 
+ -->
+<binding>
+  <mapping name="contact" class="extras.DomContact3">
+    <value name="first-name" field="m_firstName"/>
+    <value name="last-name" field="m_lastName"/>
+    <value name="phone" field="m_phone"/>
+    <structure field="m_information" usage="optional"
+        marshaller="org.jibx.extras.DomFragmentMapper"
+        unmarshaller="org.jibx.extras.DomFragmentMapper"/>
+  </mapping>
+</binding>

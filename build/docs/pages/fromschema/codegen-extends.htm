@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>CodeGen Extensions</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3><a name="intro"></a>CodeGen extensions</h3>
+
+<p>Extension customization elements are used to extend or modify the actual code generation.
+CodeGen allows you to apply extensions either to a particular schema or to a set of schemas,
+so they fit into the customization document structure as child elements of a <b>schema</b>
+or <b>schema-set</b> element. Since they always apply to all the schemas associated with the
+parent <b>schema</b> or <b>schema-set</b> element, they must precede any other child
+elements. Here's a sample to show how this works, with the extension elements shown in
+bold:</p>
+
+<code><pre>&lt;schema-set xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float">
+  <b>&lt;name-converter strip-prefixes="OTA_"
+      strip-suffixes="Type AttributeGroup Group Attributes"/>
+  &lt;class-decorator class="org.jibx.schema.codegen.extend.CollectionMethodsDecorator"/></b>
+  &lt;schema-set package="org.ota.air" names="OTA_Air*.xsd">
+    <b>&lt;schema-type type-name="dateTime" java-class="org.joda.time.DateTime"
+        format-name="DateTime.zoned"/></b>
+    &lt;schema-set generate-all="false" prefer-inline="true"
+        names="OTA_AirCommonTypes.xsd OTA_AirPreferences.xsd"/>
+    &lt;schema name="OTA_AirAvailRS.xsd">
+      &lt;element path="element[@name=OTA_AirAvailRS]/**/element[@name=OriginDestinationOption]"
+        ignore="true"/>
+    &lt;/schema>
+  &lt;/schema-set>
+  &lt;schema-set package="org.ota.hotel" names="OTA_Hotel*.xsd">
+    &lt;schema-set generate-all="false" prefer-inline="true"
+        names="OTA_HotelCommonTypes.xsd OTA_HotelContentDescription.xsd
+        OTA_HotelEvent.xsd OTA_HotelPreferences.xsd OTA_HotelReservation.xsd
+        OTA_HotelRFP.xsd"/>
+  &lt;/schema-set>
+  ...</pre></code>
+
+<p>The <b>name-converter</b> (modifying the way names are generated) and
+<b>class-decorator</b> (adding collection helper methods to generated classes, in
+this case) elements are both children of the root <b>schema-set</b> element, so they
+apply to all code generation. The <b>schema-type</b> element (changing the Java type
+generated for a schema datatype) is a child of the nested <b>schema-set</b>, so it
+only applies to the code generation for schemas included in that set.</p>
+
+</div>
+<div class="h3">
+<h3><a name="extensible"></a>Extensible extensions</h3>
+
+<p>Some extension elements are designed to support selecting a particular implementation
+for an interface used during code generation. These extension elements normally have one
+required attribute, the 'class' attribute (though in the case of the <b>name-converter</b>
+extension, this attribute has a default value matching a built-in class). This attribute
+is used to supply the fully-qualified class name of your implementation class. Besides
+this required attribute, you can add other attributes which correspond to properties of
+your implementation class. These added attributes will be used to configure an instance of
+the class before it is used in code generation, so that you can customize general-purpose
+extension classes for each use.</p>
+
+<p>CodeGen uses reflection to match any additional attributes to property or field names in
+your class (or in a superclass). First any hyphens in the attribute name are removed,
+with the character following any hyphen converted to uppercase. This modified name is
+then used to look for a method or field name, in three different forms.</p>
+
+<p>Due to some legacy code handling, the preferred form of match is somewhat unusual -
+CodeGen looks for a method name starting with <code>set</code> followed by the attribute
+name (with the first letter of the name converted to uppercase)
+and ending with <code>Text</code>. The method may have either one or two parameters, with
+the first parameter a <code>java.lang.String</code> and the second (if defined) a
+<code>org.jibx.runtime.IUnmarshallingContext</code>. This form of match is intended for
+when the supplied attribute value needs to use some special conversion. If a match of
+this type is found, CodeGen calls the method to set the value, passing the attribute
+value text as the first parameter (and the unmarshalling context as the second parameter,
+if used).</p>
+
+<p>If the preferred form of match described above is not found, CodeGen next looks for
+either a <code>set</code> method matching the attribute name (with the first letter of
+the attribute name converted to uppercase) with a single parameter, or a field name
+matching the attribute name with <code>m_</code> prefix. The method parameter or field
+may be of any of the following types: <code>boolean</code>/<code>java.lang.Boolean</code>;
+<code>double</code>/<code>java.lang.Double</code>; <code>float</code>/<code>java.lang.Float</code>;
+<code>int</code>/<code>java.lang.Integer</code>; <code>long</code>/<code>java.lang.Long</code>; 
+<code>java.lang.String</code>; or <code>java.lang.String[]</code>. CodeGen converts the
+supplied attribute value to the appropriate type (in the case of an array of
+<code>String</code>, by splitting at each embedded whitespace sequence and trimming all
+leading and trailing whitespace from each resulting value) and calls the method or sets
+the field value directly.</p>
+
+<p>You can see the source code for the classes mentioned in the remainder of this section
+for examples of this correspondence between attribute names and method or field names.</p>
+
+
+<h4><a name="naming"></a>Controlling name handling</h4>
+
+<p>The <b>name-converter</b> extension element is used to control how XML names are converted
+to Java names. It can be used in two ways: To change the behavior of the default name converter
+class used by CodeGen (<code>org.jibx.schema.codegen.extend.DefaultNameConverter</code>), or
+to completely replace that default name converter class with your own implementation.</p>
+
+<p>When used to change the behavior of the default name converter class used by CodeGen,
+the following attributes apply:</p>
+
+<h5>Default name converter customization attributes</h5>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="field-prefix"></a>field-prefix</p></td>
+<td><p>Prefix string to be added at the beginning of generated normal (non-static)
+field names. By default, the prefix string is empty.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="field-suffix"></a>field-suffix</p></td>
+<td><p>Suffix string to be added at the end of generated normal (non-static)
+field names. By default, the suffix string is empty.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="static-prefix"></a>static-prefix</p></td>
+<td><p>Prefix string to be added at the beginning of generated static
+field names. By default, the prefix string is empty.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="static-suffix"></a>static-suffix</p></td>
+<td><p>Suffix string to be added at the end of generated static
+field names. By default, the suffix string is empty.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="strip-prefixes"></a>strip-prefixes</p></td>
+<td><p>Prefix strings to be stripped from schema names before converting to Java names.
+The value is a list of prefix strings, separated by whitespace characters.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="strip-suffixes"></a>strip-suffixes</p></td>
+<td><p>Suffix strings to be stripped from schema names before converting to Java names.
+The value is a list of suffix strings, separated by whitespace characters.</p></td>
+</tr>
+</table>
+
+<p>When the <b>name-converter</b> element is used to replace the default name converter
+class with your own implementation, there's only one fixed attribute: The 'class'
+attribute. This attribute gives the fully-qualified name of your name converter
+implementation class, which must implement the
+<code>org.jibx.schema.codegen.extend.NameConverter</code> interface. You can use other
+attributes on the element to configure your name converter instance, as described
+<a href="#extensible">above</a>.</p>
+
+<p>If you do take the approach of writing your own name converter implementation you'll
+probably want to refer to the default
+<code>org.jibx.schema.codegen.extend.DefaultNameConverter</code> implementation and either
+use it as the base for your own implementation or just subclass and override methods
+selectively.</p>
+
+<h4><a name="extend"></a>Extending code generation</h4>
+
+<p>You can extend Java class generation to add special handling or features to the
+generated code, using <b>class-decorator</b> elements. Multiple <b>class-decorator</b>
+elements can be used, and by default the decorators are inherited by child <b>schema-set</b>
+and <b>schema-set</b> elements within the customizations. You can change this by using the
+<a href="%cgcustoms%#inherit-decorators">inherit-decorators</a> customization attribute.</p>
+
+<p>The required 'class' attribute must give the fully-qualified class name of a class
+implementing the <code>org.jibx.schema.codegen.extend.ClassDecorator</code> interface.
+This interface defines methods called by CodeGen during the process of generating a Java
+class. The method parameters give your implementation code ways to hook into the code
+generation, which uses the Eclipse Abstract Syntax Tree (AST) model. You can then modify
+the AST in various ways to meet your needs.</p>
+
+<p>Several decorators are provided with CodeGen, along with an abstract base class
+useful for writing your own decorators. These build-in decorators are described in the
+remainder of this section.</p>
+
+<h5>Base class for matching names</h5>
+
+<p><code>org.jibx.schema.codegen.extend.NameMatchDecoratorBase</code> is a convenient
+base class to use if you want your decorator to apply only to some of the data model
+classes. Decorators based on this class support a 'match-name' attribute on the
+<b>class-decorator</b> customization. The value of this optional attribute is a name
+pattern, which can include one or more '*' wildcard match characters. Subclasses can
+call the base class <code>matchName()</code> method to check if a class name matches
+the pattern.</p>
+
+<h5>Adding collection methods</h5>
+
+<p><code>org.jibx.schema.codegen.extend.CollectionMethodsDecorator</code> adds
+helper methods for collection values represented by <code>java.util.List</code> instances.
+The helper methods are <code>int sizeXXX()</code> to get the number of items in the list,
+<code>void addXXX(type)</code> to add an item to the list, <code>type getXXX(int)</code>
+to get an item by position, and <code>void clearXXX()</code> to remove all items from
+the list (where 'XXX' is the value name). No attributes are used with this decorator.</p>
+
+<h5>Changing the <code>List</code> implementation class</h5>
+
+<p><code>org.jibx.schema.codegen.extend.ListImplementationDecorator</code> lets you
+set the implementation class to be used for instances of <code>java.util.List</code> in
+the data model. The required 'list-class' attribute must give the fully-qualified class
+name of the desired implementation class.</p>
+
+<h5>Extending a base class</h5>
+
+<p><code>org.jibx.schema.codegen.extend.ExtensionDecorator</code> allows you to set
+a base class to be extended by your data model classes. This decorator class itself
+extends the abstract <code>org.jibx.schema.codegen.extend.NameMatchDecoratorBase</code>
+class described above, so you can use a 'match-name' attribute to control the data
+model classes which are modified by this decorator (matching on the simple class name,
+without package name). The 'base-class' attribute must give the desired base class
+name.</p>
+
+<p>You can also use this decorator to customize the JiBX binding for data model classes
+to call <a href="%bindextend%#extmeths">user extension methods</a> implemented by the
+base class. Use a 'pre-get-name' attribute to set a method to be called before marshalling
+the data class, a 'pre-set-name' attribute to set a method to be called before
+unmarshalling to the data class, and a 'post-set-name' attribute to set a method to be
+called after unmarshalling the data class. </p>
+
+<h5>Making data model classes serializable</h5>
+
+<p><code>org.jibx.schema.codegen.extend.SerializableDecorator</code> is used to add
+the <code>java.io.Serializable</code> interface to generated data model classes. If a
+'serial-version' attribute is used with this decorator it will also add a
+<code>serialVersionUID</code> value to each generated class, with the specified version
+(which must be a long integer value).</p>
+
+</div>
+<div class="h3">
+<h3><a name="types"></a>Schema datatypes</h3>
+
+<p>You can customize the code generation for schema built-in datatypes using the
+<b>schema-type</b> element. Besides determining the Java type to be used for a schema
+datatype, this also allows you to define the actual format used to convert instances
+of one into the other (see <a href="%bindextend%#serdeser"></a> and
+<a href="%format%">&lt;format> element</a> for dicsussions of these conversions). The
+attributes used with the <b>schema-type</b> element are listed in the following table:</p>
+
+<h5><b>schema-type</b> attributes</h5>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="check-method"></a>check-method</p></td>
+<td><p>Fully-qualified class and method name of a static method used to check if a
+text string represents a valid instance of the type. The referenced method must take
+a <code>String</code> value as its only parameter, and must return type
+<code>boolean</code>. This attribute is optional and the supplied method is currently
+unused, but will be used in the future to support intelligent handling of <b>xs:union</b>
+constructs.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="deserializer"></a>deserializer</p></td>
+<td><p>Fully-qualified class and method name of a static method used to convert a text
+string to an instance of the Java type. This attribute is optional, and is not needed if
+the Java type defines a constructor taking a parameter of type <code>String</code> as the
+only parameter, or if the <a href="#format-name">'format-name'</a> attribute is used.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="format-name"></a>format-name</p></td>
+<td><p>Name of a built-in JiBX format to be used for conversions between a text value
+of the schema type and an instance of the Java type. This optional attribute is really only
+useful when you want to use the Joda <a href="%datetime%">Date/time conversions</a>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="java-class"></a>java-class</p></td>
+<td><p>Java fully-qualified class name. This required attribute gives
+the name of the Java type to be used for the schema type.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="serializer"></a>serializer</p></td>
+<td><p>Fully-qualified class and method name of a static method used to convert an instance
+of the Java type to a text string. This attribute is optional, and is not needed if
+the Java type defines a <code>toString()</code> method compatible with the XML
+representation, or if the <a href="#format-name">'format-name'</a> attribute is
+used.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="type-name"></a>type-name</p></td>
+<td><p>Schema built-in type name. This required attribute gives the simple (unqualified)
+name of the schema type being handled.</p></td>
+</tr>
+</table>
+
+</div>
+</div>
+</div>
+</body>
+</html>

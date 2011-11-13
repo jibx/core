@@ -1,0 +1,10 @@
+<binding>
+  <mapping name="customer" class="example7.Customer">
+    <value name="street" field="street"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <structure name="instructions"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+</binding>

@@ -1,0 +1,9 @@
+<values>
+  <map size="4" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <entry key="col3" xsi:type="xsd:dateTime">2004-08-06T00:13:31.587Z</entry>
+    <entry key="col2" xsi:type="xsd:float">0.0</entry>
+    <entry key="col1" xsi:type="xsd:int">0</entry>
+    <entry key="col0" xsi:type="xsd:string">string0</entry>
+  </map>
+</values>

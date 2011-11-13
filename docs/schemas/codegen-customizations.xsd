@@ -1,0 +1,356 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:simpleType name="alternativeHandling">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="stateless"/>
+      <xs:enumeration value="checkset"/>
+      <xs:enumeration value="checkboth"/>
+      <xs:enumeration value="overset"/>
+      <xs:enumeration value="overboth"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="nestingCustomBase">
+    <xs:annotation>
+      <xs:documentation>Base class for all standard schema customizations that can contain other customizations.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence/>
+    <xs:attribute name="any-handling">
+      <xs:annotation>
+        <xs:documentation>xs:any handling selection.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="discard"/>
+          <xs:enumeration value="dom"/>
+          <xs:enumeration value="mapped"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute type="xs:boolean" name="choice-exposed">
+      <xs:annotation>
+        <xs:documentation>Expose choice selection state directly to user.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" name="choice-handling">
+      <xs:annotation>
+        <xs:documentation>xs:choice handling selection.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="enforced-facets">
+      <xs:annotation>
+        <xs:documentation>Set the list of facet elements to be enforced.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:list itemType="xs:string"/>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="ignored-facets">
+      <xs:annotation>
+        <xs:documentation>Set the list of facet elements to be ignored.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:list itemType="xs:string"/>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute type="xs:boolean" name="union-exposed">
+      <xs:annotation>
+        <xs:documentation>Expose union selection state directly to user.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="alternativeHandling" name="union-handling">
+      <xs:annotation>
+        <xs:documentation>xs:union handling selection.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="type-substitutions">
+      <xs:annotation>
+        <xs:documentation>List of type substitution pairs.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:list itemType="xs:QName"/>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  
+  <xs:group name="componentCustomGroup">
+    <xs:choice>
+      <xs:element name="any" type="componentCustomType"/>
+      <xs:element name="anyAttribute" type="componentCustomType"/>
+      <xs:element name="all" type="componentCustomType"/>
+      <xs:element name="attribute" type="componentCustomType"/>
+      <xs:element name="attributeGroup" type="componentCustomType"/>
+      <xs:element name="choice" type="componentCustomType"/>
+      <xs:element name="complexType" type="componentCustomType"/>
+      <xs:element name="element" type="componentCustomType"/>
+      <xs:element name="extension" type="componentCustomType"/>
+      <xs:element name="group" type="componentCustomType"/>
+      <xs:element name="list" type="componentCustomType"/>
+      <xs:element name="restriction" type="componentCustomType"/>
+      <xs:element name="sequence" type="componentCustomType"/>
+      <xs:element name="simpleContent" type="componentCustomType"/>
+      <xs:element name="simpleType" type="componentCustomType"/>
+      <xs:element name="union" type="componentCustomType"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:complexType name="componentCustomType">
+    <xs:annotation>
+      <xs:documentation>Class for all schema component elements, with the exception of the &lt;schema> element itself. Almost all of these schema elements can contain other elements, so this extends the nesting base to handle inherited values.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="nestingCustomBase">
+        <xs:sequence>
+          <xs:group ref="componentCustomGroup" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="class-name">
+          <xs:annotation>
+            <xs:documentation>Corresponding generated class name.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="exclude">
+          <xs:annotation>
+            <xs:documentation>Exclude component flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="ignore">
+          <xs:annotation>
+            <xs:documentation>Ignore component flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="inline">
+          <xs:annotation>
+            <xs:documentation>Inline handling selection.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="default"/>
+              <xs:enumeration value="block"/>
+              <xs:enumeration value="prefer"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="value-name">
+          <xs:annotation>
+            <xs:documentation>Base name for corresponding property in generated code.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="name">
+          <xs:annotation>
+            <xs:documentation>Component name, if relevant.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="path">
+          <xs:annotation>
+            <xs:documentation>Path to component.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="position">
+          <xs:annotation>
+            <xs:documentation>Component position in siblings of same type.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:QName" name="type">
+          <xs:annotation>
+            <xs:documentation>Actual type to be used.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="openAttributesType">
+    <xs:anyAttribute processContents="skip"/>
+  </xs:complexType>
+  
+  <xs:complexType name="schemaRootBase">
+    <xs:annotation>
+      <xs:documentation>Base class for possible root customizations.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="nestingCustomBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="name-converter" type="openAttributesType"/>
+          <xs:element name="class-decorator" type="openAttributesType"/>
+          <xs:element name="schema-type">
+            <xs:complexType>
+              <xs:attribute name="check-method" type="xs:string"/>
+              <xs:attribute name="deserializer" type="xs:string"/>
+              <xs:attribute name="format-name" type="xs:string"/>
+              <xs:attribute name="java-class" type="xs:string"/>
+              <xs:attribute name="serializer" type="xs:string"/>
+              <xs:attribute name="type-name" type="xs:string"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="binding-file-name">
+          <xs:annotation>
+            <xs:documentation>Binding file name (only allowed if single namespace, derived from schema name if not specified).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="binding-per-schema">
+          <xs:annotation>
+            <xs:documentation>Generate one binding for each schema flag (binding per namespace if <code>false</code>).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="delete-annotations">
+          <xs:annotation>
+            <xs:documentation>Delete annotations flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="enumeration-type">
+          <xs:annotation>
+            <xs:documentation>Enumeration representation selection.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="java5"/>
+              <xs:enumeration value="simple"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="generate-all">
+          <xs:annotation>
+            <xs:documentation>Generate even unused global definitions.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="import-docs">
+          <xs:annotation>
+            <xs:documentation>Convert schema documentation to JavaDocs in generated code flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="inherit-decorators">
+          <xs:annotation>
+            <xs:documentation>Inherit code generation class decorators from parent flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:int" name="line-width">
+          <xs:annotation>
+            <xs:documentation>Preferred maximum line width for generated code.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="null-collection">
+          <xs:annotation>
+            <xs:documentation>Force separate class for collection flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="package">
+          <xs:annotation>
+            <xs:documentation>Fully-qualified package name.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="prefer-inline">
+          <xs:annotation>
+            <xs:documentation>Prefer inline definitions.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="prefix">
+          <xs:annotation>
+            <xs:documentation>Prefix used for namespace (only allowed if single namespace, default is from schema).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="repeated-type">
+          <xs:annotation>
+            <xs:documentation>Repeated value representation selection.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="array"/>
+              <xs:enumeration value="list"/>
+              <xs:enumeration value="typed"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="show-schema">
+          <xs:annotation>
+            <xs:documentation>Include schema fragments in generated class JavaDocs flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="structure-optional">
+          <xs:annotation>
+            <xs:documentation>Set references as optional structure where possible flag.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="use-inner">
+          <xs:annotation>
+            <xs:documentation>Use inner classes for substructures (vs. top-level classes for all).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="schema">
+    <xs:annotation>
+      <xs:documentation>Individual schema customization information.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="schemaRootBase">
+          <xs:sequence>
+            <xs:group ref="componentCustomGroup" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute type="xs:string" name="name">
+            <xs:annotation>
+              <xs:documentation>Schema name.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:anyURI" name="namespace">
+            <xs:annotation>
+              <xs:documentation>Schema namespace.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="includes">
+            <xs:annotation>
+              <xs:documentation>Global names included in code generation.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:list itemType="xs:string"/>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="excludes">
+            <xs:annotation>
+              <xs:documentation>Global names excluded from code generation.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:list itemType="xs:string"/>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="schema-set">
+    <xs:annotation>
+      <xs:documentation>Customization information for a set of schemas.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="schemaRootBase">
+          <xs:choice maxOccurs="unbounded">
+            <xs:element ref="schema-set" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="schema" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:choice>
+          <xs:attribute name="names">
+            <xs:annotation>
+              <xs:documentation>Schema name patterns.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:list itemType="xs:string"/>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="namespaces">
+            <xs:annotation>
+              <xs:documentation>Schema namespace patterns.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:list itemType="xs:string"/>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>

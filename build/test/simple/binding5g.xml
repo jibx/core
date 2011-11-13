@@ -1,0 +1,62 @@
+<!-- adding wrapper around element handled with mapping element with extension -->
+<binding track-source="true">
+  <namespace prefix="xsi" uri="http://www.w3.org/2001/XMLSchema-instance"/>
+  <mapping abstract="true" class="simple.Customer5Base">
+    <structure name="wrapper">
+      <structure field="name" usage="required" type="simple.Name"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+  <mapping class="simple.Customer5" value-style="attribute" abstract="true"
+      type-name="customer5-abstract">
+    <structure>
+      <structure map-as="simple.Customer5Base"/>
+      <value name="version" constant="1.0"/>
+      <value name="subversion" constant="A" style="element" usage="optional"/>
+      <value name="customer-id" field="customerId"/>
+      <value name="repeat-customer" field="repeat" default="false"/>
+      <value name="order-count" field="orderCount" default="0"/>
+      <value name="discount" field="discount" default="1.0"/>
+      <collection usage="optional" field="referrals">
+        <structure map-as="simple.Customer5a" usage="optional"/>
+        <structure map-as="simple.Customer5b" usage="optional"/>
+        <structure map-as="simple.Customer5c"/>
+      </collection>
+    </structure>
+  </mapping>
+  <mapping name="customer" class="simple.Customer5"
+      extends="simple.Customer5Base">
+    <value name="nil" ns="http://www.w3.org/2001/XMLSchema-instance"
+        style="attribute" constant="false" usage="optional"/>
+    <structure map-as="customer5-abstract"/>
+  </mapping>
+  <mapping name="customer5a" class="simple.Customer5a"
+      extends="simple.Customer5Base">
+    <value name="source" field="sourceCode"/>
+    <structure map-as="simple.Customer5Base"/>
+  </mapping>
+  <mapping name="customer5b" class="simple.Customer5b"
+      extends="simple.Customer5Base">
+    <structure map-as="simple.Customer5Base"/>
+  </mapping>
+  <mapping name="customer5c" class="simple.Customer5c"
+      extends="simple.Customer5">
+    <structure map-as="customer5-abstract"/>
+    <value name="quality" field="qualityCode"/>
+  </mapping>
+  <mapping class="simple.Name" abstract="true" type-name="abstract-name">
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+  </mapping>
+  <mapping name="name" class="simple.Name">
+    <structure map-as="abstract-name"/>
+  </mapping>
+  <mapping name="extended" class="simple.NameExtended" extends="simple.Name">
+    <value name="ssn" style="attribute" field="ssn"/>
+    <structure map-as="simple.Name"/>
+  </mapping>
+</binding>

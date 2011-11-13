@@ -1,0 +1,10 @@
+<custom force-classes="true" strip-prefixes="m_"
+    namespace="urn:sosnoski/ws/library">
+  <package name="com.sosnoski.ws">
+    <class name="library.jibx2wsdl.Book" requireds="type title isbn authors">
+      <value field="m_type" attribute="type"/>
+      <value field="m_isbn" attribute="isbn"/>
+    </class>
+    <class name="library.jibx2wsdl.Type" requireds="description name"/>
+  </package>
+</custom>

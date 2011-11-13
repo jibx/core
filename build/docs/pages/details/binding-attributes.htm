@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Attribute Groups</title>
+</head>
+<body class="composite">
+  <h1>JiBX: Attribute Groups</h1>
+
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="elements">Attribute Groups</a></h3>
+
+<pThese are the groups of attribute values that are shared between
+different element types:</p>
+<ul>
+<li><a href="#style">style</a> - controls simple value style (as attribute or
+element)</li>
+<li><a href="#name">name</a> - defines XML attribute or element name</li>
+<li><a href="#object">object</a> - provides options for Java object handling</li>
+<li><a href="#property">property</a> - controls how a value is accessed from a
+Java object</li>
+<li><a href="#structure">structure</a> - define ordering and reuse of lists of
+child binding components</li>
+<li><a href="#string">string</a> - define conversions between Java property
+values and text representations</li>
+</ul>
+<p>All these attributes are optional unless stated otherwise.</p>
+
+<h4><a name="style">style</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>value-style</td>
+<td><p>Defines the binding style for simple values. The allowed values are
+&quot;element&quot; (values as child elements with only text content) or
+&quot;attribute&quot; (values as attributes).</p></td>
+</tr>
+</table>
+
+<h4><a name="name">name</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>name</td>
+<td><p>Local (unqualified) name of element or attribute.</p></td>
+</tr>
+<tr class="a">
+<td>ns</td>
+<td><p>Gives the namespace URI for the element or attribute name. If this is
+not used the default value is the innermost default namespace for this type,
+if any.</p></td>
+</tr>
+</table>
+
+<h4><a name="object">object</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>create-type</td>
+<td><p>Gives the type to be used when creating instances of the object during
+unmarshalling. This gives an alternative to the <b>factory</b> attribute when
+all you want to do is use a specific implementation for an interface or an
+abstract class.</p></td>
+</tr>
+<tr class="a">
+<td>factory</td>
+<td><p>Defines a factory method for constructing new instances of an object
+type. This applies to bindings for unmarshalling only, and if supplied it must
+be in the form of a fully-qualified class and method name (e.g.,
+&quot;com.sosnoski.jibx.ObjectBuilderFactory.newInstance&quot; specifies
+the newInstance() method of the ObjectBuilderFactory class in the
+com.sosnoski.jibx package) for a static method returning
+an instance of the bound class. As with the other methods in this group
+(<b>pre-set</b>, <b>post-set</b>, and <b>pre-get</b>), three different method
+signatures are allowed: No arguments; a single argument of type
+<code>java.lang.Object</code>, in which case the owning object is passed in the
+method call; or a single argument of type
+<code>org.jibx.runtime.IUnmarshallingContext</code>, in which case the
+unmarshalling context is passed in the method call (this allows access to the
+entire stack of objects being unmarshalled). If not supplied, instances of the
+bound class are constructed using a null argument constructor.</p></td>
+</tr>
+<tr class="b">
+<td>marshaller</td>
+<td><p>Defines a custom serialization handler class, as the fully-qualified
+name of a class implementing the <code>org.jibx.runtime.Marshaller</code>
+interface. This is only allowed with an output binding; it is required if an
+unmarshaller is defined for an input-output binding.</p></td>
+</tr>
+<tr class="a">
+<td>nillable</td>
+<td><p>Allows the W3C XML Schema attribute <b>xsi:nil="true"</b> to be used on
+an element in instance documents to indicate that the corresponding object is
+<code>null</code>. The default value is "false", set this attribute "true" to
+enable <b>xsi:nil</b> support. The marshalling behavior when the attribute is
+"true" and the object reference is <code>null</code> depends on whether the
+binding defines the corresponding element as optional or required. If the
+element is optional it will simply be left out of the marshalled document. If
+the element is required it will be written with an <b>xsi:nil="true"</b>
+attribute. This attribute can only be used with objects that are bound to an
+element name.</p></td>
+</tr>
+<tr class="b">
+<td>post-set</td>
+<td><p>Defines a bound class method called on instances of the class after
+they are populated with data from unmarshalling. This can be used for any
+postprocessing or validation required by the class. Three different method
+signatures are supported, as described in the <b>factory</b> attribute
+text.</p></td>
+</tr>
+<tr class="a">
+<td>pre-get</td>
+<td><p>Defines a bound class method called on new instances of the class before
+they are marshalled. This can be used for any preprocessing or validation
+required by the class. Three different method signatures are supported, as
+described in the <b>factory</b> attribute text.</p></td>
+</tr>
+<tr class="b">
+<td>pre-set</td>
+<td><p>Defines a bound class method called on new instances of the class before
+they are populated with data from unmarshalling. This can be used for any
+initialization or special handling required before a constructed instance is
+used. Three different method signatures are supported, as described in the
+<b>factory</b> attribute text.</p></td>
+</tr>
+<tr class="a">
+<td>unmarshaller</td>
+<td><p>Defines a custom deserialization handler class, as the fully-qualified
+name of a class implementing the <code>org.jibx.runtime.Unmarshaller</code>
+interface. This attribute cannot be used in combination with the <b>factory</b>,
+or <b>pre-set</b> attributes. It is only allowed with an input binding; it is
+required if a marshaller is defined for an input-output binding.</p></td>
+</tr>
+</table>
+
+<h4><a name="property">property</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>field</td>
+<td><p>Gives the name of the field within the containing class that supplies the
+property value. This is required except for auto-generated identity fields, for
+values from a collection, or when both <b>get-method</b> (for output bindings)
+and <b>set-method</b> (for input bindings) definitions are supplied.</p></td>
+</tr>
+<tr class="a">
+<td>flag-method</td>
+<td><p>Defines a method to be called by JiBX to indicate the presence or absence
+of the associated element (or attribute, though this is mainly useful with elements).
+This is the name of a method taking a <code>boolean</code> parameter, which will be
+called with the value <code>true</code> if the element is present or the value
+<code>false</code> if it is not present. This can be used in combination with the
+<b>test-method</b> attribute to implement a presence flag for an optional element
+which can be used even if the content of the element is ignored (by using an empty
+<b>structure</b> definition).</p></td>
+</tr>
+<tr class="b">
+<td>get-method</td>
+<td><p>Defines a &quot;get&quot; method for retrieving the property value from
+an instance of the containing class. This is the name of a no-argument method
+returning a value (primitive or object). If a <b>get-method</b> is defined for
+an object value represented by some form of structure in the binding (not just a
+simple <b>value</b>, in other words), the method will be used to retrieve the
+current instance of an object when unmarshalling. This follows the principle of
+JiBX reusing existing objects for unmarshalled data where possible. If you
+return a <code>null</code> value during unmarshalling, JiBX will create a new
+instance of the object for unmarshalled data.</p></td>
+</tr>
+<tr class="a">
+<td>set-method</td>
+<td><p>Defines a &quot;set&quot; method for storing the property value in
+an instance of the containing class. This is the name of a method with return
+type <code>void</code>, taking a single value (primitive or object) as a
+parameter. If both <b>get-method</b> and <b>set-method</b> are defined, the
+<b>set-method</b> parameter type must be the same as the <b>get-method</b>
+return value.</p></td>
+</tr>
+<tr class="b">
+<td>test-method</td>
+<td><p>Defines a method for checking if an optional property is present in an
+instance of the containing class. This is the name of a no-argument method with
+return type <code>boolean</code>, which must return <code>true</code> if the
+property is present and <code>false</code> if it is not present. This is only
+allowed in combination with <b>usage=&quot;optional&quot;</b>. If not specified,
+a simple <code>==</code> comparison is used with primitive types to check for a
+value different from the default, and a <code>equals()</code> comparison for
+object types with non-null defaults</p></td>
+</tr>
+<tr class="a">
+<td>type</td>
+<td><p>Supplies the fully-qualified class name for the property value. This can
+be used to force a more specific type for a property value defined by the field
+definition or access method signature as either a base class or an interface.</p></td>
+</tr>
+<tr class="b">
+<td>usage</td>
+<td><p>Defines the usage requirement for this property. The value can either be
+&quot;required&quot; (property is always present, the default if not specified) or
+&quot;optional&quot; (property is optional).</p></td>
+</tr>
+</table>
+
+<h4><a name="structure">structure</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>allow-repeats</td>
+<td><p>Determines whether repeated elements within an unordered group should be
+allowed. The default is "false", meaning that if a bound element is repeated the
+runtime code will throw an exception. Setting this "true" means repeated
+elements will be processed the same as in pre-1.1 versions of JiBX. A "true"
+value for this attribute is only allowed when all child definitions are elements
+(no attributes or text), and requires <b>ordered="false"</b>. It cannot be used
+in combination with <b>choice="true"</b>. This attribute is ignored on a
+<b>collection</b> element.</td>
+</tr>
+<tr class="a">
+<td>choice</td>
+<td><p>Defines whether child binding definitions represent a choice between
+alternatives, with only one allowed (value "true") or a set of possibilities of
+which one or more may be present ("false", the default). A "true" value for this
+attribute is only allowed when all child definitions are elements (no attributes
+or text), and requires <b>ordered="false"</b>. It cannot be used in combination
+with <b>allow-repeats="true"</b> or <b>flexible="true"</b>. This attribute is
+ignored on a <b>collection</b> element.</p></td>
+</tr>
+<tr class="b">
+<td>flexible</td>
+<td><p>Defines whether unknown elements within an unordered group should be
+ignored. The default is "false", meaning that if an unknown element (one not
+allowed by the binding) is found during unmarshalling the runtime code will
+throw an exception. Setting this "true" means unknown elements will be ignored
+(along with all their content). A "true" value for this attribute is only
+allowed when all child definitions are elements (no attributes or text), and
+requires <b>ordered="false"</b>. It cannot be used in combination with
+<b>choice="true"</b>. This attribute is ignored on a <b>collection</b>
+element.</p></td>
+</tr>
+<tr class="a">
+<td>label</td>
+<td><p>Gives a label allowing the list of child components to be referenced
+from elsewhere in the binding definition. <b>Note that this technique has been
+deprecated, and will not be supported in JiBX 2.0. In most cases an abstract
+mapping can be used as a replacement.</b></p></td>
+</tr>
+<tr class="b">
+<td>ordered</td>
+<td><p>Defines whether child binding definitions represent an ordered list
+(value "true", the default) or an unordered set ("false"). When this is set
+"true", each child <b>value</b> component must define either an element or an
+attribute name (attributes are always unordered, so the <b>ordered</b> setting
+of the grouping has no effect on attributes). <b>value</b> elements defining
+text values (<b>style="text"</b>) are not allowed as direct children of groups
+with <b>ordered="false"</b>.</p></td>
+</tr>
+<tr class="a">
+<td>using</td>
+<td><p>References a list of child components defined elsewhere in the binding
+definition. The value must match the <b>label</b> value used on a <b>mapping</b>,
+<b>structure</b>, or <b>collection</b> element somewhere in the binding
+definition. The child binding components of the referenced element are used as
+the content of the element making the reference. The object types associated with the binding definition element making
+the reference and that defining the reference must match, and the <b>order</b>
+established by the element that defined the reference determines whether the
+child definitions are considered as ordered or unordered. The element with this attribute must not have
+any child definitions. <b>Note that this technique has been
+deprecated, and will not be supported in JiBX 2.0. In most cases an abstract
+mapping can be used as a replacement.</b></p></td>
+</tr>
+</table>
+
+<h4><a name="string">string</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>default</td>
+<td><p>Gives the default value for a conversion. This is only allowed for
+optional properties. If not specified, the default for primitive types is the
+same as the member variable initial state defined by the JLS, and for object
+types is &quot;null&quot;.</p></td>
+</tr>
+<tr class="a">
+<td>enum-value-method</td>
+<td><p>Specifies a method to be used to obtain the XML text representation for a
+Java 5 enum class. If specified, this value method is used for both marshalling
+and unmarshalling instances of the enum class (in the unmarshalling case, by
+checking each instance of the enum in turn until one is found matching the input
+text). If not specified, the <code>toString()</code> method of the enum class is
+instead used for marshalling, and the static <code>valueOf</code> enum method is
+used for unmarshalling, both of which use the enum value name directly.</p></td>
+</tr>
+<tr class="b">
+<td>deserializer</td>
+<td><p>Defines a custom deserialization handler method, as the fully-qualified
+name of a static method with the signature <code>Target xxxx(String text)</code>,
+where <code>xxxx</code> is the method name and <code>Target</code> is the type
+of the property (primitive or object type). Note that when a custom
+deserialization handler method is used for an optional object type with no
+default value, that method will be called with a <code>null</code> argument
+when the corresponding value is missing in the input document. It's up to the
+handler method to handle this case appropriately (by returning either a
+<code>null</code> or an object of the expected type).</p></td>
+</tr>
+<tr class="a">
+<td>serializer</td>
+<td><p>Defines a custom serialization handler method, as the fully-qualified
+name of a static method with the signature <code>String xxxx(Target value)</code>,
+where <code>xxxx</code> is the method name and <code>Target</code> is the type
+of the property (primitive or object type).</p></td>
+</tr>
+<tr class="b">
+<td>whitespace</td>
+<td><p>Selects how whitespace will be handled when deserializing values. This
+optional attribute can have the values: "preserve", meaning all text is processed
+just as provided by the parser; "replace", meaning all tab, newline, and carriage
+return characters in the text are replaced by space characters before the text is
+processed; "collapse", meaning that after "replace" processing is done all
+leading and trailing space characters are eliminated and all embedded sequences
+of multiple spaces are replaced by single spaces; or "trim", meaning that after
+"replace" processing is done all leading and trailing space characters are
+eliminated.</p></td>
+</tr>
+</table>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

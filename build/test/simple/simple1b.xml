@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<customer>
+  <name>
+    <last-name>Sosnoski</last-name>
+  </name>
+  <street1>14618 NE 80th Pl.</street1>
+  <city>Redmond</city>
+  <state>WA</state>
+  <zip>98052</zip>
+  <phone>425 885 7197</phone>
+</customer>

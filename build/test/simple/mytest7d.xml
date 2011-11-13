@@ -1,0 +1,76 @@
+<myelement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ints>
+    <int>   7</int>
+    <int>6    </int>
+    <int xsi:nil="true"/>
+    <int>4</int>
+    <int>3</int>
+    <int>    2   </int>
+    <int xsi:nil="true"/>
+    <int xsi:nil="true"/>
+  </ints>
+  <strings>
+    <string>this is a test</string>
+    <string>so is this</string>
+    <string xsi:nil="true"/>
+    <string>this is not a test</string>
+  </strings>
+  <strings>
+    <string>some more test</string>
+    <string>testing, testing, testing</string>
+    <string>to test or not to test, that is the question</string>
+  </strings>
+  <ints>
+    <int xsi:nil="true"/>
+    <int xsi:nil="true"/>
+    <int>  3  </int>
+    <int>4</int>
+    <int>5   </int>
+  </ints>
+  <intsints>
+    <ints>
+      <int>42
+      
+      </int>
+      <int>73</int>
+      <int>
+      72653   </int>
+    </ints>
+    <ints xsi:nil="true"/>
+    <ints>
+      <int>
+      -1
+      </int>
+      <int>0</int>
+      <int>1</int>
+    </ints>
+  </intsints>
+  <longslongs>
+    <longs>
+      <long>42</long>
+      <long>73</long>
+      <long>  72653  </long>
+    </longs>
+    <longs xsi:nil="true"/>
+    <longs>
+      <long>-1   </long>
+      <long>0</long>
+      <long>  1</long>
+    </longs>
+  </longslongs>
+  <doublesdoubles>
+    <doubles>
+      <double>  42.5</double>
+      <double>73.0   </double>
+      <double>
+      72653.0
+      </double>
+    </doubles>
+    <doubles xsi:nil="true"/>
+    <doubles>
+      <double>   -1.5</double>
+      <double>0.5   </double>
+      <double>1.0   </double>
+    </doubles>
+  </doublesdoubles>
+</myelement>

@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>CodeGen Customizations</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3><a name="intro"></a>CodeGen customizations</h3>
+
+<p>Customizations are used to control how CodeGen interprets your schemas and generates
+both Java code and a corresponding JiBX binding. The customizations are normally
+supplied to CodeGen in the form of an XML document, though certain customizations can
+alternatively be set by means of <a href="#command">command line parameters</a>.</p>
+
+</div>
+<div class="h3">
+<h3><a name="docstruct"></a>Customization document structure</h3>
+
+<p>The general form of a customizations document consists of a root <b>schema-set</b>
+element which applies to all the schemas being used, within which there may be both
+other <b>schema-set</b> elements and <b>schema</b> elements for individual schemas. If you're
+only working with a single schema, you can instead skip the <b>schema-set</b> element and
+use the <b>schema</b> element directly as the root of your customizations. Within a <b>schema</b>
+element, you can use elements with names corresponding to various schema definition
+components (<b>attribute</b>, <b>complexType</b>, <b>element</b>, etc.) to customize
+specific schema components, using XPath-like features to relate the customization elements
+to particular instances of the corresponding schema definition element.</p>
+
+<p>Sound confusing? It's really pretty simple and intuitive, once you get the basic
+concepts down. Here's a sample using nested <b>schema-set</b> and <b>schema</b> elements for a
+complex collection of schemas, to show how this works:</p>
+
+<code><pre>&lt;schema-set xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float">
+  &lt;schema-set package="org.ota.air" names="OTA_Air*.xsd">
+    &lt;schema-set generate-all="false" prefer-inline="true"
+        names="OTA_AirCommonTypes.xsd OTA_AirPreferences.xsd"/>
+    &lt;schema name="OTA_AirAvailRS.xsd">
+      &lt;element path="element[@name=OTA_AirAvailRS]/**/element[@name=OriginDestinationOption]"
+        ignore="true"/>
+    &lt;/schema>
+  &lt;/schema-set>
+  &lt;schema-set package="org.ota.hotel" names="OTA_Hotel*.xsd">
+    &lt;schema-set generate-all="false" prefer-inline="true"
+        names="OTA_HotelCommonTypes.xsd OTA_HotelContentDescription.xsd
+        OTA_HotelEvent.xsd OTA_HotelPreferences.xsd OTA_HotelReservation.xsd
+        OTA_HotelRFP.xsd"/>
+  &lt;/schema-set>
+  ...</pre></code>
+
+<p>In this customizations document, the root <b>schema-set</b> element sets some customization
+options which apply to the full collection of schemas. The child <b>schema-set</b> elements
+each specify a particular subset of the schemas (which must be distinct from those specified
+by sibling schema-set elements); in this example,
+the first child <b>schema-set</b> applies to schemas with names matching the "OTA_Air*.xsd"
+pattern, the second to schemas with names matching "OTA_Hotel*.xsd". The first child
+<b>schema-set</b> has yet another <b>schema-set</b> element and a <b>schema-set</b> element as its children.
+Within the <b>schema-set</b> element, an <b>element</b> child is used to customize the handling of one
+particular xs:element component within the schema definition.</p>
+
+<p>The remainder of this page discusses the customization elements used to model the structure
+of the collection of schemas being generated. In addition to these structural customization
+elements, there are a few other customization elements which are used to extend or modify the
+actual code generation. These extension customization elements must be direct children of a
+<b>schema</b> or <b>schema-set</b> element, and must precede any other child elements. See
+<a href="%cgextends%">CodeGen Extension</a> for the details of using these elements. The full
+schema definition for the customizations is
+<a href="../schemas/codegen-customizations.xsd">included in the documentation.</a></p>
+
+</div>
+<div class="h3">
+<h3><a name="schemacust"></a><b>schema-set</b> and <b>schema</b> customizations</h3>
+
+<p>Customization attributes which apply at the schema level can be used with both
+<b>schema-set</b> and <b>schema</b> elements. These elements can be nested in the customizations
+document, and customizations are inherited through the nesting: A customization attribute
+on a <b>schema-set</b> applies to all the schemas in the set, but may be overridden by a
+different setting of the attribute on a nested <b>schema-set</b> or <b>schema</b> element. Here's
+the alphabetical list of these schema-level customization attributes:</p>
+
+<h4>Schema-level customization attributes</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="binding-file-name"></a>binding-file-name</p></td>
+<td><p>Specify the file name to be used for the generated binding definition. If this
+is not specified the root binding is always named <i>binding.xml</i> and any other
+bindings use names derived from the namespace associated with the binding.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="binding-per-schema"></a>binding-per-schema</p></td>
+<td><p>Control whether a separate binding definition will be generated for each schema
+definition. By default, bindings for schemas using the same namespace are merged into
+a single binding definition. Allowed values are
+<code>true</code> and <code>false</code> (the default).</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="delete-annotations"></a>delete-annotations</p></td>
+<td><p>Delete annotations from schema fragments shown in Javadocs. This generally makes
+the schema fragments easier to understand, especially since xs:documentation elements in
+the schema are normally converted to Javadocs in any case. Allowed values are
+<code>true</code> (the default) and <code>false</code>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="enumeration-type"></a>enumeration-type</p></td>
+<td><p>Control the type of classes generated for enumerations. Allowed values are
+<code>java5</code> for Java 5 enum classes (the default) and <code>simple</code> for
+simple typesafe enumeration classes compatible with all Java compiler versions.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="generate-all"></a>generate-all</p></td>
+<td><p>If the value is <code>false</code>, skip any unused global schema definitions
+in the code generation. This is intended for use with schemas referenced by xs:include
+or xs:import, which often include definitions not needed by the original schema. By
+skipping code generation for these unnecessary definitions you can reduce the number of
+classes in the generated data model. Allowed values are <code>true</code> (the default)
+and <code>false</code>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="import-docs"></a>import-docs</p></td>
+<td><p>Convert xs:documentation annotations in the schema definition to Javadocs in the
+generated code if <code>true</code>. Allowed values are <code>true</code> (the default)
+and <code>false</code>.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="line-width"></a>line-width</p></td>
+<td><p>Specify the desired maximum line width in the generated Java code. The value can
+be any integer.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="package"></a>package</p></td>
+<td><p>Give the name of the package to be used for generated Java code. The value can
+be any package name.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="prefer-inline"></a>prefer-inline</p></td>
+<td><p>If <code>true</code>, use inline definitions where possible rather than creating
+separate classees. Allowed values are <code>true</code> and <code>false</code> (the
+default).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="prefix"></a>prefix</p></td>
+<td><p>Prefix to be used in the generated bindings for the namespace associated with a
+schema. Prefixes are normally assigned based on the usages found in the schema documents,
+but this customization can be used to change these values. If you use this customization
+on a <b>schema-set</b> element, all the schemas included in the set must use the
+same namespace.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="repeated-type"></a>repeated-type</p></td>
+<td><p>Control how repeated schema components (both xs:list values, and particles with
+minOccurs > 1) are represented in Java code. Allowed values are <code>array</code> (for
+arrays), <code>list</code> (for untyped <code>java.util.List</code>), and
+<code>typed</code> (for Java 5 typed list, the default).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="show-schema"></a>show-schema</p></td>
+<td><p>If <code>true</code>, include schema fragments corresponding to the generated
+code in class Javadocs. The schema fragments included are based on a post-processing
+view of the schema, after processing type substitutions, deletions, and schema
+normalizations. Allowed values are <code>true</code> (the default) and
+<code>false</code>.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="structure-optional"></a>structure-optional</p></td>
+<td><p>Control whether references to classes with no associated element and all
+components optional should be made optional in the generated binding. The effect of
+making such class references optional is that the reference will be set <code>null</code>
+when unmarshalling if none of the components are present, and will be checked for
+<code>null</code> when marshalling. Allowed values are <code>true</code> (the default) and
+<code>false</code>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="use-inner"></a>use-inner</p></td>
+<td><p>Control whether inner classes are used for secondary structures within the generated
+Java code. If <code>true</code> inner classes will be used; otherwise, separate top-level
+classes will be used. This only applies for the equivalent of anonymous xs:complexType
+definitions, or definitions which have been inlined; top-level classes are always used
+when definitions are used in more than one place. Allowed values are <code>true</code> (the
+default) and <code>false</code>.</p></td>
+</tr>
+</table>
+
+<p>Besides these schema-level customizations, any of the nesting customizations listed in
+the next section can also be used on <b>schema-set</b> and <b>schema</b> elements. There are also
+some attributes which are only allowed with <b>schema-set</b>, and some which are only allowed
+with <b>schema</b>. Here's the list of these attributes for <b>schema-set</b>:</p>
+
+<h4>Attributes only allowed on <b>schema-set</b> element</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="names"></a>names</p></td>
+<td><p>List of name patterns for schemas included in this set. Individual patterns are
+whitespace-separated, and may include '*' characters as wildcards matching any number of
+arbitrary characters. Multiple '*' wildcards may be used within a single pattern, but
+may not be contiguous (i.e., there must be one or more regular characters between any
+pair of wildcards).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="namespaces"></a>namespaces</p></td>
+<td><p>List of namespace URIs for schemas included in this set. Individual URIs are
+whitespace-separated.</p></td>
+</tr>
+</table>
+
+<p>These attributes are not allowed on the root <b>schema-set</b> element of a customizations
+document, but at least one is required on any nested <b>schema-set</b> element (since they
+determine which schemas are actually included in the set). When multiple <b>schema-set</b>
+child elements are used, the sets of schemas identified by each <b>schema-set</b> must be
+disjoint.</p>
+
+<p>Here's the list of attributes only allowed with <b>schema</b> customization elements:</p>
+
+<h4>Attributes only allowed on <b>schema-set</b> element</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="excludes"></a>excludes</p></td>
+<td><p>List of schema global definitions to be excluded from the code generation. Names
+are separated by whitespace characters. This overrides the normal reference checks used
+to determine which schema definitions are going to be generated as Java code.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="includes"></a>includes</p></td>
+<td><p>List of schema global definitions to be included in the code generation. Names
+are separated by whitespace characters. This overrides the normal reference checks used
+to determine which components are going to be generated as Java code.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="name"></a>name</p></td>
+<td><p>The schema name, meaning the last component in the schema path (whether accessed
+from the file system, by using HTTP, or by any other means). No wildcard characters are
+allowed, so the name must be an exact match.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="namespace"></a>namespace</p></td>
+<td><p>Schema target namespace URI. This can only be used to identify a schema if there's
+only one schema using that namespace.</p></td>
+</tr>
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="nestcust"></a>Nesting customizations</h3>
+
+<p>Nesting customization attributes can be used on any customization element, including
+<b>schema-set</b>, <b>schema</b>, and schema component customizations (described below).
+Here's the alphabetical list of these attributes:</p>
+
+<h4>Nesting customization attributes</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="any-handling"></a>any-handling</p></td>
+<td><p>Controls how xs:any particles are represented in the generated Java code and
+binding definition. Allowed values are <code>discard</code> (meaning discard when
+unmarshalling and don't generate when marshalling), <code>dom</code> (meaning use a
+<code>org.w3c.dom.Element</code> or list of elements for a repeating xs:any, the default),
+and <code>mapped</code> (meaning require any element(s) matching the xs:any to be
+defined as a global element in the schema).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="choice-exposed"></a>choice-exposed</p></td>
+<td><p>When <code>true</code>, the generated code directly exposes xs:choice states to
+the user in the generated code. In this case the constants used for the choice states are
+made public, and there's an added <code>stateXXX()</code> method which returns the current
+state of the choice. Otherwise, the choice state is only exposed to the user via
+<code>ifXXX()</code> methods checking if a particular state has been set. Allowed values
+are <code>true</code> and <code>false</code> (the default).</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="choice-handling"></a>choice-handling</p></td>
+<td><p>Control how xs:choice is implemented in the generated code. xs:choice handling
+always uses a separate property for each alternative in the choice, and in most cases
+also uses a state variable that tracks the most-recent setting. There are several options
+for how the state is set and changed, though, and this customization selects the option
+to be used. Allowed values are <code>stateless</code> (meaning there is no state variable,
+and it's up to the user to make sure only one of the choice values is set),
+<code>checkset</code> (meaning that when the 'set' access method for one of the choice
+properties is called the code will throw an exception if a different choice had previously
+been set and the <code>clearXXX()</code> method has not been called), <code>checkboth</code>
+(meaning that in addition to the <code>checkset</code> check on setting a choice property,
+the choice property 'get' access methods will also check that the current state is either
+unset or matches that property), <code>overset</code> (meaning that when the 'set' access
+method for one of the choice properties is called it will overwrite any previous choice),
+and <code>overboth</code> (meaning 'set' methods overwrite previous choices, while 'get'
+access methods check that the current state is either unset or matches that property).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="enforced-facets"></a>enforced-facets</p></td>
+<td><p>This is included for use once xs:simpleType facet handling is implemented, but is
+currently ignored.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="ignored-facets"></a>ignored-facets</p></td>
+<td><p>This is included for use once xs:simpleType facet handling is implemented, but is
+currently ignored.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="union-exposed"></a>union-exposed</p></td>
+<td><p>This is included for use once full xs:union handling is implemented, but is
+currently ignored.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="union-handling"></a>union-handling</p></td>
+<td><p>This is included for use once full xs:union handling is implemented, but is
+currently ignored.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="type-substitutions"></a>type-substitutions</p></td>
+<td><p>Defines type substitutions to be applied before generating code. The substitutions
+are given as pairs of type names, with the type to be replaced first and the type to be
+substituted second. The type names are all treated as namespace-qualified values, and are
+separated by one or more whitespace characters.</p></td>
+</tr>
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="schemacomp"></a>Schema component customizations</h3>
+
+<p>Schema component customizations each apply to a particular element within a schema
+definition. The element name for the customization always matches the name of the schema
+definition element being customized (but without namespace), so the following are all
+legal schema component customization element names: <b>any</b>, <b>anyAttribute</b>,
+<b>all</b>, <b>attribute</b>, <b>attributeGroup</b> <b>choice</b>, <b>complexType</b>,
+<b>element</b>, <b>extension</b>, <b>group</b>, <b>list</b>, <b>restriction</b>,
+<b>sequence</b>, <b>simpleContent</b>, <b>simpleType</b>, and <b>union</b>. These
+component customizations can be nested, and use XPath-like path specifications (realative
+to the containing customization) to identify the particular instance of the schema
+definition element to which the component customization applies. All schema component
+customizations can use any of the nesting customization attributes defined in the last
+section, and also the following attributes:</p>
+
+<h4>Common component customization attributes</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="path"></a>path</p></td>
+<td><p>Path to the schema element to be customized. The path is in XPath-like form, with
+path steps separated by '/' characters. '*' can be used as a path step matching any
+arbitrary schema element, and '**' as a path step matching any nesting of arbitrary
+schema elements, with the restriction that these wildcard steps cannot be used as the
+initial path step if the customization element is a direct child of a <b>schema-set</b>
+customization - in other words, you can only use wildcards once you've identified the
+global schema component involved. Steps matching named components of the schema
+definition (global type, group, or attribute group definitions, or element or attribute
+definitions whether global or not) can use a '[@name=...]' predicate to single out a
+particular instance of the component type (which will match either a 'name' or 'ref'
+attribute value in the schema definition). Steps can also use a numeric predicate '[n]'
+to identify which of several potential matches is being referenced, where the numbering
+starts at '1' for the first match (as in XPath). The last path step may be left empty,
+since the element name for this path step must always be the same as the customization
+element name.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="position"></a>position</p></td>
+<td><p>Number of the instance to be matched. This is equivalent to a '[n]' predicate on
+the last step in a path expression, but as a convenience can be used directly for cases
+where no path expression is otherwise required.</p></td>
+</tr>
+</table>
+
+<p>Beyond these common attributes, different types of customization elements support
+one or more added attributes as defined below:</p>
+
+<h4>Specialized component customization attributes</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><p><a name="class-name"></a>class-name</p></td>
+<td><p>Java class name used for the representation of the schema component (ignored if
+no class required). This must be a simple class name, without package information (since
+the package is determined on a per-schema basis). This attribute is allowed on the
+following types of customization elements: <b>all</b>, <b>attribute</b>, <b>attributeGroup</b>, <b>choice</b>,
+<b>complexType</b>, <b>element</b>, <b>group</b>, <b>sequence</b>, <b>simpleType</b>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="exclude"></a>exclude</p></td>
+<td><p>Remove component from code generation if <code>true</code>. This effectively deletes
+the target component from the schema definition before code generation. Allowed values
+are <code>true</code> and <code>false</code> (the default). This attribute is allowed on
+the following types of customization elements: <b>all</b>, 'any', 'anyAttribute', <b>attribute</b>,
+<b>attributeGroup</b>, <b>choice</b>, <b>complexType</b>, <b>element</b>, <b>group</b>, <b>sequence</b>, <b>simpleType</b>.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="ignore"></a>ignore</p></td>
+<td><p>Ignore element or attribute when unmarshalling documents. This drops the component from
+the generated data model, but accepts it and discards any content when unmarshalling (as opposed
+to the <a href="#exclude">exclude</a> behavior, which completely removes the component from the
+schema definition, meaning input documents containing an excluded element will cause errors in
+unmarshalling). Allowed values are <code>true</code> and <code>false</code> (the default). This
+attribute is allowed on the following types of customization elements: <b>attribute</b> and
+<b>element</b>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="inline"></a>inline</p></td>
+<td><p>Control whether the schema component is represented using a separate class or inline
+values. The control provided by this customization is limited, in that all schema components
+which represent or contain data values can be represented by a separate class, but not all
+can be inlined by CodeGen. Allowed values are: <code>default</code>, meaning the default
+handling applies (the default); <code>block</code>, meaning the component should be
+represented using a separate class; and <code>prefer</code>, meaning inlining should be used
+if possible. Since the default CodeGen handling is to prefer inlining for local definitions,
+the <code>prefer</code> value generally only makes a difference when used on a global
+definition schema component. This attribute is allowed on all types of customization elements,
+but will be ignored if not applicable.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="name"></a>name</p></td>
+<td><p>Schema component name attribute value. This is equivalent to an '[@name=XXX]'
+predicate on the last step in a path expression, but as a convenience can be used directly
+for cases where no path expression is otherwise required. The attribute is allowed on
+the following types of customization elements: <b>attribute</b>, <b>attributeGroup</b>, <b>complexType</b>,
+<b>element</b>, <b>group</b>, <b>simpleType</b>.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="type"></a>type</p></td>
+<td><p>Substitute type to be used for component. This is used to replace the type specified
+in the schema for the target component with some other type before code generation. It is
+similar to using the <a href="#type-substitutions">'type-substitutions'</a> nesting customization
+attribute, but supports replacing anonymous type definitions in addition to global types. This
+attribute is allowed on the following customization elements: <b>attribute</b>,
+<b>complexType</b>, <b>element</b>, <b>simpleType</b>. <b>Note: not yet supported</b></p></td>
+</tr>
+<tr class="b">
+<td><p><a name="value-name"></a>value-name</p></td>
+<td><p>Name used for the Java property value representing the component, and also for the
+class name when the component is represented using a separate class. This customization
+is normally only useful when applied to nested components of a schema definition, rather
+than global definitions (so on group <i>references</i>, rather than group <i>definitions</i>,
+for instance). It is allowed on the following customization elements: <b>all</b>,
+<b>attribute</b>, <b>attributeGroup</b>, <b>choice</b>, <b>element</b>, <b>group</b>, <b>sequence</b>.</p></td>
+</tr>
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="command"></a>Command line customizations</h3>
+
+<p>If you just want to set some basic global customizations for CodeGen you do this using
+command-line parameters and avoid the need to create a customizations file. The special prefix
+"--" is used to do this. So to set <code>delete-annotations="true"</code> and
+<code>any-handling="mapped"</code>, for instance, you'd add <code>--delete-annotations=true</code>
+and <code>--any-handling=mapped</code> to the BindGen command line. No quotes are needed for
+the attribute value when you use this technique. This technique only allows you to set global
+customizations, though, so if you're doing anything at the individual schema or component level
+you'll still need to use a customizations file.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

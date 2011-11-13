@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Contributing</title>
+</head>
+<body class="composite">
+  <h1>Contributing to JiBX</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro"></a>Areas for extension</h3>
+
+<p>The 1.2 release of JiBX is expected to be the last major release in the 1.X
+series, though there will still be point releases of 1.2 for bug fixes. JiBX
+2.0, featuring a rewritten code generator and improvements to the runtime
+design, is in development but may not be available in usable form for some time.
+The 2.0 work requires in-depth knowledge of the code and is not something where
+new developers are likely to be able to become directly involved.</p>
+
+<p>Even so, there are several areas where interested developers <i>can</i> make
+important contributions to the JiBX project:</p>
+
+<ul>
+<li>Clean up the Ant task code. This currently uses some deprecated Ant
+methods, and doesn't support all the options you'd expect in terms of
+structuring the file sets.</li>
+<li>Build GUI Wizard front-ends for the various tools, including <a href="%bindgen%">BindGen</a>,
+<a href="%jibx2wsdl%">Jibx2Wsdl</a>, and <a href="%codegen%">CodeGen</a>. These tools all allow
+for extensive customizations in the form of XML files. A Wizard could initialize settings from
+an existing configuration file, then save the file and pass it to the actual
+tool for processing when the user is done making their choices.</li>
+<li>Work on better integration for JiBX in Spring environments.</li>
+<li>Add support for transforming JAXB 2.0 annotations into BindGen customizations, so that
+developers using JAXB 2.0 can easily switch to JiBX.</li>
+</ul>
+
+<p>If you're interested in working in any of these areas (or have your own ideas
+for extending JiBX) check first on the <i>jibx-dev</i> email list to see if
+anyone else is already working in the same area.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="agreement"></a>Contributor license agreement</h3>
+
+<p>If you're interested in becoming an active part of the JiBX team you'll need to fill
+out and return the Contributor License Agreement, below. It's not necessary for
+developers who are only contributing patches or bug fixes to fill out this
+agreement, but you'll be asked to state your acceptance of the agreement with
+respect to any code you submit.</p>
+
+<p>JiBX committers, please complete this Agreement and mail it to The JiBX
+Project, 6 Ocean Road, Paraparaumu Beach 5032, Wellington, New Zealand. Please
+read this document carefully before signing, and keep a copy of the signed
+agreement for your records.</p>
+
+              <p> If you have any questions, please contact <a
+href="mailto:dms@sosnoski.com?subject=JiBX&nbsp;Contributer&nbsp;License&nbsp;Agreement">Dennis
+Sosnoski</a>.</p>
+              <p> ---------------- cut here ---------------- </p>
+              <p> The JiBX Project </p>
+              <p> Contributor License Agreement </p>
+              <p> Thank you for your interest in The JiBX Project
+(the "Project"). In order to clarify the intellectual
+property license granted with contributions of software from any person
+or entity (the "Contributor"), the Project would like to have a
+Contributor License Agreement on file that has been signed by the
+Contributor, indicating agreement to the license terms below. This
+license is for your protection as a Contributor of software to the
+Project and does not change your right to use your own contributions
+for any other purpose. </p>
+              <p> If you have not already done so, please complete this
+Agreement and mail it to The JiBX Project, 6 Ocean Road, Paraparaumu Beach 5032,
+Wellington, New Zealand. Please read this document carefully before signing, and
+keep a copy of the signed agreement for your records. </p>
+              <p><code> Full name:_______________________
+E-Mail:__________________<br>
+              <br>
+Mailing Address:_________________ Telephone:_______________<br>
+              <br>
+_________________________________ Facsimile:_______________<br>
+              <br>
+_________________________________ Country:_________________ </code></p>
+              <p> You and the Project hereby accept and agree to the
+following terms and conditions: </p>
+              <p> 1. Your "Contributions" means all of your past,
+present and future contributions of object code, source code and
+documentation to the Project, however submitted to the
+Project, excluding any submissions that are conspicuously marked
+or otherwise designated in writing by You as "Not a Contribution." </p>
+              <p> 2. You hereby grant to the Project a non-exclusive,
+irrevocable, worldwide, no-charge, transferable copyright license to
+use, execute, prepare derivative works of, and distribute
+(internally and externally, in object code and, if included in your 
+Contributions, source code form) your Contributions. Except for the   
+rights granted to the Project in this paragraph, You reserve all   
+right, title and interest in and to your Contributions. </p>
+              <p> 3. You represent that you are legally entitled to
+grant the above license. If your employer(s) have rights to
+intellectual property that you create, you represent that you have
+received permission to make the Contributions on behalf of that
+employer, or that your employer has waived such rights for your
+Contributions to the Project. </p>
+              <p> 4. You represent that, except as disclosed in your
+Contribution submission(s), each of your Contributions is your
+original creation. You represent that your Contribution
+submission(s) include complete details of any license or other
+restriction (including, but not limited to, related patents and
+trademarks) associated with any part of your Contribution(s)
+(including a copy of any applicable license agreement). You agree
+to notify the Project of any facts or circumstances of which you
+become aware that would make Your representations in this Agreement
+inaccurate in any respect. </p>
+              <p> 5. Your
+Contributions are provided as-is, with all faults defects and
+errors, and without warranty of any kind (either express or implied)
+including, without limitation, any implied warranty of
+merchantability and fitness for a particular purpose and any
+warranty of non-infringement. The Project is not obligated to accept
+your Contributions, and even if your Contributions are accepted into
+the Project they may later be removed at any time and without any
+notice.</p>
+              <p><code> Please sign: _____________________________ Date:
+__________ </code></p>
+              <p> ---------------- cut here ---------------- </p>
+
+<p>This contributor license agreement is based on the license used for the
+Apache Jakarta project, published at
+<a href="http://jakarta.apache.org/site/agreement.html">http://jakarta.apache.org/site/agreement.html</a></p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

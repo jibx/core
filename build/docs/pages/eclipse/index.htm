@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Eclipse Plugin</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+
+<h3><a name="intro"></a>Introduction</h3>
+
+<p>A new Eclipse plugin for JiBX is now available. You can install the plugin by
+making use of Eclipse's Software Updates handling, with the update site url
+<a href="http://jibx.sourceforge.net/eclipse/">http://jibx.sourceforge.net/eclipse/</a>.
+If you want a detailed walk-through of how to configure Eclipse to use this site,
+see the <a href="%eclipseinstall%">Install</a> page.</p>
+
+<p>Once you've installed the plugin, you can activate it for any of your Eclipse
+projects using the project context menu, and for each project specify a folder
+containing the binding definitions used by that project. The plugin will parse
+all XML files contained in your
+specified mappings folder to identify which Java classes require bindings, and
+will automatically run the JiBX binding compiler whenever it detects a change
+that might effect the bindings or bound classes. For a detailed walk-through of
+how to activate the plugin for a project, and details of when and how it runs the
+binding compiler, see the <a href="%eclipseusage%">Usage</a> page.</p>
+
+</div>
+
+<div class="h3">
+
+<h3><a name="version"></a>JiBX version</h3>
+
+<p>The plugin is currently distributed in versions that align with a specific
+release of JiBX. Upon adding the update site to Eclipse, either JiBX 1.1.6a, 1.2.1,
+or 1.2.2 will available: choose one (but not more) of these to install. If you want
+to change to a different version of JiBX (including some older versions, though this
+has not been thoroughly tested), first locate the plugin jar named
+<i>org.jibx.eclipse_x.x.x.jar</i> within the <i>plugins</i> folder of your Eclipse
+installation. You can open this jar with a tool which supports zip file formats (or
+expand it to a full directory structure using the <i>jar</i> tool included in the Java JDK)
+and replace the <i>jibx-bind.jar</i> and <i>jibx-run.jar</i> files within the <i>lib</i>
+directory of the jar with those for your target JiBX version. Then just save the
+modified <i>org.jibx.eclipse_x.x.x.jar</i> and restart Eclipse.</p>
+
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+
+<tr class="b">
+<th>Module Name</th>
+<th>Primary Developer</th>
+<th>Status</th>
+</tr>
+
+<tr class="a">
+<td valign="top">jibx-eclipse (svn)</td>
+<td valign="top">Michael McMahon</td>
+<td valign="top">Beta 0.1 release May 30, 2008</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+</div>
+</body>
+</html>

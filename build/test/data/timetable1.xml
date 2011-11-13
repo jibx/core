@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<timetable>
+    <carrier ident="NL">
+        <rating>4</rating>
+        <URL>http://www.northleft.com</URL>
+        <name>Northleft Airlines</name>
+    </carrier>
+    <carrier ident="CL">
+        <rating>9</rating>
+        <URL>http://www.classyskylines.com</URL>
+        <name>Classy Skylines</name>
+    </carrier>
+    <carrier ident="FF">
+        <rating>10</rating>
+        <URL>http://www.finefrenchair.com</URL>
+        <name>Voies Aériennes Françaises Fines</name>
+    </carrier>
+    <airport ident="BOS">
+        <location>Boston, MA</location>
+        <name>Logan International Airport</name>
+    </airport>
+    <airport ident="SEA">
+        <location>Seattle, WA</location>
+        <name>Seattle-Tacoma International Airport</name>
+    </airport>
+    <airport ident="LAX">
+        <location>Los Angeles, CA</location>
+        <name>Los Angeles International Airport</name>
+    </airport>
+    <route from="BOS" to="SEA">
+        <flight carrier="CL">
+            <number>796</number>
+            <depart>4:12a</depart>
+            <arrive>1:26a</arrive>
+        </flight>
+        <flight carrier="NL">
+            <number>328</number>
+            <depart>2:54a</depart>
+            <arrive>1:29a</arrive>
+        </flight>
+        <flight carrier="CL">
+            <number>401</number>
+            <depart>4:12a</depart>
+            <arrive>1:25a</arrive>
+        </flight>
+    </route>
+    <route from="SEA" to="BOS">
+        <flight carrier="CL">
+            <number>634</number>
+            <depart>7:43a</depart>
+            <arrive>9:13a</arrive>
+        </flight>
+        <flight carrier="NL">
+            <number>508</number>
+            <depart>4:38p</depart>
+            <arrive>6:12p</arrive>
+        </flight>
+        <flight carrier="CL">
+            <number>687</number>
+            <depart>1:38p</depart>
+            <arrive>3:08p</arrive>
+        </flight>
+    </route>
+    <route from="BOS" to="LAX">
+        <flight carrier="NL">
+            <number>955</number>
+            <depart>1:06a</depart>
+            <arrive>3:29a</arrive>
+        </flight>
+        <flight carrier="NL">
+            <number>937</number>
+            <depart>2:00a</depart>
+            <arrive>3:33a</arrive>
+        </flight>
+        <flight carrier="NL">
+            <number>933</number>
+            <depart>3:37a</depart>
+            <arrive>3:28a</arrive>
+        </flight>
+        <flight carrier="CL">
+            <number>829</number>
+            <depart>9:05a</depart>
+            <arrive>12:39p</arrive>
+        </flight>
+    </route>
+    <route from="LAX" to="BOS">
+        <flight carrier="NL">
+            <number>200</number>
+            <depart>4:05p</depart>
+            <arrive>7:35p</arrive>
+        </flight>
+        <flight carrier="NL">
+            <number>815</number>
+            <depart>3:55a</depart>
+            <arrive>7:25a</arrive>
+        </flight>
+        <flight carrier="NL">
+            <number>300</number>
+            <depart>11:40p</depart>
+            <arrive>3:14a</arrive>
+        </flight>
+        <flight carrier="CL">
+            <number>600</number>
+            <depart>2:44a</depart>
+            <arrive>3:30a</arrive>
+        </flight>
+    </route>
+    <route from="SEA" to="LAX">
+        <flight carrier="CL">
+            <number>353</number>
+            <depart>3:39a</depart>
+            <arrive>1:56a</arrive>
+        </flight>
+    </route>
+    <route from="LAX" to="SEA">
+        <flight carrier="CL">
+            <number>474</number>
+            <depart>5:50p</depart>
+            <arrive>7:56p</arrive>
+        </flight>
+    </route>
+</timetable>

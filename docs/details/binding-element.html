@@ -1,0 +1,451 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: &lt;binding&gt; Element</title>
+      <style type="text/css">
+        @import url("../style/tigris.css");
+        @import url("../style/maven.css");
+    .dtd-comment {
+      color: #993399;
+      font-weight: bold;
+      </style>
+      <script type="text/javascript">
+        if (document.layers) {
+          document.writeln('<link rel="stylesheet" type="text/css" href="../style/ns4_only.css" media="screen" /><link rel="stylesheet" type="text/css" href="../style/maven_ns4_only.css" media="screen" />')
+        }
+      </script>
+      <link rel="stylesheet" type="text/css" href="../style/print.css" media="print" />
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body class="composite">
+<div id="banner">
+<table border="0" cellspacing="0" cellpadding="8" width="100%">
+  <tbody>
+    <tr>
+      <td><h1>JiBX: &lt;binding&gt; Element</h1>
+      </td>
+      <td>
+      <div align="right" id="login"><a href="http://sourceforge.net">
+      <img src="http://sourceforge.net/sflogo.php?group_id=69358&amp;type=5"
+        width="210" height="62" border="0" alt="SourceForge.net Logo"></a></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="breadcrumbs">
+<table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div align="right">
+          <a href="../index.html">Home Page</a> |
+          <a href="http://www.sourceforge.net/projects/jibx/">SourceForge Page</a> |
+          <a href="../mail-lists.html">Mailing Lists</a> |
+          <a href="http://wiki.jibx.org">Wiki</a> |
+          <a href="../bugs.html">Bugs</a> |
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">Downloads</a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="8" width="100%" id="main">
+  <tbody>
+	<tr valign="top">
+	  <td id="leftcol" width="20%">
+		<div id="navcolumn">
+
+
+                  <div>
+            <strong>JiBX Basics</strong>
+                              <div>
+            <small>
+                    <a href="../index.html">Overview</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../flexibility.html">Flexibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../performance.html">Performance</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../clean-code.html">Clean code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../status.html">News and Status</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../comments.html">User Comments</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../sponsors.html">Sponsors</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../support.html">Support and Training</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bugs.html">Bugs</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../start.html">Getting Started</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../tutorial/binding-tutorial.html">Binding Tutorial</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../tutorial/binding-start.html">A basic binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-extras.html">Binding extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-structures.html">Structure mapping</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-collects.html">Collections and arrays</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-mappings.html">Using mappings</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-advanced.html">Advanced binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-extend.html">Method hooks</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-custom.html">Custom code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../bindcomp.html">Binding Compiler</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bindonload.html">Binding on Load</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../runtime.html">Runtime</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../extras.html">JiBX Extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../building.html">Building JiBX</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../schema.html">Schema Compatibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../mail-lists.html">Mailing Lists</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../faq.html">FAQ</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../contributing.html">Contributing</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibx-license.html">License</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Binding Definition</strong>
+                              <div>
+            <small>
+                    <a href="binding-overview.html">Definition details</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="contexts.html">Definition contexts</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="conversions.html">Conversions</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="xml-summary.html">XML summary</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <span class="menu-selection">&lt;binding&gt; element</span>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="include-element.html">&lt;include&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="format-element.html">&lt;format&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="namespace-element.html">&lt;namespace&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="mapping-element.html">&lt;mapping&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="value-element.html">&lt;value&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="structure-element.html">&lt;structure&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="collection-element.html">&lt;collection&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-attributes.html">Attribute groups</a>
+                  </small>
+                </div>
+                      </div>
+                      </div>
+                        <div>
+            <strong>Usage API</strong>
+                              <div>
+            <small>
+                    <a href=".././api/index.html">Runtime JavaDocs</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Subprojects</strong>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Eclipse Plug-in</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Introduction</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/install.html">Install</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/usage.html">Usage</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../jibxtools/index.html">Generator Tools</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../axis2/index.html">Axis2 Usage</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibxsoap/index.html">JibxSoap</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../xsd2jibx/index.html">Xsd2Jibx</a>
+                  </small>
+                </div>
+                      </div>
+      
+
+        </div>
+      </td>
+      <td>
+
+
+  
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">&lt;binding&gt; Element Definition</a></h3>
+      
+<p>The <b>binding</b> element is the root of a binding definition. This defines
+characteristics for the entire binding. It supports several unique attributes
+as well as two common attribute groups:</p>
+
+<h4><a name="Attributes">Attributes</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>add-constructors</td>
+<td><p>When this optional attribute is present with value "true", the binding
+compiler will add a default constructor to a bound class when necessary to make
+it usable in the binding. Default constructors are needed when there's no
+unmarshaller or factory method for an object reference. Constructors can only be
+added to classes which are available as class files for modification during the
+binding compile.</p></td>
+</tr>
+<tr class="a">
+<td>direction</td>
+<td><p>Binding direction, which must be &quot;input&quot; (unmarshalling only),
+&quot;output&quot; (marshalling only), or &quot;both&quot; (both marshalling
+and unmarshalling, the default if this attribute is not given).</p></td>
+</tr>
+<tr class="b">
+<td>force-classes</td>
+<td><p>When this optional attribute is present with value "true", it forces
+generation of marshaller/unmarshaller classes for top-level abstract mappings
+which are not extended by other mappings. Normally these classes would not be
+generated, since such mappings are never used directly within the binding. The
+classes can be used at runtime by custom code, though, as the equivalent of type
+mappings. The default value is "false".</p></td>
+</tr>
+<tr class="a">
+<td>forwards</td>
+<td><p>Controls whether forward references to ids are supported when
+unmarshalling, at the cost of some (minor) additional overhead and code size.
+If supplied the value must be &quot;true&quot; (forwards supported) or
+&quot;false&quot; (ids must be defined before they are referenced). The
+default is &quot;true&quot;.</p></td>
+</tr>
+<tr class="b">
+<td>name</td>
+<td><p>The name for this binding. The supplied name must consist only of
+characters which are valid as part of a Java identifier (so no spaces, periods,
+etc.). The default if this attribute is not used is to take the name of the file
+containing the definition document, with any file extension suffix stripped off
+and invalid characters replaced by underscores (so a binding definition in a
+file named &quot;binding-2.xml&quot; has the default name
+&quot;binding_2&quot;).</p></td>
+</tr>
+<tr class="a">
+<td>package</td>
+<td><p>Java package used for created binding factory class. By default this is
+the same package as the class associated with the first <b>mapping</b> child
+element. If present, the value must be a Java package name
+(as in &quot;org.jibx.runtime&quot;).</p></td>
+</tr>
+<tr class="b">
+<td>track-source</td>
+<td><p>When this optional attribute is present with value "true", the binding
+compiler adds code to each bound object class to implement the
+<code>org.jibx.runtime.ITrackSource</code> interface and store source position
+information when instance objects are unmarshalled. This interface lets you
+retrieve information about the source document and specific line and column
+location of the document component associated with that object. The default
+value is "false".</p></td>
+</tr>
+<tr class="a">
+<td><a href="binding-attributes.html#style">style</a></td>
+<td><p>A <b>value-style</b> attribute present on the <b>binding</b> element sets a
+default for all contained elements. See the <a
+href="binding-attributes.html#style">style attribute group</a> description
+for usage details.</p></td>
+</tr>
+<!--<td>global-ids</td>
+<td><p>Determines whether object id values are global (as in normal XML ID/IDREF
+usage) or specific to a particular object type. If supplied the value must be
+&quot;true&quot; (global ids) or &quot;false&quot; (type-specific ids). The
+default is &quot;true&quot;. <b>Not implemented for Beta 3a.</b></p></td>
+</tr>
+<tr class="a">  -->
+<!--<tr class="b">
+<td>auto-prefix</td>
+<td><p>Prefix used if automatically generating object ids. By default this is
+&quot;id_&quot;, but any prefix can be defined using this attribute. <b>Not
+implemented for Beta 3a.</b></p></td>
+</tr> -->
+</table>
+
+      </div>
+      </div>
+      </div>
+      </td>
+
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" cellspacing="0" cellpadding="4">
+  <tbody>
+    <tr>
+      <td> &copy; 2003-2008, Dennis M. Sosnoski (<a href="http://www.sosnoski.com">Sosnoski Software Solutions, Inc.</a>).
+      Licensed to the JiBX Project for free distribution and use. </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+</body>
+</html>

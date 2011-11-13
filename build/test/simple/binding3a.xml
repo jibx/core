@@ -1,0 +1,20 @@
+<!-- Modified form of basic binding that specifies the type of items in the
+ collection of string values as simple elements. -->
+
+<binding>
+  <mapping name="customer" class="simple.Customer3">
+    <structure name="name" field="name">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <structure usage="optional" field="referral"/>
+    <collection field="orderIds">
+      <value name="order" type="java.lang.String"/>
+    </collection>
+  </mapping>
+</binding>

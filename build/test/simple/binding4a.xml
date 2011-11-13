@@ -1,0 +1,17 @@
+<!-- binding testing operation of collection with untyped items, and untyped
+ required element -->
+<binding>
+  <mapping name="customer" class="simple.Customer4">
+    <structure field="oname"/>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <collection usage="optional" field="referrals"/>
+  </mapping>
+  <mapping name="name" class="simple.Name" ordered="false">
+    <value name="first-name" field="firstName" usage="optional"/>
+    <value name="last-name" field="lastName" usage="optional"/>
+  </mapping>
+</binding>

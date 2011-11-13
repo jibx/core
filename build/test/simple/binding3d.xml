@@ -1,0 +1,19 @@
+<!-- Variation to test using a separate optional object without an element, but
+  with an element child, and uses an untyped mapping reference. -->
+
+<binding>
+  <mapping name="customer" class="simple.Customer3">
+    <structure field="name" usage="optional">
+      <value name="name" field="firstName" usage="optional"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <structure usage="optional" field="oreferral"/>
+    <collection field="orderIds">
+      <value name="order" type="java.lang.String"/>
+    </collection>
+  </mapping>
+</binding>

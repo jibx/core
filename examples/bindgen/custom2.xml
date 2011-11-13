@@ -1,0 +1,10 @@
+<custom namespace-style="fixed" namespace="http://www.jibx.org/starters/fromcode"
+    property-access="true">
+  <package name="org.jibx.starter1">
+    <class name="Address" includes="street1 city state postCode country"
+        requireds="street1 city"/>
+    <class name="Customer" requireds="lastName firstName /customerNumber"/>
+    <class name="Item" excludes="description" requireds="@id @quantity price"/>
+    <class name="Order" requireds="orderNumber customer billTo shipping orderDate"/>
+  </package>
+</custom>

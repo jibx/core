@@ -1,0 +1,88 @@
+<binding direction="input" track-source="true" package="org.jibx.ws.wsdl"
+    value-style="attribute" force-classes="true">
+  
+  <include path="class-customs-binding.xml"/>
+  
+  <!-- Base class abstract mappings -->
+  <mapping abstract="true" class="org.jibx.ws.wsdl.tools.custom.NestingBase">
+    <!-- Note that the values are accessed using reflection by the argument
+      processing code, so attribute names need to correspond to field names -->
+    <structure map-as="org.jibx.custom.classes.SharedNestingBase"/>
+    <value name="wrapped" field="m_wrapped" usage="optional"/>
+    <value name="set-actions" field="m_setActions" usage="optional"/>
+    <value name="use-nillable" field="m_useNillable" usage="optional"/>
+    <value name="service-base" field="m_serviceBase" usage="optional"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.ws.wsdl.tools.custom.ValueCustom"
+      pre-set="preSet" type-name="value">
+    <value name="element" type="java.lang.String" set-method="setElement"
+        usage="optional"/>
+    <structure map-as="org.jibx.custom.classes.SharedValueBase"/>
+  </mapping>
+
+  <!-- <wsdl> element is root of WSDL customizations, holding only
+    <service> element children, which have only <operation> child elements,
+    which have only <parameter>, <collection-parameter>, <return>,
+    <collection-return>, and <throws> child elements -->
+  <mapping name="wsdl" class="org.jibx.ws.wsdl.tools.custom.WsdlCustom" pre-set="preSet"
+      factory="org.jibx.ws.wsdl.tools.custom.WsdlCustom.factory">
+    <!-- Note that the values are accessed using reflection by the argument
+      processing code, so attribute names need to correspond to field names -->
+    <structure map-as="org.jibx.ws.wsdl.tools.custom.NestingBase"/>
+    <value name="wsdl-namespace" field="m_wsdlNamespace" usage="optional"/>
+    <collection field="m_serviceList">
+      <structure name="service" type="org.jibx.ws.wsdl.tools.custom.ServiceCustom"
+          pre-set="preSet" factory="org.jibx.ws.wsdl.tools.custom.ServiceCustom.factory">
+        <structure map-as="org.jibx.ws.wsdl.tools.custom.NestingBase"/>
+        <value name="class" field="m_className"/>
+        <value name="service-name" field="m_serviceName" usage="optional"/>
+        <value name="port-name" field="m_portName" usage="optional"/>
+        <value name="binding-name" field="m_bindingName" usage="optional"/>
+        <value name="port-type-name" field="m_portTypeName" usage="optional"/>
+        <value name="wsdl-namespace" field="m_wsdlNamespace" usage="optional"/>
+        <value name="service-address" field="m_serviceAddress" usage="optional"/>
+        <value name="includes" field="m_includes" usage="optional"/>
+        <value name="excludes" field="m_excludes" usage="optional"/>
+        <collection field="m_operations">
+          <structure name="operation" type="org.jibx.ws.wsdl.tools.custom.OperationCustom"
+              factory="org.jibx.ws.wsdl.tools.custom.OperationCustom.factory">
+            <value name="method-name" field="m_methodName"/>
+            <value name="operation-name" field="m_operationName"
+                usage="optional"/>
+            <value name="optionals" field="m_optionals" usage="optional"/>
+            <value name="request-message" field="m_requestMessageName"
+                usage="optional"/>
+            <value name="request-wrapper" field="m_requestWrapperName"
+                usage="optional"/>
+            <value name="requireds" field="m_requireds" usage="optional"/>
+            <value name="response-message" field="m_responseMessageName"
+                usage="optional"/>
+            <value name="response-wrapper" field="m_responseWrapperName"
+                usage="optional"/>
+            <value name="soap-action" field="m_soapAction" usage="optional"/>
+            <collection field="m_parameters" ordered="false">
+              <structure name="parameter" usage="optional"
+                  type="org.jibx.ws.wsdl.tools.custom.ValueCustom" pre-set="preSet"
+                  factory="org.jibx.ws.wsdl.tools.custom.ValueCustom.parameterFactory">
+                <structure map-as="value"/>
+              </structure>
+            </collection>
+            <structure field="m_return" name="return" usage="optional"
+                pre-set="preSet"
+                factory="org.jibx.ws.wsdl.tools.custom.ValueCustom.returnFactory">
+              <structure map-as="value"/>
+            </structure>
+            <collection field="m_throws" ordered="false">
+              <structure name="throws" usage="optional" pre-set="preSet"
+                  type="org.jibx.ws.wsdl.tools.custom.ThrowsCustom"
+                  factory="org.jibx.ws.wsdl.tools.custom.ThrowsCustom.throwsFactory">
+                <value name="class" field="m_type"/>
+              </structure>
+            </collection>
+          </structure>
+        </collection>
+      </structure>
+    </collection>
+  </mapping>
+  
+</binding>

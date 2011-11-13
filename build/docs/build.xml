@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<project basedir="." default="jibx">
+
+  <property name="classes" value="${basedir}/classes"/>
+  <property name="site-lib" value="${basedir}/lib"/>
+  <property name="jibx-home" value="${basedir}/../.."/>
+  <property name="jibx-lib" value="${jibx-home}/lib/"/>
+  <property name="jar-name" value="site"/>
+  
+  <!-- binding task definition -->
+  <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+    <classpath>
+      <pathelement location="${jibx-lib}/bcel.jar"/>
+      <pathelement location="${jibx-lib}/jibx-bind.jar"/>
+      <pathelement location="${jibx-lib}/jibx-run.jar"/>
+      <pathelement location="${jibx-lib}/xpp3.jar"/>  
+    </classpath>
+  </taskdef>
+  
+  <!-- delete old class files -->
+  <target name="clean">
+    <delete dir="${classes}" quiet="true"/>
+    <delete file="${basedir}/velocity.log" quiet="true"/>
+    <delete file="${site-lib}/${jar-name}.jar" quiet="true"/>
+  </target>
+  
+  <!-- build and bind code -->
+  <target name="build" depends="clean">
+    <delete dir="${classes}" quiet="true"/>
+    <mkdir dir="${classes}"/>
+    <echo message="Compiling the java source files..."/>
+    <javac srcdir="src" destdir="${classes}" debug="on" includes="**/*.java" source="1.3" target="1.3">
+      <classpath>
+        <pathelement location="${classes}"/>
+        <pathelement location="${jibx-lib}/jibx-run.jar"/>
+        <pathelement location="${jibx-lib}/junit.jar"/>
+        <pathelement location="${site-lib}/velocity-dep.jar"/>
+      </classpath>
+    </javac>
+    <echo message="Running binding compiler..."/>
+    <bind load="true" binding="${basedir}/binding.xml">
+      <classpathset dir="${classes}"/>
+      <classpathset dir="${jibx-lib}/jibx-run.jar"/>
+    </bind> 
+  </target>
+
+  <!-- build the site jar -->
+  <target name="jar" depends="build">
+    <delete file="${site-lib}/${jar-name}.jar" quiet="true"/>
+    <jar jarfile="${site-lib}/${jar-name}.jar" basedir="${classes}"/>
+  </target>
+  
+  <!-- run the site building process -->
+  <target name="jibx">
+    <echo message="Building the site..."/>
+    <delete>
+      <fileset dir="${jibx-home}/docs" includes="**/*.html" excludes="api/**/*,schema-library/**/*,maven-jibx-plugin/**/*"/>
+    </delete>
+    <java classname="com.sosnoski.site.Builder" fork="true">
+      <classpath>
+        <pathelement location="${jibx-lib}/jibx-run.jar"/>
+        <fileset dir="${site-lib}" includes="*.jar"/>
+      </classpath>
+      <arg value="jibx-site.xml"/>
+      <arg value="jibx-template.vm"/>
+      <arg value="${jibx-home}/docs"/>
+    </java>
+  </target>
+
+</project>

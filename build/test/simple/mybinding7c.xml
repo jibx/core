@@ -1,0 +1,22 @@
+<!-- Collection interface with separate mapping, using create-type and ignoring
+ unknown child elements of collection, while also trimming whitespace from
+ simple values. -->
+<binding trim-whitespace="true">
+  <mapping name="myelement" class="simple.MyClass7">
+    <structure field="list" usage="optional"/>
+    <collection field="array" name="strings" type="java.lang.String[]"
+        usage="optional" ordered="false" flexible="true">
+      <value name="string" type="java.lang.String" whitespace="preserve"/>
+    </collection>
+    <collection field="array2" name="strings" type="java.lang.String[]"
+        ordered="false" flexible="true">
+      <value name="string" type="java.lang.String" whitespace="replace"/>
+    </collection>
+    <structure field="list2"/>
+  </mapping>
+  <mapping name="ints" class="java.util.List" create-type="java.util.ArrayList">
+    <collection ordered="false" flexible="true">
+      <value name="int" type="java.lang.Integer" whitespace="collapse"/>
+    </collection>
+  </mapping>
+</binding>

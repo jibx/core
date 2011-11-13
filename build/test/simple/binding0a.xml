@@ -1,0 +1,16 @@
+<!-- Multiple usages of structure with only write access -->
+<binding direction="input">
+  <mapping name="customer" class="simple.Customer0">
+    <structure usage="optional" set-method="setName">
+      <value name="first-name" set-method="setFirst" usage="optional"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <structure name="name" usage="optional" set-method="setName" get-method="getName">
+      <value name="last-name" set-method="setLast" usage="optional"/>
+    </structure>
+  </mapping>
+</binding>

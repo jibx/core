@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX extras</title>
+</head>
+<body class="composite">
+
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">JiBX extras</a></h3>
+
+<p>The <i>/lib/jibx-extras.jar</i> provides a number of
+optional (but useful) classes you may want to use in your JiBX work. These
+classes are described on this page. To use them, you'll need to include the jar
+in your runtime classpath.</p>
+
+	    </div>
+      <div class="h3">
+      <h3><a name="roundtrip">Roundtripping documents</a></h3>
+
+<p>Binding definitions can be complex to construct and verify. It's often useful
+to try some tests with a new binding to make sure it's working the way you
+expect. In general this is going to require application code to verify that
+documents are being marshalled and/or unmarshalled as expected, but you can try
+some simple tests just using the code included with JiBX along with your bound
+classes.</p>
+
+<p>To support this JiBX includes a pair of classes in the "extras" jar. The
+<code>org.jibx.extras.DocumentComparator</code> class provides an easy way of
+comparing two XML documents. It uses a pair of parsers to read the documents in
+parallel, comparing the streams of components seen from the two documents. The
+comparison ignores differences in whitespace separating elements, but treats
+whitespace as significant within elements with only character data content. It
+also ignores comments and processing instructions included in the documents,
+since these are normally not processed by JiBX.</p>
+
+<p>The <code>org.jibx.extras.TestRoundtrip</code> class builds on this support,
+using the <code>DocumentComparator</code> to compare the results of a round-trip
+conversion. It first unmarshals an input document using your binding definition
+and classes, then marshals the resulting object structure to an output document.
+It ends with comparing the original documents with the output document, reporting
+an error if they down match.</p>
+
+<p>In order to make running a roundtrip test as simple as possible the
+<code>TestRoundtrip</code> class is the main class for the jar file. To run a
+roundtrip test with your bound classes and a sample XML document file you just
+need to go to the root directory of your application class structure and run the
+command (as a single line, show split here only for formatting):</p>
+
+<div id="source"><pre>java -jar jibx-root/lib/jibx-extras.jar
+    org.jibx.extras.TestRoundtrip class-name sample.xml</pre></div>
+
+<p>where <i>jibx-root</i> is the path to the root directory for the JiBX
+distribution on your system, <i>class-name</i> is the fully-qualified name
+(including the full package
+specification, so <i>com.sosnoski.site.Menu</i> to name the <code>Menu</code>
+class within the <code>com.sosnoski.site</code> package) for the expected root
+unmarshalled object, and <i>sample.xml</i> is the sample document file.</p>
+
+<p>This technique of running <code>TestRoundtrip</code> directly from the jar
+only works when all the classes needed by your application are available as
+separate class files (rather than jars or such) within a single directory
+structure. <code>TestRoundtrip</code> automatically includes the current
+execution directory in the classpath for loading your files (along with the
+jar files used for the JiBX runtime), so this works well for simple applications.
+For applications that need classes from jars or other directories you need to
+instead run <code>TestRoundtrip</code> directly using a command line like (on
+Unix/Linux; if you're using Windows or MS-DOS you'll need to reverse the slashs
+and use ';' instead of ':' as a path separator character):</p>
+
+<div id="source"><pre>java -cp jibx-root/lib/jibx-extras.jar:lib/lib1.jar:lib/lib2.jar:.
+    class-name sample.xml</pre></div>
+
+<p>This allows you to include any required library files in the classpath you
+define for the JVM (in this case <i>lib/lib1.jar</i> and <i>lib/lib2.jar</i>).</p>
+
+<p>You can also use <code>TestRoundtrip</code> in combination with the
+<a href="%bindload%">bind-on-load</a> feature, which can be especially useful when
+you're experimenting with binding definitions to use with your classes and
+documents. Here's the equivalent to the first of the above command lines, but
+this time using the <i>binding.xml</i> binding definition for the test:</p>
+
+<div id="source"><pre>java -cp .:jibx-root/lib/jibx-bind.jar:jibx-root/lib/jibx-extras.jar
+    org.jibx.binding.Run -b binding.xml org.jibx.extras.TestRoundtrip class-name sample.xml</pre></div>
+
+<p>The direct comparison provided by using <code>DocumentComparator</code> to
+match the input document against the output document isn't always an appropriate
+test. Some types of binding definition constructs (such as default values, or
+unordered child elements) can cause the output to differ from the input even
+though both are equivalent in terms of the binding. To handle this type of
+situation, <code>TestRoundtrip</code> allows you to supply a third command line
+parameter giving the name of a separate comparison document to be matched against
+the output. It also allows multiple sets of arguments for testing more than one
+binding at a time - see the JavaDocs or source code for details.</p>
+
+<p>If the result of running <code>TestRoundtrip</code> is a successful comparison
+it just exits silently. If there's an error in the comparison, it prints out the
+error information to the console and saves a copy of the generated output
+document as <i>temp.xml</i> in the working directory.</p>
+
+	    </div>
+      <div class="h3">
+      <h3><a name="hashmap">Map handling</a></h3>
+
+<p>Another useful class in <i>jibx-extras.jar</i> supports marshalling and
+unmarshalling of <code>java.util.Map</code> instances. This is the
+<code>org.jibx.extras.HashMapperStringToComplex</code> class. The support it
+provides is limited to maps with <code>java.lang.String</code> keys and
+object values with mappings defined by the binding (using &lt;mapping>
+elements), and the only flexibility it provides is in choosing the name of the
+root element, but it's still useful for many cases. It's also intended as a
+sample implementation that can be modified for your own particular requirements.
+For more discussion of both this specific code and the use of custom marshallers
+and unmarshallers in general, see the binding tutorial section on <a
+href="%bindcustom%#marunmar"><b>Custom marshallers and unmarshallers</b></a>.</p>
+
+<p>The implementation included in <i>jibx-extras.jar</i> includes some nice
+customization features. By subclassing this implementation in your own code you
+can override the default names used for the item wrapper element and the key
+attribute, as well as control whether an item count is included and the name
+used for that attribute if so. There's also an alternative handler for maps with
+value objects that correspond to simple schema types (such as
+<code>java.lang.String</code>, <code>java.lang.Integer</code>,
+<code>java.util.Date</code>, etc.). This is the
+<code>org.jibx.extras.HashMapperStringToSchemaTyp</code> class. See the <a
+href="%apidocs%">Javadocs</a> for details on both of these classes.</p>
+
+	    </div>
+      <div class="h3">
+      <h3><a name="ididref">ID and IDREF handlers</a></h3>
+
+<p>The <code>org.jibx.extras.IdRefMapperBase</code> and
+<code>org.jibx.extras.IdDefRefMapperBase</code> classes support special handling
+of objects using ID and IDREFs. These differ from the other classes in
+<i>jibx-extras.jar</i> in that they're abstract base classes which need to be
+subclassed by the user in order to construct usable marshaller/unmarshallers.
+The flexibility they provide is often worth the extra effort, though.</p>
+
+<p><code>org.jibx.extras.IdRefMapperBase</code> lets you use IDREF values
+directly in a collection, which is not supported by the basic JiBX code. It
+expects the XML structure for each item to be an element with no content and a
+single attribute giving the IDREF value (like <b><item ref="abcd"/></b>). When a
+subclass is used as the marshaller/unmarshaller for a structure within a
+collection the referenced objects will be converted to and from the XML IDREF
+representation. Subclasses can also be used as marshaller/unmarshallers outside
+of a collection, but in this case you could just as easily use an IDREF value
+directly. This class only works with IDREF values which have been defined before
+the point of reference.</p>
+
+<p><code>org.jibx.extras.IdDefRefMapperBase</code> is even more flexible.
+Subclasses can be used as marshaller/unmarshallers which will use a smart
+representation for objects, marshalling the full XML expression of an object the
+first time it's referenced and thereafter using only an IDREF representation
+(and unmarshalling the same type of structure).</p>
+
+<p>Both of these classes define an abstract method which must be implemented by
+subclasses. The abstract method links the base class code to a particular object
+type, allowing the base code to load the ID value from an object instance. You
+can also override another method to control the name of the ID/IDREF attribute.
+See the <a href="%apidocs%">Javadocs</a> for details on both of these classes.</p>
+
+	    </div>
+      <div class="h3">
+      <h3><a name="versioning">Versioned bindings</a></h3>
+
+<p>The <code>org.jibx.extras.BindingSelector</code> class supports marshalling
+and unmarshalling documents with different binding versions.
+As with the above classes, the support it provides
+is limited but useful. In the case of <code>BindingSelector</code>, the root
+element of the document needs to have some attribute that identifies
+the particular version used for a document. The version attribute value is used
+to select the binding to be applied when unmarshalling a document, and a supplied
+version can also be used when marshalling a document. See the binding tutorial
+section on <a href="%bindcustom%#frontend"><b>Controlling JiBX with front-end
+code</b></a> for full details.</p>
+
+	    </div>
+      <div class="h3">
+      <h3><a name="docmods">Using document models</a></h3>
+
+<p>The extras also include marshaller/unmarshaller classes that allow you to
+use document models for portions of your documents. This can be useful in
+situations where documents can contain extension information that's not well
+structured, or where you need to work with XML document components (such as
+comments or processing instructions) that are not easily handled with data
+binding. The classes included currently support <b>dom4j</b> and <b>W3C DOM</b>
+models.</p>
+
+<p>The <b>dom4j</b> support is provided by the
+<code>org.jibx.extras.Dom4JElementMapper</code> and
+<code>org.jibx.extras.Dom4JListMapper</code> marshaller/unmarshaller classes.
+To make use of these you'll need to separately download the <b>dom4j</b>
+library from the <a href="http://dom4j.org/">project web site</a>, since this is
+an optional add-on that's not included in the JiBX distribution. The classes
+have been tested using dom4j release 1.4, but should be compatible
+with both older and future versions since the dom4j APIs are stable.</p>
+
+<p><code>Dom4JElementMapper</code> works with a single element, which may be
+optional or required in your binding definition. When unmarshalling
+it creates an instance of <code>org.dom4j.Element</code> to hold the content
+of that element, and when marshalling it requires that the object you supply
+is of that type. If you specify an element name when you use this in your
+binding definition that name will be matched when unmarshalling.</p>
+
+<p><code>Dom4JListMapper</code> works with a linked object type that implements
+java.util.List (the actual runtime type - as with <code>Dom4JElementMapper</code>
+the declared type in your binding definition is ignored and can be anything).
+When unmarshalling it will create an instance of <code>java.util.ArrayList</code>
+if a list is not passed in and any content is present, then return with all the
+content up to the close tag for the enclosing element added to the list as the
+appropriate types of dom4j components. When marshalling, it will simply write
+out any content in the list you provide directly (where the items in the list
+must be dom4j components).</p>
+
+<p>The <b>DOM</b> support is provided by the
+<code>org.jibx.extras.DomElementMapper</code>,
+<code>org.jibx.extras.DomListMapper</code>, and
+<code>org.jibx.extras.DomFragmentMapper</code> marshaller/unmarshaller classes.
+These all make use of the JAXP API support included in recent version of the
+Java platform. They have been tested with the version of JAXP included with the
+Java 1.4.2 JRE from Sun Microsystems, but should be compatible with most
+versions of JAXP (despite being a "standard extension", versions of JAXP have
+been known to include broken code and/or incompatibilities between versions; it
+was used in this case mainly because it's bundled with the JRE and does not
+require a separate download).</p>
+
+<p><code>DomElementMapper</code> works with a single element, which may be
+optional or required in your binding definition. When unmarshalling
+it creates an instance of <code>org.w3c.dom.Element</code> to hold the content
+of that element, and when marshalling it requires that the object you supply
+is of that type. If you specify an element name when you use this in your
+binding definition that name will be matched when unmarshalling. Since the DOM
+API requires that each document component belongs to a particular document, this
+will create a <code>org.w3c.dom.Document</code> each time an instance of this
+marshaller/unmarshaller class is created.</p>
+
+<p><code>DomListMapper</code> works with a linked object type that implements
+<code>java.util.List</code> (the actual runtime type - as with the other
+marshaller/unmarshaller classes in this group the declared type in your binding
+definition is ignored and can be anything), while <code>DomFragmentMapper</code>
+works with an instance of <code>org.w3c.dom.DocumentFragment</code>. When
+unmarshalling, each of these will create an instance of the appropriate type
+(using <code>java.util.ArrayList</code> for <code>DomListMapper</code>)
+if one is not passed in and any content is present, then return with all the
+content up to the close tag for the enclosing element added to that instance as
+the appropriate types of DOM components. When marshalling, they will simply
+write out any content in the list or fragment you provide directly (where the
+items in the list must be DOM components). As with <code>DomElementMapper</code>,
+these will create a <code>org.w3c.dom.Document</code> each time an instance of
+the marshaller/unmarshaller class is created.</p>
+
+	    </div>
+      <div class="h3">
+      <h3><a name="docout">Document model output</a></h3>
+
+<p>The extras jar includes an alternative to the standard output
+writers that instead of marshalling into an OutputStream or Writer
+creates a document model. Currently there is an implementation for JDOM,
+although other implementations like dom4j and W3C DOM are possible.</p>
+
+<p>In order to use the JDOM implementation JDOMWriter you need to put
+jdom.jar into your classpath. You should use release 1.0 available from
+http://www.jdom.org/.</p>
+
+<p>There a three different usage patterns for JDOMWriter. The first one is
+the equivalent of marshalling into e.g. a StringWriter. It creates a new
+JDOM Document on every run:</p>
+
+<div id="source"><pre>     IBindingFactory bfact = BindingDirectory.getFactory(clazz);
+    IMarshallingContext mctx = bfact.createMarshallingContext();
+    
+    JDOMWriter jdomWriter = new JDOMWriter(mctx.getNamespaces());
+    mctx.setXmlWriter(jdomWriter);
+    mctx.marshalDocument(example);
+    mctx.endDocument();
+    
+    Document document = jdomWriter.getDocument();</pre></div>
+
+<p>(You need to change "clazz" and "example" of course.)</p>
+
+<p>The other two possibilities are appending to an existing Document's root
+node or to an existing Element (possibly deeply nested within a
+Document). The only thing that changes in the code fragment above is the
+JDOMWriter constructor you need to use. You need to pass it your
+existing Document or Element instance as second parameter.</p>
+
+<p>The resulting Document can be used as you like. Refer to the JDOM
+documentation for more information. Wrapping it into a JDOMSource e.g.
+could be the input to a XSLT transformation.</p>
+
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

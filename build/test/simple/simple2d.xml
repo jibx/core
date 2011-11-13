@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customer>
+  <name>
+    <first-and-last>
+      <can-be-any element="true"/>
+      <last-name>Poincaré</last-name>
+      <anyting>Anything at all</anyting>
+      <first-name>Émile</first-name>
+      <nothing/>
+      <something>
+        <with>with</with>
+        <multiple>multiple</multiple>
+        <layers text="layers">
+          <of text="of"><children>children</children></of>
+        </layers>
+      </something>
+    </first-and-last>
+  </name>
+  <street1>rte st Antoine de Ginestière</street1>
+  <city>Paris</city>
+  <state>FR</state>
+  <zip>98059</zip>
+  <phone>01 44 27 67 93</phone>
+</customer>

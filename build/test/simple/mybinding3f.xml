@@ -1,0 +1,35 @@
+<!-- This checks using an array of objects directly as a collection. -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass3">
+    <structure ordered="false">
+      <value name="a" field="a" usage="optional"/>
+      <value name="b" field="b" usage="optional"/>
+      <value name="c" field="c" usage="optional"/>
+      <value name="d" field="d" usage="optional"/>
+    </structure>
+    <value name="e" field="e" usage="optional" format="char.string"/>
+    <structure name="format1" field="format1" value-style="attribute" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <structure name="format2" field="format2" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <collection field="integers">
+      <value name="int"/>
+    </collection>
+  </mapping>
+</binding>

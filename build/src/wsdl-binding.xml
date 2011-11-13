@@ -1,0 +1,134 @@
+<binding value-style="attribute" force-classes="true" package="org.jibx.ws.wsdl"
+    direction="output">
+
+  <namespace uri="http://schemas.xmlsoap.org/wsdl/" prefix="wsdl"
+      default="elements"/>
+  <namespace uri="http://schemas.xmlsoap.org/wsdl/soap/" prefix="soap"/>
+  
+  <format type="org.jibx.runtime.QName"
+      serializer="org.jibx.runtime.QName.serialize"
+      deserializer="org.jibx.runtime.QName.deserialize"/>
+  
+  <!-- top-level definitions element mapping -->
+  <mapping name="definitions" class="org.jibx.ws.wsdl.model.Definitions"
+      pre-set="preset" pre-get="preget">
+    <value style="attribute" field="m_wsdlNamespace" name="targetNamespace"/>
+    
+    <!-- types component -->
+    <collection name="types" field="m_schemas">
+      <structure marshaller="org.jibx.ws.wsdl.tools.WsdlWriter$SchemaMarshaller"
+          type="org.jibx.schema.elements.SchemaElement"/>
+    </collection>
+    
+    <!-- messages component -->
+    <collection field="m_messages">
+      <structure name="message" type="org.jibx.ws.wsdl.model.Message">
+        <value name="name" field="m_name"/>
+        <collection field="m_parts">
+          <structure name="part" type="org.jibx.ws.wsdl.model.MessagePart">
+            <value name="name" field="m_name"/>
+            <value name="element" field="m_elementReference"/>
+          </structure>
+        </collection>
+      </structure>
+    </collection>
+    
+    <!-- portType component -->
+    <structure name="portType">
+      <value name="name" field="m_portTypeName"/>
+      <structure name="documentation" field="m_portTypeDocumentation"
+          usage="optional">
+        <structure type="java.util.List"
+            marshaller="org.jibx.extras.DomListMapper"/>
+      </structure>
+      <collection field="m_operations">
+        <structure name="operation" type="org.jibx.ws.wsdl.model.Operation">
+          <structure name="documentation" field="m_documentation"
+              usage="optional">
+            <structure type="java.util.List"
+                marshaller="org.jibx.extras.DomListMapper"/>
+          </structure>
+          <value name="name" field="m_name"/>
+          <collection field="m_messageRefs">
+            <structure type="org.jibx.ws.wsdl.model.MessageReference">
+              <structure name="input" usage="optional" test-method="isInput">
+                <structure field="m_message">
+                  <value name="message" field="m_qName"/>
+                </structure>
+              </structure>
+              <structure name="output" usage="optional" test-method="isOutput">
+                <structure field="m_message">
+                  <value name="message" field="m_qName"/>
+                </structure>
+              </structure>
+              <structure name="fault" usage="optional" test-method="isFault">
+                <structure field="m_message">
+                  <value name="message" field="m_qName"/>
+                  <value name="name" field="m_name"/>
+                </structure>
+              </structure>
+            </structure>
+          </collection>
+        </structure>
+      </collection>
+    </structure>
+    
+    <!-- binding component -->
+    <structure name="binding">
+      <value name="name" field="m_bindingName"/>
+      <value name="type" get-method="getPortTypeQName"/>
+      <structure name="binding" ns="http://schemas.xmlsoap.org/wsdl/soap/">
+        <value name="transport" field="HTTP_TRANSPORT"/>
+        <value name="style" field="STYLE_DOCUMENT"/>
+      </structure>
+      <collection field="m_operations">
+        <structure name="operation" type="org.jibx.ws.wsdl.model.Operation">
+          <value name="name" field="m_name"/>
+          <structure name="operation"
+              ns="http://schemas.xmlsoap.org/wsdl/soap/">
+            <value name="soapAction" field="m_soapAction"/>
+          </structure>
+          <collection field="m_messageRefs">
+            <structure type="org.jibx.ws.wsdl.model.MessageReference">
+              <structure name="input" usage="optional" test-method="isInput">
+                <structure name="body"
+                    ns="http://schemas.xmlsoap.org/wsdl/soap/">
+                  <value name="use" constant="literal"/>
+                </structure>
+              </structure>
+              <structure name="output" usage="optional" test-method="isOutput">
+                <structure name="body"
+                    ns="http://schemas.xmlsoap.org/wsdl/soap/">
+                  <value name="use" constant="literal"/>
+                </structure>
+              </structure>
+              <structure name="fault" usage="optional" test-method="isFault">
+                <structure field="m_message">
+                  <value name="name" field="m_name"/>
+                </structure>
+                <structure name="body"
+                    ns="http://schemas.xmlsoap.org/wsdl/soap/">
+                  <value name="use" constant="literal"/>
+                </structure>
+              </structure>
+            </structure>
+          </collection>
+        </structure>
+      </collection>
+    </structure>
+    
+    <!-- binding component -->
+    <structure name="service">
+      <value name="name" field="m_serviceName"/>
+      <structure name="port">
+        <value name="name" field="m_portName"/>
+        <value name="binding" get-method="getBindingQName"/>
+        <structure name="address" ns="http://schemas.xmlsoap.org/wsdl/soap/">
+          <value name="location" field="m_serviceLocation" usage="optional"/>
+        </structure>
+      </structure>
+    </structure>
+    
+  </mapping>
+
+</binding>

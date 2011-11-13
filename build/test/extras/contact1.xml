@@ -1,0 +1,9 @@
+<contact>
+  <first-name>Tom</first-name><last-name>Sawyer</last-name><phone>1-800-555-1212</phone>
+  <information customer-id="12346">
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+    <state>WA</state>
+    <zip>98059</zip>
+  </information>
+</contact>

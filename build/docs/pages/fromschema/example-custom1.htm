@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 2: Generating only the required classes</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>Customizing CodeGen code generation</h3>
+
+<p>You can supply a customization file to CodeGen to control many aspects of the code
+and binding generation. Two basic customization examples are included in the
+<i>samples/codegen</i> directory. This page discusses the first customization example
+(<i>custom1.xml</i>), which demonstrates how you can easily eliminate unnecessary
+classes from the generated code.</p>
+
+<p>To pass the customization file to CodeGen you need to use a '-c' command line
+parameter, followed by the actual path to the customization file. The supplied Ant
+<i>build.xml</i> file has a 'custgen1' target for this purpose:</p>
+
+<div id="source"><pre>  &lt;!-- generate using first customizations -->
+  &lt;target name="custgen1" depends="check-runtime,clean">
+    
+    &lt;echo message="Running code generation from schema"/>
+    &lt;java classname="org.jibx.schema.codegen.CodeGen" fork="yes"
+        classpathref="classpath" failonerror="true">
+      &lt;arg value="-t"/>
+      &lt;arg value="gen/src"/>
+      &lt;arg value="-c"/>
+      &lt;arg value="custom1.xml"/>
+      &lt;arg value="otasubset/OTA_AirLowFareSearch*.xsd"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+<p>Aside from the '-c' command line parameter and the actual customization file path,
+this is identical to the 'codegen' target used for the <a href="cgexample1">first
+example</a>.</p>
+
+      </div>
+      <div class="h3">
+      <a name="custom"></a><h3>First customizations</h3>
+
+<p>Here's the actual content of the <i>custom1.xml</i> customizations file used in
+this example:</p>
+
+<div id="source"><pre>&lt;schema-set prefer-inline="true" generate-all="false" package="org.ota.air">
+  &lt;schema name="OTA_AirLowFareSearchRQ.xsd" includes="OTA_AirLowFareSearchRQ"/>
+  &lt;schema name="OTA_AirLowFareSearchRS.xsd" includes="OTA_AirLowFareSearchRS"/>
+&lt;/schema-set>
+</pre></div>
+
+<p>The attributes on the &lt;schema-set> root element tell CodeGen to inline definitions
+where possible in the generated code (<a href="%cgcustoms%#prefer-inline"><code>prefer-inline="true"</code></a>),
+to only generate the required schema definitions, rather than all the schema definitions
+(<a href="%cgcustoms%#generate-all"><code>generate-all="false"</code></a>), and to use
+the Java package <code>org.ota.air</code>(<a href="%cgcustoms%#package"><code>package="org.ota.air"</code></a>).</p>
+
+<p>The nested &lt;schema> elements each identify a particular schema, and tell CodeGen
+which global definitions from that schema should be included in the code generation. This
+is crucial when you use the <code>generate-all="false"</code> customization, since only
+those schema definitions you specify to be included, and the schema components used by
+the specified definitions, will be generated. If you leave out the two &lt;schema> lines
+from the above customization file, CodeGen will happily run and generate a model with 0
+classes - certainly efficient, but probably not what you want to use.</p>
+
+      </div>
+      <div class="h3">
+      <a name="code"></a><h3>Generated code</h3>
+
+<p>Run the 'custgen1' target and see the <i>gen/src</i> directory (or use the
+'custom1' target to generate and compile the code, run the binding compiler, and finally run
+a supplied test program which roundtrips the sample documents from the <i>samples</i>
+directory). The number of generated top-level classes this time is only 33, with 104
+inner classes, for a total of 137 - just a third of the 414 classes in the default
+model. CodeGen is able to simplify the model in this way because many of the global
+definitions from included schemas are not actually used by the &lt;OTA_AirLowFareSearchRQ>
+and &lt;OTA_AirLowFareSearchRS> elements, and with the customizations it only generates
+what's needed for the schema representation of these two elements.</p>
+
+<p>Here's a sample of the generated code (reformated for a reasonable page width,
+and this time leaving out the methods), showing portions of the main classes used for
+the response message:</p>
+
+<div id="source"><pre>/** 
+ * 
+ The Low Fare Search Response message contains a number of 'Priced Itinerary'
+ options. Each includes:
+ - A set of available flights matching the client's request.
+ - Pricing information including taxes and full fare breakdown for each passenger
+ type
+ - Ticketing information
+ - Fare Basis Codes and the information necessary to make a rules entry.
+ This message contains similar information to a standard airline CRS or GDS Low
+ Fare Search Response message.
+ 
+ * 
+ * Schema fragment(s) for this class:
+ * &lt;pre>
+ * &amp;lt;xs:element xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="OTA_AirLowFareSearchRS">
+ *   &amp;lt;xs:complexType>
+ *     &amp;lt;xs:sequence>
+ *       &amp;lt;xs:choice>
+ *         &amp;lt;xs:sequence>
+ *           &amp;lt;xs:element type="ns:SuccessType" name="Success"/>
+ *           &amp;lt;xs:element type="ns:WarningsType" name="Warnings"
+                 minOccurs="0">
+ *             &amp;lt;!-- Reference to inner class Warnings -->
+ *           &amp;lt;/xs:element>
+ *           &amp;lt;xs:element type="ns:PricedItinerariesType"
+                 name="PricedItineraries"/>
+ *         &amp;lt;/xs:sequence>
+ *         &amp;lt;xs:element type="ns:ErrorsType" name="Errors"/>
+ *       &amp;lt;/xs:choice>
+ *     &amp;lt;/xs:sequence>
+ *     &amp;lt;xs:attributeGroup ref="ns:OTA_PayloadStdAttributes"/>
+ *   &amp;lt;/xs:complexType>
+ * &amp;lt;/xs:element>
+ * 
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="SuccessType"/>
+ * 
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItinerariesType">
+ *   &amp;lt;xs:sequence>
+ *     &amp;lt;xs:element name="PricedItinerary" maxOccurs="unbounded">
+ *       &amp;lt;!-- Reference to inner class PricedItinerary -->
+ *     &amp;lt;/xs:element>
+ *   &amp;lt;/xs:sequence>
+ * &amp;lt;/xs:complexType>
+ * 
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ErrorsType">
+ *   &amp;lt;xs:sequence>
+ *     &amp;lt;xs:element type="ns:ErrorType" name="Error" maxOccurs="99">
+ *       &amp;lt;!-- Reference to inner class _Error -->
+ *     &amp;lt;/xs:element>
+ *   &amp;lt;/xs:sequence>
+ * &amp;lt;/xs:complexType>
+ * &lt;/pre>
+ */
+public class OTAAirLowFareSearchRS
+{
+    private int choiceSelect = -1;
+    private static final int SUCCESS_CHOICE = 0;
+    private static final int ERROR_CHOICE = 1;
+    private Warnings warnings;
+    private List&lt;PricedItinerary> pricedItineraryList =
+        new ArrayList&lt;PricedItinerary>();
+    private List&lt;_Error> errorList = new ArrayList&lt;_Error>();
+    private OTAPayloadStdAttributes OTAPayloadStdAttributes;
+    ...
+    
+    /** 
+     *  Itinerary with pricing information.
+     * 
+     * Schema fragment(s) for this class:
+     * &lt;pre>
+     * &amp;lt;xs:element xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItinerary"
+           maxOccurs="unbounded">
+     *   &amp;lt;xs:complexType>
+     *     &amp;lt;xs:complexContent>
+     *       &amp;lt;xs:extension base="ns:PricedItineraryType">
+     *         &amp;lt;xs:attribute type="xs:integer" use="optional"
+                   name="OriginDestinationRefNumber"/>
+     *       &amp;lt;/xs:extension>
+     *     &amp;lt;/xs:complexContent>
+     *   &amp;lt;/xs:complexType>
+     * &amp;lt;/xs:element>
+     * 
+     * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItineraryType">
+     *   &amp;lt;xs:sequence>
+     *     &amp;lt;xs:element type="ns:AirItineraryType" name="AirItinerary"
+               minOccurs="0">
+     *       &amp;lt;!-- Reference to inner class AirItinerary -->
+     *     &amp;lt;/xs:element>
+     *     &amp;lt;xs:element type="ns:AirItineraryPricingInfoType"
+               name="AirItineraryPricingInfo" minOccurs="0">
+     *       &amp;lt;!-- Reference to inner class AirItineraryPricingInfo -->
+     *     &amp;lt;/xs:element>
+     *     &amp;lt;xs:element type="ns:FreeTextType" name="Notes" minOccurs="0"
+               maxOccurs="5"/>
+     *     &amp;lt;xs:element name="TicketingInfo" minOccurs="0">
+     *       &amp;lt;!-- Reference to inner class TicketingInfo -->
+     *     &amp;lt;/xs:element>
+     *   &amp;lt;/xs:sequence>
+     *   &amp;lt;xs:attribute type="xs:string" use="required"
+             name="SequenceNumber"/>
+     * &amp;lt;/xs:complexType>
+     * &lt;/pre>
+     */
+    public static class PricedItinerary
+    {
+        private AirItinerary airItinerary;
+        private AirItineraryPricingInfo airItineraryPricingInfo;
+        private List&lt;FreeTextType> noteList = new ArrayList&lt;FreeTextType>();
+        private TicketingInfo ticketingInfo;
+        private String sequenceNumber;
+        private BigInteger originDestinationRefNumber;
+        ...
+</pre></div>
+
+<p>If you compare this code with the <a href="%cgexample1%#code">Example 1 generated code</a>
+you'll see that much of the schema structure has been inlined in the new version. In cases
+where part of the schema definition has been converted to a separate class the schema
+fragment in the class JavaDoc references that class, to make it easier to relate the class
+structure to the schema.</p>
+
+<p>Schema components used in more than one place within the portions of the schema being
+generated are always generated as top-level classes. Components only used in a single place
+are, by default, generated as inner classes of the class matching the reference. The
+<a href="%cgexample1%#code">Example 1 generated code</a> showed a trivial example of this,
+where the <code>PricedItinerariesType</code> class had a <code>PricedItinerary</code>
+inner class. The customizations used for the current example create a lot more inner
+classes, in some cases nested several levels deep. This use of inner classes is generally
+convenient when working with a data model since it keeps references local to the containing
+definition whereever possible,but can be changed by using the
+<a href="%cgcustoms%#use-inner">use-inner</a> customization attribute.</p>
+
+<p>Next: <a href="%cgexample3%">Example 3: More extensive customizations</a></p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

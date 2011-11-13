@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Nesting and Contexts</title>
+</head>
+<body class="composite">
+  <h1>JiBX: Nesting and Contexts</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="nesting">Nesting and Context</a></h3>
+
+<p>The binding definition itself uses a nested structure that's partially
+recursive - some of the element types in the binding definition can contain other
+instances of the same element as children. This nesting is an important part
+of how the binding definition describes the rules for converting your objects.
+It's used both for showing the relationships between your Java and XML structures
+(see the <a href="%structmap%">Structure mapping</a> discussion), and for establishing the
+scope of definitions.</p>
+
+<p>Each level of nesting establishes a definition context for shared information
+(such as conversion formats, namespaces, and type mappings). Definitions from
+an enclosing context apply automatically in all nested contexts unless they are
+overridden within that context. To understand how this operates, think of the
+nested elements as similar to curly brace blocks in Java - definitions from a
+block are only visible within that block (including any inner blocks it
+encloses). This isn't an exact comparison - for one thing, inner blocks can
+override definitions from an enclosing block - but it's close.</p>
+
+<p>Here's a partial example from a binding definition to illustrate how context
+works:</p>
+
+<pre><code>&lt;binding&gt;
+  &lt;mapping name=&quot;base-table&quot; 
+      class=&quot;org.jibx.demo.TimeTableBean&quot;&gt;
+    &lt;format name=&quot;flightTime&quot; type=&quot;int&quot;
+      serializer=&quot;org.jibx.demo.Utils.minuteToTime&quot;
+      deserializer=&quot;org.jibx.demo.Utils.timeToMinute&quot;&gt;
+    &lt;mapping class=&quot;org.jibx.demo.FlightBean&quot; ... &gt;
+      ...
+      &lt;value name=&quot;depart&quot; field=&quot;m_departure&quot;
+        format=&quot;flightTime&quot;/&gt;
+      &lt;value name=&quot;arrive&quot; field=&quot;m_arrival&quot;
+        format=&quot;flightTime&quot;/&gt;
+    &lt;/mapping&gt;
+    &lt;mapping name=&quot;roundtrip&quot; ... &gt;
+      &lt;structure name=&quot;outbound&quot; field=&quot;m_outbound&quot;
+        item-type=&quot;org.jibx.demo.FlightBean&quot;/&gt;
+      &lt;structure name=&quot;inbound&quot; field=&quot;m_inbound&quot;
+        item-type=&quot;org.jibx.demo.FlightBean&quot;/&gt;
+    &lt;/mapping&gt;
+    ...
+  &lt;/mapping&gt;
+  &lt;mapping name=&quot;split-table&quot; 
+      class=&quot;org.jibx.demo.SplitTableBean&quot;&gt;
+  ...
+</code></pre>
+
+<p>The first <b>mapping</b> element (with <b>name=&quot;base-table&quot;</b>)
+establishes a context. The contained <b>format</b> and <b>mapping</b> elements
+are definitions that apply within the scope of that context. In this case the
+<b>format</b> definition (with <b>name=&quot;flightTime&quot;</b>) is used within
+the first <b>mapping</b> definition, and the second <b>mapping</b> definition
+in turn uses the first one (by specifying an <b>item-type</b> that matches the
+<b>class</b> name).</p>
+
+<p>These child definitions from the first <b>mapping</b> element are not
+available for use within the last <b>mapping</b> element. This element is at the
+same nesting level as the first one. If you wanted to make the child definitions
+from the first <b>mapping</b> available for use in the last one, you could do so
+by moving these definitions up to a higher level, making them children of the
+<b>binding</b> element.</p>
+
+<p></p>
+      </div>
+      </div>
+      </div>
+</body>
+</html>

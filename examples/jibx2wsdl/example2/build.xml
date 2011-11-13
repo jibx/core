@@ -1,0 +1,285 @@
+<?xml version="1.0" ?>
+
+<!-- ===========================================================================
+Ant build file for Jibx2Wsdl example. The directory structure is:
+
+ -start    Starting classes defining the service
+  +-bin    Binary class files
+  +-src    Supplied service definition code
+ -gen      Generated WSDL, binding(s), and schema(s)
+ -client   Client code directory
+  +-bin    Binary class files
+  +-gen    Generated client code
+  +-src    Supplied client implementation code
+  +-lib    Library directory (for generated shared.jar)
+ -server   Server code directory (use as root for IDE project)
+  +-bin    Binary class files
+  +-gen    Generated server code
+  +-impl   Supplied server implementation code
+  +-lib    Library directory (for generated shared.jar)
+
+The classes from the "start" directory are first compiled and used as input to
+Jibx2Wsdl, which generates the WSDL for the service to be exposed, along with
+the JiBX binding definition(s) for the data classes and the corresponding
+schema(s), in the "gen" directory. The generated binding(s) is then compiled,
+and the modified classes from the "start" directory are packaged into the
+"shared.jar" file and copied into both "client/lib" and "server/lib"
+directories.
+============================================================================ -->
+
+<project default="help" basedir=".">
+  
+  <!-- Give user a chance to override without editing this file -->
+  <property file="../build.properties"/>
+  
+  <property name="build-dir" location="${basedir}"/>
+  <property name="build-client" location="${build-dir}/client"/>
+  <property name="build-server" location="${build-dir}/server"/>
+  <property name="build-lib" location="${build-dir}/lib"/>
+  <property name="package-name" value="com.sosnoski.ws.library.jibx2wsdl"/>
+  <property name="package-path" value="com/sosnoski/ws/library/jibx2wsdl"/>
+  <property name="wsdl-path" value="${basedir}/gen/BookServer2.wsdl"/>
+  <property name="service-archive-name" value="BookServer2"/>
+  <property name="wsdlgen-dir" value="${basedir}/gen"/>
+  
+  <path id="jibx-classpath">
+    <fileset dir="${jibx-home}/lib" includes="**/*.jar"/>
+    <pathelement location="${basedir}/bin"/>
+  </path>
+  <path id="axis-classpath">
+    <fileset dir="${axis-home}/lib" includes="**/*.jar"/>
+  </path>
+
+  <!-- Delete generated code and class files -->
+  <target name="clean">
+    <delete quiet="true" dir="${build-server}/gen"/>
+    <delete quiet="true" dir="${build-server}/bin"/>
+    <delete quiet="true" dir="${build-server}/lib"/>
+    <delete quiet="true" dir="${build-client}/gen"/>
+    <delete quiet="true" dir="${build-client}/bin"/>
+    <delete quiet="true" dir="${build-client}/lib"/>
+    <delete quiet="true" dir="${basedir}/start/bin"/>
+    <delete quiet="true" dir="${basedir}/gen"/>
+    <delete quiet="true" file="${basedir}/${service-archive-name}.aar"/>
+  </target>
+  
+  <!-- Compile starter classes -->
+  <target name="compile-starter">
+    <delete quiet="true" dir="${basedir}/start/bin"/>
+    <mkdir dir="${basedir}/start/bin"/>
+    <echo message="Compiling starting classes"/>
+    <javac srcdir="${basedir}/start/src" destdir="${basedir}/start/bin"/>
+  </target>
+  
+  <!-- Generate bindings, schemas, and WSDL -->
+  <target name="generate-wsdl" depends="compile-starter">
+    <delete quiet="true" dir="${basedir}/gen"/>
+    <mkdir dir="${basedir}/gen"/>
+    <echo message="Running Jibx2Wsdl tool"/>
+    <java classpathref="jibx-classpath"
+        classname="org.jibx.ws.wsdl.tools.Jibx2Wsdl" fork="true" failonerror="true">
+      <arg value="-p"/>
+      <arg value="${basedir}/start/bin"/>
+      <arg value="-s"/>
+      <arg value="${basedir}/start/src"/>
+      <arg value="-t"/>
+      <arg value="${basedir}/gen"/>
+      <arg value="-c"/>
+      <arg value="${basedir}/custom.xml"/>
+      <arg value="com.sosnoski.ws.library.jibx2wsdl.BookServer2"/>
+    </java>
+  </target>
+  
+  <!-- Build jar containing bound data classes -->
+  <target name="build-shared">
+    <delete quiet="true" dir="${basedir}/start/bin"/>
+    <mkdir dir="${basedir}/start/bin"/>
+    <echo message="Compiling shared classes"/>
+    <javac srcdir="${basedir}/start/src" destdir="${basedir}/start/bin"/>
+    <echo message="Running JiBX binding compiler"/>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <pathelement location="${jibx-home}/lib/jibx-bind.jar"/>
+      </classpath>
+    </taskdef>
+    <bind binding="${basedir}/gen/binding.xml">
+      <classpath>
+        <path refid="jibx-classpath"/>
+        <path path="${basedir}/start/bin"/>
+      </classpath>
+    </bind>
+    <echo message="Constructing and copying shared.jar"/>
+    <mkdir dir="${build-client}/lib"/>
+    <jar jarfile="${build-client}/lib/shared.jar" basedir="${basedir}/start/bin"/>
+    <mkdir dir="${build-server}/lib"/>
+    <copy todir="${build-server}/lib" file="${build-client}/lib/shared.jar"/>
+  </target>
+
+  <!-- Generate client linkage code from WSDL-->
+  <target name="generate-client">
+    <echo message="Running WSDL2Java task"/>
+    <delete quiet="true" dir="${build-client}/gen"/>
+    <mkdir dir="${build-client}/gen"/>
+    <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true"
+        failonerror="true">
+      <classpath>
+        <path refid="axis-classpath"/>
+        <path refid="jibx-classpath"/>
+      </classpath>
+      <!-- -o parameter sets the output root directory -->
+      <arg value="-o"/>
+      <arg value="${build-client}/gen"/>
+      <!-- -p parameter gives the package for Axis2 code generation -->
+      <arg value="-p"/>
+      <arg value="${package-name}"/>
+      <!-- -d parameter selects the databinding framework -->
+      <arg value="-d"/>
+      <arg value="jibx"/>
+      <!-- -Ebindingfile parameter gives the JiBX binding definition -->
+      <arg value="-Ebindingfile"/>
+      <arg value="${basedir}/gen/binding.xml"/>
+      <!-- -uw unwraps the input and output messages for operations -->
+      <arg value="-uw"/>
+      <!-- -s generates synchronous methods only -->
+<!--      <arg value="-s"/>   -->
+      <!-- -uri parameter provides the WSDL input -->
+      <arg value="-uri"/>
+      <arg value="${wsdl-path}"/>
+    </java>
+  </target>
+
+  <!-- Generate server linkage code from WSDL-->
+  <target name="generate-server">
+    <echo message="Running WSDL2Java task"/>
+    <delete quiet="true" dir="${build-server}/gen"/>
+    <mkdir dir="${build-server}/gen"/>
+    <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true"
+        failonerror="true">
+      <classpath>
+        <path refid="axis-classpath"/>
+        <path refid="jibx-classpath"/>
+      </classpath>
+      <arg value="-o"/>
+      <arg value="${build-server}/gen"/>
+      <arg value="-p"/>
+      <arg value="${package-name}"/>
+      <arg value="-d"/>
+      <arg value="jibx"/>
+      <arg value="-Ebindingfile"/>
+      <arg value="${basedir}/gen/binding.xml"/>
+      <arg value="-uw"/>
+      <!-- -ss parameter says generate server code -->
+      <arg value="-ss"/>
+      <!-- -ss parameter says generate server deployment files -->
+      <arg value="-sd"/>
+      <arg value="-uri"/>
+      <arg value="${wsdl-path}"/>
+    </java>
+    
+    <!-- Replace implementation class in deployment descriptor, so that the
+      message receiver will load an instance of our class rather than the
+      generated skeleton -->
+    <replace file="${build-server}/gen/resources/services.xml"
+      token="Skeleton" value="Impl"/>
+  </target>
+
+  <!-- Compile server code for deployment -->
+  <target name="compile-server">
+    <delete quiet="true" dir="${build-server}/bin"/>
+    <mkdir dir="${build-server}/bin"/>
+    <!-- Compile the generated code -->
+    <javac srcdir="${build-server}/gen" destdir="${build-server}/bin"
+        nowarn="${nowarn}" debug="true">
+      <classpath>
+        <path refid="axis-classpath"/>
+        <path refid="jibx-classpath"/>
+        <pathelement path="${build-server}/bin"/>
+        <pathelement location="${build-server}/lib/shared.jar"/>
+      </classpath>
+    </javac>
+    <!-- Compile the implementation classes -->
+    <javac srcdir="${build-server}/src" destdir="${build-server}/bin"
+        nowarn="${nowarn}" debug="true">
+      <classpath>
+        <path refid="axis-classpath"/>
+        <path refid="jibx-classpath"/>
+        <pathelement path="${build-server}/bin"/>
+        <pathelement location="${build-server}/lib/shared.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!-- Compile client code for execution -->
+  <target name="compile-client">
+    <delete quiet="true" dir="${build-client}/bin"/>
+    <mkdir dir="${build-client}/bin"/>
+    <javac srcdir="${build-client}/gen" destdir="${build-client}/bin"
+        nowarn="${nowarn}" debug="true">
+      <classpath>
+        <path refid="axis-classpath"/>
+        <path refid="jibx-classpath"/>
+        <pathelement path="${build-client}/bin"/>
+        <pathelement location="${build-client}/lib/shared.jar"/>
+      </classpath>
+    </javac>
+    <javac srcdir="${build-client}/src" destdir="${build-client}/bin"
+        nowarn="${nowarn}" debug="true">
+      <classpath>
+        <path refid="axis-classpath"/>
+        <path refid="jibx-classpath"/>
+        <pathelement path="${build-client}/bin"/>
+        <pathelement location="${build-client}/lib/shared.jar"/>
+      </classpath>
+    </javac>
+    <copy file="${basedir}/log4j.properties" todir="${build-client}/bin"/>
+  </target>
+
+  <!-- Package server code as .aar file -->
+  <target name="package">
+    <jar jarfile="${basedir}/${service-archive-name}.aar"
+        basedir="${build-server}/bin">
+      <metainf file="${build-server}/gen/resources/services.xml"/>
+    </jar>
+    <!-- Somewhat lame to add files to the jar, but hard to avoid -->
+    <jar jarfile="${basedir}/${service-archive-name}.aar"
+        basedir="${build-server}" includes="lib/*" update="true"/>
+  </target>
+
+  <!-- Run the test client -->
+  <target name="run">  
+    <java classname="${package-name}.WebServiceClient"
+        fork="true">
+      <classpath path="${build-client}/bin"/>
+      <classpath refid="axis-classpath"/>
+      <classpath refid="jibx-classpath"/>
+      <classpath path="${build-client}/lib/shared.jar"/>
+<!--  Uncomment these lines to use port 8800 (for monitoring conversation)  -->
+<!--      <arg value="localhost"/>
+      <arg value="8800"/>   -->
+    </java>
+  </target>
+
+  <target name="build-client" depends="generate-client,compile-client"/>
+  <target name="build-server" depends="generate-server,compile-server,package"/>
+  <target name="prepare" depends="clean,generate-wsdl,build-shared,build-client,build-server"/>
+  
+  <!-- show list of targets -->
+  <target name="help">
+    <echo message="Targets are:"/>
+    <echo/>
+    <echo message="clean           delete all class files and generated code"/>
+    <echo message="compile-starter compile starter code"/>
+    <echo message="generate-wsdl   generate WSDL, schema, and binding"/>
+    <echo message="build-shared    compile the JiBX binding and build starter code jar"/>
+    <echo message="generate-client generate client code using Axis2"/>
+    <echo message="compile-client  compile the client code"/>
+    <echo message="build-client    generate and compile client code"/>
+    <echo message="generate-server generate server code using Axis2"/>
+    <echo message="compile-server  compile the server code"/>
+    <echo message="package         assemble Axis2 .aar service archive file"/>
+    <echo message="build-server    generate and compile server code, and assemble .aar"/>
+    <echo message="prepare         run all steps to build both client and server"/>
+    <echo message="run             run client, with service deployed to localhost:8080"/>
+  </target>
+
+</project>

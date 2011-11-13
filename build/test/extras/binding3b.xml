@@ -1,0 +1,15 @@
+<!-- Using the ObjectArrayMapper class along with the IdReferenceMapperBase
+  class -->
+<binding>
+  <mapping name="names" class="extras.NameArray">
+    <collection field="m_references" usage="optional">
+      <structure name="name" marshaller="extras.NameArray$DefRefMapper"
+          unmarshaller="extras.NameArray$DefRefMapper"/>
+    </collection>
+  </mapping>
+  <mapping name="name" class="extras.NameArray$Name">
+    <value name="id" style="attribute" field="m_id" ident="def"/>
+    <value name="first-name" field="m_first"/>
+    <value name="last-name" field="m_last"/>
+  </mapping>
+</binding>

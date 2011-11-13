@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Jibx2Wsdl Customizations</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3><a name="intro"></a>Extending BindGen customizations</h3>
+
+<p>Jibx2Wsdl customizations are based on the <a href="%bgcustoms%">BindGen customizations</a>.
+In addition to the customizations defined for use with BindGen, Jibx2Wsdl also defines some
+extension elements which can be added to the customizations information for controlling how
+service classes are translated into WSDL definitions.</p>
+
+<p>The Jibx2Wsdl extension elements are &lt;wsdl>, &lt;service>, &lt;operation>, &lt;parameter>,
+and &lt;return>. The &lt;wsdl> element, if present, must always be a direct child
+of the &lt;custom> element at the root of the customization document. It can contain any
+number of child &lt;service> elements, which can in turn contain &lt;operation> elements.
+&lt;operation> elements can contain child &lt;parameter> and &lt;return>
+elements (in that order, with at most one &lt;return> element).</p>
+
+</div>
+<div class="h3">
+<h3><a name="attrs"></a>&lt;wsdl> and &lt;service> attributes</h3>
+
+<p>The &lt;wsdl> and &lt;service> elements are based on BindGen customizations, and support
+the BindGen <a href="%bgcustoms%#nesting-attributes">Nesting customization attributes</a>,
+along with several additional attributes. The following attributes are supported by both
+&lt;wsdl> and &lt;service> elements:</p>
+
+<h4>Common customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="service-base"></a>service-base</p></td>
+<td><p>Sets the base address used for the service endpoint address specified in the WSDL.
+The default is <code>http://localhost:8080/axis2/services</code> at the &lt;wsdl> level,
+which will be modified by appending the service name on the end.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="set-actions"></a>set-actions</p></td>
+<td><p>Determines whether the generated WSDL should specify soapAction values as part of
+the operation definitions. Some frameworks require these action values to be present. The
+default is "true", meaning the action values will be defined.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="use-nillable"></a>use-nillable</p></td>
+<td><p>Determines whether <code>nillable="true"</code> will be specified in the schema
+definition for optional values used as method parameters. The default is "false", meaning
+<code>minOccurs="0"</code> will be used rather than nillable.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="wrapped"></a>wrapped</p></td>
+<td><p>Controls whether "wrapped" document/literal style is used for the generated WSDL,
+rather than plain document/literal. The wrapped style preserves the structure of parameters
+passed to methods in the corresponding web service operations. The default is "true",
+meaning the wrapped style will be used.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="wsdl-namespace"></a>wsdl-namespace</p></td>
+<td><p>Sets the namespace used for WSDL definitions. By default the namespace is generated
+from the package of the supplied service definition class.</p></td>
+</tr>
+</table>
+
+<p>The &lt;service> element also defines additional attributes:</p>
+
+<h4>&lt;service> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="binding-name"></a>binding-name</p></td>
+<td><p>Name to be used for the &lt;wsdl:binding> definition. If not specified, it is
+derived by appending "Binding" to the service name.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="class"></a>class</p></td>
+<td><p>Gives the fully-qualified class name of the service definition class. This is the
+only required attribute for the &lt;service> element.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="excludes"></a>excludes</p></td>
+<td><p>List of method names to be excluded from service definition. Names in the list
+are separated by whitespace characters. If neither this attribute nor the <code>includes</code>
+attribute is given, all non-static methods will be exposed as operations in the service
+definition. If both attributes are given, only the methods listed in the <code>includes</code>
+value are used (it's an error if a method is in both lists).</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="includes"></a>includes</p></td>
+<td><p>List of method names to be included in the service definition. Names in the list
+are separated by whitespace characters. If neither this attribute nor the <code>excludes</code>
+attribute is given, all non-static methods will be exposed as operations in the service
+definition. If both attributes are given, only the methods listed in the <code>includes</code>
+value are used (it's an error if a method is in both lists).</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="port-name"></a>port-name</p></td>
+<td><p>Name to be used for the &lt;wsdl:port> definition. If not specified, it is
+derived by appending "Port" to the service name.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="port-type-name"></a>port-type-name</p></td>
+<td><p>Name to be used for the &lt;wsdl:portType> definition. If not specified, it is
+derived by appending "PortType" to the service name.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="service-address"></a>service-address</p></td>
+<td><p>Sets the service endpoint address to be specified in the WSDL. The default is
+derived from the <a href="#service-base"><code>service-base</code></a> value by appending
+the service name on the end.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="service-name"></a>service-name</p></td>
+<td><p>Name to be used for the service. The default is the simple class name of the service
+definition class.</p></td>
+</tr>
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="opattrs"></a>&lt;operation> attributes</h3>
+
+<p>&lt;operation> elements support the following customization attributes:</p>
+
+<h4>&lt;operation> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="method-name"></a>method-name</p></td>
+<td><p>This required attribute gives the name of the service definition class method to
+be customized by the element.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="operation-name"></a>operation-name</p></td>
+<td><p>Sets the operation name to be used in the WSDL service description. If this attribute
+is not specified, the operation name is the same as the method name.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="optionals"></a>optionals</p></td>
+<td><p>List of parameter names to be treated as optional in the schema representation of
+the input message for this operation. Names are separated by whitespace in the list. If
+neither this attribute nor the <code>requireds</code> attribute is supplied all object
+reference parameters are treated as optional and all primitive parameters are treated as
+required.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="request-message"></a>request-message</p></td>
+<td><p>Name to be used for the input message to this operation. If this
+attribute is not specified, the input message element name is constructed by appending
+"Message" to the operation name.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="request-wrapper"></a>request-wrapper</p></td>
+<td><p>Element name to be used for the input message to this operation. If this
+attribute is not specified, the input message element name is just the operation name.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="requireds"></a>requireds</p></td>
+<td><p>List of parameter names to be treated as required in the schema representation of
+the input message for this operation. Names are separated by whitespace in the list. If
+neither this attribute nor the <code>optionals</code> attribute is supplied all object
+reference parameters are treated as optional and all primitive parameters are treated as
+required.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="response-message"></a>response-message</p></td>
+<td><p>Name to be used for the output message from this operation. If this
+attribute is not specified, the output message element name is constructed by appending
+"ResponseMessage" to the operation name.</p></td>
+</tr>
+<tr class="a">
+<td><p><a name="response-wrapper"></a>response-wrapper</p></td>
+<td><p>Element name to be used for the output message from this operation. If this
+attribute is not specified, the output message element name is constructed by appending
+"Response" to the operation name.</p></td>
+</tr>
+<tr class="b">
+<td><p><a name="soap-action"></a>soap-action</p></td>
+<td><p>URI to be used as the soapAction identifier for this operation. If this attribute is
+not specified, the soapAction identifier is generated by prefixing the operation name with
+"urn:".</p></td>
+</tr>
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="parmret"></a>&lt;parameter> and &lt;return> attributes</h3>
+
+<p>&lt;parameter> and &lt;return> elements are used within an &lt;operation> definition
+to customize the handling of values passed to or returned from the service method associated
+with the &lt;operation>. These elements are based on BindGen customizations, and support
+the BindGen <a href="%bgcustoms%#value">Value customization attributes</a>, along with
+the following added attribute:</p>
+
+<h4>&lt;parameter> and &lt;return> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="element"></a>element</p></td>
+<td><p>This attribute gives the element name to be used for the parameter or return
+value in the XML representation.</p></td>
+</tr>
+
+<p>In addition, the &lt;parameter> element has an additional required attribute:</p>
+
+<h4>&lt;parameter> customization attributes</h4>
+<table border="1" width="100%">
+<tr class="b">
+<td><p><a name="name"></a>name</p></td>
+<td><p>This required attribute gives the name of the parameter being customized.</p></td>
+</tr>
+
+</table>
+
+</div>
+<div class="h3">
+<h3><a name="command"></a>Command line customizations</h3>
+
+<p>You can also pass global customizations (corresponding to attributes of the &lt;wsdl>
+elements) to Jibx2Wsdl as command-line parameters, without the need to create a customizations
+file, by using "--" as a special prefix to the customization attribute value. So to set the
+service base address to "http://www.jibx.org/ws", for instance, you'd use the command line parameter
+<code>--service-base=http://www.jibx.org/ws</code>. You can also pass global customizations for
+BindGen in the Jibx2Wsdl command line.</p>
+
+
+</div>
+</div>
+</div>
+</body>
+</html>

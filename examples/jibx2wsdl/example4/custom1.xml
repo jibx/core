@@ -1,0 +1,14 @@
+<custom force-classes="true" property-access="true" add-constructors="true">
+  <package name="com.sosnoski.ws.library.jibx2wsdl" force-mapping="true">
+    <class name="Item" requireds="@id @type title"/>
+    <class name="Book" requireds="@format authors"/>
+    <class name="Dvd" requireds="/director stars"/>
+    <class name="Type" requireds="description @name @count"/>
+    <package name="hd">
+      <class name="IDvd" requireds="@director stars"/>
+      <class name="HdDvd" requireds="@studio"/>
+      <class name="BluRayDvd" requireds="/releaseYear"/>
+      <class name="Dvd$FutureDvd"/>
+    </package>
+  </package>
+</custom>

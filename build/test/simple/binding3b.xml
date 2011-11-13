@@ -1,0 +1,22 @@
+<!-- Modified form of basic binding that wraps the values in the collection
+  with a separate element. -->
+
+<binding>
+  <mapping name="customer" class="simple.Customer3">
+    <structure name="name" field="name">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <structure usage="optional" field="referral"/>
+    <collection field="orderIds">
+      <structure name="item">
+        <value name="order" type="java.lang.String"/>
+      </structure>
+    </collection>
+  </mapping>
+</binding>

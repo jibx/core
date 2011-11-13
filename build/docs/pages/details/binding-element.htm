@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: &lt;binding&gt; Element</title>
+</head>
+<body class="composite">
+  <h1>JiBX: &lt;binding&gt; Element</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">&lt;binding&gt; Element Definition</a></h3>
+      
+<p>The <b>binding</b> element is the root of a binding definition. This defines
+characteristics for the entire binding. It supports several unique attributes
+as well as two common attribute groups:</p>
+
+<h4><a name="Attributes">Attributes</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>add-constructors</td>
+<td><p>When this optional attribute is present with value "true", the binding
+compiler will add a default constructor to a bound class when necessary to make
+it usable in the binding. Default constructors are needed when there's no
+unmarshaller or factory method for an object reference. Constructors can only be
+added to classes which are available as class files for modification during the
+binding compile.</p></td>
+</tr>
+<tr class="a">
+<td>direction</td>
+<td><p>Binding direction, which must be &quot;input&quot; (unmarshalling only),
+&quot;output&quot; (marshalling only), or &quot;both&quot; (both marshalling
+and unmarshalling, the default if this attribute is not given).</p></td>
+</tr>
+<tr class="b">
+<td>force-classes</td>
+<td><p>When this optional attribute is present with value "true", it forces
+generation of marshaller/unmarshaller classes for top-level abstract mappings
+which are not extended by other mappings. Normally these classes would not be
+generated, since such mappings are never used directly within the binding. The
+classes can be used at runtime by custom code, though, as the equivalent of type
+mappings. The default value is "false".</p></td>
+</tr>
+<tr class="a">
+<td>forwards</td>
+<td><p>Controls whether forward references to ids are supported when
+unmarshalling, at the cost of some (minor) additional overhead and code size.
+If supplied the value must be &quot;true&quot; (forwards supported) or
+&quot;false&quot; (ids must be defined before they are referenced). The
+default is &quot;true&quot;.</p></td>
+</tr>
+<tr class="b">
+<td>name</td>
+<td><p>The name for this binding. The supplied name must consist only of
+characters which are valid as part of a Java identifier (so no spaces, periods,
+etc.). The default if this attribute is not used is to take the name of the file
+containing the definition document, with any file extension suffix stripped off
+and invalid characters replaced by underscores (so a binding definition in a
+file named &quot;binding-2.xml&quot; has the default name
+&quot;binding_2&quot;).</p></td>
+</tr>
+<tr class="a">
+<td>package</td>
+<td><p>Java package used for created binding factory class. By default this is
+the same package as the class associated with the first <b>mapping</b> child
+element. If present, the value must be a Java package name
+(as in &quot;org.jibx.runtime&quot;).</p></td>
+</tr>
+<tr class="b">
+<td>track-source</td>
+<td><p>When this optional attribute is present with value "true", the binding
+compiler adds code to each bound object class to implement the
+<code>org.jibx.runtime.ITrackSource</code> interface and store source position
+information when instance objects are unmarshalled. This interface lets you
+retrieve information about the source document and specific line and column
+location of the document component associated with that object. The default
+value is "false".</p></td>
+</tr>
+<tr class="a">
+<td>trim-whitespace</td>
+<td><p>When this optional attribute is present with value "true", whitespace is
+trimmed from all simple text values before the value is deserialized. The effect
+is the same as if all the built-in <a href="%conversions%">conversions</a> were
+defined using whitespace="trim" (see the <a href="%bindingattrs%#string">string</a>
+attribute group). This makes the conversions compatible with schema types.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#style">style</a></td>
+<td><p>A <b>value-style</b> attribute present on the <b>binding</b> element sets a
+default for all contained elements. See the <a
+href="%bindingattrs%#style">style attribute group</a> description
+for usage details.</p></td>
+</tr>
+<!--<td>global-ids</td>
+<td><p>Determines whether object id values are global (as in normal XML ID/IDREF
+usage) or specific to a particular object type. If supplied the value must be
+&quot;true&quot; (global ids) or &quot;false&quot; (type-specific ids). The
+default is &quot;true&quot;. <b>Not implemented for Beta 3a.</b></p></td>
+</tr>
+<tr class="a">  -->
+<!--<tr class="b">
+<td>auto-prefix</td>
+<td><p>Prefix used if automatically generating object ids. By default this is
+&quot;id_&quot;, but any prefix can be defined using this attribute. <b>Not
+implemented for Beta 3a.</b></p></td>
+</tr> -->
+</table>
+
+      </div>
+      </div>
+      </div>
+      </td>
+</body>
+</html>

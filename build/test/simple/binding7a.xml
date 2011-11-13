@@ -1,0 +1,26 @@
+<!-- using typed collection methods directly -->
+<binding>
+  <mapping name="customers" class="simple.Customers7">
+    <value name="count" get-method="getCustomerCount"
+        set-method="setCustomerCount"/>
+    <structure field="collection" usage="optional">
+      <collection add-method="addCustomer" size-method="getCustomerCount"
+          load-method="getCustomer"
+          item-type="simple.Customers7$CustomerInterface"/>
+    </structure>
+  </mapping>
+  <mapping name="customer" class="simple.Customers7$Customer"
+      value-style="attribute">
+    <structure name="name" get-method="getName" set-method="setName"
+        usage="optional">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" get-method="getStreet1" set-method="setStreet1"
+        style="element"/>
+    <value name="city" get-method="getCity" set-method="setCity"
+        style="element"/>
+    <value name="state" get-method="getState" set-method="setState"/>
+    <value name="zip" get-method="getZip" set-method="setZip"/>
+  </mapping>
+</binding>

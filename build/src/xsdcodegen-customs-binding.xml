@@ -1,0 +1,112 @@
+<binding direction="input" track-source="true"
+    value-style="attribute" force-classes="true"
+    package="org.jibx.schema.codegen.custom">
+  
+  <!-- Base class abstract mappings -->
+  <format type="java.lang.String[]"
+      deserializer="org.jibx.runtime.Utility.deserializeTokenList"/>
+  <format type="org.jibx.runtime.QName[]"
+      deserializer="org.jibx.runtime.QName.deserializeList"/>
+  <mapping abstract="true" class="org.jibx.schema.codegen.custom.NestingCustomBase">
+    <!-- Note that the values are accessed using reflection by the argument
+      processing code, so attribute names need to correspond to method names -->
+    <value name="any-handling" set-method="setAnyHandling" usage="optional"/>
+    <value name="choice-exposed" field="m_choiceExposed" usage="optional"/>
+    <value name="choice-handling" set-method="setChoiceHandling" usage="optional"/>
+    <value name="enforced-facets" set-method="setEnforcedFacets" usage="optional"/>
+    <value name="ignored-facets" set-method="setIgnoredFacets" usage="optional"/>
+    <value name="union-exposed" field="m_unionExposed" usage="optional"/>
+    <value name="union-handling" set-method="setUnionHandling" usage="optional"/>
+    <!-- No support for qualified names in command line arguments, so this can
+      use different names. -->
+    <value name="type-substitutions" field="m_substitutions" usage="optional"/>
+  </mapping>
+  
+  <!-- Mapping complex for components, which can match most schema elements -->
+  <mapping abstract="true" type-name="component-custom"
+      class="org.jibx.schema.codegen.custom.ComponentCustom">
+    <value name="class-name" field="m_className" usage="optional"/>
+    <value name="exclude" field="m_exclude" usage="optional"/>
+    <value name="ignore" field="m_ignore" usage="optional"/>
+    <value name="inline" set-method="setInline" usage="optional"/>
+    <value name="value-name" field="m_baseName" usage="optional"/>
+    <value name="name" field="m_componentName" usage="optional"/>
+    <value name="path" field="m_path" usage="optional"/>
+    <value name="position" field="m_position" usage="optional"/>
+    <value name="type" field="m_type" usage="optional"/>
+    <structure map-as="org.jibx.schema.codegen.custom.NestingCustomBase"/>
+    <structure type="org.jibx.schema.codegen.custom.NestingCustomBase">
+       <collection field="m_children">
+        <structure type="org.jibx.schema.codegen.custom.ComponentCustom"
+            unmarshaller="org.jibx.schema.codegen.custom.ComponentCustomUnmarshaller"/>
+      </collection>
+    </structure>
+  </mapping>
+  
+  <!-- Top-level schemaset and schema mappings -->
+  <mapping abstract="true" class="org.jibx.schema.codegen.custom.SchemaRootBase">
+    <value name="binding-file-name" field="m_bindingFileName" usage="optional"/>
+    <value name="binding-per-schema" field="m_bindingPerSchema" usage="optional"/>
+    <value name="delete-annotations" field="m_deleteAnnotations" usage="optional"/>
+    <value name="enumeration-type" type="java.lang.String"
+        set-method="setEnumerationTypeText" usage="optional"/>
+    <value name="generate-all" field="m_generateAll" usage="optional"/>
+    <value name="import-docs" field="m_importDocs" usage="optional"/>
+    <value name="inherit-decorators" field="m_inheritDecorators" usage="optional"
+        default="true"/>
+    <!-- disabled for 1.2.2, bug fixes later
+    <value name="inline-groups" field="m_inlineGroups" usage="optional"/> -->
+    <value name="line-width" field="m_lineWidth" usage="optional"/>
+    <value name="null-collection" field="m_nullCollection" usage="optional"/>
+    <value name="package" field="m_package" usage="optional"/>
+    <value name="prefer-inline" field="m_preferInline" usage="optional"/>
+    <value name="prefix" field="m_prefix" usage="optional"/>
+    <value name="repeated-type" type="java.lang.String"
+        set-method="setRepeatedTypeText" usage="optional"/>
+    <value name="show-schema" field="m_showSchema" usage="optional"/>
+    <value name="structure-optional" field="m_structureOptional"
+        usage="optional"/>
+    <value name="use-inner" field="m_useInner" usage="optional"/>
+    <structure map-as="org.jibx.schema.codegen.custom.NestingCustomBase"/>
+    <structure allow-repeats="true" ordered="false">
+      <structure set-method="setNameConverter" usage="optional"
+          unmarshaller="org.jibx.schema.codegen.custom.SchemaRootBase$NameConverterUnmarshaller"/>
+      <structure set-method="addClassDecorator" usage="optional"
+          unmarshaller="org.jibx.schema.codegen.custom.SchemaRootBase$ClassDecoratorUnmarshaller"/>
+      <structure set-method="addSchemaType" usage="optional"
+          unmarshaller="org.jibx.schema.codegen.custom.SchemaRootBase$SchemaTypeUnmarshaller"/>
+    </structure>
+  </mapping>
+  <mapping name="schema" pre-set="preSet"
+      factory="org.jibx.schema.codegen.custom.SchemaCustom.factory"
+      class="org.jibx.schema.codegen.custom.SchemaCustom">
+    <value name="force-types" field="m_forceTypes" usage="optional"/>
+    <value name="name" field="m_name" usage="optional"/>
+    <value name="namespace" field="m_namespace" usage="optional"/>
+    <value name="includes" field="m_includes" usage="optional"/>
+    <value name="excludes" field="m_excludes" usage="optional"/>
+    <structure map-as="org.jibx.schema.codegen.custom.SchemaRootBase"/>
+    <structure type="org.jibx.schema.codegen.custom.NestingCustomBase">
+      <collection field="m_children">
+        <structure type="org.jibx.schema.codegen.custom.ComponentCustom"
+            unmarshaller="org.jibx.schema.codegen.custom.ComponentCustomUnmarshaller"/>
+      </collection>
+    </structure>
+  </mapping>
+  <mapping name="schema-set" pre-set="preSet"
+      factory="org.jibx.schema.codegen.custom.SchemasetCustom.factory"
+      class="org.jibx.schema.codegen.custom.SchemasetCustom">
+    <value name="names" field="m_names" usage="optional"/>
+    <value name="namespaces" field="m_namespaces" usage="optional"/>
+    <structure map-as="org.jibx.schema.codegen.custom.SchemaRootBase"/>
+    <structure type="org.jibx.schema.codegen.custom.NestingCustomBase">
+      <collection field="m_children" ordered="false">
+        <structure type="org.jibx.schema.codegen.custom.SchemasetCustom"
+            usage="optional"/>
+        <structure type="org.jibx.schema.codegen.custom.SchemaCustom"
+            usage="optional"/>
+      </collection>
+    </structure>
+  </mapping>
+  
+</binding>

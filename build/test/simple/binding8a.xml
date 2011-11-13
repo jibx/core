@@ -1,0 +1,37 @@
+<!-- extend pair of empty abstract mappings -->
+<binding track-source="true">
+  <mapping name="customers" class="simple.Customers8">
+    <structure name="custcoll">
+      <collection size-method="getCount"
+          add-method="addCustomer" load-method="getCustomer"
+          item-type="simple.ICustomer8"/>
+    </structure>
+  </mapping>
+  <mapping class="simple.ICustomer8b" abstract="true"/>
+  <mapping class="simple.ICustomer8c" abstract="true"/>
+  <mapping name="customer8a" class="simple.Customer8b" extends="simple.ICustomer8b">
+    <structure map-as="simple.ICustomer8b"/>
+    <value name="id" style="attribute" get-method="getId"
+        set-method="setId" ident="def"/>
+    <structure name="name" get-method="getName" set-method="setName">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" get-method="getStreet" set-method="setStreet"/>
+    <value name="city" get-method="getCity" set-method="setCity"/>
+    <value name="state" get-method="getState" set-method="setState"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customer8b" class="simple.Customer8c" extends="simple.ICustomer8c">
+    <value name="id" style="attribute" get-method="getId"
+        set-method="setId" ident="def"/>
+    <structure name="name" get-method="getName" set-method="setName">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" get-method="getStreet" set-method="setStreet"/>
+    <value name="city" get-method="getCity" set-method="setCity"/>
+    <value name="state" get-method="getState" set-method="setState"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+</binding>

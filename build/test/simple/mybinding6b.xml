@@ -1,0 +1,17 @@
+<!-- Test choice between collections. -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass6">
+    <value style="attribute" name="a" field="a"/>
+    <value style="attribute" name="b" field="b"/>
+    <structure ordered="false" choice="true">
+      <collection field="ints" factory="simple.MyClass6.createList"
+          set-method="setInts" usage="optional" item-type="java.lang.Integer">
+        <value name="int"/>
+      </collection>
+      <collection field="strings" factory="simple.MyClass6.createList"
+          usage="optional" item-type="java.lang.String">
+        <value name="string"/>
+      </collection>
+    </structure>
+  </mapping>
+</binding>

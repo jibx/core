@@ -1,0 +1,10 @@
+<!-- Binding with nothing but namespaces and includes. -->
+<binding>
+  <mapping name="timetable" class="multiple.SplitTableBean">
+    <collection name="carriers" field="m_carriers"
+      item-type="multiple.CarrierBean"/>
+    <collection name="airports" field="m_airports"
+      item-type="multiple.AirportBean"/>
+    <collection field="m_routes" item-type="multiple.SplitRouteBean"/>
+  </mapping>
+</binding>

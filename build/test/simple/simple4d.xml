@@ -1,0 +1,42 @@
+<customer>
+  <name>
+    <middle-name>Adam</middle-name>
+    <last-name>Smith</last-name>
+    <first-name>John</first-name>
+  </name>
+  <street1>12345 Happy Lane</street1>
+  <city>Plunk</city>
+  <state>WA</state>
+  <zip>98059</zip>
+  <phone>888.555.1234</phone>
+  <customer>
+    <name>
+      <title>Doctor</title>
+      <first-name>Mary</first-name>
+      <last-name>Smith</last-name>
+      <middle-name>Anne</middle-name>
+    </name>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+    <state>WA</state>
+    <zip>98059</zip>
+    <phone>888.555.4321</phone>
+  </customer>
+  <customer>
+    <name>
+      <suffix>Jr.</suffix>
+      <last-name>Adams</last-name>
+      <first-name>Larry</first-name>
+      <title>
+        <form>Honorary</form>
+        <type>Ph.D.</type>
+        Doctor
+      </title>
+    </name>
+    <street1>12345 Plunket Lane</street1>
+    <city>Happy</city>
+    <state>WA</state>
+    <zip>98095</zip>
+    <phone>888.555.1234</phone>
+  </customer>
+</customer>

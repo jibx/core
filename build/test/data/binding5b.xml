@@ -1,0 +1,15 @@
+<!-- Adds multiple layers of includes to the namespace handling. -->
+<binding forwards="false" track-source="true">
+  <namespace uri="http://www.jibx.org/ns1" default="elements"/>
+  <namespace uri="http://www.jibx.org/ns2" prefix="ns2" default="attributes"/>
+  <namespace uri="http://www.jibx.org/ns3" prefix="ns3"/>
+  <include path="binding5b-formats.xml"/>
+  <include path="../binding5b-include1.xml"/>
+  <mapping name="timetable" class="multiple.SplitTableBean">
+    <collection name="carriers" field="m_carriers"
+      item-type="multiple.CarrierBean"/>
+    <collection name="airports" field="m_airports"
+      item-type="multiple.AirportBean"/>
+    <collection field="m_routes" item-type="multiple.SplitRouteBean"/>
+  </mapping>
+</binding>

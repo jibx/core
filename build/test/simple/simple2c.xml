@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customer>
+  <name>
+    <first-and-last>
+      <first-name>Émile</first-name>
+      <last-name>Poincaré</last-name>
+    </first-and-last>
+  </name>
+  <street1>rte st Antoine de Ginestière</street1>
+  <city>Paris</city>
+  <state>FR</state>
+  <zip>98059</zip>
+  <phone>01 44 27 67 93</phone>
+</customer>

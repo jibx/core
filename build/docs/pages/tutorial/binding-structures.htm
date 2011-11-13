@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Structure mapping between XML and Java</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">Structure mapping</a></h3>
+      
+<p>JiBX's binding definition file provides great flexibility for
+converting between XML documents and Java object structures. Other data
+binding frameworks generally limit customization to just the names and
+the style (attribute or element) of XML representations. JiBX goes
+further by allowing <b><i>structure mapping</i></b> between XML and object
+structures.</p>
+
+<p><a href="#figure4">Figure 4</a> shows the same example as
+<a href="%basicbind%#figure1">Figure 1</a>. This basic type of binding, where the
+structure of the XML is the same as the structure of the Java objects, is typical
+of what's supported by most data binding frameworks.</p>
+
+<a name="figure4"><b>Figure 4. Simple binding example</b></a><br>
+<img src="images/structure1.gif" width="578" height="296" alt="Simple binding example"/>
+
+<p>What most frameworks will <b><i>not</i></b> allow you to do is to bring
+the values within the <b>name</b> element into the the object that corresponds
+to the <b>customer</b> element. In other words, you can't map the XML to this
+class:</p>
+<div id="source"><pre>  public class Customer {
+    public int customerNumber;
+    public String firstName;
+    public String lastName;
+    public String street;
+    public String city;
+    public String state;
+    public Integer zip;
+    public String phone;
+  }
+</pre></div>
+
+<p>Nor can you map the XML to a pair of classes like these:</p>
+
+<div id="source"><pre>  public class Customer {
+    public int customerNumber;
+    public String firstName;
+    public String lastName;
+    public Address address;
+    public String phone;
+  }
+  
+  public class Address {
+    public String street1;
+    public String city;
+    public String state;
+    public String zip;
+  }
+</pre></div>
+
+<p>JiBX <b><i>does</i></b> allow you to do this type of mapping. This means
+the structure of your objects is not tied to the structure of the XML - you
+can restructure your object classes without needing to change the XML format
+used for external data transfer. <a href="#figure5">Figure 5</a> shows a binding
+definition for the first case above, with the changes shown in blue.</p>
+
+<a name="figure5"><b>Figure 5. Flattened binding</b></a><br>
+<img src="images/structure2.gif" width="578" height="296" alt="Flattened binding"/>
+
+<p>The only difference in this binding definition from <a href="#figure4">Figure
+4</a> is that I've removed the <b>field</b> attribute from the <b>structure</b>
+element. The structure still defines an XML element name, but without the <b>field</b>
+attribute the values within that XML element are treated as properties of the
+containing object (the <code>Customer</code> class instance).</p>
+
+<p>Adding a new <b>structure</b> element to the binding definition
+handles the second structure change case, as shown in <a href="#figure6">Figure
+6</a>. I've highlighted the changes from <a href="#figure4">Figure 4</a> in
+green.</p>
+
+<a name="figure6"><b>Figure 6. Split binding</b></a><br>
+<img src="images/structure3.gif" width="578" height="334" alt="Split binding"/>
+
+<p>Here the added <b>structure</b> element uses a <b>field</b> attribute
+but no <b>name</b> attribute. This tells JiBX that the properties from the
+<code>Address</code> class instance referenced by the <code>address</code>
+field should be included directly as children of the <b>customer</b>
+element in the XML document.</p>
+
+<p>As a final example of structure mapping, <a href="#figure7">Figure 7</a>
+demonstrates partial mappings, where not all the components of the XML document
+or the Java classes are actually included in the binding. On the Java side, all
+that's needed is to leave something out of the binding defintion, as shown
+highlighted in blue for the <code>Person</code> class. On the XML side, the green
+highlighted portions of the diagram show how you can use a
+<b>structure</b> element in the binding definition with a <b>name</b> attribute
+but no property or child definitions. This tells JiBX to require an element with
+that name but ignore any content when unmarshalling. When marshalling, the
+element will always be generated as empty. If the <b>structure</b> is optional
+rather than required, the corresponding element will be ignored (if present) when
+unmarshalling and will be skipped completely when marshalling. See the <a
+href="%structure%">&lt;structure> element</a> details page for more
+information on the different usages of the <b>structure</b> element.</p>
+
+<a name="figure7"><b>Figure 7. Ignored components</b></a><br>
+<img src="images/structure4.gif" width="578" height="302" alt="Ignored components"/>
+
+<p>The flexibility provided by structure mapping allows you to decouple your
+XML data representations from your actual Java class structure. It lets you interface
+existing code to new XML representations, and also lets you preserve an existing
+XML representation while refactoring your code to better represent the use of
+data within your application. This decoupling of XML structure from code structure
+is one of the most powerful features of the JiBX framework.</p>
+
+<div><p align="center"><a href="%bindcolls%"><b>Next: Working with collections and IDs</b></a></p></div>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

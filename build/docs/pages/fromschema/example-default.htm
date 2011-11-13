@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 1: Default code generation</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>CodeGen default code generation</h3>
+
+<p>You can use the Ant 'codegen' target to generate code from the schema using the
+CodeGen default settings. Here's the actual 'codegen' target from the <i>build.xml</i>:</p>
+
+<div id="source"><pre>  &lt;!-- generate using default settings -->
+  &lt;target name="codegen" depends="check-runtime,clean">
+    
+    &lt;echo message="Running code generation from schema"/>
+    &lt;java classname="org.jibx.schema.codegen.CodeGen" fork="yes"
+        classpathref="classpath" failonerror="true">
+      &lt;arg value="-t"/>
+      &lt;arg value="gen/src"/>
+      &lt;arg value="otasubset/OTA_AirLowFareSearch*.xsd"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+<p>This passes the '-t' parameter to CodeGen with the value 'gen/src' to tell it the
+target generation directory. The third argument value tells CodeGen to use schemas from
+the <i>otasubset</i> directory with names matching the pattern "OTA_AirLowFareSearch*.xsd"
+as input for code generation. You can specify as many schema names or schema name patterns
+as you want when running CodeGen, but must have at least one - otherwise there's nothing for
+CodeGen to generate!</p>
+
+      </div>
+      <div class="h3">
+      <a name="code"></a><h3>Generated code</h3>
+
+<p>Run the 'codegen' target and see the <i>gen/src</i> directory. (You can also use the
+'full' target to generate and compile the code, run the binding compiler, and finally run
+a supplied test program which roundtrips the sample documents from the <i>samples</i>
+directory.)</p>
+
+<p>CodeGen's default behavior is to derive the package used for generated code from the
+schema namespace URI. In this case, the schema namespace is
+<code>http://www.opentravel.org/OTA/2003/05</code> (only the <i>OTA_AirLowFareSearchRQ.xsd</i>
+and <i>OTA_AirLowFareSearchRS.xsd</i> schemas actually define this target namespace, but
+the other schemas assume that namespace by being included into these two schemas, either
+directly or indirectly). To derive a package from the namespace, first the entire URI is
+converted to lowercase. Next the <code>http://www.</code> part is stripped, then the
+remaining components of the authority (host name) are converted to lowercase and
+reverse-ordered. This gives <code>org.opentravel</code>. Finally, the remaining path
+components are processed. Characters in the path component which are not valid Java name
+characters are discarded. This include any path components consisting only of digits, so
+the only component that gets used in the package name is <code>OTA</code>. The final
+package name is <code>org.opentravel.ota</code>.</p>
+
+<p>The generated classes in this case directly model the schema (with the exception of
+xs:union simpleTypes - xs:union is currently not supported directly, instead using a
+simple <code>String</code> value as the most general representation). CodeGen was only
+asked to generate two schema documents, <i>OTA_AirLowFareSearchRQ.xsd</i> and
+<i>OTA_AirLowFareSearchRS.xsd</i> - but these schemas include the other schemas in the
+supplied OTA subset, either directly or indirectly. Unless you tell it otherwise, CodeGen
+generates every definition (with the exception of xs:attributeGroup and xs:group definitions
+which are only referenced once) in each schema, since in the general case all these
+definitions are necessary. This does create a lot of classes, though; in this case, 261
+top-level classes and an additional 153 inner classes, for a total of 414 classes.</p>
+
+<p>If you look at the generated Java class files, you'll see that each class definition
+starts with a JavaDoc comment giving first the documentation from the schema component
+matching the Java class, and then the schema fragment matching the class definition.
+This schema fragment is from a normalized version of the schema generated after type
+substitutions and inlining (the latter not a factor with the default generation used in
+this example), stripping annotations, and simplifications from eliminating schema
+components not handled by CodeGen (such as xs:unions - currently handled just as
+<code>String</code> values - and xs:restriction facets other than xs:enumeration).</p>
+
+<p>Here's a sample of the generated code (reformated for a reasonable page width),
+showing portions of the two main classes used for the response message:</p>
+
+<div id="source"><pre>/** 
+ * 
+ The Low Fare Search Response message contains a number of 'Priced Itinerary'
+ options. Each includes:
+ - A set of available flights matching the client's request.
+ - Pricing information including taxes and full fare breakdown for each passenger
+ type
+ - Ticketing information
+ - Fare Basis Codes and the information necessary to make a rules entry.
+ This message contains similar information to a standard airline CRS or GDS Low
+ Fare Search Response message.
+ 
+ * 
+ * Schema fragment(s) for this class:
+ * &lt;pre>
+ * &amp;lt;xs:element xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="OTA_AirLowFareSearchRS">
+ *   &amp;lt;xs:complexType>
+ *     &amp;lt;xs:sequence>
+ *       &amp;lt;xs:choice>
+ *         &amp;lt;xs:sequence>
+ *           &amp;lt;xs:element type="ns:SuccessType" name="Success"/>
+ *           &amp;lt;xs:element type="ns:WarningsType" name="Warnings"
+                 minOccurs="0"/>
+ *           &amp;lt;xs:element type="ns:PricedItinerariesType"
+                 name="PricedItineraries"/>
+ *         &amp;lt;/xs:sequence>
+ *         &amp;lt;xs:element type="ns:ErrorsType" name="Errors"/>
+ *       &amp;lt;/xs:choice>
+ *     &amp;lt;/xs:sequence>
+ *     &amp;lt;xs:attributeGroup ref="ns:OTA_PayloadStdAttributes"/>
+ *   &amp;lt;/xs:complexType>
+ * &amp;lt;/xs:element>
+ * &lt;/pre>
+ */
+public class OTAAirLowFareSearchRS
+{
+    private int choiceSelect = -1;
+    private static final int SUCCESS_CHOICE = 0;
+    private static final int ERRORS_CHOICE = 1;
+    private SuccessType success;
+    private WarningsType warnings;
+    private PricedItinerariesType pricedItineraries;
+    private ErrorsType errors;
+    private OTAPayloadStdAttributes OTAPayloadStdAttributes;
+
+    private void setChoiceSelect(int choice) {
+        if (choiceSelect == -1) {
+            choiceSelect = choice;
+        } else if (choiceSelect != choice) {
+            throw new IllegalStateException(
+                "Need to call clearChoiceSelect() before changing existing choice");
+        }
+    }
+
+    /** 
+     * Clear the choice selection.
+     */
+    public void clearChoiceSelect() {
+        choiceSelect = -1;
+    }
+
+    /** 
+     * Check if Success is current selection for choice.
+     * 
+     * @return &lt;code>true&lt;/code> if selection, &lt;code>false&lt;/code> if not
+     */
+    public boolean ifSuccess() {
+        return choiceSelect == SUCCESS_CHOICE;
+    }
+
+    /** 
+     * Get the 'Success' element value. Success
+     Standard way to indicate successful processing of an OTA message. Returning an
+     empty element of this type indicates success.
+     * 
+     * @return value
+     */
+    public SuccessType getSuccess() {
+        return success;
+    }
+
+    /** 
+     * Set the 'Success' element value. Success
+     Standard way to indicate successful processing of an OTA message. Returning an
+     empty element of this type indicates success.
+     * 
+     * @param success
+     */
+    public void setSuccess(SuccessType success) {
+        setChoiceSelect(SUCCESS_CHOICE);
+        this.success = success;
+    }
+
+    /** 
+     * Get the 'Warnings' element value.  Standard way to indicate successful
+     processing of an OTA message, but one in which warnings are generated.
+
+     * 
+     * @return value
+     */
+    public WarningsType getWarnings() {
+        return warnings;
+    }
+
+    /** 
+     * Set the 'Warnings' element value.  Standard way to indicate successful
+     processing of an OTA message, but one in which warnings are generated.
+
+     * 
+     * @param warnings
+     */
+    public void setWarnings(WarningsType warnings) {
+        setChoiceSelect(SUCCESS_CHOICE);
+        this.warnings = warnings;
+    }
+
+    /** 
+     * Get the 'PricedItineraries' element value. Successfull Low Fare priced
+     itineraries in response to a Low Fare Search request.
+     * 
+     * @return value
+     */
+    public PricedItinerariesType getPricedItineraries() {
+        return pricedItineraries;
+    }
+
+    /** 
+     * Set the 'PricedItineraries' element value. Successfull Low Fare priced
+     itineraries in response to a Low Fare Search request.
+     * 
+     * @param pricedItineraries
+     */
+    public void setPricedItineraries(PricedItinerariesType pricedItineraries) {
+        setChoiceSelect(SUCCESS_CHOICE);
+        this.pricedItineraries = pricedItineraries;
+    }
+    ...
+}
+
+/** 
+ * Container for priced itineraries.
+ * 
+ * Schema fragment(s) for this class:
+ * &lt;pre>
+ * &amp;lt;xs:complexType xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItinerariesType">
+ *   &amp;lt;xs:sequence>
+ *     &amp;lt;xs:element name="PricedItinerary" maxOccurs="unbounded">
+ *       &amp;lt;!-- Reference to inner class PricedItinerary -->
+ *     &amp;lt;/xs:element>
+ *   &amp;lt;/xs:sequence>
+ * &amp;lt;/xs:complexType>
+ * &lt;/pre>
+ */
+public class PricedItinerariesType
+{
+    private List&lt;PricedItinerary> pricedItineraryList =
+        new ArrayList&lt;PricedItinerary>();
+
+    /** 
+     * Get the list of 'PricedItinerary' element items.
+     * 
+     * @return list
+     */
+    public List&lt;PricedItinerary> getPricedItineraryList() {
+        return pricedItineraryList;
+    }
+
+    /** 
+     * Set the list of 'PricedItinerary' element items.
+     * 
+     * @param list
+     */
+    public void setPricedItineraryList(List&lt;PricedItinerary> list) {
+        pricedItineraryList = list;
+    }
+    /** 
+     *  Itinerary with pricing information.
+     * 
+     * Schema fragment(s) for this class:
+     * &lt;pre>
+     * &amp;lt;xs:element xmlns:ns="http://www.opentravel.org/OTA/2003/05"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" name="PricedItinerary"
+           maxOccurs="unbounded">
+     *   &amp;lt;xs:complexType>
+     *     &amp;lt;xs:complexContent>
+     *       &amp;lt;xs:extension base="ns:PricedItineraryType">
+     *         &amp;lt;xs:attribute type="xs:integer" use="optional"
+                   name="OriginDestinationRefNumber"/>
+     *       &amp;lt;/xs:extension>
+     *     &amp;lt;/xs:complexContent>
+     *   &amp;lt;/xs:complexType>
+     * &amp;lt;/xs:element>
+     * &lt;/pre>
+     */
+    public static class PricedItinerary extends PricedItineraryType
+    {
+        private BigInteger originDestinationRefNumber;
+
+        /** 
+         * Get the 'OriginDestinationRefNumber' attribute value. This attribute
+         refers back to origin destination information in the OTA_AirLowFareSearchRQ
+         message.
+         * 
+         * @return value
+         */
+        public BigInteger getOriginDestinationRefNumber() {
+            return originDestinationRefNumber;
+        }
+
+        /** 
+         * Set the 'OriginDestinationRefNumber' attribute value. This attribute
+         refers back to origin destination information in the OTA_AirLowFareSearchRQ
+         message.
+         * 
+         * @param originDestinationRefNumber
+         */
+        public void setOriginDestinationRefNumber(
+                BigInteger originDestinationRefNumber) {
+            this.originDestinationRefNumber = originDestinationRefNumber;
+        }
+    }
+}</pre></div>
+
+<p>The above code sample illustrates several aspects of the default code generation.
+The <code>OTAAirLowFareSearchRS</code> class represents an &lt;OTA_AirLowFareSearchRS>
+element, with a schema structure consisting of a choice between a sequence of a
+&lt;Success> element, an optional &lt;Warnings> element, and a &lt;PricedItineraries>
+element, or an &lt;Errors> element. The &lt;OTA_AirLowFareSearchRS> element also has
+a group of attributes named OTA_PayloadStdAttributes.</p>
+
+<p>The choice between the sequence starting with the &lt;Success> element and the
+&lt;Errors> element is represented in the Java code with an internal state variable.
+The public methods <code>ifSuccess()</code> and <code>ifErrors()</code> allow you to
+check the state currently set for an instance of the class, while any of the set
+methods for values (<code>setSuccess()</code>, <code>setWarnings()</code>,'
+<code>setPricedItineraries()</code>, and <code>setErrors()</code>) check the internal
+state. If the state is not yet set when one of these methods is called, the state is
+set to match the value. If the state is set to a conflicting choice, an
+<code>IllegalStateException</code> is thrown. There's also a <code>clearChoiceSelect()</code>
+method which allows you to clear the current state. These methods all work together
+to enforce the semantics of the choice structure of the schema definition. There are
+other options for the details of how choices are implemented, though - see the
+<a href="%cgcustoms%#choice-exposed">choice-exposed</a> and
+<a href="%cgcustoms%#choice-handling">choice-handling</a> customization attributes.</p>
+
+<p>The <code>PricedItinerariesType</code> class shows the default handling for repeated
+values, as a Java 5 typed collection with simple get/set access methods. As with the
+choice handling, you can use customizations to change the list handling - see the
+<a href="%cgcustoms%#repeated-type">repeated-type</a> customization, which is used in
+<a href="%cgexample3%">Example 3: More extensive customizations</a> to change the
+generated code to use arrays rather than lists. If you stay with lists (either using the
+Java 5 typed default, or untyped lists compatible with older versions of Java) you can
+add convenience methods to the list handling using a
+<a href="%cgextends%#extend">&lt;class-decorator> customization</a> referencing the
+<code>org.jibx.schema.codegen.extend.CollectionMethodsDecorator</code>.</p>
+
+<p>You can also see from the code listing how CodeGen uses schema documentation components
+in creating class and method JavaDocs. The class JavaDoc begins with any documentation
+for the corresponding schema component (see <a href="%cgcustoms%#import-docs">import-docs</a>),
+followed by the actual schema fragment matching the class (see
+<a href="%cgcustoms%#show-schema">show-schema</a> and
+<a href="%cgcustoms%#delete-annotations">delete-annotations</a>). The get/set access
+methods for each value in a class describe the schema equivalent of the value (as an
+element or attribute name) in the first sentence, followed by any schema documentation
+provided for that element or attribute (again controlled by
+<a href="%cgcustoms%#import-docs">import-docs</a>).</p>
+
+<p>Next: <a href="%cgexample2%">Example 2: Generating only the required classes</a></p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

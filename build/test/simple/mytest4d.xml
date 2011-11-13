@@ -1,0 +1,17 @@
+<myelement>42<b>The Answer</b>1.234134<dwrap d="true"></dwrap>
+  <e>123</e>
+  <f>456</f>
+  <gwrap/>
+  <l>50</l>
+  <m>8</m>
+  <n>a</n>
+  <o value="xxx"/>
+  <p>2004-06-30</p>
+  <wrapper>abcd<split/><![CDATA[efgh]]></wrapper>
+  <int>1</int>
+  <int>12</int>
+  <int>03</int>
+  <int>012345678</int>
+  <string>abc</string>
+  <string>def</string>
+</myelement>

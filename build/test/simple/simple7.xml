@@ -1,0 +1,17 @@
+<customers>
+  <count>3</count>
+  <customer state="WA" zip="98059">
+    <name first-name="John" last-name="Smith"/>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+  </customer>
+  <customer state="WA" zip="98059">
+    <name first-name="Mary" last-name="Smith"/>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+  </customer>
+  <customer state="WA" zip="98095">
+    <street1>12345 Plunket Lane</street1>
+    <city>Happy</city>
+  </customer>
+</customers>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Bind on Load</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="onload">Binding classes at runtime</a></h3>
+
+<p>JiBX also supports limited runtime binding of
+class files. This adds runtime overhead as compared to using the binding
+compiler directly during the build process, but can be convenient when you're
+experimenting with different binding definitions or going through repeated
+build-test cycles. At present, runtime binding only works with classes that are
+present in the classpath as individual class files (not in jars). It's also not
+designed for use in controlled environment such as servlet engines or application
+servers.</p>
+
+<p>To use the runtime binding support, you need to execute the
+<code>org.jibx.binding.Run</code> class (from <i>/lib/jibx-bind.jar</i>) as the
+main class when starting the JVM, in place of whatever main class you'd normally
+give as the target. You can pass one or more binding definition files as command
+line arguments to this class, along with the name of your application main class
+and any command line arguments expected by your program. For example, if you
+normally run your application using the command line:</p>
+
+<div id="source"><pre>java -cp . com.myco.package.App arg1 arg2</pre></div>
+
+<p>and your JiBX installation is at <i>/home/dennis/jibx</i>, you'd run the
+application using runtime binding as follows (in a single line, shown
+split here only for formatting):</p>
+
+<div id="source"><pre>java -cp .:/home/dennis/jibx/lib/jibx-bind.jar org.jibx.binding.Run 
+    -b binding.xml com.myco.package.App arg1 arg2</pre></div>
+
+<p>This tells the JVM to start execution with the <code>org.jibx.binding.Run</code>
+class, which will then use its own classloader to load your application classes,
+after first modifying the classes read from disk to reflect the <i>binding.xml</i>
+binding definition. Once the binding has been processed, JiBX will transfer
+control to your application main class (in this case,
+<code>com.myco.package.App</code>), passing the command line arguments just as
+if your application were executed directly from the command line. Note that
+this is the Unix/Linux version of the command line; if you're running
+Windows you'll need to reverse the slashs and use ';' instead of ':' as a path
+separator character.</p>
+
+	  </div>
+      <div class="h3">
+      <h3><a name="loaddefs">Specifying the binding definitions</a></h3>
+
+
+<p>The runtime binding code supports several different ways of specifying the
+binding definition file or files to be used for your application. The first, and most
+direct, approach is to supply one or more <i>-b file-path</i> argument pairs
+before your application main class name on the command line. This is the
+approach used in the above example, with a single binding definition. To use
+multiple binding definitions this way, you need to give the <i>-b</i> argument
+before each individual file path.</p>
+
+<p>The second approach is to give the path to a simple text file (not an XML
+file) that gives a list of binding definition file paths, with one binding file
+per line. This uses the <i>-l</i> argument as a flag, so if the binding file
+list is in a file named <i>bindings.txt</i> you could use the following command
+line to run your application with the named bindings (on Unix/Linux; if you're
+using Windows or MS-DOS you'll need to reverse the slashs and use ';' instead of
+':' as a path separator character):</p>
+
+<div id="source"><pre>java -cp .:/home/dennis/jibx/lib/jibx-bind.jar org.jibx.binding.Run
+    -l bindings.txt com.myco.package.App arg1 arg2</pre></div>
+
+<p>The third way is to give the binding definition(s) as resources loaded from
+the classpath, rather than as actual file paths. The advantage of doing things
+this way is that the binding definition(s) can be kept with your actual class
+files (or with the source files, and copied during build to the same directory
+as your class files). This uses the <i>-r</i> argument as a flag for each
+binding definition to be loaded as a resource, followed by the actual resource
+path. For example, if your binding file is kept with your main class you could
+use a command line of this form to run it:</p>
+
+<div id="source"><pre>java -cp .:/home/dennis/jibx/lib/jibx-bind.jar org.jibx.binding.Run
+    -r /com/myco/package/binding.xml com.myco.package.App arg1 arg2</pre></div>
+
+<p>All three of the above techniques can be used in any combination on the
+command line (though it's difficult to imagine actually needing to do so!).</p>
+
+<p>Finally, you can instead use implicit binding definition resources. When
+you do this you don't need any command line arguments for JiBX (though you still
+need to specify the <code>org.jibx.binding.Run</code> as your main class) except
+for the application main class name and any arguments to be passed to that
+class:</p>
+
+<div id="source"><pre>java -cp .:/home/dennis/jibx/lib/jibx-bind.jar org.jibx.binding.Run
+    com.myco.package.App arg1 arg2</pre></div>
+
+<p>In this case JiBX goes through the following sequence of steps to find the
+binding definition resource(s) to be applied:</p>
+
+<ol>
+<li>Look for a resource named <i>jibx_bindings.txt</i> that gives a list of
+bindings (one per line) to be loaded as resources,</li>
+<li>If not found, construct a resource path by using the package path for your
+application main class and appending <i>_jibx_bindings.txt</i> to the main class
+name. For the sample I've been using throughout this description the resulting
+path would be <i>/com/myco/package/App_jibx_bindings.txt</i>. If this resource
+is found, it's interpreted as a list of bindings (one per line) to be loaded as
+resources,</li>
+<li>If not found, look for a single binding definition file named
+<i>jibx_binding.xml</i> and use that binding,</li>
+<li>If not found, construct a resource path by using the package path for your
+application main class and appending <i>_jibx_binding.xml</i> to the main class
+name, and use that binding. For the sample application this path would
+be <i>/com/myco/package/App_jibx_binding.xml</i>.</li>
+</ol>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

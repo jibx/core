@@ -1,0 +1,4 @@
+<contact xmlns:x="urn:x" xmlns:a="urn:a">
+  <first-name>Tom</first-name><last-name>Sawyer</last-name><phone>1-800-555-1212</phone>
+  <information xmlns:b="urn:b"><a:domelement b:a='1'>kadfad<c:child xmlns:c="urn:c" xmlns:c1="urn:c" c1:attr="1">adfadf</c:child></a:domelement></information>
+</contact>

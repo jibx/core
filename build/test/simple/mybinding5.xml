@@ -1,0 +1,24 @@
+<!-- Test user extension methods -->
+<binding value-style="attribute" track-source="true">
+  <mapping name="top" class="simple.MyClass5" post-set="unmarshalDone">
+    <collection field="childs1" item-type="simple.MyClass5a"/>
+  </mapping>
+  <mapping abstract="true" class="simple.MyClass5a"/>
+  <mapping name="b" class="simple.MyClass5b" extends="simple.MyClass5a"
+    factory="simple.MyClass5.bFactory" pre-set="preset" post-set="postset"
+    pre-get="preget">
+    <value name="value" field="value"/>
+  </mapping>
+  <mapping name="c" class="simple.MyClass5c" extends="simple.MyClass5a"
+    factory="simple.MyClass5.cFactory" pre-set="preset" post-set="postset"
+    pre-get="preget">
+    <value name="value" field="value"/>
+  </mapping>
+  <mapping name="d" class="simple.MyClass5d" extends="simple.MyClass5a"
+    factory="simple.MyClass5.dFactory" pre-set="preset" post-set="postset"
+    pre-get="preget">
+    <value name="value" field="value"/>
+    <value name="text1" field="text1"/>
+    <value name="text2" style="element" field="text2"/>
+  </mapping>
+</binding>

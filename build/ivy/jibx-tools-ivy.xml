@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="org.jibx" module="jibx-tools" />
+  
+  <dependencies>
+    <!--dependency org="org.jibx" name="jibx-bind" rev="latest.integration" />
+    <dependency org="org.jibx" name="jibx-extras" rev="latest.integration" />
+    <dependency org="org.jibx" name="jibx-run" rev="latest.integration" /-->
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.core.contenttype" rev="3.4.100.v20110423-0524" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.core.jobs" rev="3.5.100.v20110404" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.core.resources" rev="3.7.100.v20110510-0712" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.core.runtime" rev="3.7.0.v20110110" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.equinox.common" rev="3.6.0.v20110523" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.equinox.preferences" rev="3.4.0.v20110502" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.jdt.core" rev="3.7.0.v_B61" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.osgi" rev="3.7.0.v20110613" conf="*->default"/>
+    <dependency org="org.jibx.config.3rdparty.org.eclipse" name="org.eclipse.text" rev="3.5.100.v20110505-0800" conf="*->default"/>
+  </dependencies>
+</ivy-module>

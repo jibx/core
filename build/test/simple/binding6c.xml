@@ -1,0 +1,56 @@
+<!-- reference both abstract and base mappings from wrapped structure
+  reference, use empty abstract mapping as item-type for collection, nillable
+  and optional long value -->
+<binding>
+  <mapping name="customers" class="simple.Customers6">
+    <value name="count" get-method="getCustomerCount"
+        set-method="setCustomerCount"/>
+    <collection add-method="addCustomer" iter-method="getCustomerIterator"
+        item-type="simple.ICustomer6"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6aBase"
+    value-style="attribute">
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customerA" class="simple.Customer6a" value-style="attribute"
+      extends="simple.Customer6aBase">
+    <structure name="wrapper">
+      <value name="customer-id" field="customerId"/>
+      <value name="repeat-customer" field="repeat"/>
+      <structure map-as="simple.Customer6aBase"/>
+      <value name="order-count" field="orderCount" default="0"/>
+      <structure field="innerCustomer" usage="optional"/>
+    </structure>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6bBase"
+    value-style="attribute">
+    <structure name="name" field="name" map-as="full-name"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customerB" class="simple.Customer6b"
+      extends="simple.Customer6bBase">
+    <structure name="wrapper">
+      <value name="customer-id" field="customerId" nillable="true" usage="optional"/>
+      <value style="attribute" name="repeat-customer" field="repeat"/>
+      <value style="attribute" name="discount" field="discount" default="0.0"/>
+      <structure map-as="simple.Customer6bBase"/>
+      <value name="order-count" field="orderCount" default="0"/>
+    </structure>
+  </mapping>
+  <mapping abstract="true" class="simple.Name" type-name="full-name"
+      value-style="attribute">
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Name" value-style="attribute">
+    <value name="fname" field="firstName"/>
+    <value name="lname" field="lastName"/>
+  </mapping>
+  <mapping class="java.util.ArrayList" abstract="true">
+    <collection ordered="false" item-type="java.lang.String">
+      <value name="order"/>
+    </collection>
+  </mapping>
+</binding>

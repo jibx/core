@@ -1,0 +1,522 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Value Conversions</title>
+      <style type="text/css">
+        @import url("../style/tigris.css");
+        @import url("../style/maven.css");
+    .dtd-comment {
+      color: #993399;
+      font-weight: bold;
+      </style>
+      <script type="text/javascript">
+        if (document.layers) {
+          document.writeln('<link rel="stylesheet" type="text/css" href="../style/ns4_only.css" media="screen" /><link rel="stylesheet" type="text/css" href="../style/maven_ns4_only.css" media="screen" />')
+        }
+      </script>
+      <link rel="stylesheet" type="text/css" href="../style/print.css" media="print" />
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body class="composite">
+<div id="banner">
+<table border="0" cellspacing="0" cellpadding="8" width="100%">
+  <tbody>
+    <tr>
+      <td><h1>JiBX: Value Conversions</h1>
+      </td>
+      <td>
+      <div align="right" id="login"><a href="http://sourceforge.net">
+      <img src="http://sourceforge.net/sflogo.php?group_id=69358&amp;type=5"
+        width="210" height="62" border="0" alt="SourceForge.net Logo"></a></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="breadcrumbs">
+<table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div align="right">
+          <a href="../index.html">Home Page</a> |
+          <a href="http://www.sourceforge.net/projects/jibx/">SourceForge Page</a> |
+          <a href="../mail-lists.html">Mailing Lists</a> |
+          <a href="http://wiki.jibx.org">Wiki</a> |
+          <a href="../bugs.html">Bugs</a> |
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">Downloads</a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="8" width="100%" id="main">
+  <tbody>
+	<tr valign="top">
+	  <td id="leftcol" width="20%">
+		<div id="navcolumn">
+
+
+                  <div>
+            <strong>JiBX Basics</strong>
+                              <div>
+            <small>
+                    <a href="../index.html">Overview</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../flexibility.html">Flexibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../performance.html">Performance</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../clean-code.html">Clean code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../status.html">News and Status</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../comments.html">User Comments</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../sponsors.html">Sponsors</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../support.html">Support and Training</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bugs.html">Bugs</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../start.html">Getting Started</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../tutorial/binding-tutorial.html">Binding Tutorial</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../tutorial/binding-start.html">A basic binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-extras.html">Binding extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-structures.html">Structure mapping</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-collects.html">Collections and arrays</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-mappings.html">Using mappings</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-advanced.html">Advanced binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-extend.html">Method hooks</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-custom.html">Custom code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../bindcomp.html">Binding Compiler</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bindonload.html">Binding on Load</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../runtime.html">Runtime</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../extras.html">JiBX Extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../building.html">Building JiBX</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../schema.html">Schema Compatibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../mail-lists.html">Mailing Lists</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../faq.html">FAQ</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../contributing.html">Contributing</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibx-license.html">License</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Binding Definition</strong>
+                              <div>
+            <small>
+                    <a href="binding-overview.html">Definition details</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="contexts.html">Definition contexts</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <span class="menu-selection">Conversions</span>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="xml-summary.html">XML summary</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-element.html">&lt;binding&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="include-element.html">&lt;include&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="format-element.html">&lt;format&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="namespace-element.html">&lt;namespace&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="mapping-element.html">&lt;mapping&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="value-element.html">&lt;value&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="structure-element.html">&lt;structure&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="collection-element.html">&lt;collection&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="binding-attributes.html">Attribute groups</a>
+                  </small>
+                </div>
+                      </div>
+                      </div>
+                        <div>
+            <strong>Usage API</strong>
+                              <div>
+            <small>
+                    <a href=".././api/index.html">Runtime JavaDocs</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Subprojects</strong>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Eclipse Plug-in</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Introduction</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/install.html">Install</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/usage.html">Usage</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../jibxtools/index.html">Generator Tools</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../axis2/index.html">Axis2 Usage</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibxsoap/index.html">JibxSoap</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../xsd2jibx/index.html">Xsd2Jibx</a>
+                  </small>
+                </div>
+                      </div>
+      
+
+        </div>
+      </td>
+      <td>
+
+
+  
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="elements">Value Conversions</a></h3>
+
+<p>JiBX defines a default set of formats used for converting property values
+to and from text strings. These format definitions are effectively defined in
+a context outside the root <b>binding</b> element of the binding definition.
+Most of the conversions are based on the W3C XML Schema datatype
+definitions, as described in the following table.</p>
+
+<h4>Default Formats</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th>Type</th>
+<th>Format Label</th>
+<th>Conversion</th>
+</tr>
+<tr class="a">
+<td><code>byte</code></td>
+<td>byte.default</td>
+<td><p>Converts primitive <code>byte</code> values to and from the schema byte
+representation (integer values in the range of -128 to +127).</p></td>
+</tr>
+<tr class="b">
+<td><code>char</code></td>
+<td>char.default</td>
+<td><p>Converts primitive <code>char</code> values to and from the schema unsigned
+short representation (integer values in the range of 0 to 65535). Although this
+is the default for <code>char</code> primitives, JiBX also supports an alternate
+conversion as single-character text values using the named format
+<b>char.string</b> (allowing the conversion to be applied on a specific value)
+and a pair of conversion methods. To make the single-character text conversion
+the default in your binding, just specify the format as a child of the root
+<b>binding</b> element as follows:</p>
+<pre><code>&lt;format type="char"
+  serializer="org.jibx.runtime.Utility.serializeCharString"
+  deserializer="org.jibx.runtime.Utility.deserializeCharString"/></code></pre></td>
+</tr>
+<tr class="a">
+<td><code>double</code></td>
+<td>double.default</td>
+<td><p>Converts primitive <code>double</code> values to and from the schema double
+representation (IEEE double-precision floating point).</p></td>
+</tr>
+<tr class="b">
+<td><code>float</code></td>
+<td>float.default</td>
+<td><p>Converts primitive <code>float</code> values to and from the schema float
+representation (IEEE single-precision floating point).</p></td>
+</tr>
+<tr class="a">
+<td><code>int</code></td>
+<td>int.default</td>
+<td><p>Converts primitive <code>int</code> values to and from the schema int
+representation (integer values in normal 32-bit signed value range).</p></td>
+</tr>
+<tr class="b">
+<td><code>long</code></td>
+<td>long.default</td>
+<td><p>Converts primitive <code>long</code> values to and from the schema long
+representation (integer values in normal 64-bit signed value range).</p></td>
+</tr>
+<tr class="a">
+<td><code>short</code></td>
+<td>short.default</td>
+<td><p>Converts primitive <code>short</code> values to and from the schema short
+representation (integer values in normal 16-bit signed value range).</p></td>
+</tr>
+<tr class="b">
+<td><code>boolean</code></td>
+<td>boolean.default</td>
+<td><p>Converts primitive <code>boolean</code> values to and from the schema boolean
+representation (&quot;true&quot; or &quot;false&quot;, or equivalently
+&quot;1&quot; or &quot;0&quot; - the former values are always used when
+converting to text).</p></td>
+</tr>
+<tr class="a">
+<td><code>byte[]</code></td>
+<td>byte-array.default</td>
+<td><p>Converts byte arrays to and from the schema base64 representation to allow
+arbitrary binary data.</p></td>
+</tr>
+<tr class="b">
+<td><code>java.util.Date</code></td>
+<td>Date.default</td>
+<td><p>Converts instances of <code>java.util.Date</code> to and from the schema
+dateTime representation (a text representation like "2000-03-21T01:33:00", with
+optional trailing fractional seconds, and difference from UTC). Since schema
+doesn't have any concept equivalent to Java time zones, this conversion always
+serializes times as UTC values (identified by a trailing "Z"). When
+deserializing times which do not include a "Z" or offset from UTC it treats the
+values as UTC.</p></td>
+</tr>
+<tr class="a">
+<td><code>java.sql.Date</code></td>
+<td>SqlDate.default</td>
+<td><p>Converts instances of <code>java.sql.Date</code> to and from the schema
+date representation (a text representation like
+&quot;2000-03-21&quot;).</p></td>
+</tr>
+<tr class="b">
+<td><code>java.sql.Time</code></td>
+<td>SqlTime.default</td>
+<td><p>Converts instances of <code>java.sql.Time</code> to and from the schema
+time representation (a text representation like
+&quot;01:33:00&quot; with optional trailing fractional seconds).</p></td>
+</tr>
+<tr class="a">
+<td><code>java.sql.Timestamp</code></td>
+<td>Timestamp.default</td>
+<td><p>Converts instances of <code>java.sql.Timestamp</code> to and from the
+schema dateTime representation, just as the <b>Date:default</b> conversion does
+for <code>java.util.Date</code> instances. The only difference is that using the
+timestamp value permits greater precision in the time value represented, down to
+the nanosecond level.</p></td>
+</tr>
+<tr class="b">
+<td><code>java.lang.String</code></td>
+<td>String.default</td>
+<td><p>Identity converter for <code>java.lang.String</code> instances.</p></td>
+</tr>
+<tr class="a">
+<td><code>java.lang.Object</code></td>
+<td>Object.default</td>
+<td><p>Converts any object to a string representation by using the
+<code>toString()</code> method, and converts a string to any object by using
+a constructor that takes a single argument of type <code>java.lang.String</code>.
+If an optional value is not present when unmarshalling a <code>null</code> value
+is stored to the object reference. This is the default format conversion used
+for any object type without a more specific conversion defined.</p></td>
+</tr>
+</table>
+
+<p>These are the conversions you'll get unless you specify otherwise. If you use
+a <b>format</b> element to override one of these defaults you'll still be
+able to access the default by using the defined label for that format. Defining
+your own custom serialization formats is easy, basically requiring only a pair
+of static methods to convert to and from <code>String</code> representations.
+See the <a href="format-element.html">format element</a> description
+for details of defining your own conversions.</p>
+
+<p>The <code>org.jibx.runtime.Utility</code> class defines a variety of
+conversion methods, including those used to implement the standard conversions
+listed in the above table as well as some alternate date-related conversion
+methods. The methods <code>serializeDate</code> and <code>deserializeDate</code>
+may be of special interest for developers working with xs:date values, since
+they support conversion of xs:date format to and from
+<code>java.util.Date</code> instances (the equivalent to the default conversion
+used for <code>java.sql.Date</code> instances).</p>
+
+<p>The default conversions listed above don't always match conversions used by
+other frameworks for working with XML in Java. In particular, many other
+frameworks convert the various schema date-related types to and from
+<code>java.util.Calendar</code> instances. This is an incorrect interpretation
+of the schema types, which do not support the associated time zone which is a
+necessary part of <code>Calendar</code> instances. JiBX by default takes the
+approach of converting to and from Java objects which are the nearest possible
+equivalents to the schema types. You can always change these defaults for your
+own purposes using the techniques described above.</p>
+
+<p>In addition to the conversions listed in the table, JiBX 1.1 and later
+support automatic conversion of Java 5 enum values to and from strings.</p>
+
+      </div>
+      </div>
+      </div>
+
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" cellspacing="0" cellpadding="4">
+  <tbody>
+    <tr>
+      <td> &copy; 2003-2008, Dennis M. Sosnoski (<a href="http://www.sosnoski.com">Sosnoski Software Solutions, Inc.</a>).
+      Licensed to the JiBX Project for free distribution and use. </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+</body>
+</html>

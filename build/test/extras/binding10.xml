@@ -1,0 +1,13 @@
+<!-- Binding to test QName handling -->
+<binding>
+  <namespace uri="urn:a" prefix="ns0" default="none"/>
+  <format type="org.jibx.extras.QName"
+    serializer="org.jibx.extras.QName.serialize"
+    deserializer="org.jibx.extras.QName.deserialize"/>
+  <mapping name="qnames" ns="urn:a" class="extras.QNameReference"
+      pre-set="getNamespaces" pre-get="setNamespaces">
+    <value name="qname" ns="urn:a" get-method="getRef" set-method="setRef"/>
+    <value name="qname" ns="urn:a" field="m_ref1"/>
+    <value style="attribute" name="qname" field="m_ref2"/>
+  </mapping>
+</binding>

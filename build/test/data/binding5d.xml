@@ -1,0 +1,6 @@
+<!-- Binding with nothing but includes. -->
+<binding forwards="false" track-source="true">
+  <include path="binding5d-include1.xml"/>
+  <include path="binding5d-include2.xml"/>
+  <include path="binding5d-include3.xml"/>
+</binding>

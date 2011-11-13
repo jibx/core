@@ -1,0 +1,8 @@
+<myelement>
+  <b>The Answer</b>
+  <format1 minf="4" maxf="6"/>
+  <format2>
+    <mini>22</mini>
+    <maxi>33</maxi>
+  </format2>
+</myelement>

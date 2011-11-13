@@ -1,0 +1,16 @@
+<!-- binding testing operation of optional structure with no name and optional
+  mixed (attribute and element) components -->
+<binding>
+  <mapping name="customer" class="simple.Customer4">
+    <structure field="name" usage="optional">
+      <value name="first-name" style="attribute" usage="optional" field="firstName"/>
+      <value name="last-name" usage="optional" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <collection usage="optional" field="referrals" item-type="simple.Customer4"/>
+  </mapping>
+</binding>

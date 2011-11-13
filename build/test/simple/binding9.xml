@@ -1,0 +1,34 @@
+<!-- Example from tutorial, using multiple abstract named mappings for same
+ class, both optional and required references -->
+<binding>
+  <mapping name="customer" class="simple.Customer9">
+    <structure name="person" value-style="attribute">
+      <value name="cust-num" field="customerNumber"/>
+      <value name="first-name" field="firstName"/>
+      <value style="text" field="lastName"/>
+    </structure>
+    <structure field="shipAddress" map-as="normal-address" usage="optional"/>
+    <structure name="bill-address" field="billAddress"
+        map-as="normal-address" usage="optional"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+  <mapping name="subscriber" class="simple.Subscriber9">
+    <value name="name" field="name"/>
+    <structure name="address" field="mailAddress"
+        map-as="compact-address"/>
+  </mapping>
+  <mapping class="simple.Address9" abstract="true"
+      type-name="normal-address">
+    <value name="street" field="street"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" style="attribute" field="zip"/>
+  </mapping>
+  <mapping class="simple.Address9" abstract="true"
+       value-style="attribute" type-name="compact-address">
+    <value style="text" field="street"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+</binding>

@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>CodeGen Examples</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>CodeGen example schema</h3>
+
+<p>The <i>/examples/codegen</i> directory of the JiBX distribution contains some
+samples for demonstrating the use of CodeGen. The samples use a subset of schema
+definitions from the <a href="http://www.opentravel.org/">OpenTravel Alliance</a>,
+an organization developing open standards for use in electronic message exchange.
+The OTA definitions consist of hundreds of schemas in total, but the subset used for
+these samples includes just seven schemas from the OTA2007A distribution, representing
+a request-response pair of messages: OTA_AirLowFareSearchRQ and OTA_AirLowFareSearchRS.
+As a sample of the structure, here are simplified listings of these main message
+schemas (with most of the annoations and some of the structure detail eliminated):</p>
+
+<div id="source"><pre>&lt;xs:schema xmlns="http://www.opentravel.org/OTA/2003/05"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.opentravel.org/OTA/2003/05"
+    elementFormDefault="qualified" version="2.007" id="OTA2007A">
+	&lt;xs:include schemaLocation="OTA_AirCommonTypes.xsd"/>
+	&lt;xs:include schemaLocation="OTA_AirPreferences.xsd"/>
+	&lt;xs:element name="OTA_AirLowFareSearchRQ">
+		&lt;xs:annotation>
+			&lt;xs:documentation xml:lang="en">
+	The Low Fare Search Request message requests priced itinerary options for
+  flights between specific city pairs on specific dates for specific 	numbers and
+  types of passengers. Optional request information can include:
+	- Time / Time Window
+	- Connecting cities.
+	- Client Preferences (airlines, cabin, flight types etc.)
+	The Low Fare Search request contains similar information to a Low Fare Search
+  entry on an airline CRS or GDS.
+			&lt;/xs:documentation>
+		&lt;/xs:annotation>
+		&lt;xs:complexType>
+			&lt;xs:sequence>
+				&lt;xs:element name="POS" type="POS_Type">
+					&lt;xs:annotation>
+						&lt;xs:documentation xml:lang="en">Point of sale object. 
+            &lt;/xs:documentation>
+					&lt;/xs:annotation>
+				&lt;/xs:element>
+				&lt;xs:element name="ProcessingInfo" minOccurs="0">
+					&lt;xs:annotation>
+						&lt;xs:documentation xml:lang="en">A collection of information that
+            specifies how the message processing should occur or how the data
+            should be returned.&lt;/xs:documentation>
+					&lt;/xs:annotation>
+					&lt;xs:complexType>
+						&lt;xs:attributeGroup ref="AirProcessingInfoGroup"/>
+					&lt;/xs:complexType>
+				&lt;/xs:element>
+				&lt;xs:element name="OriginDestinationInformation" maxOccurs="10">
+					&lt;xs:annotation>
+						&lt;xs:documentation xml:lang="en">Origin and Destination location,
+            and time information for the Air Low Fare Search request.
+            &lt;/xs:documentation>
+					&lt;/xs:annotation>
+					&lt;xs:complexType>
+						&lt;xs:complexContent>
+							&lt;xs:extension base="OriginDestinationInformationType">
+								&lt;xs:sequence>
+									&lt;xs:element name="AlternateLocationInfo" minOccurs="0">
+										...
+										&lt;xs:complexType>
+											&lt;xs:attribute name="OriginLocation"
+                          type="ListOfStringLength1to8" use="optional">
+												...
+											&lt;/xs:attribute>
+											&lt;xs:attribute name="DestinationLocation"
+                          type="ListOfStringLength1to8" use="optional">
+												...
+											&lt;/xs:attribute>
+										&lt;/xs:complexType>
+									&lt;/xs:element>
+									&lt;xs:element ref="TPA_Extensions" minOccurs="0"/>
+								&lt;/xs:sequence>
+								&lt;xs:attribute name="RPH" type="RPH_Type" use="optional">
+                  ...
+								&lt;/xs:attribute>
+								&lt;xs:attribute name="RefNumber" type="Numeric1to99"
+                    use="optional">
+									...
+								&lt;/xs:attribute>
+							&lt;/xs:extension>
+						&lt;/xs:complexContent>
+					&lt;/xs:complexType>
+				&lt;/xs:element>
+				&lt;xs:element name="SpecificFlightInfo" type="SpecificFlightInfoType"
+            minOccurs="0">
+					...
+				&lt;/xs:element>
+				&lt;xs:element name="TravelPreferences" minOccurs="0" maxOccurs="10">
+					...
+					&lt;xs:complexType>
+						&lt;xs:complexContent>
+							&lt;xs:extension base="AirSearchPrefsType">
+								&lt;xs:attribute name="FlexDatePref" use="optional">
+									...
+								&lt;/xs:attribute>
+								...
+							&lt;/xs:extension>
+						&lt;/xs:complexContent>
+					&lt;/xs:complexType>
+				&lt;/xs:element>
+				&lt;xs:element name="TravelerInfoSummary">
+					...
+					&lt;xs:complexType>
+						&lt;xs:complexContent>
+							&lt;xs:extension base="TravelerInfoSummaryType">
+								&lt;xs:attribute name="TicketingCountryCode" type="ISO3166"
+                    use="optional">
+									...
+								&lt;/xs:attribute>
+								&lt;xs:attribute name="SpecificPTC_Indicator" type="xs:boolean"
+                    use="optional">
+									...
+								&lt;/xs:attribute>
+							&lt;/xs:extension>
+						&lt;/xs:complexContent>
+					&lt;/xs:complexType>
+				&lt;/xs:element>
+			&lt;/xs:sequence>
+			&lt;xs:attributeGroup ref="OTA_PayloadStdAttributes"/>
+			&lt;xs:attributeGroup ref="MaxResponsesGroup"/>
+			&lt;xs:attribute name="DirectFlightsOnly" type="xs:boolean" use="optional"
+          default="false">
+				...
+			&lt;/xs:attribute>
+			&lt;xs:attribute name="AvailableFlightsOnly" type="xs:boolean"
+          use="optional">
+				...
+			&lt;/xs:attribute>
+		&lt;/xs:complexType>
+	&lt;/xs:element>
+&lt;/xs:schema>
+
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.opentravel.org/OTA/2003/05"
+    targetNamespace="http://www.opentravel.org/OTA/2003/05"
+    elementFormDefault="qualified" version="5.000" id="OTA2007A">
+	&lt;xs:include schemaLocation="OTA_AirCommonTypes.xsd"/>
+	...
+	&lt;xs:element name="OTA_AirLowFareSearchRS">
+		&lt;xs:annotation>
+			&lt;xs:documentation xml:lang="en">
+	The Low Fare Search Response message contains a number of 'Priced Itinerary'
+  options. Each includes:
+	- A set of available flights matching the client's request.
+	- Pricing information including taxes and full fare breakdown for each 
+    passenger type
+	- Ticketing information
+	- Fare Basis Codes and the information necessary to make a rules entry.
+	This message contains similar information to a standard airline CRS or GDS Low
+  Fare Search Response message.
+			&lt;/xs:documentation>
+		&lt;/xs:annotation>
+		&lt;xs:complexType>
+			&lt;xs:sequence>
+				&lt;xs:choice>
+					&lt;xs:sequence>
+						&lt;xs:element name="Success" type="SuccessType">
+							&lt;xs:annotation>
+								&lt;xs:documentation xml:lang="en">Success
+ Standard way to indicate successful processing of an OTA message. Returning an
+ empty element of this type indicates success.&lt;/xs:documentation>
+							&lt;/xs:annotation>
+						&lt;/xs:element>
+						&lt;xs:element name="Warnings" type="WarningsType" minOccurs="0">
+							&lt;xs:annotation>
+								&lt;xs:documentation xml:lang="en"> Standard way to indicate
+successful processing of an OTA message, but one in which warnings are generated.
+&lt;/xs:documentation>
+							&lt;/xs:annotation>
+						&lt;/xs:element>
+						&lt;xs:element name="PricedItineraries" type="PricedItinerariesType">
+							&lt;xs:annotation>
+								&lt;xs:documentation xml:lang="en">Successfull Low Fare priced
+                itineraries in response to a Low Fare Search request.
+                &lt;/xs:documentation>
+							&lt;/xs:annotation>
+						&lt;/xs:element>
+					&lt;/xs:sequence>
+					&lt;xs:element name="Errors" type="ErrorsType">
+						&lt;xs:annotation>
+							&lt;xs:documentation xml:lang="en"> A collection of errors that
+              occurred during the processing of a message.&lt;/xs:documentation>
+						&lt;/xs:annotation>
+					&lt;/xs:element>
+				&lt;/xs:choice>
+			&lt;/xs:sequence>
+			&lt;xs:attributeGroup ref="OTA_PayloadStdAttributes">
+				&lt;xs:annotation>
+					&lt;xs:documentation xml:lang="en"> The OTA_PayloadStdAttributes
+          defines the standard attributes that appear on the root element for all
+          OTA payloads.&lt;/xs:documentation>
+				&lt;/xs:annotation>
+			&lt;/xs:attributeGroup>
+		&lt;/xs:complexType>
+	&lt;/xs:element>
+&lt;/xs:schema></pre></div>
+
+      </div>
+      <div class="h3">
+      <h3><a name="start"></a>Sample documents</h3>
+
+<p>The <i>/examples/codegen/samples</i> directory contains the OTA_AirLowFareSearchRQ
+and OTA_AirLowFareSearchRS sample documents from the OTA distribution (two documents of
+each type). Here's one of the sample requests, and an edited version of the sample
+response:</p>
+
+<div id="source"><pre>&lt;OTA_AirLowFareSearchRQ EchoToken="50987" TimeStamp="2003-11-19T19:44:10-05:00"
+  Target="Production" SequenceNmbr="1"
+  xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirLowFareSearchRQ.xsd" Version="2.001">
+	&lt;POS>
+		&lt;Source>
+			&lt;RequestorID Type="13" ID="01235"/>
+		&lt;/Source>
+	&lt;/POS>
+	&lt;OriginDestinationInformation>
+		&lt;DepartureDateTime>2004-06-05T10:00:00-05:00&lt;/DepartureDateTime>
+		&lt;OriginLocation LocationCode="IAD"/>
+		&lt;DestinationLocation LocationCode="FLG"/>
+	&lt;/OriginDestinationInformation>
+	&lt;OriginDestinationInformation>
+		&lt;DepartureDateTime>2004-06-27T10:00:00-05:00&lt;/DepartureDateTime>
+		&lt;OriginLocation LocationCode="FLG"/>
+		&lt;DestinationLocation LocationCode="IAD"/>
+	&lt;/OriginDestinationInformation>
+	&lt;TravelPreferences>
+		&lt;FareRestrictPref>
+			&lt;AdvResTicketing AdvTicketingInd="false">
+				&lt;AdvTicketing/>
+			&lt;/AdvResTicketing>
+			&lt;StayRestrictions StayRestrictionsInd="true">
+			       &lt;MinimumStay />
+				&lt;MaximumStay MaxStay="14" StayUnit="Days"/>
+			&lt;/StayRestrictions>
+		&lt;/FareRestrictPref>
+	&lt;/TravelPreferences>
+	&lt;TravelerInfoSummary>
+		&lt;AirTravelerAvail>
+				&lt;PassengerTypeQuantity Code="ADT" Quantity="1"/>
+		&lt;/AirTravelerAvail>
+	&lt;/TravelerInfoSummary>
+&lt;/OTA_AirLowFareSearchRQ>
+
+&lt;OTA_AirLowFareSearchRS EchoToken="53468" TimeStamp="2003-11-19T19:44:17-05:00"
+  Target="Production" SequenceNmbr="1"
+  xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
+  OTA_AirLowFareSearchRS.xsd" Version="2.001">
+	&lt;Success/>
+	&lt;PricedItineraries>
+		&lt;PricedItinerary SequenceNumber="1">
+			&lt;AirItineraryPricingInfo>
+				&lt;ItinTotalFare>
+					&lt;BaseFare Amount="256.75" CurrencyCode="USD"/>
+					&lt;TotalFare Amount="285.00" CurrencyCode="USD"/>
+				&lt;/ItinTotalFare>
+				&lt;FareInfos>
+					&lt;FareInfo>
+						&lt;FareReference> "K"&lt;/FareReference>
+						&lt;RuleInfo>
+							&lt;ResTicketingRules>
+								&lt;AdvResTicketing AdvTicketingInd="true">
+									&lt;AdvTicketing FromDepartPeriod="21" FromDepartUnit="Days"/>
+								&lt;/AdvResTicketing>
+							&lt;/ResTicketingRules>
+							&lt;LengthOfStayRules>
+								&lt;MinimumStay MinStay="14" StayUnit="Days"/>
+								&lt;MaximumStay ReturnType="C" MaxStay="30" StayUnit="Days"/>
+							&lt;/LengthOfStayRules>
+							&lt;ChargesRules>
+								&lt;VoluntaryChanges VolChangeInd="true">
+									&lt;Penalty Percent="100"/>
+								&lt;/VoluntaryChanges>
+							&lt;/ChargesRules>
+						&lt;/RuleInfo>
+						&lt;FilingAirline>HP&lt;/FilingAirline>
+						&lt;DepartureAirport LocationCode="IAD"/>
+						&lt;ArrivalAirport LocationCode="FLG"/>
+					&lt;/FareInfo>
+					...
+				&lt;/FareInfos>
+			&lt;/AirItineraryPricingInfo>
+		&lt;/PricedItinerary>
+		&lt;PricedItinerary SequenceNumber="2">
+			&lt;AirItineraryPricingInfo>
+				&lt;ItinTotalFare>
+					&lt;BaseFare Amount="337.46" CurrencyCode="USD" />
+					&lt;TotalFare Amount="375.00" CurrencyCode="USD" />
+				&lt;/ItinTotalFare>
+				&lt;FareInfos>
+					&lt;FareInfo>
+						&lt;FareReference> "Q"&lt;/FareReference>
+						&lt;RuleInfo>
+							&lt;ResTicketingRules>
+								&lt;AdvResTicketing AdvTicketingInd="true">
+									&lt;AdvTicketing FromDepartPeriod="14" FromDepartUnit="Days"/>
+								&lt;/AdvResTicketing>
+							&lt;/ResTicketingRules>
+							&lt;LengthOfStayRules>
+								&lt;MinimumStay MinStay="7" StayUnit="Days"/>
+								&lt;MaximumStay ReturnType="C" MaxStay="14" StayUnit="Days"/>
+							&lt;/LengthOfStayRules>
+							&lt;ChargesRules>
+								&lt;VoluntaryChanges VolChangeInd="true">
+									&lt;Penalty Percent="50"/>
+								&lt;/VoluntaryChanges>
+							&lt;/ChargesRules>
+						&lt;/RuleInfo>
+						&lt;FilingAirline>NW&lt;/FilingAirline>
+						&lt;DepartureAirport LocationCode="IAD"/>
+						&lt;ArrivalAirport LocationCode="FLG"/>
+					&lt;/FareInfo>
+					...
+				&lt;/FareInfos>
+			&lt;/AirItineraryPricingInfo>
+		&lt;/PricedItinerary>
+		&lt;PricedItinerary SequenceNumber="3">
+			&lt;AirItineraryPricingInfo>
+				&lt;ItinTotalFare>
+					&lt;BaseFare Amount="681.75" CurrencyCode="USD" />
+					&lt;TotalFare Amount="757.00" CurrencyCode="USD" />
+				&lt;/ItinTotalFare>
+				&lt;FareInfos>
+					&lt;FareInfo>
+						&lt;FareReference> "Y"&lt;/FareReference>
+						&lt;RuleInfo>
+							&lt;ResTicketingRules>
+								&lt;AdvResTicketing AdvTicketingInd="false"/>
+							&lt;/ResTicketingRules>
+							&lt;ChargesRules>
+								&lt;VoluntaryChanges VolChangeInd="true"/>
+							&lt;/ChargesRules>
+						&lt;/RuleInfo>
+						&lt;FilingAirline>UA&lt;/FilingAirline>
+						&lt;DepartureAirport LocationCode="IAD"/>
+						&lt;ArrivalAirport LocationCode="FLG"/>
+					&lt;/FareInfo>
+					...
+				&lt;/FareInfos>
+			&lt;/AirItineraryPricingInfo>
+		&lt;/PricedItinerary>
+	&lt;/PricedItineraries>
+&lt;/OTA_AirLowFareSearchRS></pre></div>
+
+      </div>
+      <div class="h3">
+      <h3><a name="examples"></a>Examples</h3>
+
+<p>The examples using these schemas and sample documents demonstrate using CodeGen with
+increasingly sophisticated levels of customization. One of the common complaints about
+code generation from schema is that it results in extremely complex data models with a
+large number of classes, so simplifying the data model using customizations is a main
+focus of the first three examples (which go from 412 classes in the data model, including
+inner classes, down to 50 classes). The final example demonstrates modular code generation
+from schemas, where some of the base schemas are initially generated on their own, then
+the generated base classes and binding are reused when generating the remaining schemas.</p>
+
+<ul>
+<li><a href="%cgexample1%"><b>'codegen' target</b></a> - default generation, including all schema components</li>
+<li><a href="%cgexample2%"><b>'custgen1' target</b></a> - generating only selected global definitions to eliminate unneeded classes</li>
+<li><a href="%cgexample3%"><b>'custgen2' target</b></a> - customizing names and types, eliminating unused parts of schema definitions</li>
+<li><a href="%cgexample4%"><b>'custgen3a/custgen3b' targets</b></a> - modular code generation from schema (base and extension code and bindings)</li>
+</ul>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

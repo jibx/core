@@ -1,0 +1,14 @@
+<!-- Same as binding2, but with children of timetable in reverse order to create
+ lots of forward references. -->
+<binding forwards="true">
+  <include path="binding2-shared.xml"/>
+  <mapping name="timetable" class="multiple.TimeTableBean">
+    <collection field="m_routes" item-type="multiple.RouteBean"/>
+    <structure name="airports">
+      <collection field="m_airports" usage="optional"
+        item-type="multiple.AirportBean"/>
+    </structure>
+    <collection name="carriers" field="m_carriers"
+      item-type="multiple.CarrierBean"/>
+  </mapping>
+</binding>

@@ -1,0 +1,10 @@
+<myelement>
+  <a>42</a>
+  <b>The Answer</b>
+  <ints>
+    <int>1</int>
+    <int>2</int>
+    <int>3</int>
+    <int>1234567890</int>
+  </ints>
+</myelement>

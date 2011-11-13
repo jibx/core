@@ -1,0 +1,46 @@
+<!-- binding testing collection as mapped object, and abstract mappings with
+  attributes, with and without names -->
+<binding>
+  <mapping name="customers" class="simple.Customers6">
+    <value name="count" get-method="getCustomerCount"
+        set-method="setCustomerCount"/>
+    <collection add-method="addCustomer" iter-method="getCustomerIterator"/>
+  </mapping>
+  <mapping name="baseA" abstract="true" class="simple.Customer6aBase"
+    value-style="attribute">
+    <structure name="name" field="name">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1" style="element"/>
+    <value name="city" field="city" style="element"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customerA" class="simple.Customer6a"
+      extends="simple.Customer6aBase">
+    <value name="customer-id" field="customerId"/>
+    <value style="attribute" name="repeat-customer" field="repeat"/>
+    <structure map-as="simple.Customer6aBase"/>
+    <value name="order-count" field="orderCount" default="0"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6bBase"
+    value-style="attribute">
+    <structure name="name" field="name">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1" style="element"/>
+    <value name="city" field="city" style="element"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping name="customerB" class="simple.Customer6b"
+      extends="simple.Customer6bBase">
+    <value name="customer-id" field="customerId"/>
+    <value style="attribute" name="repeat-customer" field="repeat"/>
+    <value style="attribute" name="discount" field="discount" default="0.0"/>
+    <structure map-as="simple.Customer6bBase"/>
+    <value name="order-count" field="orderCount" default="0"/>
+  </mapping>
+</binding>

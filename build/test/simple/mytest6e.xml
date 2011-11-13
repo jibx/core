@@ -1,0 +1,11 @@
+<myelement a="55" b="false">
+  <lists>
+    <int>1</int>
+    <int>2</int>
+    <int>3</int>
+    <int>1234567890</int>
+    <string>this is a test</string>
+    <string>so is this</string>
+    <string>this is not a test</string>
+  </lists>
+</myelement>

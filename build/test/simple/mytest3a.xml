@@ -1,0 +1,12 @@
+<myelement>
+  <a>55</a>
+  <b></b>
+  <d>true</d>
+  <format1 minf="4" maxf="6"/>
+<!--  <ints>  -->
+    <int>1</int>
+    <int>2</int>
+    <int>3</int>
+    <int>1234567890</int>
+<!--  </ints>  -->
+</myelement>

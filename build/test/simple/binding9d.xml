@@ -1,0 +1,42 @@
+<!-- Example from tutorial, using multiple abstract named mappings for same
+ class, both optional and required references -->
+<binding>
+  <mapping name="customer" class="simple.Customer9">
+    <namespace uri="urn:a" default="elements" prefix="a"/>
+    <structure name="person" value-style="attribute">
+      <value name="cust-num" field="customerNumber"/>
+      <value name="first-name" field="firstName"/>
+      <value style="text" field="lastName"/>
+    </structure>
+    <structure field="shipAddress" map-as="alternate-address" usage="optional"
+        test-method="isShipAddress"/>
+    <structure name="bill-address" field="billAddress"
+        map-as="normal-address" usage="optional" test-method="isBillAddress"/>
+    <structure name="fake-address" get-method="getFakeAddress"
+        set-method="setFakeAddress" map-as="alternate-address" usage="optional"
+        test-method="isFakeAddress"/>
+    <value name="phone" field="phone"/>
+  </mapping>
+  <mapping name="subscriber" class="simple.Subscriber9">
+    <namespace uri="urn:b" default="all" prefix="b"/>
+    <value name="name" field="name"/>
+    <structure name="address" field="mailAddress"
+        map-as="alternate-address"/>
+  </mapping>
+  <mapping class="simple.Address9" abstract="true"
+      type-name="normal-address">
+    <namespace uri="urn:c" default="elements"/>
+    <value name="street" field="street"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" style="attribute" field="zip"/>
+  </mapping>
+  <mapping class="simple.Address9" abstract="true"
+      type-name="alternate-address">
+    <namespace uri="urn:d" default="all" prefix="d"/>
+    <value name="street" field="street"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" style="attribute" field="zip"/>
+  </mapping>
+</binding>

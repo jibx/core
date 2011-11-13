@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>$page.title</title>
+      <style type="text/css">
+        @import url("$root/style/tigris.css");
+        @import url("$root/style/maven.css");
+    .dtd-comment {
+      color: #993399;
+      font-weight: bold;
+      </style>
+      <script type="text/javascript">
+        if (document.layers) {
+          document.writeln('<link rel="stylesheet" type="text/css" href="$root/style/ns4_only.css" media="screen" /><link rel="stylesheet" type="text/css" href="$root/style/maven_ns4_only.css" media="screen" />')
+        }
+      </script>
+      <link rel="stylesheet" type="text/css" href="$root/style/print.css" media="print" />
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body class="composite">
+<div id="banner">
+<table border="0" cellspacing="0" cellpadding="8" width="100%">
+  <tbody>
+    <tr>
+      <td><h1>$page.header</h1>
+      </td>
+      <td>
+      <div align="right" id="login"><a href="http://sourceforge.net/projects/jibx"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=69358&type=16" width="150" height="40" border="0" alt="Get JiBX - XML Data Binding for Java at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="breadcrumbs">
+<table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div align="right">
+          <a href="$root/index.html">Home Page</a> |
+          <a href="http://www.sourceforge.net/projects/jibx/">SourceForge Page</a> |
+          <a href="$root/mail-lists.html">Mailing Lists</a> |
+          <a href="$root/bugs.html">Bugs</a> |
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">Downloads</a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="8" width="100%" id="main">
+  <tbody>
+	<tr valign="top">
+	  <td id="leftcol" width="20%">
+		<div id="navcolumn">
+
+##<!-- This recursive macro creates the nesting of menu items -->
+#macro(menu $top $detail)
+  #if ($detail.label)
+    #if ($top)
+          <div>
+            <strong>$detail.label</strong>
+      #foreach ($child in $detail.children)
+        #menu(false $child)
+      #end
+          </div>
+    #else
+          <div>
+            <small>
+      #if ($detail == $page)
+              <span class="menu-selection">$detail.label</span>
+      #elseif ($detail.target)
+              <a href="$page.relativePath($detail.target)">$detail.label</a>
+      #else
+              $detail.label
+      #end
+            </small>
+      #foreach ($child in $detail.children)
+        #menu(false $child)
+      #end
+          </div>
+    #end
+  #else
+    #foreach ($child in $detail.children)
+      #menu(false $child)
+    #end
+  #end
+#end
+##<!-- End macro -->
+
+##<!-- Apply the recursive macro to generate normal menu -->
+#foreach ($child in $menu.children)
+  #menu(true $child)
+#end
+
+##<!-- Handle site-level subprojects menu -->
+#if ($site && $site.children.size() > 1)
+          <div><hr/></div>
+  #if ($menu == $site.children.get(0))
+          <div>
+            <strong>Subprojects</strong>
+          </div>
+          <div>
+    #foreach ($altmenu in $site.children)
+      #if ($altmenu != $menu)
+            <div>
+              <a href="$page.relativePath($altmenu.target)">$altmenu.label</a>
+            </div>
+      #end
+    #end
+          </div>
+  #else
+    #set ($mainmenu = $site.children.get(0))
+          <div>
+            <strong>Main Project</strong>
+          </div>
+          <div>
+            <a href="$page.relativePath($mainmenu.target)">$mainmenu.label</a>
+          </div>
+  #end
+#end
+
+        </div>
+      </td>
+      <td>
+
+$page.body
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" cellspacing="0" cellpadding="4">
+  <tbody>
+    <tr>
+      <td> &copy; 2003-2011, Dennis M. Sosnoski (<a href="http://www.sosnoski.co.nz">Sosnoski Software Associates Ltd</a>).
+      Licensed to the JiBX Project for free distribution and use. </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+</body>
+</html>

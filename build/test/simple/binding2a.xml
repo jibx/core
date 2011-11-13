@@ -1,0 +1,22 @@
+<!-- Adds a layer of of wrapper element around the optional component from the
+ basic binding, using a test method to control output. Also uses unordered
+ structure with a single child component to duplicate error found by user, and
+ get/set methods for accessing object with private constructor. -->
+<binding>
+  <mapping name="customer" class="simple.Customer2">
+    <structure name="name" usage="optional" test-method="hasName" ordered="false">
+      <structure name="first-and-last" usage="optional">
+        <value name="first-name" field="firstName" usage="optional"/>
+        <value name="last-name" field="lastName" usage="optional"/>
+        <structure name="ignored" usage="optional"/>
+      </structure>
+    </structure>
+    <structure get-method="getAddress" set-method="setAddress" usage="optional">
+      <value name="street1" field="street1"/>
+      <value name="city" field="city"/>
+      <value name="state" field="state"/>
+      <value name="zip" field="zip"/>
+    </structure>
+    <value name="phone" field="phone"/>
+  </mapping>
+</binding>

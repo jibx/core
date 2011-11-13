@@ -1,0 +1,36 @@
+<!-- This checks unordered elements (which once had to be optional, but can now
+ be required), including core Java classes, and also trims whitespace from values -->
+<binding trim-whitespace="true">
+  <mapping name="myelement" class="simple.MyClass3" ordered="false">
+    <value name="a" field="a" usage="optional"/>
+    <value name="b" field="b" usage="optional"/>
+    <value name="c" field="c" usage="optional"/>
+    <value name="d" field="d" usage="optional"/>
+    <value name="e" field="e" usage="optional" format="char.string"/>
+    <structure name="format1" field="format1" value-style="attribute" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <structure name="format2" field="format2" usage="optional">
+      <value name="mini" usage="optional" get-method="getMinimumIntegerDigits"
+          set-method="setMinimumIntegerDigits"/>
+      <value name="maxi" usage="optional" get-method="getMaximumIntegerDigits"
+          set-method="setMaximumIntegerDigits"/>
+      <value name="minf" usage="optional" get-method="getMinimumFractionDigits"
+          set-method="setMinimumFractionDigits"/>
+      <value name="maxf" usage="optional" get-method="getMaximumFractionDigits"
+          set-method="setMaximumFractionDigits"/>
+    </structure>
+    <collection usage="optional" item-type="java.lang.Integer"
+        test-method="hasInts" add-method="addInt" size-method="sizeInts"
+        load-method="getInt">
+      <value name="int" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+</binding>

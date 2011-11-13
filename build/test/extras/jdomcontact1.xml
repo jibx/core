@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contact xmlns="urn:myNs1"><first-name>Tom</first-name><last-name>Sawyer</last-name><phone>1-800-555-1212</phone><mns2:information xmlns:mns2="urn:myNs2"><mns2:additionalInfo1>Additional Info First Line</mns2:additionalInfo1><mns2:additionalInfo2>Additional Info Second Line</mns2:additionalInfo2></mns2:information></contact>

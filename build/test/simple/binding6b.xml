@@ -1,0 +1,59 @@
+<!-- alternative binding with implicit "this" references, several added abstract
+ non-base mappings, nillable long value to verify Jira report -->
+<binding force-classes="true">
+  <mapping name="customers" class="simple.Customers6">
+    <value name="count" get-method="getCustomerCount"
+        set-method="setCustomerCount"/>
+    <collection add-method="addCustomer" iter-method="getCustomerIterator"/>
+  </mapping>
+  <mapping name="customerA" class="simple.Customer6a" value-style="attribute">
+    <value name="customer-id" field="customerId"/>
+    <value name="repeat-customer" field="repeat"/>
+    <structure type="simple.Customer6aBase">
+      <value name="state" field="state"/>
+      <value name="zip" field="zip"/>
+    </structure>
+    <value name="order-count" field="orderCount" default="0"/>
+  </mapping>
+  <mapping name="customerB" class="simple.Customer6b">
+    <value name="customer-id" field="customerId" nillable="true"/>
+    <value style="attribute" name="repeat-customer" field="repeat"/>
+    <value style="attribute" name="discount" field="discount" default="0.0"/>
+    <structure name="name" type="simple.Customer6bBase">
+      <structure field="name"/>
+    </structure>
+    <structure type="simple.Customer6bBase" value-style="attribute">
+      <value name="state" field="state"/>
+      <value name="zip" field="zip"/>
+    </structure>
+    <value name="order-count" field="orderCount" default="0"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Name" value-style="attribute">
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6aBase">
+    <value name="xstate" field="state"/>
+    <value name="xzip" field="zip"/>
+  </mapping>
+  <mapping abstract="true" class="simple.Customer6bBase"
+      value-style="attribute">
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+  </mapping>
+  <mapping class="java.util.ArrayList" abstract="true">
+    <collection ordered="false">
+      <value name="order" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping class="java.util.ArrayList" abstract="true" type-name="other-list">
+    <collection ordered="false">
+      <value name="other" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping class="java.util.Vector" abstract="true">
+    <collection ordered="false">
+      <value name="order" type="java.lang.String"/>
+    </collection>
+  </mapping>
+</binding>

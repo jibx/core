@@ -1,0 +1,13 @@
+<!-- Test nested collections, in the form of an array of lists and arrays -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass7">
+    <collection field="array" ordered="false">
+      <collection name="ints" type="java.util.ArrayList" usage="optional">
+        <value name="int" type="java.lang.Integer"/>
+      </collection>
+      <collection name="strings" type="java.lang.String[]" usage="optional">
+        <value name="string" type="java.lang.String"/>
+      </collection>
+    </collection>
+  </mapping>
+</binding>

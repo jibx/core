@@ -1,0 +1,34 @@
+<!-- This defines a simple and straight-forward binding that's the basis for the
+  other variations in this directory -->
+<binding forwards="false">
+  <mapping name="timetable" class="multiple.TimeTableBean">
+    <collection field="m_carriers" item-type="multiple.CarrierBean"/>
+    <collection field="m_airports" item-type="multiple.AirportBean"/>
+    <collection field="m_routes" item-type="multiple.RouteBean"/>
+  </mapping>
+  <mapping name="carrier" class="multiple.CarrierBean">
+    <value style="attribute" name="ident" field="m_ident" ident="def"/>
+    <value style="attribute" name="rating" field="m_rating"/>
+    <value name="URL" field="m_url"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="airport" class="multiple.AirportBean">
+    <value style="attribute" name="ident" field="m_ident" ident="def"/>
+    <value name="location" field="m_location"/>
+    <value name="name" field="m_name"/>
+  </mapping>
+  <mapping name="route" value-style="attribute" class="multiple.RouteBean">
+    <value name="from" field="m_from" ident="ref"/>
+    <value name="to" field="m_to" ident="ref"/>
+    <collection field="m_flights" item-type="multiple.FlightBean"/>
+  </mapping>
+  <mapping name="flight" value-style="attribute"
+      class="multiple.FlightBean">
+    <value name="carrier" field="m_carrier" ident="ref"/>
+    <value name="number" field="m_number"/>
+    <value name="depart" get-method="getDepartureTime"
+      set-method="setDepartureTime"/>
+    <value name="arrive" get-method="getArrivalTime"
+      set-method="setArrivalTime"/>
+  </mapping>
+</binding>

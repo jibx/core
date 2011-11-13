@@ -1,0 +1,14 @@
+<binding>
+  <mapping name="contact" class="extras.JDOMContact1">
+    <namespace uri="urn:myNs1" default="elements"/>
+    <value name="first-name" field="firstName"/>
+    <value name="last-name" field="lastName"/>
+    <value name="phone" field="phone"/>
+    <structure field="information"/>
+  </mapping>
+  <mapping name="information" class="extras.JDOMContactInformation1">
+    <namespace prefix="mns2" uri="urn:myNs2" default="elements"/>
+    <value name="additionalInfo1" field="additionalInfo1"/>
+    <value name="additionalInfo2" field="additionalInfo2"/>
+  </mapping>
+</binding>

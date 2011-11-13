@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 3: More nesting, customizing namespaces, element vs. attribute</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <a name="custom"></a><h3>Going further with customizations</h3>
+
+<p>The <a href="%bgexample2%#custom">Example 2 customizations</a> showed some basic
+modifications to BindGen default behavior. Now it's time to go a couple of steps
+further, using <i>custom2.xml</i>:</p>
+
+<div id="source"><pre>&lt;custom namespace-style="fixed" namespace="http://www.jibx.org/starters/fromcode"
+    property-access="true">
+  &lt;package name="org.jibx.starter1">
+    &lt;class name="Address" includes="street1 city state postCode country"
+        requireds="street1 city"/>
+    &lt;class name="Customer" requireds="lastName firstName /customerNumber"/>
+    &lt;class name="Item" excludes="description" requireds="@id @quantity price"/>
+    &lt;class name="Order" requireds="orderNumber customer billTo shipping orderDate"/>
+  &lt;/package>
+&lt;/custom>
+</pre></div>
+
+<p>The <code>namespace-style="fixed"</code> attribute on the root 'custom' element
+tells BindGen to use fixed namespaces, rather than deriving namespaces from package
+names. The <code>namespace="http://www.jibx.org/starters/fromcode"</code> attribute
+then defines the namespace to be used. If you want a single, fixed, namespace for all
+your XML definitions you need to use both of these attributes together - if you use
+the 'namespace' attribute by itself, the namespace you specify will still be modified
+for each nested package.</p>
+
+<p>There are three other differences in this customization file, as compared to
+the <a href="%bgexample2%#custom">Example 2 customizations</a>. The 'package' element
+is a convenient wrapper for the 'class' elements, allowing simple class names to be
+used on the 'class' elements instead of fully-qualified class names. You can also add
+any nesting customization attributes to the 'package' element. So for example, the
+'namespace-style', 'namespace', and 'property-access' attributes could all be moved
+from the 'custom' element to the 'package' element.</p>
+
+<p>The other differences are in the 'requireds' value lists for the 'Customer' and
+'Item' classes. In this version of the customizations, the list of 'requireds' value
+names for the 'Customer' class is in a different order and the 'customerNumber' value
+name is prefixed with a slash character ('/'), and the 'id' and 'quantity' value names
+in the 'requireds' list for the 'Item' class are prefixed with an at-sign character.
+These prefix characters tell BindGen to use a specific representation for the values -
+a slash character for an element, an at-sign character for an attribute. The prefix
+characters can be used for all the attributes which take value name lists: 'includes',
+'optionals', and 'requireds' (they're ignored in the case of 'excludes'). Values names
+without one of these indicator prefix characters just use the default representation.</p>
+
+      </div>
+      <div class="h3">
+      <a name="schema"></a><h3>Generated schema</h3>
+
+<p>You can try out the above customization by again using the Ant 'compile' target to
+compile the sample code, followed by the 'custgen2' target to run BindGen using the
+above customizations. Here's the resulting schema (again with the longer lines split):</p>
+
+<div id="source"><pre>&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://www.jibx.org/starters/fromcode" elementFormDefault="qualified"
+    <b>targetNamespace="http://www.jibx.org/starters/fromcode"</b>>
+  &lt;xs:complexType name="address">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Address information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element type="xs:string" name="street1"/>
+      &lt;xs:element type="xs:string" name="city"/>
+      &lt;xs:element type="xs:string" name="state" minOccurs="0"/>
+      &lt;xs:element type="xs:string" name="postCode" minOccurs="0"/>
+      &lt;xs:element type="xs:string" name="country" minOccurs="0"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+  &lt;xs:element type="tns:order" name="order"/>
+  &lt;xs:complexType name="order">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Order information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element name="customer">
+        &lt;xs:complexType>
+          &lt;xs:sequence>
+            <b>&lt;xs:element type="xs:string" name="lastName"/>
+            &lt;xs:element type="xs:string" name="firstName"/>
+            &lt;xs:element type="xs:long" name="customerNumber"/></b>
+          &lt;/xs:sequence>
+        &lt;/xs:complexType>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:address" name="billTo"/>
+      &lt;xs:element name="shipping">
+        &lt;xs:simpleType>
+          &lt;xs:annotation>
+            &lt;xs:documentation>Supported shipment methods. The "INTERNATIONAL" shipment methods
+            can only be used for orders with shipping addresses outside the U.S., and one of these
+            methods is required in this case.&lt;/xs:documentation>
+          &lt;/xs:annotation>
+          &lt;xs:restriction base="xs:string">
+            &lt;xs:enumeration value="STANDARD_MAIL"/>
+            &lt;xs:enumeration value="PRIORITY_MAIL"/>
+            &lt;xs:enumeration value="INTERNATIONAL_MAIL"/>
+            &lt;xs:enumeration value="DOMESTIC_EXPRESS"/>
+            &lt;xs:enumeration value="INTERNATIONAL_EXPRESS"/>
+          &lt;/xs:restriction>
+        &lt;/xs:simpleType>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:address" name="shipTo" minOccurs="0"/>
+      &lt;xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+        &lt;xs:complexType>
+          &lt;xs:sequence/>
+          <b>&lt;xs:attribute type="xs:string" use="required" name="id"/></b>
+          &lt;xs:attribute type="xs:int" use="required" name="quantity"/>
+          &lt;xs:attribute type="xs:float" use="required" name="price"/>
+        &lt;/xs:complexType>
+      &lt;/xs:element>
+    &lt;/xs:sequence>
+    &lt;xs:attribute type="xs:long" use="required" name="orderNumber"/>
+    &lt;xs:attribute type="xs:date" use="required" name="orderDate"/>
+    &lt;xs:attribute type="xs:date" name="shipDate"/>
+    &lt;xs:attribute type="xs:float" name="total"/>
+  &lt;/xs:complexType>
+&lt;/xs:schema></pre></div>
+
+<p>Comparing this to the <a href="%bgexample2%#schema">Example 2 schema</a> shows that
+the schema target namespace has been changed to that specified by the customizations,
+the child elements of 'customer' have been reordered, the 'customerNumber' value is now
+an element rather than an attribute, and the 'id' value is now an attribute rather than
+an element (all changes shown in bold type in the listing). There's no change to the
+'quantity' value representation, since that was already an attribute in the original
+schema.</p>
+
+      </div>
+      <div class="h3">
+      <a name="testing"></a><h3>Testing the binding</h3>
+
+<p>Since the actual XML structure has changed with the customizations used for this
+example, testing it requires a different document. The <i>data2.xml</i> document in
+the <i>examples/bindgen</i> directory uses the same data as <i>data1.xml</i>, but is
+restructured to match the schema changes. Here's the document:</p>
+
+<div id="source"><pre>&lt;order orderNumber="12345678" orderDate="2008-10-18" shipDate="2008-10-22"
+    xmlns="http://www.jibx.org/starters/fromcode">
+  &lt;customer>
+    &lt;lastName>Smith&lt;/lastName>
+    &lt;firstName>John&lt;/firstName>
+    &lt;customerNumber>5678&lt;/customerNumber>
+  &lt;/customer>
+  &lt;billTo>
+    &lt;street1>12345 Happy Lane&lt;/street1>
+    &lt;city>Plunk&lt;/city>
+    &lt;state>WA&lt;/state>
+    &lt;postCode>98059&lt;/postCode>
+    &lt;country>USA&lt;/country>
+  &lt;/billTo>
+  &lt;shipping>PRIORITY_MAIL&lt;/shipping>
+  &lt;shipTo>
+    &lt;street1>333 River Avenue&lt;/street1>
+    &lt;city>Kirkland&lt;/city>
+    &lt;state>WA&lt;/state>
+    &lt;postCode>98034&lt;/postCode>
+  &lt;/shipTo>
+  &lt;item quantity="1" price="5.99" id="FA9498349851"/>
+  &lt;item quantity="2" price="9.50" id="GC1234905049"/>
+  &lt;item quantity="1" price="8.95" id="AX9300048820"/>
+&lt;/order></pre></div>
+
+<p>You can compare this to the <a href="%bgexample1%#testing"><i>data1.xml</i></a>
+listing to see the changes.</p>
+
+<p>Once you've run the Ant 'compile', 'custgen2', and 'bind' targets you can test the
+generated binding using 'run-alt' (which runs the same test program as used by the prior
+examples, but with <i>data2.xml</i> as input and <i>out2.xml</i> as output). You can
+also try out the full 'compile', 'custgen2', 'bind', and 'run-alt' sequence by using
+the Ant target 'custom2'.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

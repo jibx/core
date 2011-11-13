@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<timetable xmlns="http://www.jibx.org/ns1" xmlns:ns2="http://www.jibx.org/ns2" xmlns:ns3="http://www.jibx.org/ns3">
+    <carriers>
+        <carrier ns2:ident="NL" ns2:rating="4">
+            <URL>http://www.northleft.com</URL>
+            <name>Northleft Airlines</name>
+            <comments>Nothing *has* to be inside the 'comments'.</comments>
+        </carrier>
+        <carrier ns2:ident="CL" ns2:rating="9">
+            <URL>http://www.classyskylines.com</URL>
+            <name>Classy Skylines</name>
+            <comments>
+              <comment>Any XML structure can go in here.</comment>
+              <carrier>Even elements that have meaning elsewhere.</carrier>
+              <except>What's inside 'comments' will be ignored when unmarshalling</except>
+              <except>so it'll disappear when data is marshalled back out.</except>
+            </comments>
+        </carrier>
+        <carrier ns2:ident="FF" ns2:rating="10">
+            <URL>http://www.finefrenchair.com</URL>
+            <name>Voies Aériennes Françaises Fines</name>
+            <comments>rte st Antoine de Ginestière</comments>
+        </carrier>
+    </carriers>
+    <airports>
+        <airport ns2:ident="BOS">
+            <location>Boston, MA</location>
+            <name>Logan International Airport</name>
+        </airport>
+        <airport ns2:ident="SEA">
+            <location>Seattle, WA</location>
+            <name>Seattle-Tacoma International Airport</name>
+        </airport>
+        <airport ns2:ident="LAX">
+            <location>Los Angeles, CA</location>
+            <name>Los Angeles International Airport</name>
+        </airport>
+    </airports>
+    <route>
+        <from>BOS</from>
+        <to>SEA</to>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="796">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>4:12a</ns4:depart>
+                <ns4:arrive>1:26a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="328">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>2:54a</ns4:depart>
+                <ns4:arrive>1:29a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="401">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>4:12a</ns4:depart>
+                <ns4:arrive>1:25a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+    </route>
+    <route>
+        <from>SEA</from>
+        <to>BOS</to>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="634">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>7:43a</ns4:depart>
+                <ns4:arrive>9:13a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="508">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>4:38p</ns4:depart>
+                <ns4:arrive>6:12p</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="687">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>1:38p</ns4:depart>
+                <ns4:arrive>3:08p</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+    </route>
+    <route>
+        <from>BOS</from>
+        <to>LAX</to>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="955">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>1:06a</ns4:depart>
+                <ns4:arrive>3:29a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="937">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>2:00a</ns4:depart>
+                <ns4:arrive>3:33a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="933">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>3:37a</ns4:depart>
+                <ns4:arrive>3:28a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="829">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>9:05a</ns4:depart>
+                <ns4:arrive>12:39p</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+    </route>
+    <route>
+        <from>LAX</from>
+        <to>BOS</to>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="200">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>4:05p</ns4:depart>
+                <ns4:arrive>7:35p</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="815">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>3:55a</ns4:depart>
+                <ns4:arrive>7:25a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="NL" ns5:number="300">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>11:40p</ns4:depart>
+                <ns4:arrive>3:14a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="600">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>2:44a</ns4:depart>
+                <ns4:arrive>3:30a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+    </route>
+    <route>
+        <from>SEA</from>
+        <to>LAX</to>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="353">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>3:39a</ns4:depart>
+                <ns4:arrive>1:56a</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+    </route>
+    <route>
+        <from>LAX</from>
+        <to>SEA</to>
+        <ns5:flight xmlns:ns4="http://www.jibx.org/ns4" xmlns:ns5="http://www.jibx.org/ns5">
+            <ns5:identity ns4:carrier="CL" ns5:number="474">
+                <ns3:start-date>2003-01-01</ns3:start-date>
+                <ns3:end-date>2005-12-31</ns3:end-date>
+            </ns5:identity>
+            <ns4:times>
+                <ns4:depart>5:50p</ns4:depart>
+                <ns4:arrive>7:56p</ns4:arrive>
+            </ns4:times>
+        </ns5:flight>
+    </route>
+</timetable>

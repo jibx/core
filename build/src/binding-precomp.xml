@@ -1,0 +1,53 @@
+<!-- <binding value-style="attribute" track-source="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="binding.xsd">	-->
+<!-- Binding applied when reading a precompiled binding definition. -->
+<binding value-style="attribute" track-source="true" name="precomp"
+   package="org.jibx.binding.model">
+  
+  <include path="binding-shared.xml"/>
+  
+  <mapping name="binding" class="org.jibx.binding.model.BindingElement">
+    <structure map-as="binding-base"/>
+    <collection add-method="addTopChild" iter-method="topChildIterator">
+      <structure usage="optional" type="org.jibx.binding.model.NamespaceElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.FormatElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.IncludeElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.PrecompiledMappingElement"/>
+    </collection>
+  </mapping>
+  
+  <mapping class="org.jibx.binding.model.MappingElementBase" abstract="true"
+      pre-set="preSet">
+    <value name="abstract" field="m_isAbstract" usage="optional"/>
+    <value field="m_extendsName" name="extends" usage="optional"/>
+    <value name="type-name" get-method="getQualifiedTypeName"
+        set-method="setQualifiedTypeName" usage="optional"/>
+    <!-- "class" should really be in TemplateElementBase for 2.0 -->
+    <value name="class" get-method="getClassName" set-method="setClassName"
+        usage="optional"/>
+    <structure field="m_nameAttrs"/>
+    <structure type="org.jibx.binding.model.ContainerElementBase">
+      <structure field="m_objectAttrs"/>
+      <structure field="m_structureAttrs"/>
+      <structure type="org.jibx.binding.model.NestingElementBase">
+        <structure field="m_nestingAttrs"/>
+      </structure>
+    </structure>
+    <collection add-method="addTopChild" iter-method="topChildIterator">
+      <structure usage="optional" type="org.jibx.binding.model.NamespaceElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.FormatElement"/>
+      <structure usage="optional" type="org.jibx.binding.model.PrecompiledMappingElement"/>
+    </collection>
+    <structure ordered="false" flexible="true" allow-repeats="true">
+      <structure name="structure" usage="optional"/>
+      <structure name="collection" usage="optional"/>
+      <structure name="value" usage="optional"/>
+    </structure>
+  </mapping>
+  
+  <mapping name="mapping" class="org.jibx.binding.model.PrecompiledMappingElement">
+    <structure map-as="org.jibx.binding.model.MappingElementBase"/>
+  </mapping>
+  
+</binding>

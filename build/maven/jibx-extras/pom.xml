@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jibx.config</groupId>
+    <artifactId>main-reactor</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.jibx</groupId>
+  <artifactId>jibx-extras</artifactId>
+  <packaging>bundle</packaging>
+
+  <name>jibx-extras - JiBX extras</name>
+  <description>JiBX extras code</description>
+
+  <profiles>
+    <profile> 
+      <id>sonatype-oss-release</id>
+      <build>
+      <!-- ***CAREFUL*** This logic moves the source code to the current project, then
+      does NOT compile it. This way, the api and source are in the repo. -->
+	    <plugins>
+	      <plugin>
+	        <artifactId>maven-resources-plugin</artifactId>
+	        <version>2.4.3</version>
+	        <executions>
+          <execution>
+            <id>copy-jibx-extras</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/src/main/java</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>${extrasSourceDir}</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+	        </executions>
+	      </plugin>
+	    </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>
+                org.jibx.extras.*;version=${project.version},
+            </Export-Package>
+	    <Include-Resource>@${jibxLibDir}/jibx-extras.jar;inline=**</Include-Resource>
+	    <Main-Class>org.jibx.extras.TestRoundtrip</Main-Class>
+	    <Class-Path>jibx-run.jar xpp3.jar stax-api.jar wstx-asl.jar</Class-Path>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>jibx-run</artifactId>
+      <version>1.2.4-SNAPSHOT</version>
+    </dependency>
+
+	<dependency>
+	   <groupId>dom4j</groupId>
+	   <artifactId>dom4j</artifactId>
+	   <scope>compile</scope>
+	</dependency>
+	<dependency>
+	   <groupId>org.jdom</groupId>
+	   <artifactId>jdom</artifactId>
+	   <scope>compile</scope>
+	   <exclusions>
+	     <exclusion>
+	       <groupId>maven-plugins</groupId>
+	       <artifactId>maven-cobertura-plugin</artifactId>
+	     </exclusion>
+	     <exclusion>
+	       <groupId>maven-plugins</groupId>
+	       <artifactId>maven-findbugs-plugin</artifactId>
+	     </exclusion>
+	   </exclusions>
+	</dependency>
+  </dependencies>
+
+</project>

@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 4: Modular code generation</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <a name="intro"></a><h3>Splitting and sharing code</h3>
+
+<p>Large organizations often have separate teams working with different parts of
+a large set of schemas. For instance, the full set of OTA schemas include groupings
+used for air travel, hotels, automobile rentals, cruises, and more. Different teams
+within a single company may be working with one or more of these groupings. It's often
+useful to let the teams working with particular portions of the schemas handle their
+own data models, while still using a common model for the shared portions (so that
+application code working with the shared portions will be compatible organization-wide,
+facilitating code reuse and making it easy to combine different projects, when
+necessary). This localized control of the data model is even more important when the
+organization is building schemas for data exchange, rather than just using supplied
+schemas.</p>
+
+<p>CodeGen suports modular code generation to allow organizations flexibility in their
+use of schema-based data models. With modular code generation, you start by generating
+one or more self-contained schema subsets. The code and binding generated for each
+self-contained subset is a base module which can be compiled into class files and bound
+by the JiBX binding compiler. The bound class files can be kept as loose files, or more
+commonly assembled into a jar file.</p>
+
+<p>You can then generate other modules extending those already generated, from schemas
+which build on the previously-generated schemas. The code in the extension modules
+reference the Java classes and data bindings generated for the base modules. Each separate
+module can again be compiled and bound by the JiBX binding compiler independently, only
+needing access to the binding definitions and bound classes (whether loose, or in a jar)
+of the appropriate base modules.</p>
+
+<p>To demonstrate how modular generation works, this example splits the OTA schema
+subset used by all the CodeGen examples into two modules. The first module consists of
+common definitions used across the full range of OTA schemas, and is generated from the
+<i>OTA_CommonPrefs.xsd</i>, <i>OTA_CommonTypes.xsd</i>, and <i>OTA_SimpleTypes.xsd</i>
+schemas. The second module consists of the air travel-related definitions, generated
+from the <i>OTA_AirCommonTypes.xsd</i>, <i>OTA_AirLowFareSearchRQ.xsd</i>,
+<i>OTA_AirLowFareSearchRS.xsd</i>, and <i>OTA_AirPreferences.xsd</i> schemas.</p>
+
+</div>
+<div class="h3">
+<a name="common"></a><h3>Common definitions module</h3>
+
+<p>Since the code generation is done in two parts there are two separate customizations
+used. Both customizations are based on the <a href="%cgexample3%#custom">Example 3 customizations</a>.
+Here's the <i>custom3a.xml</i> customization file, used for the first generation step
+(common definitions module):</p>
+
+<div id="source"><pre>&lt;schema-set prefer-inline="true" package="org.ota.common"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float"
+    binding-file-name="base-binding.xml">
+  &lt;name-converter strip-prefixes="OTA_"
+      strip-suffixes="Type AttributeGroup Group Attributes"/>
+  &lt;schema-type type-name="dateTime" java-class="org.joda.time.DateTime"
+      serializer="org.jibx.runtime.JodaConvert.serializeUTCDateTime"
+      deserializer="org.jibx.runtime.JodaConvert.deserializeUTCDateTime"/>
+  &lt;schema-type type-name="date" format-name="LocalDate.default"/>
+  &lt;schema-type type-name="time" format-name="LocalTime.local"/>
+  &lt;schema name="OTA_CommonTypes.xsd" excludes="ConnectionType">
+    &lt;complexType name="SourceType">
+      &lt;element path="**" name="Position" ignore="true"/>
+      &lt;element path="**" name="BookingChannel" ignore="true"/>
+    &lt;/complexType>
+  &lt;/schema>
+&lt;/schema-set>
+</pre></div>
+
+<p>This <i>custom3a.xml</i> customization only applies to the common definitions, so
+the portions of the <i>custom2.xml</i> customization which apply to the air travel
+schemas are removed. The <i>custom2.xml</i> file has an attribute <code>generate-all="false"</code>
+on the root &lt;schema-set> element, which has been removed from this customization.
+This change is necessary so that CodeGen will actually generate all the components
+necessary to represent the common definitions. Alternatively, if you knew you were only
+going to be using some specified components from the common definitions you could keep the
+<code>generate-all="false"</code> attribute and just list the components to be generated,
+as done for Example 3 (and as also done for the second generation step in this modular
+approach).</p>
+
+<p>The target package used for the generated classes is also different in this customization.
+The different package is necessary when using modular generation to prevent conflicts
+when running the JiBX binding compiler, but generally convenient in any case to make it
+easy to keep classes from different modules separate.</p>
+
+<p>Finally, there's an added
+<a href="%cgcustoms%#binding-file-name"><code>binding-file-name="base-binding.xml"</code></a>
+attribute on the root &lt;schema-set> element. This attribute gives a name to be used for
+the generated root binding. It's not necessary to specify a name in this way when using
+modular generation, but it does help clarify the use of the different generated bindings.</p>
+
+<p>There's one quirk in generating the common definitions as a separate module. The OTA
+schemas are structured so that only the top-level message schemas
+(<i>OTA_AirLowFareSearchRQ.xsd</i> and <i>OTA_AirLowFareSearchRS.xsd</i>, in the subset
+of OTA schemas used for these examples) define a target namespace. All the other schemas
+function as what are called "chameleon schemas", meaning that they do not define a target
+namespace directly but instead assume a target namespace when they are included (directly
+or indirectly) into one of the message schemas.</p>
+
+<p>To generate the common definitions in the OTA namespace another CodeGen parameter
+needs to be used. This is the "-u" parameter, which tells CodeGen to force a namespace
+for schemas which do not specify one. Here's the complete Ant target used for generating
+the common definitions:</p>
+
+<div id="source"><pre>&lt;!-- modular generation of common types -->
+  &lt;target name="custgen3a" depends="check-runtime,clean">
+    
+    &lt;echo message="Running base code generation from schema"/>
+    &lt;delete quiet="true" dir="${basedir}/gen"/>
+    &lt;java classname="org.jibx.schema.codegen.CodeGen" fork="yes"
+        classpathref="classpath" failonerror="true">
+      &lt;arg value="-t"/>
+      &lt;arg value="${basedir}/gen/src"/>
+      &lt;arg value="-c"/>
+      &lt;arg value="${basedir}/custom3a.xml"/>
+      &lt;arg value="-u"/>
+      &lt;arg value="http://www.opentravel.org/OTA/2003/05"/>
+      &lt;arg value="otasubset/OTA_Common*.xsd"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+</div>
+<div class="h3">
+<a name="common"></a><h3>Air travel module</h3>
+
+<p>The <i>custom3b.xml</i> customization file is used for the second generation step
+(air travel module):</p>
+
+<div id="source"><pre>&lt;schema-set prefer-inline="true" generate-all="false" package="org.ota.air"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float">
+  &lt;name-converter strip-prefixes="OTA_"
+      strip-suffixes="Type AttributeGroup Group Attributes"/>
+  &lt;schema-type type-name="dateTime" java-class="org.joda.time.DateTime"
+      serializer="org.jibx.runtime.JodaConvert.serializeUTCDateTime"
+      deserializer="org.jibx.runtime.JodaConvert.deserializeUTCDateTime"/>
+  &lt;schema-type type-name="date" format-name="LocalDate.default"/>
+  &lt;schema-type type-name="time" format-name="LocalTime.local"/>
+  &lt;schema name="OTA_AirLowFareSearchRQ.xsd" includes="OTA_AirLowFareSearchRQ">
+    &lt;element name="OTA_AirLowFareSearchRQ" class-name="LowFareSearchRequest">
+      &lt;element path="**" name="AlternateLocationInfo" ignore="true"/>
+      &lt;element path="**" name="SpecificFlightInfo" ignore="true"/>
+      &lt;element path="**" name="ProcessingInfo" ignore="true"/>
+    &lt;/element>
+  &lt;/schema>
+  &lt;schema name="OTA_AirLowFareSearchRS.xsd" includes="OTA_AirLowFareSearchRS">
+    &lt;element name="OTA_AirLowFareSearchRS" class-name="LowFareSearchResponse"/>
+  &lt;/schema>
+  &lt;schema name="OTA_AirCommonTypes.xsd">
+    &lt;complexType name="FareType">
+      &lt;element path="**" name="Taxes" ignore="true"/>
+      &lt;element path="**" name="Fees" ignore="true"/>
+      &lt;element path="**" name="FareConstruction" ignore="true"/>
+      &lt;element path="**" name="UnstructuredFareCalc" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="FareInfoType">
+      &lt;element path="**" name="Date" ignore="true"/>
+      &lt;element path="**" name="FareInfo" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="PricedItinerariesType">
+      &lt;attribute path="**" name="OriginDestinationRefNumber"
+          value-name="refNumber"/>
+    &lt;/complexType>
+    &lt;complexType name="PricedItineraryType">
+      &lt;element path="**" name="AirItinerary" ignore="true"/>
+      &lt;element path="**" name="AirItineraryPricingInfo"
+          value-name="pricingInfo"/>
+      &lt;element path="**" name="Notes" ignore="true"/>
+      &lt;element path="**" name="TicketingInfo" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="AirItineraryPricingInfoType">
+      &lt;element path="**" name="PTC_FareBreakdowns" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="TravelerInformationType">
+      &lt;element path="**" name="AirTraveler" ignore="true"/>
+    &lt;/complexType>
+    &lt;complexType name="TravelerInfoSummaryType">
+      &lt;element path="**" name="PriceRequestInformation" ignore="true"/>
+    &lt;/complexType>
+  &lt;/schema>
+  &lt;schema name="OTA_AirPreferences.xsd">
+    &lt;complexType name="AirSearchPrefsType">
+      &lt;element path="**" name="VendorPref" ignore="true"/>
+      &lt;element path="**" name="FlightTypePref" ignore="true"/>
+      &lt;element path="**" name="EquipPref" ignore="true"/>
+      &lt;element path="**" name="CabinPref" ignore="true"/>
+      &lt;element path="**" name="TicketDistribPref" ignore="true"/>
+    &lt;/complexType>
+  &lt;/schema>
+&lt;/schema-set></pre></div>
+
+<p>This is essentially identical to the <i>custom2.xml</i> file used for Example 3,
+differing only by missing the reference to the schemas in the common definitions.</p>
+
+<p>CodeGen has to know about the existing modules in order to use them when generating
+an extension module. This is done by using the "-i" command line parameter to give the
+paths to the binding definitions for any existing modules. CodeGen will use the supplied
+binding definitions for any matching schema components, rather than generating new
+classes and bindings. Here's the complete Ant target used for generating the air travel
+extension module:</p>
+
+<div id="source"><pre>  &lt;target name="custgen3b" depends="check-runtime,check-base,clean-partial">
+    
+    &lt;echo message="Running extension code generation from schema"/>
+    &lt;java classname="org.jibx.schema.codegen.CodeGen" fork="yes"
+        failonerror="true">
+      &lt;classpath>
+        &lt;path refid="classpath"/>
+        &lt;pathelement location="${basedir}/base.jar"/>
+      &lt;/classpath>
+      &lt;arg value="-t"/>
+      &lt;arg value="${basedir}/gen/src"/>
+      &lt;arg value="-i"/>
+      &lt;arg value="classpath:base-binding.xml"/>
+      &lt;arg value="-c"/>
+      &lt;arg value="${basedir}/custom3b.xml"/>
+      &lt;arg value="otasubset/OTA_AirLowFareSearch*.xsd"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+</div>
+<div class="h3">
+<a name="code"></a><h3>Generated code</h3>
+
+<p>First run the 'custgen3a' target and view the common definitions module code in the
+<i>base/src</i> directory, then run the 'buildbase' target to compile, bind, and jar the
+common definitions. Once that's done, you can run the 'custgen3b' target and view the air
+travel module code in the <i>gen/src</i> directory. To compile and bind the air travel
+module use the 'buildext' target. Finally, you can run the test program to roundtrip the
+sample documents with the 'runmodular' target. You can also just run the 'modular' target
+to perform all these steps in sequence.</p>
+
+<p>The generated code is very similar in structure to that from the prior examples, so
+is not shown here. The main difference is that since all the common definitions were
+generated separately they're in unique classes and cannot be inlined at the point of
+use (though there are exceptions - by default, CodeGen always inlines attribute group
+or group definitions which only contain a single component).</p>
+
+<p>Since all the common definitions are generated as separate classes (except trivial
+attribute groups and groups) the total number of classes is considerably higher than in
+the last example: 185 top-level classes and 67 inner classes, for a total of 252, in the
+common definitions module; plus 7 top-level classes and 26 inner classes, for a total
+of 33, in the air travel module. This increased number of classes from the last example
+represents a tradeoff for the convenience of a separate common definitions module.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

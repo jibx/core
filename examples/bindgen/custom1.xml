@@ -1,0 +1,10 @@
+<custom property-access="true">
+  <class name="org.jibx.starter1.Address"
+      includes="street1 city state postCode country" requireds="street1 city"/>
+  <class name="org.jibx.starter1.Customer"
+      requireds="firstName lastName customerNumber"/>
+  <class name="org.jibx.starter1.Item" excludes="description"
+      requireds="id quantity price"/>
+  <class name="org.jibx.starter1.Order"
+      requireds="orderNumber customer billTo shipping orderDate"/>
+</custom>

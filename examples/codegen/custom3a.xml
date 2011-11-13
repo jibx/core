@@ -1,0 +1,18 @@
+<schema-set prefer-inline="true" package="org.ota.common"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    type-substitutions="xs:integer xs:int xs:decimal xs:float"
+    binding-file-name="base-binding.xml">
+  <name-converter strip-prefixes="OTA_"
+      strip-suffixes="Type AttributeGroup Group Attributes"/>
+  <schema-type type-name="dateTime" java-class="org.joda.time.DateTime"
+      serializer="org.jibx.runtime.JodaConvert.serializeUTCDateTime"
+      deserializer="org.jibx.runtime.JodaConvert.deserializeUTCDateTime"/>
+  <schema-type type-name="date" format-name="LocalDate.default"/>
+  <schema-type type-name="time" format-name="LocalTime.local"/>
+  <schema name="OTA_CommonTypes.xsd" excludes="ConnectionType">
+    <complexType name="SourceType">
+      <element path="**" name="Position" ignore="true"/>
+      <element path="**" name="BookingChannel" ignore="true"/>
+    </complexType>
+  </schema>
+</schema-set>

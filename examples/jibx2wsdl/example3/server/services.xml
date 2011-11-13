@@ -1,0 +1,29 @@
+<serviceGroup>
+  <service name="LibraryServer1">
+    <messageReceivers>
+      <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="com.sosnoski.ws.library.jibx2wsdl.LibraryServer1MessageReceiverInOut"/>
+    </messageReceivers>
+    <parameter locked="false" name="ServiceClass">com.sosnoski.ws.library.jibx2wsdl.LibraryServer1Impl</parameter>
+    <parameter locked="false" name="useOriginalwsdl">true</parameter>
+    <parameter locked="false" name="modifyUserWSDLPortAddress">true</parameter>
+    <operation name="getItem" mep="http://www.w3.org/ns/wsdl/in-out">
+      <actionMapping>urn:getItem</actionMapping>
+      <outputActionMapping>http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer1/LibraryServer1PortType/getItemResponse</outputActionMapping>
+    </operation>
+    <operation name="getItemsByType" mep="http://www.w3.org/ns/wsdl/in-out">
+      <actionMapping>urn:getItemsByType</actionMapping>
+      <outputActionMapping>http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer1/LibraryServer1PortType/getItemsByTypeResponse</outputActionMapping>
+    </operation>
+    <operation name="getTypes" mep="http://www.w3.org/ns/wsdl/in-out">
+      <actionMapping>urn:getTypes</actionMapping>
+      <outputActionMapping>http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer1/LibraryServer1PortType/getTypesResponse</outputActionMapping>
+    </operation>
+    <operation name="addItem" mep="http://www.w3.org/ns/wsdl/in-out">
+      <actionMapping>urn:addItem</actionMapping>
+      <outputActionMapping>http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer1/LibraryServer1PortType/addItemResponse</outputActionMapping>
+      <faultActionMapping faultName="addDuplicateFault">http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer1/LibraryServer1PortType/addItem/Fault/addDuplicateFault</faultActionMapping>
+    </operation>
+    <module ref="validate"/>
+    <parameter name="validationSchema">file:///home/dennis/projects/jibx/jibx2wsdl/example3/gen/LibraryServer1.xsd</parameter>
+  </service>
+</serviceGroup>

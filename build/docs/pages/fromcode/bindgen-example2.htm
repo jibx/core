@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 2: Customizing value usage, and required/optional</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>Customizing BindGen code generation</h3>
+
+<p>You can supply a customization file to BindGen to control many aspects of the schema
+and binding generation. Three separate customization examples are included in the
+<i>samples/bindgen</i> directory. This page discusses the first customization example
+(<i>custom1.xml</i>), which demonstrates controlling the values used from a class, how
+the values are accessed, and whether the values are optional or required.</p>
+
+<p>To pass the customization file to BindGen you need to use a '-c' command line
+parameter, followed by the actual path to the customization file. In the supplied Ant
+<i>build.xml</i> file the details of this may be a little obscure, due to the use of
+properties to select the customization and version of the Java code. Here's what the
+Ant target to run BindGen with customizations would look like if written without using
+properties:</p>
+
+<div id="source"><pre>  &lt;!-- generate custom binding and schema -->
+  &lt;target name="custgen1">
+  
+    &lt;echo message="Running BindGen tool"/>
+    &lt;java classpathref="classpath" fork="true" failonerror="true"
+        classname="org.jibx.binding.generator.BindGen">
+      &lt;arg value="-c"/>
+      &lt;arg value="custom1.xml"/>
+      &lt;arg value="-s"/>
+      &lt;arg value="src"/>
+      &lt;arg value="org.jibx.starter1.Order"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+      </div>
+      <div class="h3">
+      <a name="custom"></a><h3>Field vs. property access, values used, and required vs. optional</h3>
+
+<p>Here's the text of <i>custom1.xml</i>:</p>
+
+<div id="source"><pre>&lt;custom property-access="true">
+  &lt;class name="org.jibx.starter1.Address"
+      includes="street1 city state postCode country" requireds="street1 city"/>
+  &lt;class name="org.jibx.starter1.Customer"
+      requireds="firstName lastName customerNumber"/>
+  &lt;class name="org.jibx.starter1.Item" excludes="description"
+      requireds="id quantity price"/>
+  &lt;class name="org.jibx.starter1.Order"
+      requireds="orderNumber customer billTo shipping orderDate"/>
+&lt;/custom>
+</pre></div>
+
+<p>The <code>property-access="true"</code> attribute on the root 'custom' element
+tells BindGen to use property access methods for values, rather than just going
+directly to the fields in the class. This applies both to finding the values in the
+first place, and to the generated binding. 'property-access' is a nesting attribute,
+which means that it can be set on any element of the customizations and applies to
+all contained elements (and to any classes not represented by elements in the
+customizations) unless overridden by another setting.</p>
+
+<p>This simple example directly specifies each class to be customized with a 'class'
+element, using fully-qualified class names (including the package). In this case,
+the attributes on the 'class' elements control the values used from each class, the
+order of the values in the XML representation, and whether the values are required or
+optional. The 'includes' attribute lists the value names to be included in the XML
+representation. The 'requireds' attributes list which of the values are required. The
+single 'excludes' attribute lists the values (in this case, only one) which are not to
+be included in the XML representation. Since property access methods are being used in
+this example, the value names in each list are property names as defined by get/set
+(or is/set, for <code>boolean</code> values) methods. If field access were being used,
+the value names would be the actual field names (optionally with leading prefixes or
+trailing suffixes stripped off, as you'll see in a later example).</p>
+
+      </div>
+      <div class="h3">
+      <a name="order"></a><h3>Value order</h3>
+
+<p>BindGen always inspects each class to find the values to be included in the XML
+representation, either directly accessing the fields of the class or (as controlled
+by the 'property-access' setting) checking for properties defined by get/set access
+methods. If no 'class' customization element is used for the class, the order of
+values in the XML representation is the order in which the values are found by
+inspecting the class file using the Java Reflection API. With most Java compilers and
+JVMs this order will match that of the definitions in the source code, but there's no
+guarantee that this will be the case.</p>
+
+<p>The 'includes', 'requireds', and 'optionals' (not used in this case, but just the
+inverse of 'requireds') attributes of the 'class' customization element all have an
+additional effect besides their main function: The order of values in the lists
+controls the order of the corresponding XML elements or attributes. In the case of
+attributes this doesn't really matter, but order is important for values represented
+by elements. If an 'includes' attribute is used, only those values present in the list
+will be used, and they'll be represented in the XML in the same order as in the list.
+If no 'includes' attribute is present, order is determined in several steps. If a
+'requireds' attribute is present, the values present in that list will be the first
+ones in the XML representation, and they'll be in the same order as the list. If an
+'optionals' attribute is present, the values present in that list will be next after
+those in the 'requireds' list (if any). Any values not included in either a 'requireds'
+or 'optionals' list (or an 'excludes' list, of course) will then be added in the default
+Java Reflection order.</p>
+
+      </div>
+      <div class="h3">
+      <a name="schema"></a><h3>Customized generated schema</h3>
+
+<p>You can try out the above customization by again using the Ant 'compile' target to
+compile the sample code, followed by the 'custgen1' target to run BindGen using the
+above customizations. Here's the resulting schema (again with the longer
+documentation lines split):</p>
+
+<div id="source"><pre>&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://jibx.org/starter1"
+    elementFormDefault="qualified" targetNamespace="http://jibx.org/starter1">
+  &lt;xs:complexType name="address">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Address information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element type="xs:string" name="street1"/>
+      &lt;xs:element type="xs:string" name="city"/>
+      &lt;xs:element type="xs:string" name="state" minOccurs="0"/>
+      &lt;xs:element type="xs:string" name="postCode" minOccurs="0"/>
+      &lt;xs:element type="xs:string" name="country" minOccurs="0"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+  &lt;xs:element type="tns:order" name="order"/>
+  &lt;xs:complexType name="order">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Order information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element name="customer">
+        &lt;xs:complexType>
+          &lt;xs:sequence>
+            &lt;xs:element type="xs:string" name="firstName"/>
+            &lt;xs:element type="xs:string" name="lastName"/>
+          &lt;/xs:sequence>
+          &lt;xs:attribute type="xs:long" use="required" name="customerNumber"/>
+        &lt;/xs:complexType>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:address" name="billTo"/>
+      &lt;xs:element name="shipping">
+        &lt;xs:simpleType>
+          &lt;xs:annotation>
+            &lt;xs:documentation>Supported shipment methods. The "INTERNATIONAL" shipment methods
+            can only be used for orders with shipping addresses outside the U.S., and one of these
+            methods is required in this case.&lt;/xs:documentation>
+          &lt;/xs:annotation>
+          &lt;xs:restriction base="xs:string">
+            &lt;xs:enumeration value="STANDARD_MAIL"/>
+            &lt;xs:enumeration value="PRIORITY_MAIL"/>
+            &lt;xs:enumeration value="INTERNATIONAL_MAIL"/>
+            &lt;xs:enumeration value="DOMESTIC_EXPRESS"/>
+            &lt;xs:enumeration value="INTERNATIONAL_EXPRESS"/>
+          &lt;/xs:restriction>
+        &lt;/xs:simpleType>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:address" name="shipTo" minOccurs="0"/>
+      &lt;xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+        &lt;xs:complexType>
+          &lt;xs:sequence>
+            &lt;xs:element type="xs:string" name="id"/>
+          &lt;/xs:sequence>
+          &lt;xs:attribute type="xs:int" use="required" name="quantity"/>
+          &lt;xs:attribute type="xs:float" use="required" name="price"/>
+        &lt;/xs:complexType>
+      &lt;/xs:element>
+    &lt;/xs:sequence>
+    &lt;xs:attribute type="xs:long" use="required" name="orderNumber"/>
+    &lt;xs:attribute type="xs:date" use="required" name="orderDate"/>
+    &lt;xs:attribute type="xs:date" name="shipDate"/>
+    &lt;xs:attribute type="xs:float" name="total"/>
+  &lt;/xs:complexType>
+&lt;/xs:schema></pre></div>
+
+<p>If you compare this to the <a href="%bgexample1%#schema">Example 1 schema</a> you'll
+see that the 'includes', 'excludes', and 'requireds' customization attributes have had
+their intended effects: The 'street2' value is now missing from the 'address' complexType
+definition (at the top of the listing), since it was left out of the 'includes' list; the
+'description' value is now missing from the embedded 'item' definition (near the end of
+the listing), since it was listed in the 'excludes' list; and many of the elements which
+previously were defined as optional with <code>minOccurs="0"</code> now are required, as
+are many of the attributes which now have <code>use="required"</code>, since the
+corresponding values were listed in one of the 'requireds' lists.</p>
+
+<p>One thing that hasn't changed is the order of the elements and attributes that are
+still present in the schema. The order of value names in the 'includes' and 'requireds'
+lists all match the order of the values in the source code, so the order of elements and
+attributes in the generated schema definition stays the same. Since the element order
+stayed the same, and nothing new has been added, the schema generated using this
+customization is compatible with the original default generated schema, in that documents
+matching this new schema will also match the original schema (but not necessarily the
+other way around - some components which were optional in the original schema are now
+required, and the 'street2' and 'description' optional elements in the original schema
+are not allowed by the customized schema).</p>
+
+      </div>
+      <div class="h3">
+      <a name="binding"></a><h3>Generated binding</h3>
+
+<p>Here again, there's not much to be said about the generated binding. It differs from
+the <a href="%bgexample1%#binding">Example 1 binding</a> in that it uses access methods
+rather than direct field access, and reflects the changes to required values shown in
+the schema. Here's a sample of the generated binding:</p>
+
+<div id="source"><pre>&lt;binding xmlns:tns="http://jibx.org/starter1" name="binding" package="org.jibx.starter1">
+  &lt;namespace uri="http://jibx.org/starter1" default="elements"/>
+  &lt;mapping abstract="true" type-name="tns:order" class="org.jibx.starter1.Order">
+    &lt;value style="attribute" name="orderNumber" get-method="getOrderNumber"
+        set-method="setOrderNumber"/>
+    &lt;structure get-method="getCustomer" set-method="setCustomer" name="customer">
+      &lt;value style="element" name="firstName" get-method="getFirstName"
+          set-method="setFirstName"/>
+      &lt;value style="element" name="lastName" get-method="getLastName"
+          set-method="setLastName"/>
+      &lt;value style="attribute" name="customerNumber"
+          get-method="getCustomerNumber" set-method="setCustomerNumber"/>
+    &lt;/structure>
+    &lt;structure map-as="tns:address" get-method="getBillTo" set-method="setBillTo"
+        name="billTo"/>
+    &lt;value style="element" name="shipping" get-method="getShipping"
+        set-method="setShipping"/>
+    &lt;value style="attribute" name="orderDate" get-method="getOrderDate"
+        set-method="setOrderDate"/>
+    &lt;structure map-as="tns:address" get-method="getShipTo" set-method="setShipTo"
+        usage="optional" name="shipTo"/>
+    ...</pre></div>
+
+      </div>
+      <div class="h3">
+      <a name="testing"></a><h3>Testing the binding</h3>
+
+<p>The <a href="%bgexample1%#testing">same sample document</a> as used for Example 1
+also works with the modified binding and schema. Once you've run the Ant 'compile',
+'custgen1', and 'bind' targets you can test the generated binding using the same
+'run-base' target as used for Example 1. You can also try out the full 'compile',
+'custgen1', 'bind', and 'run-base' sequence by using the Ant target 'custom1'.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

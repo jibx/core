@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>The many flavors of mappings</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="normal">Normal mappings</a></h3>
+
+<p>You can define multiple <b>mapping</b>s within a single binding, as already
+demonstrated in the last <a href="%bindcolls%#figure10">collections examples</a>. These
+mappings may all be top-level (children of the <b>binding</b> element), or may
+be nested within other <b>mapping</b> definitions. Nested <b>mapping</b>
+definitions are only usable within the context of
+the containing <b>mapping</b>. In general, it's not a good idea to nest mapping
+definitions more than one level deep, or inside mappings other than the one used
+for the root element of your documents, because of performance concerns.</p>
+
+<p><a href="#figure12">Figure 12</a> is a trivial example of using multiple
+mappings. The first <b>mapping</b> in this example binds the root <b>customer</b>
+element to the <code>Customer</code> class. The second
+<b>mapping</b>, highlighted in green, binds <b>address</b> elements to the
+<code>Address</code> class. The empty <b>structure</b> element (with no child
+elements) for the <code>address</code> field, both shown in blue, automatically
+uses the mapping defined for the <code>Address</code> class because that is the
+type of the field referenced by the <b>structure</b> element.</p>
+
+<a name="figure12"><b>Figure 12. Normal multiple mapping example</b></a><br>
+<img src="images/mapping-normal.gif" width="548" height="360" alt="Normal multiple mapping example"/>
+
+<p>Using empty <b>structure</b> elements to reference mappings, as shown in
+<a href="#figure12">Figure 12</a>, is most useful when an object reference can
+be to instances of different classes. When there's no <b>mapping</b> defined for
+the exact type of the object reference associated with the structure, but there
+are one or more mappings for assignment-compatible types (such as subclasses),
+JiBX will accept any of the assignment-compatible types at runtime and use the
+appropriate mapping.</p>
+
+<p><a href="#figure13">Figure 13</a> demonstrates using an empty
+<b>structure</b> element with no <b>mapping</b> matching the object type. The
+only change from the last example is that I changed
+the type of the <code>address</code> field to <code>java.lang.Object</code>
+(highlighted in green). The same document is still marshalled and unmarshalled,
+but there is a subtle difference between the two examples: The
+<a href="#figure13">Figure 13</a> binding will allow the <code>address</code>
+field to reference an instance of <i>any</i> mapped class, including another
+instance of the <code>Customer</code> class. This flexibility may not be what
+we want in this case (since the field is named "address"), but it fits the field
+definition.</p>
+
+<a name="figure13"><b>Figure 13. Multiple mapping with generic reference</b></a><br>
+<img src="images/mapping-generic.gif" width="548" height="288" alt="Multiple mapping with generic reference"/>
+
+<p>You can force an empty <b>structure</b> element to use a particular
+<b>mapping</b> with the <b>map-as</b> attribute. This restricts the value for
+the referenced object to always be of the type of that mapping. It's generally a
+good idea to use <b>map-as</b> when you're expecting to use a specific mapping,
+even when JiBX will automatically select that mapping (as in
+<a href="#figure12">Figure 12</a>), just to make the linkage to a
+particular <b>mapping</b> explicit and avoid any potential confusion. I'll show
+some examples of using the <b>map-as</b> attribute later on this page.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="abstract">Abstract mappings</a></h3>
+
+<p>All the <b>mapping</b> examples I've used so far are normal mappings, each
+relating an element name to instances of a particular class. JiBX also lets you
+define abstract mappings, which are essentially anonymous bindings for classes.
+Abstract mappings can be referenced from different contexts with different
+element names, or with no name at all. <a href="#figure14">Figure 14</a> shows
+an example using an abstract mapping.</p>
+
+<a name="figure14"><b>Figure 14. Simple abstract mapping</b></a><br>
+<img src="images/mapping-abstract.gif" width="570" height="422" alt="Simple abstract mapping"/>
+
+<p>This binding defines normal mappings for two classes, the <code>Customer</code>
+class and the <code>Subscriber</code> class. The abstract mapping for the
+<code>Address</code> class, highlighted in blue, defines the basic XML structure
+used to represent an address. The <code>Customer</code> mapping includes a pair
+of <b>structure</b> elements (highlighted in green and red) that define
+element names for the two <code>Address</code> components of a customer, so
+within the corresponding <b>customer</b> element these components are each bound
+to separate child elements. The <code>Subscriber</code> mapping uses a single
+<b>structure</b> element (highlighted in magenta) with no element name for its
+<code>Address</code> component, so the address information is in this case
+merged directly into the representation of the corresponding <b>subscriber</b>
+element.</p>
+
+<p>You can define multiple abstract mappings for the same class, using names to
+distinguish between the mappings. <a href="#figure15">Figure 15</a> shows a
+modified version of the last example, where I've defined two different abstract
+mappings for the <code>Address</code> class. The first abstract mapping,
+highlighted in blue, is the same as the <code>Address</code> mapping in the
+last example except for the addition of a <b>type-name</b> of "normal-address".
+The second abstract mapping, highlighted in green, uses a different structure
+and a <b>type-name</b> of "compact-address". Each <b>structure</b> reference to
+a <code>Address</code> object has also been changed, as highlighted in magenta,
+to reference one of the two abstract mapping names using a <b>map-as</b>
+attribute.</p>
+
+<a name="figure15"><b>Figure 15. Named abstract mappings</b></a><br>
+<img src="images/mapping-typenames.gif" width="588" height="470" alt="Named abstract mappings"/>
+
+<p>The <a href="#figure15">Figure 15</a> changes have no effect on the document
+with the <b>customer</b> root element, since the abstract mapping used for the
+<code>Address</code> instances in this context remains the same. But the
+document with the <b>subscription</b> root element has a very different
+structure from the previous example, as defined by the alternative abstract
+mapping for the <code>Address</code> class.</p>
+
+<p>You can use interfaces as well as regular classes for abstract mappings,
+which is useful when the interface defines get/set methods to be used by the
+mapping. You can also use interfaces and abstract classes with a normal mapping
+definition in some circumstances - the basic requirement here is that there has
+to be a way to create an instance of the interface or abstract class when
+unmarshalling (as with a <b>factory</b> method, discussed in <a
+href="%bindextend%#extmeths">User extension method hooks</a>).</p>
+
+<p><b>mapping</b> definitions are normally used for your own data classes, and
+those classes are directly modified by the JiBX binding compiler. You can also
+define <b>mapping</b>s for unmodifiable classes, such as system classes or ones
+in jar files (though you can make the classes from a jar file modifiable by just
+unpacking the jar before running the binding compiler, then repacking it after).
+When a <b>mapping</b> is defined for an
+unmodifiable class, the mapping can only be used within the context of some
+other <b>mapping</b>. 
+</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="inherit">Mappings and inheritance</a></h3>
+
+<p>Besides the "free standing" mappings you've seen so far, you can also define
+extension mappings which are linked to other mappings. Each extension mapping
+references some base mapping. By attaching itself to that base mapping, the
+extension mapping becomes an alternative to the base mapping anywhere the base
+mapping is invoked in the binding. When marshalling, the actual type of the
+object instance determines which mapping is applied, and hence the element name
+(and actual representation) used in the generated XML. When unmarshalling, the
+element name is used to select the extension mapping to be applied and hence the
+type of object to be used for the unmarshalled data.</p>
+
+<p>Extension is easiest in the case where the base mapping class is never used
+directly. In this case you can define an abstract mapping as the root for
+extension, then add normal mappings which extend that abstract mapping for each
+substitute you want to allow in your binding. <a href="#figure16">Figure 16</a>
+shows a simple example of this approach, with a base class containing some
+common information and a pair of subclasses providing additional details. This
+sort of polymorphic class hierarchy is a common use case for extension, but not
+the only use case.</p>
+
+<a name="figure16"><b>Figure 16. Abstract and extension mappings</b></a><br>
+<img src="images/mapping-extends.gif" width="564" height="412" alt="Subclasses without extension mappings"/>
+
+<p>In <a href="#figure16">Figure 16</a> I've changed my earlier example code to
+support two types of customers, persons and companies. The <code>Customer</code>
+class doesn't care which is used, it just includes a reference to an instance of
+the <code>Identity</code> class. The <code>Identity</code> itself only defines a
+customer number. The <code>Person</code> and <code>Company</code> classes each
+extend <code>Identity</code> with added information for their particular
+type.</p>
+
+<p>I've highlighted the handling of the base <code>Identity</code> class in
+blue, with the <code>Person</code> handling
+in green and the <code>Company</code> extension in magenta. The <b>mapping</b>
+definitions for the subclasses in this case each invoke the base class abstract
+mapping as part of their bindings (using a <b>&lt;structure map-as="..."></b>
+reference). This is not a requirement of using extension mappings; in fact,
+there's no requirement that the extension mapping classes are even related to
+the base mapping class. Likewise, you don't need to use "extends" in order to
+reference a base class mapping in this way - extends is only necessary (or
+appropriate) in cases where instances are being used polymorphically, as in the
+reference from the <code>Customer</code> class in this example.</p>
+
+<p>The base for an extension mapping doesn't have to be an abstract mapping.
+It's generally easiest to structure your extensions to use an abstract base when
+you can, but there are cases where that's just not possible. For example, if
+instances of your base mapping class can be used directly (rather than only
+instances of the extension mapping classes), you need to define a concrete
+mapping for that root class. <a href="#figure17">Figure 17</a> gives an example
+of this situation, again using a set of related classes.</p>
+
+<a name="figure17"><b>Figure 17. Extending a concrete mapping</b></a><br>
+<img src="images/mapping-extends2.gif" width="580" height="483" alt="Extending a concrete mapping"/>
+
+<p>The difference from the last example is that in
+<a href="#figure17">Figure 17</a> the base <code>Identity</code> class can be
+used directly, as shown by the added example document (highlighted in magenta).
+Since the base class can be used directly I had to define a concrete mapping
+for the class, and make the subclass mappings extend the base mapping
+(highlighted in green). I couldn't just invoke this base class mapping in the
+subclass mappings, though, since the base mapping includes the <b>base-ident</b>
+element name - invoking it directly would correspond to an XML structure where
+the entire <b>base-ident</b> element was embedded within the subclass
+representations. Instead, I used a separate named abstract mapping to represent
+the structure I wanted for the base class information, and invoked this abstact
+mapping from both the base mapping and the subclass mappings.</p>
+
+<p>Even though the original intention of extension mappings was to represent
+polymorphism, they can also be used in other circumstances - there's no
+requirement that the classes handled by the extension mappings have any
+particular inheritance or implements relationship to the class handled by the
+base mapping. This flexibility can be useful when working with XML
+representations which assume a particular inheritance structure (in the form of
+substitution groups) that doesn't match the intent of your application
+code.</p>
+
+<p>This page covers most of the <b>mapping</b> element options and usage, but
+see the <a href="%mapping%">&lt;mapping> element</a> details page for full
+details.</p>
+
+<div><p align="center"><a href="%bindadvanced%"><b>Next: Advanced binding features</b></a></p></div>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

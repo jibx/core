@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jibx.config</groupId>
+    <artifactId>core-reactor</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>main-reactor</artifactId>
+  
+  <packaging>pom</packaging>
+  <name>main-reactor - JiBX main reactor</name>
+  <description>JiBX main reactor</description>
+
+  <properties>
+    <!-- Make jibx location relative for jibx-xxx (core) projects -->
+    <jibxRootDir>../../../..</jibxRootDir>
+  </properties>
+
+  <profiles>
+    <profile> 
+      <id>sonatype-oss-release</id>
+      <build>
+      <!-- ***CAREFUL*** This logic moves the source code to the current project, then
+      does NOT compile it. This way, the api and source are in maven central. -->
+	    <plugins>
+	      <plugin>
+	        <inherited>true</inherited>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+	          <excludes>
+	            <exclude>**/**</exclude>	<!-- This will not compile any, but will include the source in the dist -->
+	          </excludes>
+	        </configuration>
+	      </plugin>
+	    </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <modules>
+    <module>jibx-run</module>
+    <module>jibx-extras</module>
+    <module>jibx-bind</module>
+    <module>jibx-schema</module>
+    <module>jibx-tools</module>
+  </modules>
+
+</project>

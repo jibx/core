@@ -1,0 +1,4 @@
+<contact>
+  <first-name>Tom</first-name><last-name>Sawyer</last-name><phone>1-800-555-1212</phone>
+  <information><domelement a='1' xmlns="urn:abc">kadfad<child>adfadf</child></domelement></information>
+</contact>

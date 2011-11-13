@@ -1,0 +1,39 @@
+<myelement>
+  <ints>
+    <anything>xxxx</anything>
+    <int>7</int>
+    <string>so is this</string>
+    <int>6</int>
+    <int>5</int>
+    <int>4</int>
+      <something>
+        <with>with</with>
+        <multiple>multiple</multiple>
+        <layers text="layers">
+          <of text="of"><children>children</children></of>
+        </layers>
+      </something>
+    <int>3</int>
+    <int>2</int>
+    <int>1</int>
+  </ints>
+  <strings>
+    <string>this is a test</string>
+    <string>so is this</string>
+    <string>this is not a test</string>
+  </strings>
+  <strings>
+    <string>some more test</string>
+    <int>2</int>
+    <string>testing, testing, testing</string>
+    <string>to test or not to test, that is the question</string>
+  </strings>
+  <ints>
+    <int>1</int>
+    <int>2</int>
+    <string>so is this</string>
+    <int>3</int>
+    <int>4</int>
+    <int>5</int>
+  </ints>
+</myelement>

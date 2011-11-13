@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Value Conversions</title>
+</head>
+<body class="composite">
+  <h1>JiBX: Value Conversions</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="elements">Value Conversions</a></h3>
+
+<p>JiBX defines a default set of formats used for converting property values
+to and from text strings. These format definitions are effectively defined in
+a context outside the root <b>binding</b> element of the binding definition.
+Most of the conversions are based on the W3C XML Schema datatype definitions,
+but do differ from the standard schema definitions in that leading and trailing
+whitespace characters are not stripped from values (meaning the default
+conversions will report errors for valid schema values in cases where leading or
+trailing whitespace is used). If this causes problems for your data, the best
+solution for now is to define custom conversions which strip the leading and
+trailing whitespace from values. The default formats for simple values are shown
+in the following table (also see the <a href="%datetime%">Date Time Conversions</a>
+page, for the standard conversions relating to date/time values).</p>
+
+<h4>Default Formats</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th>Type</th>
+<th>Format Label</th>
+<th>Conversion</th>
+</tr>
+<tr class="a">
+<td><code>byte</code></td>
+<td>byte.default</td>
+<td><p>Converts primitive <code>byte</code> values to and from the schema byte
+representation (integer values in the range of -128 to +127).</p></td>
+</tr>
+<tr class="b">
+<td><code>char</code></td>
+<td>char.default</td>
+<td><p>Converts primitive <code>char</code> values to and from the schema unsigned
+short representation (integer values in the range of 0 to 65535). Although this
+is the default for <code>char</code> primitives, JiBX also supports an alternate
+conversion as single-character text values using the named format
+<b>char.string</b> (allowing the conversion to be applied on a specific value)
+and a pair of conversion methods. To make the single-character text conversion
+the default in your binding, just specify the format as a child of the root
+<b>binding</b> element as follows:</p>
+<pre><code>&lt;format type="char"
+  serializer="org.jibx.runtime.Utility.serializeCharString"
+  deserializer="org.jibx.runtime.Utility.deserializeCharString"/></code></pre></td>
+</tr>
+<tr class="a">
+<td><code>double</code></td>
+<td>double.default</td>
+<td><p>Converts primitive <code>double</code> values to and from the schema double
+representation (IEEE double-precision floating point).</p></td>
+</tr>
+<tr class="b">
+<td><code>float</code></td>
+<td>float.default</td>
+<td><p>Converts primitive <code>float</code> values to and from the schema float
+representation (IEEE single-precision floating point).</p></td>
+</tr>
+<tr class="a">
+<td><code>int</code></td>
+<td>int.default</td>
+<td><p>Converts primitive <code>int</code> values to and from the schema int
+representation (integer values in normal 32-bit signed value range).</p></td>
+</tr>
+<tr class="b">
+<td><code>long</code></td>
+<td>long.default</td>
+<td><p>Converts primitive <code>long</code> values to and from the schema long
+representation (integer values in normal 64-bit signed value range).</p></td>
+</tr>
+<tr class="a">
+<td><code>short</code></td>
+<td>short.default</td>
+<td><p>Converts primitive <code>short</code> values to and from the schema short
+representation (integer values in normal 16-bit signed value range).</p></td>
+</tr>
+<tr class="b">
+<td><code>boolean</code></td>
+<td>boolean.default</td>
+<td><p>Converts primitive <code>boolean</code> values to and from the schema boolean
+representation (&quot;true&quot; or &quot;false&quot;, or equivalently
+&quot;1&quot; or &quot;0&quot; - the former values are always used when
+converting to text).</p></td>
+</tr>
+<tr class="a">
+<td><code>byte[]</code></td>
+<td>byte-array.default</td>
+<td><p>Converts byte arrays to and from the schema base64 representation to allow
+arbitrary binary data.</p></td>
+</tr>
+<tr class="b">
+<td><code>java.lang.String</code></td>
+<td>String.default</td>
+<td><p>Identity converter for <code>java.lang.String</code> instances.</p></td>
+</tr>
+<tr class="a">
+<td><code>org.jibx.runtime.QName</code></td>
+<td>QName.default</td>
+<td><p>Converter for namespace-qualified names using <code>org.jibx.runtime.QName</code>.</p></td>
+</tr>
+<tr class="a">
+<td><code>java.lang.Boolean</code></td>
+<td>Boolean.default</td>
+<td><p>Converter for <code>java.lang.Boolean</code> instances to and from the schema
+boolean representation. As with <b>boolean.default</b>, this always uses the values
+&quot;true&quot; and &quot;false&quot; when converting to text.</p></td>
+</tr>
+<tr class="b">
+<td><code>java.lang.Object</code></td>
+<td>Object.default</td>
+<td><p>Converts any object to a string representation by using the
+<code>toString()</code> method, and converts a string to any object by using
+a constructor that takes a single argument of type <code>java.lang.String</code>.
+If an optional value is not present when unmarshalling a <code>null</code> value
+is stored to the object reference. This is the default format conversion used
+for any object type without a more specific conversion defined.</p></td>
+</tr>
+</table>
+
+<p>These are the conversions you'll get unless you specify otherwise. If you use
+a <b>format</b> element to override one of these defaults you'll still be
+able to access the default by using the defined label for that format. Defining
+your own custom serialization formats is easy, basically requiring only a pair
+of static methods to convert to and from <code>String</code> representations.
+See the <a href="%format%">format element</a> description for details of
+defining your own conversions. The <code>org.jibx.runtime.Utility</code> class
+defines a variety of conversion methods, including those used to implement the
+standard conversions listed in the above table, so it's a good starting point
+for developing your own variations.</p>
+
+<p><code>java.math.BigDecimal</code> is a special case. For 1.3 and 1.4.1 JDKs
+the default <code>java.lang.Object</code> conversion from the above table worked
+fine. In the 1.5 JDK Sun made a non-backward-compatible change to the format of
+the <code>BigDecimal.toString()</code> output, which meant that the resulting
+text does not always match the decimal schema representation (due to the use
+of exponents). Because of this JDK compatibility failure JiBX has an added
+optional conversion for <code>BigDecimal</code> which uses a method added in
+1.5 JDK to obtain decimal-compatible output:</p>
+
+
+<h4>Non-default Formats</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th>Type</th>
+<th>Format Label</th>
+<th>Conversion</th>
+</tr>
+<tr class="a">
+<td><code>java.math.BigDecimal</code></td>
+<td>BigDecimal.java5</td>
+<td><p>Converts <code>BigDecimal</code> values to and from the schema decimal
+representation (string of digits with optional leading sign and optional embedded
+decimal point). This conversion can <b>only</b> be used for 1.5 and later JDKs.</p>
+</td>
+</tr>
+</table>
+
+<p>In addition to the conversions listed in the tables, JiBX 1.1 and later
+support automatic conversion of Java 5 enum values to and from strings.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

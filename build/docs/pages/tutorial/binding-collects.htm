@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Working with collections and IDs</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="collects">Working with collections and arrays</a></h3>
+
+<p>Besides working with individual objects, applications often need to deal with
+collections of objects. <a href="#figure8">Figure 8</a> gives a simple example
+of using collections with JiBX. Here the classes represent the basics of an
+airline flight timetable, which I'll expand on for the next examples. In this
+example I'm using three collections in the root <code>TimeTable</code>
+object, representing carriers (airlines), airports, and notes.</p>
+
+<a name="figure8"><b>Figure 8. Basic collection handling</b></a><br>
+<img src="images/collection-binding1.gif" width="594" height="448" alt="Basic collection handling"/>
+
+<p>The <a href="#figure8">Figure 8</a> binding definition uses a
+<b>collection</b> element for each collection. In the case of the first two
+collections there's a nested <b>structure</b> element to provide the details of
+the items present in the collection. I've highlighted the definitions for the
+collection of carriers in green, and the actual carrier information in blue, to
+emphasize the connection between the different components. The collection of
+airports is handled in the same way as the collection of carriers.</p>
+
+<p>The collection of notes differs from the other collections both in that it's
+stored as an array, and that the values are simple <code>String</code>s rather
+than objects with their own structure. You can use arrays of both object and
+primitive types with the <b>collection</b> element. In the case of simple values
+(primitives, or objects which are represented as simple text strings - including
+<code>String</code>s, as in this example), you just use one or more nested
+<b>value</b> elements (which must use <b>style="element"</b>, directly or by
+default) instead of <b>structure</b> elements. The same applies for non-array
+collections of simple values.</p>
+
+<p>In the case of the <a href="#figure8">Figure 8</a> binding the collections
+are homogeneous, with all items in each collection of a particular type. You can
+also define heterogeneous collections, consisting of several types of items, by
+just including more than one <b>structure</b> (or <b>value</b>) element as a
+child of the <b>collection</b> element. <a href="#figure9">Figure 9</a>
+demonstrates using a heterogeneous collection for the carrier and airport data
+from <a href="#figure8">Figure 8</a>, with the <b>structure</b> definitions for
+the carrier and airport components (shown in green) combined in a single
+collection.</p>
+
+<a name="figure9"><b>Figure 9. Heterogeneous collection, with factory</b></a><br>
+<img src="images/collection-binding1a.gif" width="568" height="372" alt="Heterogeneous collection, with factory"/>
+
+<p><a href="#figure9">Figure 9</a> also demonstrates one way to work with
+collection interfaces (shown in blue). I've changed the type of the collection field in the
+<code>TimeTable</code> class to the <code>List</code> interface, rather than the
+concrete <code>ArrayList</code> class used in <a href="#figure8">Figure 8</a>.
+I've also added the <code>listFactory()</code> method, which returns an instance
+of a <code>List</code> interface. Finally, I added a <b>factory</b> attribute on
+the binding definition <b>collection</b> element to specify the factory method.
+When a factory method is given, JiBX calls that method to get a new instance of
+the class if it needs one during unmarshalling (see
+<a href="%bindextend%#extmeths">User extension method hooks</a> for full details
+on this and other ways of using your own code with JiBX). JiBX will reuse an
+existing instance if one is already present, so the method is only called if the
+current value of the field is <code>null</code> (though when reusing a
+collection, you need to "manually" empty the collection before unmarshalling - a
+<a href="%bindextend%#extmeths"><b>pre-set</b> method</a> works well for this
+purpose).</p>
+
+<p>As of the JiBX 1.1 release there's an easier way to accomplish the same
+effect as using a <b>factory</b> to supply instances of an implementation class.
+This is to use the new <b>create-type</b> attribute to specify the class used
+when creating new instances of an object. See the
+<a href="%bindingattrs%#object">object attribute</a> group
+descriptions for the full details.</p>
+
+<p>As with <b>structure</b> elements with multiple child components,
+heterogeneous collections can be either ordered (meaning the items of each type
+may be repeated, but the different types of items must always occur in the
+specified order) or unordered (meaning the items can be in any order). Either
+way, the child components of a collection are always treated as optional by JiBX
+(so zero or more instances are accepted).</p>
+
+<p>The <b>collection</b> element is generally similar to the <b>structure</b>
+element in usage and options, but accepts some additional attributes that are
+unique to working with collections of items. Most of the added attributes are
+for when you want to implement a custom form of collection, using your own
+methods to add and retrieve items in the collection. Another attribute,
+<b>item-type</b>, can be used to specify the type of items in the
+collection.</p>
+
+<p>For the prior examples I've used embedded <b>structure</b> elements to define
+the structure of items in the collection. This isn't the only way to use
+collections, though. You can instead leave a <b>collection</b> element empty to
+tell the binding compiler that objects in the collection will have their own
+<b>mapping</b> definitions. Specifying the type of items can be useful in this
+case to avoid ambiguity. <a href="#figure10">Figure 10</a> shows an example of
+using mapping definitions in this way.</p>
+
+<a name="figure10"><b>Figure 10. Collections with mappings</b></a><br>
+<img src="images/collection-binding1b.gif" width="536" height="334" alt="Collections with mappings"/>
+
+<p>In <a href="#figure10">Figure 10</a> I've converted the embedded carrier and
+airport <b>structure</b> definitions used in the earlier examples into their own
+<b>mapping</b> elements. The binding uses an <b>item-type</b> attribute to
+specify that the first collection (shown in blue) contains only carriers, while
+the second collection (shown in green) uses a generic <code>Object</code>
+array for the airport information. In this example, if I didn't specify the type
+of items present in the first collection JiBX wouldn't know when to stop adding
+unmarshalled items to the first collection and start adding them to the second
+collection. Using the <b>item-type</b> attribute makes it clear that the first
+collection is only intended for <code>Carrier</code> instances. I could also
+use an <b>item-type</b> attribute on the second collection, if I wanted to, but
+in this case it's unnecessary - the only thing following the carrier information
+in the XML representation is the airport information.</p>
+
+<p>You can nest collections inside other collections. This is the approach
+used to represent multidimensional arrays, or Java collections made up of other
+collections. You can also use <b>value</b> elements directly as the child of a
+<b>collection</b> element, though only if the <b>value</b> representation is as
+an element. This is the way you'd handle a collection of simple <code>String</code>
+values, or an array of <code>int</code> values, for instance.</p>
+
+<p>The <b>collection</b> element will work directly with all standard Java
+collections implementing the <code>java.util.Collection</code> interface, as
+well as with arrays of both object and primitive types. It can also be used with
+your own specialized collection types, using optional attributes to specify the
+methods used by JiBX to access the collection data. When used with arrays, the
+defined type of the array is assumed as the type of the items in the collection.
+You can override this to a more specific type by using the <b>item-type</b>
+attribute with an array. See the <a href="%collection%">&lt;collection>
+element</a> details page for more details on the collection options and usage.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="ids">Working with IDs</a></h3>
+
+<p><a href="#figure11">Figure 11</a> gives a more complex example of working with
+collections. This builds on the <a href="#figure10">Figure 10</a> XML and data
+structures. The prior collections of <b>carrier</b> and <b>airport</b> elements
+are still present, but now the XML representation uses wrapper elements
+(<b>carriers</b> and <b>airports</b>, respectively) for the collections of each
+type. The blue highlighting in the diagram shows this change. In the binding
+definition, the addition of the wrapper element is shown by just adding a
+<b>name</b> attribute to each <b>collection</b> element.</p>
+
+<a name="figure11"><b>Figure 11. Collections and IDs</b></a><br>
+<img src="images/collection-binding2.gif" width="582" height="550" alt="Collections and IDs"/>
+
+<p>I've also added route and flight information to the <a href="#figure11">Figure
+11</a> binding. The most interesting part about these additions is the use of
+references back to the airport and carrier information. The carrier reference
+linkages are highlighted in green, the airport linkages in magenta. In the Java
+code, the linkages are direct object references. On the XML side, these are
+converted into ID and IDREF links - each carrier or airport defines an ID value,
+which is then referenced by flight or route elements. The binding definition
+shows these linkages through the use of an <b>ident="def"</b> attribute on the
+child <b>value</b> component of a <b>mapping</b> element supplying the ID, and an
+<b>ident="ref"</b> attribute on an IDREF <b>value</b> component that references
+an ID.</p>
+
+<p>Using ID and IDREF links allows references between objects to be marshalled
+and unmarshalled, but is subject to some limitations. Each object with an ID
+must have a <b>mapping</b> in the binding. The current JiBX code also requires
+that you define objects in some consistent way, though the references to the
+objects can be from anywhere (even before the actual definitions
+of the objects). In other words, you have to define each object once and only
+once. In <a href="#figure11">Figure 11</a> the definitions occur in the
+<b>carriers</b> and <b>airports</b> collections. The current code also prohibits
+using IDREF values directly within a collection (so the definitions can be from
+a collection, but not the references) - to use references in a collection you
+need to define some sort of wrapper object that actually holds the reference.
+However, see <a href="%extras%#ididref">JiBX extras</a> for some support classes
+which extend the basic JiBX handling in these areas.</p>
+
+<div><p align="center"><a href="%bindmappings%"><b>Next: The many flavors of mappings</b></a></p></div>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

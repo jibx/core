@@ -1,0 +1,22 @@
+<contact xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <first-name>Tom</first-name><last-name>Sawyer</last-name><phone>1-800-555-1212</phone>
+  <soapenv:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+    <soapenv:Body>  
+      <ns1:handleQuery soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="urn:axis.sosnoski.com">   
+        <in0 href="#id0"/>  
+      </ns1:handleQuery>  
+      <multiRef id="id0" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns2:Query" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns2="http://seismic.sosnoski.com">   
+        <maxDateTime xsi:type="xsd:dateTime">2001-07-02T04:33:22.610Z</maxDateTime>   
+        <maxDepth xsi:type="soapenc:float" xsi:nil="true"/>   
+        <maxLatitude xsi:type="soapenc:float">152.46613</maxLatitude>   
+        <maxLongitude xsi:type="soapenc:float">78.09824</maxLongitude>   
+        <maxMagnitude xsi:type="soapenc:float" xsi:nil="true"/>   
+        <minDateTime xsi:type="xsd:dateTime">2001-05-04T02:31:00.601Z</minDateTime>   
+        <minDepth xsi:type="soapenc:float" xsi:nil="true"/>   
+        <minLatitude xsi:type="soapenc:float">-48.434654</minLatitude>   
+        <minLongitude xsi:type="soapenc:float">-91.997185</minLongitude>   
+        <minMagnitude xsi:type="soapenc:float" xsi:nil="true"/>  
+      </multiRef> 
+    </soapenv:Body>
+  </soapenv:Envelope>
+</contact>

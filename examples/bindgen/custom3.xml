@@ -1,0 +1,19 @@
+<custom namespace-style="fixed" namespace="http://www.jibx.org/starters/fromcode"
+    force-mapping="true" strip-prefixes="m_">
+  <package name="org.jibx.starter2">
+    <class name="Address" requireds="street1 city"/>
+    <class name="Customer" requireds="lastName firstName /customerNumber">
+      <value field="m_middleNames" item-type="java.lang.String"/>
+    </class>
+    <class name="Item" excludes="description">
+      <value get-method="getId" set-method="setId" attribute="id" required="true"/>
+      <value property-name="quantity" attribute="quantity" required="true"/>
+      <value field="m_price" required="true"/>
+    </class>
+    <class name="Order" requireds="orderNumber customer billTo shipping orderDate">
+      <value field="m_items" item-type="org.jibx.starter2.Item"/>
+    </class>
+    <class name="Shipping" form="simple"
+        deserializer="org.jibx.starter2.Shipping.fromString"/>
+  </package>
+</custom>

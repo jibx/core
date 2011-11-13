@@ -1,0 +1,22 @@
+<!-- Testing basic in-line structure definition, along with optional structure
+  reference and unordered collection of string values as simple elements. Also
+  verifies that factory is not called with instance already present.  -->
+
+<binding>
+  <mapping name="customer" class="simple.Customer3">
+    <structure name="name" field="name"
+        factory="simple.Customer3.nameFactory">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <structure usage="optional" field="referral"/>
+    <collection field="orderIds" item-type="java.lang.String" ordered="false">
+      <value name="order"/>
+    </collection>
+  </mapping>
+</binding>

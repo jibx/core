@@ -1,0 +1,10 @@
+<!-- Using the hashmap custom marshaller/unmarshaller for values of classes
+ corresponding to simple schema types, marshalled with xsi:type attributes -->
+<binding>
+  <mapping class="java.util.Map" name="map"
+      marshaller="org.jibx.extras.HashMapperStringToSchemaType"
+      unmarshaller="org.jibx.extras.HashMapperStringToSchemaType"/>
+  <mapping name="values" class="extras.ValueMap" post-set="postSet">
+    <structure field="m_map"/>
+  </mapping>
+</binding>

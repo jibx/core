@@ -1,0 +1,11 @@
+<names>
+  <name id="c0001"><first-name>Tom</first-name><last-name>Sawyer</last-name></name>
+  <name id="c0002"><first-name>George</first-name><last-name>Smith</last-name></name>
+  <name ref="c0002"/>
+  <name id="c0003"><first-name>Adam</first-name><last-name>Smith</last-name></name>
+  <name ref="c0003"/>
+  <name ref="c0001"/>
+  <name id="c0004"><first-name>Huck</first-name><last-name>Finn</last-name></name>
+  <name ref="c0002"/>
+  <name ref="c0004"/>
+</names>

@@ -1,0 +1,4 @@
+<schema-set prefer-inline="true" generate-all="false" package="org.ota.air">
+  <schema name="OTA_AirLowFareSearchRQ.xsd" includes="OTA_AirLowFareSearchRQ"/>
+  <schema name="OTA_AirLowFareSearchRS.xsd" includes="OTA_AirLowFareSearchRS"/>
+</schema-set>

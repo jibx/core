@@ -1,0 +1,10 @@
+<!-- Binding definition for schema model using 'xs' prefix for the schema
+ namespace. The prefix only effects the output format. -->
+<binding value-style="attribute" track-source="true"
+    package="org.jibx.schema.elements">
+
+  <!-- All elements use the schema namespace. -->
+  <namespace uri="http://www.w3.org/2001/XMLSchema" prefix="xs" default="elements"/>
+  <include path="schema-base-binding.xml"/>
+  
+</binding>

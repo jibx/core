@@ -1,0 +1,13 @@
+<custom force-classes="true" namespace="http://ws.sosnoski.com/order/data"
+    namespace-style="fixed">
+  <wsdl namespace="http://ws.sosnoski.com/order/wsdl"
+      wsdl-namespace="http://ws.sosnoski.com/order/wsdl"/>
+  <package name="com.sosnoski.infoq.ex1">
+    <class name="Order" requireds="@customerId customerName billTo items"
+        optionals="orderId orderDate shipDate">
+      <value field="items" item-type="com.sosnoski.infoq.ex1.Item"/>
+    </class>
+    <class name="Address" requireds="street1 city @state @zip"/>
+    <class name="Item" requireds="@id @quantity @price"/>
+  </package>
+</custom>

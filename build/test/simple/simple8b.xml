@@ -1,0 +1,12 @@
+<customer8b>
+  <base-customer id="0001">
+    <name>
+      <first-name>John</first-name>
+      <last-name>Smith</last-name>
+    </name>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+    <state>WA</state>
+  </base-customer>
+  <zip>98059</zip>
+</customer8b>

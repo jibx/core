@@ -1,0 +1,55 @@
+<getItemsByTypeResponse xmlns:ns2="http://sosnoski.com/ws/library/jibx2wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer2" xmlns="http://sosnoski.com/ws/library/jibx2wsdl/LibraryServer2">
+  <ns1:itemList>
+    <ns2:book id="0061020052" type="scifi" format="POCKET_PAPERBACK">
+      <ns2:title>Infinity Beach</ns2:title>
+      <ns2:author>McDevitt, Jack</ns2:author>
+    </ns2:book>
+    <ns2:book id="0812514092" type="scifi" format="POCKET_PAPERBACK">
+      <ns2:title>Aristoi</ns2:title>
+      <ns2:author>Williams, Walter Jon</ns2:author>
+    </ns2:book>
+    <ns2:book id="0345253884" type="scifi" format="POCKET_PAPERBACK">
+      <ns2:title>Roadmarks</ns2:title>
+      <ns2:author>Zelazny, Roger</ns2:author>
+    </ns2:book>
+    <ns2:dvd id="786936185447" type="scifi">
+      <ns2:title>Imposter</ns2:title>
+      <ns2:director>Fleder, Gary</ns2:director>
+      <ns2:star>Sinise, Gary</ns2:star>
+      <ns2:star>Stowe, Madeleine</ns2:star>
+    </ns2:dvd>
+    <ns2:dvd id="0767821629" type="scifi">
+      <ns2:title>The Thirteenth Floor</ns2:title>
+      <ns2:director>Rusnak, Josef</ns2:director>
+      <ns2:star>Bierko, Craig</ns2:star>
+      <ns2:star>Mueller-Stahl, Armin</ns2:star>
+    </ns2:dvd>
+    <ns3:hdDvd xmlns:ns3="http://sosnoski.com/ws/library/jibx2wsdl/hd" id="025192784927" type="scifi" director="Wheden, Joss" studio="Universal">
+      <ns2:title>Serenity</ns2:title>
+      <ns3:star>Baccarin, Morena</ns3:star>
+      <ns3:star>Baldwin, Adam</ns3:star>
+      <ns3:star>Fillion, Nathan</ns3:star>
+      <ns3:star>Torres, Gina</ns3:star>
+      <ns3:star>Tudyk, Alan</ns3:star>
+    </ns3:hdDvd>
+    <ns3:bluRayDvd xmlns:ns3="http://sosnoski.com/ws/library/jibx2wsdl/hd" id="012236191551" type="scifi" director="Emmerich, Roland">
+      <ns2:title>Stargate</ns2:title>
+      <ns3:star>Ackerman, Robert</ns3:star>
+      <ns3:star>Allen, Rae</ns3:star>
+      <ns3:star>Avari, Erick</ns3:star>
+      <ns3:star>Cruz, Alexis</ns3:star>
+      <ns3:star>Danziger, Kenneth</ns3:star>
+      <ns3:releaseYear>2006</ns3:releaseYear>
+    </ns3:bluRayDvd>
+    <ns3:dvdFutureDvd xmlns:ns3="http://sosnoski.com/ws/library/jibx2wsdl/hd" id="999999999" type="scifi" director="Determined, Tobe">
+      <ns2:title>Beyond Everything</ns2:title>
+      <ns3:star>Alda, Alan</ns3:star>
+      <ns3:star>Pitt, Brad</ns3:star>
+      <ns3:format>SuperDVD</ns3:format>
+    </ns3:dvdFutureDvd>
+    <ns2:book id="0445203498" type="scifi" format="POCKET_PAPERBACK">
+      <ns2:title>The Dragon Never Sleeps</ns2:title>
+      <ns2:author>Cook, Glen</ns2:author>
+    </ns2:book>
+  </ns1:itemList>
+</getItemsByTypeResponse>

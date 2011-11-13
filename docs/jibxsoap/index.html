@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JibxSoap: Binding XML to Java Code</title>
+      <style type="text/css">
+        @import url("../style/tigris.css");
+        @import url("../style/maven.css");
+    .dtd-comment {
+      color: #993399;
+      font-weight: bold;
+      </style>
+      <script type="text/javascript">
+        if (document.layers) {
+          document.writeln('<link rel="stylesheet" type="text/css" href="../style/ns4_only.css" media="screen" /><link rel="stylesheet" type="text/css" href="../style/maven_ns4_only.css" media="screen" />')
+        }
+      </script>
+      <link rel="stylesheet" type="text/css" href="../style/print.css" media="print" />
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body class="composite">
+<div id="banner">
+<table border="0" cellspacing="0" cellpadding="8" width="100%">
+  <tbody>
+    <tr>
+      <td><h1>JibxSoap: Binding XML to Java Code</h1>
+      </td>
+      <td>
+      <div align="right" id="login"><a href="http://sourceforge.net">
+      <img src="http://sourceforge.net/sflogo.php?group_id=69358&amp;type=5"
+        width="210" height="62" border="0" alt="SourceForge.net Logo"></a></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="breadcrumbs">
+<table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div align="right">
+          <a href="../index.html">Home Page</a> |
+          <a href="http://www.sourceforge.net/projects/jibx/">SourceForge Page</a> |
+          <a href="../mail-lists.html">Mailing Lists</a> |
+          <a href="http://wiki.jibx.org">Wiki</a> |
+          <a href="../bugs.html">Bugs</a> |
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=69358">Downloads</a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="8" width="100%" id="main">
+  <tbody>
+	<tr valign="top">
+	  <td id="leftcol" width="20%">
+		<div id="navcolumn">
+
+
+                  <div>
+            <strong>JiBX Basics</strong>
+                              <div>
+            <small>
+                    <a href="../index.html">Overview</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../flexibility.html">Flexibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../performance.html">Performance</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../clean-code.html">Clean code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../status.html">News and Status</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../comments.html">User Comments</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../sponsors.html">Sponsors</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../support.html">Support and Training</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bugs.html">Bugs</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../start.html">Getting Started</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../tutorial/binding-tutorial.html">Binding Tutorial</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../tutorial/binding-start.html">A basic binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-extras.html">Binding extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-structures.html">Structure mapping</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-collects.html">Collections and arrays</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-mappings.html">Using mappings</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-advanced.html">Advanced binding</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-extend.html">Method hooks</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../tutorial/binding-custom.html">Custom code</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../bindcomp.html">Binding Compiler</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../bindonload.html">Binding on Load</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../runtime.html">Runtime</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../extras.html">JiBX Extras</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../building.html">Building JiBX</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../schema.html">Schema Compatibility</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../mail-lists.html">Mailing Lists</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../faq.html">FAQ</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../contributing.html">Contributing</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../jibx-license.html">License</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Binding Definition</strong>
+                              <div>
+            <small>
+                    <a href="../details/binding-overview.html">Definition details</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../details/contexts.html">Definition contexts</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/conversions.html">Conversions</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/xml-summary.html">XML summary</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/binding-element.html">&lt;binding&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/include-element.html">&lt;include&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/format-element.html">&lt;format&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/namespace-element.html">&lt;namespace&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/mapping-element.html">&lt;mapping&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/value-element.html">&lt;value&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/structure-element.html">&lt;structure&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/collection-element.html">&lt;collection&gt; element</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../details/binding-attributes.html">Attribute groups</a>
+                  </small>
+                </div>
+                      </div>
+                      </div>
+                        <div>
+            <strong>Usage API</strong>
+                              <div>
+            <small>
+                    <a href=".././api/index.html">Runtime JavaDocs</a>
+                  </small>
+                </div>
+                      </div>
+                        <div>
+            <strong>Subprojects</strong>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Eclipse Plug-in</a>
+                  </small>
+                              <div>
+            <small>
+                    <a href="../eclipse/index.html">Introduction</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/install.html">Install</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../eclipse/usage.html">Usage</a>
+                  </small>
+                </div>
+                      </div>
+                                    <div>
+            <small>
+                    <a href="../jibxtools/index.html">Generator Tools</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../axis2/index.html">Axis2 Usage</a>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <span class="menu-selection">JibxSoap</span>
+                  </small>
+                </div>
+                                    <div>
+            <small>
+                    <a href="../xsd2jibx/index.html">Xsd2Jibx</a>
+                  </small>
+                </div>
+                      </div>
+      
+
+        </div>
+      </td>
+      <td>
+
+
+
+
+
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+
+<h3><a name="jibxsoap-intro">What is JibxSoap?</a></h3>
+
+
+<p>JibxSoap is a SOAP web services framework built around JiBX data binding. It
+provides the same advantages of flexibility and performance to developers
+implementing web services as the base JiBX project does for ordinary XML data
+binding. JibxSoap is designed around the latest web services interoperability
+recommendations, which lets it provide these advantages while still allowing
+for very easy configuration and deployment.</p>
+
+<p>Many other SOAP web services frameworks are available for Java, including the
+popular Apache Axis implementation of the JAX-RPC standard for web services in
+Java. JibxSoap differs from these other frameworks in that it's designed from
+the start to support document/literal (doc/lit) web services rather than the
+older rpc/encoded (rpc/enc) style. This is an important distinction - the
+rpc/enc approach allows developers to easily expose simple method calls as web
+services, but creates problems for interoperability, especially with more
+complex data structures. Because of these problems, rpc/enc has been effectively
+deprecated by recommendations such as the Web Services Interoperability
+Organization's Basic Profile (WS-I BP), and replaced by the doc/lit approach.</p>
+
+<p>The doc/lit approach to web services focuses on the actual XML data being
+exchanged. Rather than model method calls with parameters encoded in XML, the
+doc/lit approach uses W3C XML Schema definitions to fix the XML data formats.
+It's up to the participants in a web services interaction to process the XML
+payload of doc/lit SOAP messages in whatever manner is appropriate to their
+needs.</p>
+
+<p>This focus on the XML formats is what allows JibxSoap to apply the power of
+JiBX data binding to doc/lit web services. JiBX is designed to support fast and
+flexible conversions between XML and Java objects. With doc/lit web services the
+contents of SOAP messages are just XML document fragments, which can be
+converted to and from Java objects using JiBX just the same as any other XML.
+All that's needed to support this is a framework that handles the SOAP wrappers
+and actual transport, which is what JibxSoap provides.</p>
+
+<p>JibxSoap demonstrates excellent potential as a light-weight Web services
+engine, with performance typically several times faster than most other
+SOAP-based frameworks, but it's been stuck at an Alpha-release state for some
+time. Much recent effort has gone into supporting JiBX
+integration with the Axis2 Web service framework, for the purpose of supporting
+JiBX users who need the full range of WS-* standards (as offered by Axis2). Some
+samples and documentation for working with JiBX are included in the current
+Axis2 distributions. You can also see the <a href="../axis2/index.html">Axis2</a> page of
+this distribution for more details. The
+plan going forward is to build on this work to provide a level of framework
+independence for using JiBX with Web services. This will allow switching between
+JibxSoap, Axis2, and perhaps other Web services frameworks with little or no
+change to application code.</p>
+
+<p>The current Alpha 0.2a release is a long-delayed update which fixes several
+minor problems and provides compatibility with the JiBX 1.1.X framework. Despite
+the Alpha release status, JibxSoap is in use by a number of organizations for
+deployed Web services.</p>
+
+<p>Check the <a href="http://www.jibx.org/jibxsoap/index.html">online version of
+this page</a> for updates on the subproject status.</p>
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+
+<tr class="b">
+<th>Module Name</th>
+<th>Primary Developer</th>
+<th>Status</th>
+</tr>
+
+<tr class="a">
+<td valign="top">jibxsoap</td>
+<td valign="top">Dennis M. Sosnoski</td>
+<td valign="top">Alpha 0.2a release May 23, 2007</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+</div>
+
+
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" cellspacing="0" cellpadding="4">
+  <tbody>
+    <tr>
+      <td> &copy; 2003-2008, Dennis M. Sosnoski (<a href="http://www.sosnoski.com">Sosnoski Software Solutions, Inc.</a>).
+      Licensed to the JiBX Project for free distribution and use. </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+
+<project name="tutorial" default="help" basedir="..">
+
+  <!-- Definitions -->
+  <property name="root-dir" value="${basedir}/tutorial"/>
+  <property name="lib" value="${basedir}/lib"/>
+  <path id="example-classpath">
+    <pathelement location="${root-dir}"/>
+    <fileset dir="${lib}" includes="*.jar"/>
+  </path>
+  <path id="binding-classpath">
+    <pathelement location="${root-dir}"/>
+    <fileset dir="${lib}" includes="*.jar"/>
+  </path>
+
+  <!-- Delete class files for a single example -->
+  <target name="clean">
+    <delete quiet="true">
+      <fileset dir="${root-dir}/${example}" includes="**/*.class"/>
+    </delete>
+  </target>
+
+  <!-- Compile the example classes -->
+  <target name="compile">
+    <javac srcdir="${root-dir}"
+      destdir="${root-dir}"
+      includes="${example}/**/*.java"
+      debug="true"
+      deprecation="on">
+      <classpath refid="example-classpath"/>
+    </javac>
+  </target>
+
+  <!-- Run the JiBX binding. -->
+  <target name="run-bind">
+    <java classname="org.jibx.binding.Compile" fork="yes" dir="${root-dir}"
+        failonerror="true">
+      <classpath path="${root-dir}:${lib}/jibx-run.jar:${lib}/jibx-bind.jar:${lib}/xpp3.jar:${lib}/bcel.jar"/>
+      <arg value="${root-dir}/${example}/${binding-file}"/>
+    </java>
+  </target>
+
+  <!-- Run the example code. -->
+  <target name="run-example">
+    <java classname="org.jibx.extras.TestRoundtrip" fork="yes" dir="${root-dir}"
+        failonerror="true">
+      <classpath refid="example-classpath"/>
+      <arg line="${bound-class} ${example}/${data-file} ${example}/${out-file}"/>
+    </java>
+  </target>
+
+  <target name="full-test" depends="clean,compile,run-bind,run-example"/>
+  
+  <!-- Special case for running example 22 -->
+  <target name="run-example22">
+    <java classname="example22.Test" fork="yes" dir="${root-dir}"
+        failonerror="true">
+      <classpath refid="example-classpath"/>
+      <arg value="example22/data0.xml"/>
+    </java>
+  </target>
+  
+  <!-- Configurations for each example. -->
+  <target name="config1">
+    <property name="example" value="example1"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config2">
+    <property name="example" value="example2"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config3">
+    <property name="example" value="example3"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="out.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config5">
+    <property name="example" value="example5"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config6">
+    <property name="example" value="example6"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config7">
+    <property name="example" value="example7"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="out.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config8">
+    <property name="example" value="example8"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.TimeTable"/>
+  </target>
+  
+  <target name="config9">
+    <property name="example" value="example9"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.TimeTable"/>
+  </target>
+  
+  <target name="config10">
+    <property name="example" value="example10"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.TimeTable"/>
+  </target>
+  
+  <target name="config11">
+    <property name="example" value="example11"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.TimeTable"/>
+  </target>
+  
+  <target name="config12">
+    <property name="example" value="example12"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config13">
+    <property name="example" value="example13"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config14">
+    <property name="example" value="example14"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data1.xml"/>
+    <property name="out-file" value="data1.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config15">
+    <property name="example" value="example15"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data1.xml"/>
+    <property name="out-file" value="data1.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config16">
+    <property name="example" value="example16"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data1.xml"/>
+    <property name="out-file" value="data1.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config17">
+    <property name="example" value="example17"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data1.xml"/>
+    <property name="out-file" value="data1.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config18">
+    <property name="example" value="example18"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config19">
+    <property name="example" value="example19"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Order"/>
+  </target>
+  
+  <target name="config20">
+    <property name="example" value="example20"/>
+    <property name="binding-file" value="binding.xml"/>
+    <property name="data-file" value="data.xml"/>
+    <property name="out-file" value="data.xml"/>
+    <property name="bound-class" value="${example}.Customer"/>
+  </target>
+  
+  <target name="config21">
+    <property name="example" value="example21"/>
+    <property name="binding-file" value="binding0.xml"/>
+    <property name="data-file" value="data0.xml"/>
+    <property name="out-file" value="data0.xml"/>
+    <property name="bound-class" value="${example}.Directory"/>
+  </target>
+  
+  <target name="config22">
+    <property name="example" value="example22"/>
+    <property name="binding-file" value="binding0.xml"/>
+  </target>
+
+  <!-- Targets for tutorial examples -->
+  <target name="example1" depends="config1,full-test"
+    description="Compile and run example1"/>
+  <target name="example2" depends="config2,full-test"
+    description="Compile and run example2"/>
+  <target name="example3" depends="config3,full-test"
+    description="Compile and run example3"/>
+  <target name="example5" depends="config5,full-test"
+    description="Compile and run example5"/>
+  <target name="example6" depends="config6,full-test"
+    description="Compile and run example6"/>
+  <target name="example7" depends="config7,full-test"
+    description="Compile and run example7"/>
+  <target name="example8" depends="config8,full-test"
+    description="Compile and run example8"/>
+  <target name="example9" depends="config9,full-test"
+    description="Compile and run example9"/>
+  <target name="example10" depends="config10,full-test"
+    description="Compile and run example10"/>
+  <target name="example11" depends="config11,full-test"
+    description="Compile and run example11"/>
+  <target name="example12" depends="config12,full-test"
+    description="Compile and run example12"/>
+  <target name="example13" depends="config13,full-test"
+    description="Compile and run example13"/>
+  <target name="example14" depends="config14,full-test"
+    description="Compile and run example14"/>
+  <target name="example15" depends="config15,full-test"
+    description="Compile and run example15"/>
+  <target name="example16" depends="config16,full-test"
+    description="Compile and run example16"/>
+  <target name="example17" depends="config17,full-test"
+    description="Compile and run example17"/>
+  <target name="example18" depends="config18,full-test"
+    description="Compile and run example18"/>
+  <target name="example19" depends="config19,full-test"
+    description="Compile and run example19"/>
+  <target name="example20" depends="config20,full-test"
+    description="Compile and run example20"/>
+  <target name="example21" depends="config21,full-test"
+    description="Compile and run example21"/>
+  <target name="example22" depends="config22,clean,compile,run-bind,run-example22"
+    description="Compile and run example22"/>
+  <target name="run1" depends="config1,run-example"
+    description="Run example1"/>
+  <target name="run2" depends="config2,run-example"
+    description="Run example2"/>
+  <target name="run3" depends="config3,run-example"
+    description="Run example3"/>
+  <target name="run5" depends="config5,run-example"
+    description="Run example5"/>
+  <target name="run6" depends="config6,run-example"
+    description="Run example6"/>
+  <target name="run7" depends="config7,run-example"
+    description="Run example7"/>
+  <target name="run8" depends="config8,run-example"
+    description="Run example8"/>
+  <target name="run9" depends="config9,run-example"
+    description="Run example9"/>
+  <target name="run10" depends="config10,run-example"
+    description="Run example10"/>
+  <target name="run11" depends="config11,run-example"
+    description="Run example11"/>
+  <target name="run12" depends="config12,run-example"
+    description="Run example12"/>
+  <target name="run13" depends="config13,run-example"
+    description="Run example13"/>
+  <target name="run14" depends="config14,run-example"
+    description="Run example14"/>
+  <target name="run15" depends="config15,run-example"
+    description="Run example15"/>
+  <target name="run16" depends="config16,run-example"
+    description="Run example16"/>
+  <target name="run17" depends="config17,run-example"
+    description="Run example17"/>
+  <target name="run18" depends="config18,run-example"
+    description="Run example18"/>
+  <target name="run19" depends="config19,run-example"
+    description="Run example19"/>
+  <target name="run20" depends="config20,run-example"
+    description="Run example20"/>
+  <target name="run21" depends="config21,run-example"
+    description="Run example21"/>
+  <target name="run22" depends="config22,run-example22"
+    description="Run example22"/>
+
+  <!-- Delete class files for all examples -->
+  <target name="clean-all" description="Clean all class and output files">
+    <delete quiet="true">
+      <fileset dir="${root-dir}" includes="**/*.class"/>
+    </delete>
+  </target>
+  
+  <!-- Provide basic usage description -->
+  <target name="help" description="Show basic usage">
+    <echo message="Targets are:"/>
+    <echo/>
+    <echo message="example1   compile and run tutorial example1 code"/>
+    <echo message="example2   compile and run tutorial example2 code"/>
+    <echo message="..."/>
+    <echo message="example22  compile and run tutorial example22 code"/>
+    <echo message="run1       run previously-compiled tutorial example1 code"/>
+    <echo message="run2       run previously-compiled tutorial example2 code"/>
+    <echo message="..."/>
+    <echo message="run22      run previously-compiled tutorial example22 code"/>
+    <echo message="clean-all  delete all class files"/>
+    <echo/>
+    <echo message="The exampleN targets just run the basic compile and test"/>
+    <echo message=" for the corresponding tutorial example, generally without"/>
+    <echo message=" interesting output. The runN targets just run the test,"/>
+    <echo message=" which requires you to have run the corresponding exampleN"/>
+    <echo message=" previously."/>
+  </target>
+  
+</project>

@@ -1,0 +1,25 @@
+<!-- Test consecutive collections embedded in a collection, some with no data,
+this time as a mapping. -->
+<binding>
+  <mapping name="lists" class="simple.MyClass6$Lists">
+    <collection field="list1" create-type="java.util.ArrayList">
+      <value name="missing1" type="java.lang.String"/>
+    </collection>
+    <collection field="list2" create-type="java.util.ArrayList">
+      <value name="int" type="java.lang.String"/>
+    </collection>
+    <collection field="list3" create-type="java.util.ArrayList">
+      <value name="string" type="java.lang.String"/>
+    </collection>
+    <collection field="list4" create-type="java.util.ArrayList">
+      <value name="missing2" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping name="myelement" class="simple.MyClass6">
+    <value style="attribute" name="a" field="a"/>
+    <value style="attribute" name="b" field="b"/>
+    <collection field="lists" usage="optional" create-type="java.util.ArrayList">
+      <structure type="simple.MyClass6$Lists"/>
+    </collection>
+  </mapping>
+</binding>

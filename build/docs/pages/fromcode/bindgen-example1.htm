@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Example 1: Default code generation</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>BindGen default code generation</h3>
+
+<p>You can use the Ant 'compile' target to compile the sample code, followed by the
+'bindgen' target to run BindGen on the Java 5 version of the code with default settings.
+Here's the actual 'bindgen' target from the <i>build.xml</i>:</p>
+
+<div id="source"><pre>  &lt;!-- generate default binding and schema -->
+  &lt;target name="bindgen">
+  
+    &lt;echo message="Running BindGen tool"/>
+    &lt;java classpathref="classpath" fork="true" failonerror="true"
+        classname="org.jibx.binding.generator.BindGen">
+      &lt;arg value="-s"/>
+      &lt;arg value="src"/>
+      &lt;arg value="org.jibx.starter1.Order"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+<p>This passes the '-s' parameter to BindGen with the value 'src' to tell it the path to
+find the source code for the classes to be included in the XML representation. If you
+don't supply the source code BindGen can get all the information it needs from the Java
+class files (which must be on the classpath used for running BindGen), but without
+access to the source code Javadocs it won't be able to generate schema documentation. The
+third argument value tells BindGen to use the <code>org.jibx.starter1.Order</code> class
+as a root for generating the binding and schema. You can specify as many root classes as
+you want when running BindGen, but must have at least one - otherwise there's nothing for
+BindGen to generate!</p>
+
+      </div>
+      <div class="h3">
+      <a name="schema"></a><h3>Generated schema</h3>
+
+<p>BindGen derives the schema namespace(s) from the Java package name(s), in this case
+converting the package name 'org.jibx.starter1' to the namespace URI
+'http://jibx.org/starter1'. The generated binding file name is just
+<i>binding.xml</i>, and the generated schema name is taken from the last part of the
+namespace URI: <i>starter1.xsd</i>. Here's the resulting schema (with the longer
+documentation lines split for readability):</p>
+
+<div id="source"><pre>&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://jibx.org/starter1"
+    elementFormDefault="qualified" targetNamespace="http://jibx.org/starter1">
+  &lt;xs:complexType name="address">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Address information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element type="xs:string" name="street1" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>First line of street information (required).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="street2" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Second line of street information (optional).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="city" minOccurs="0"/>
+      &lt;xs:element type="xs:string" name="state" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>State abbreviation (required for the U.S. and Canada, optional
+          otherwise).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="postCode" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Postal code (required for the U.S. and Canada, optional
+          otherwise).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element type="xs:string" name="country" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Country name (optional, U.S. assumed if not 
+          supplied).&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+  &lt;xs:element type="tns:order" name="order"/>
+  &lt;xs:complexType name="order">
+    &lt;xs:annotation>
+      &lt;xs:documentation>Order information.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+      &lt;xs:element name="customer" minOccurs="0">
+        &lt;xs:complexType>
+          &lt;xs:sequence>
+            &lt;xs:element type="xs:string" name="firstName" minOccurs="0">
+              &lt;xs:annotation>
+                &lt;xs:documentation>Personal name.&lt;/xs:documentation>
+              &lt;/xs:annotation>
+            &lt;/xs:element>
+            &lt;xs:element type="xs:string" name="lastName" minOccurs="0">
+              &lt;xs:annotation>
+                &lt;xs:documentation>Family name.&lt;/xs:documentation>
+              &lt;/xs:annotation>
+            &lt;/xs:element>
+            &lt;xs:element type="xs:string" name="middleName" minOccurs="0" maxOccurs="unbounded"/>
+          &lt;/xs:sequence>
+          &lt;xs:attribute type="xs:long" use="required" name="customerNumber"/>
+        &lt;/xs:complexType>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:address" name="billTo" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Billing address information.&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element name="shipping" minOccurs="0">
+        &lt;xs:simpleType>
+          &lt;xs:annotation>
+            &lt;xs:documentation>Supported shipment methods. The "INTERNATIONAL" shipment methods
+            can only be used for orders with shipping addresses outside the U.S., and one of these
+            methods is required in this case.&lt;/xs:documentation>
+          &lt;/xs:annotation>
+          &lt;xs:restriction base="xs:string">
+            &lt;xs:enumeration value="STANDARD_MAIL"/>
+            &lt;xs:enumeration value="PRIORITY_MAIL"/>
+            &lt;xs:enumeration value="INTERNATIONAL_MAIL"/>
+            &lt;xs:enumeration value="DOMESTIC_EXPRESS"/>
+            &lt;xs:enumeration value="INTERNATIONAL_EXPRESS"/>
+          &lt;/xs:restriction>
+        &lt;/xs:simpleType>
+      &lt;/xs:element>
+      &lt;xs:element type="tns:address" name="shipTo" minOccurs="0">
+        &lt;xs:annotation>
+          &lt;xs:documentation>Shipping address information. If missing, the billing address is also
+          used as the shipping address.&lt;/xs:documentation>
+        &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+        &lt;xs:complexType>
+          &lt;xs:sequence>
+            &lt;xs:element type="xs:string" name="id" minOccurs="0">
+              &lt;xs:annotation>
+                &lt;xs:documentation>Stock identifier. This is expected to be 12 characters in
+                length, with two leading alpha characters followed by ten decimal
+                digits.&lt;/xs:documentation>
+              &lt;/xs:annotation>
+            &lt;/xs:element>
+            &lt;xs:element type="xs:string" name="description" minOccurs="0">
+              &lt;xs:annotation>
+                &lt;xs:documentation>Text description of item.&lt;/xs:documentation>
+              &lt;/xs:annotation>
+            &lt;/xs:element>
+          &lt;/xs:sequence>
+          &lt;xs:attribute type="xs:int" use="required" name="quantity">
+            &lt;xs:annotation>
+              &lt;xs:documentation>Number of units ordered.&lt;/xs:documentation>
+            &lt;/xs:annotation>
+          &lt;/xs:attribute>
+          &lt;xs:attribute type="xs:float" use="required" name="price">
+            &lt;xs:annotation>
+              &lt;xs:documentation>Price per unit.&lt;/xs:documentation>
+            &lt;/xs:annotation>
+          &lt;/xs:attribute>
+        &lt;/xs:complexType>
+      &lt;/xs:element>
+    &lt;/xs:sequence>
+    &lt;xs:attribute type="xs:long" use="required" name="orderNumber"/>
+    &lt;xs:attribute type="xs:date" name="orderDate">
+      &lt;xs:annotation>
+        &lt;xs:documentation>Date order was placed with server.&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+    &lt;xs:attribute type="xs:date" name="shipDate">
+      &lt;xs:annotation>
+        &lt;xs:documentation>&lt;![CDATA[Date order was shipped. This will be
+        &lt;code>null&lt;/code> if the order has not yet shipped.]]>&lt;/xs:documentation>
+      &lt;/xs:annotation>
+    &lt;/xs:attribute>
+    &lt;xs:attribute type="xs:float" name="total"/>
+  &lt;/xs:complexType>
+&lt;/xs:schema>
+</pre></div>
+
+<p>BindGen defaults to a mixed schema style, where type definitions are inlined if they're
+only used in one place. In this case that results in only two global complexType definitions:
+'address' for the <code>Address</code> class (needed because there are two references to
+<code>Address</code> within the <code>Order</code> class) and 'order' for the
+<code>Order</code> class. The remaining Java classes are represented by local (i.e., nested)
+type definitions embedded within the 'order' type: <code>Customer</code> and <code>Item</code>
+as complexType definitions, and <code>Shipping</code> as a simpleType definition. The only
+global element definition is for the 'order' element, since that's the one class specified
+as input to BindGen.</p>
+
+<p>Simple values of limited length (including Java primitive types, as well as date/time
+variations) are represented by default using XML attributes, while elements are used for any
+structured data. Elements are also used for <code>java.lang.String</code> values, since
+there's no limit on the length of a string and very long attribute values are generally
+discouraged in XML. Primitive values are treated as required by default, while object values
+are treated as optional (since a <code>null</code> value can easily be used to indicate that
+an object value is missing, while primitives have no such marker).</p>
+
+<p>As you can see in the above listing, BindGen automatically creates schema documentation
+taken from Java source code Javadocs. By default, BindGen examines the field definitions
+within each class to find the data to be included in the XML representation of that class,
+and the Javadocs associated with the fields are the source of the schema documentation for
+individual elements and attributes. Schema documentation for generated complexType
+definitions is taken directly from the corresponding class-level Javadocs. If the Javadoc
+includes any HTML or XML tags it's wrapped in a CDATA section, as you can see for the
+'shipData' attribute near the end of the listing.</p>
+
+      </div>
+      <div class="h3">
+      <a name="binding"></a><h3>Generated binding</h3>
+
+<p>There's not a lot to be said about the generated binding, except that it uses direct
+field access for values (rather than get/set access methods) and matches the schema in
+terms of which values are optional and which required. Here's the generated binding in
+full:</p>
+
+<div id="source"><pre>&lt;binding xmlns:tns="http://jibx.org/starter1" name="binding" package="org.jibx.starter1">
+  &lt;namespace uri="http://jibx.org/starter1" default="elements"/>
+  &lt;mapping abstract="true" type-name="tns:order" class="org.jibx.starter1.Order">
+    &lt;value style="attribute" name="orderNumber" field="orderNumber"/>
+    &lt;structure field="customer" usage="optional" name="customer">
+      &lt;value style="attribute" name="customerNumber" field="customerNumber"/>
+      &lt;value style="element" name="firstName" field="firstName" usage="optional"/>
+      &lt;value style="element" name="lastName" field="lastName" usage="optional"/>
+      &lt;collection field="middleNames" usage="optional" create-type="java.util.ArrayList">
+        &lt;value name="middleName" type="java.lang.String"/>
+      &lt;/collection>
+    &lt;/structure>
+    &lt;structure map-as="tns:address" field="billTo" usage="optional" name="billTo"/>
+    &lt;value style="element" name="shipping" field="shipping" usage="optional"/>
+    &lt;structure map-as="tns:address" field="shipTo" usage="optional" name="shipTo"/>
+    &lt;collection field="items" usage="optional" create-type="java.util.ArrayList">
+      &lt;structure type="org.jibx.starter1.Item" name="item">
+        &lt;value style="element" name="id" field="id" usage="optional"/>
+        &lt;value style="element" name="description" field="description" usage="optional"/>
+        &lt;value style="attribute" name="quantity" field="quantity"/>
+        &lt;value style="attribute" name="price" field="price"/>
+      &lt;/structure>
+    &lt;/collection>
+    &lt;value style="attribute" name="orderDate" field="orderDate" usage="optional"/>
+    &lt;value style="attribute" name="shipDate" field="shipDate" usage="optional"/>
+    &lt;value style="attribute" name="total" field="total" usage="optional"/>
+  &lt;/mapping>
+  &lt;mapping class="org.jibx.starter1.Order" name="order">
+    &lt;structure map-as="tns:order"/>
+  &lt;/mapping>
+  &lt;mapping abstract="true" type-name="tns:address" class="org.jibx.starter1.Address">
+    &lt;value style="element" name="street1" field="street1" usage="optional"/>
+    &lt;value style="element" name="street2" field="street2" usage="optional"/>
+    &lt;value style="element" name="city" field="city" usage="optional"/>
+    &lt;value style="element" name="state" field="state" usage="optional"/>
+    &lt;value style="element" name="postCode" field="postCode" usage="optional"/>
+    &lt;value style="element" name="country" field="country" usage="optional"/>
+  &lt;/mapping>
+&lt;/binding></pre></div>
+
+      </div>
+      <div class="h3">
+      <a name="testing"></a><h3>Testing the binding</h3>
+
+<p>The <i>examples/bindgen</i> directory includes a sample document, <i>data1.xml</i>,
+matching the default generated schema. Here's the listing:</p>
+
+<div id="source"><pre>&lt;order orderNumber="12345678" orderDate="2008-10-18" shipDate="2008-10-22"
+    xmlns="http://jibx.org/starter1">
+  &lt;customer customerNumber="5678">
+    &lt;firstName>John&lt;/firstName>
+    &lt;lastName>Smith&lt;/lastName>
+  &lt;/customer>
+  &lt;billTo>
+    &lt;street1>12345 Happy Lane&lt;/street1>
+    &lt;city>Plunk&lt;/city>
+    &lt;state>WA&lt;/state>
+    &lt;postCode>98059&lt;/postCode>
+    &lt;country>USA&lt;/country>
+  &lt;/billTo>
+  &lt;shipping>PRIORITY_MAIL&lt;/shipping>
+  &lt;shipTo>
+    &lt;street1>333 River Avenue&lt;/street1>
+    &lt;city>Kirkland&lt;/city>
+    &lt;state>WA&lt;/state>
+    &lt;postCode>98034&lt;/postCode>
+    &lt;country>USA&lt;/country>
+  &lt;/shipTo>
+  &lt;item quantity="1" price="5.99">
+    &lt;id>FA9498349851&lt;/id>
+  &lt;/item>
+  &lt;item quantity="2" price="9.50">
+    &lt;id>GC1234905049&lt;/id>
+  &lt;/item>
+  &lt;item quantity="1" price="8.95">
+    &lt;id>AX9300048820&lt;/id>
+  &lt;/item>
+&lt;/order>
+</pre></div>
+
+<p>Once you've run the Ant 'compile', 'bindgen', and 'bind' targets you can test the
+generated binding using 'run-base' (which runs the supplied test program
+<code>org.jibx.starter1.Test</code> to read in the order document, compute the order
+total, and write the document back out with total included as <i>out1.xml</i>). You can
+also try out the full 'compile', 'bindgen', 'bind', and 'run-base' sequence by using
+the Ant target 'full'.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<subscriber>
+  <name>John Smith</name>
+  <address city="Plunk" state="WA"
+      zip="98059">12345 Happy Lane</address>
+</subscriber>

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Using JiBX in Axis2</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+
+<h3><a name="axis2"></a>JiBX in Axis2</h3>
+
+<p>JiBX has been supported for use in the Axis2 web services framework since
+Axis2 1.0. The basic information on using JiBX is included in the Axis2
+download, but as the Axis2 documentation is going through continual changes the
+information on JiBX can tend to get lost. This page is intended as a primary
+source of information for anyone using JiBX with Axis2, including some of the
+related JiBX tools which are not included in the Axis2 distribution.</p>
+
+<p>One good source of information and examples is JiBX primary developer Dennis
+Sosnoski's
+<a href="http://www.ibm.com/developerworks/webservices/library/ws-java3/">Axis2
+Data Binding</a> article on IBM developerWorks. This article includes examples
+demonstrating how to implement the same web service using Axis2's custom ADB
+binding framework, JiBX, and XMLBeans. It also includes some discussion of the
+strengths and weaknesses of the different approachs.</p>
+
+<p>You need to update your Axis2 installation to make use of JiBX 1.2.x. The <a
+href="https://sourceforge.net/project/showfiles.php?group_id=69358&package_id=313036">jibx-axis2</a>
+distribution package provides the update to Axis2, in the form of a jar file replacing
+one of the Axis2 jars and an Ant <i>build.xml</i> that handles the actual file copying
+(including copying the appropriate jars from your JiBX installation into the Axis2
+installation). Once you've done the updates, you should be able to use all features of
+Axis2 with JiBX 1.2.x.</p>
+
+<p>JiBX is especially well-suited to exposing existing Java code as a web service, using
+the <a href="%jibx2wsdl%">Jibx2Wsdl</a> tool. Jibx2Wsdl is a far-superior alternative to
+the Java2WSDL tool included in the Axis2 distribution. It includes support for Java 5
+enumerations and typed collections, and also provides an extensive customization mechanism
+that allows you to "tune" the schemas and WSDL generated from your Java code.</p>
+
+<p>If you're instead developing a web service starting from WSDL you can still use JiBX,
+but you need to do more work "manually" since the Axis2 WSDL2Java tool expects you to have
+an existing binding and classes for JiBX. The <a href="%codegen%">CodeGen</a> tool can
+generate the necessary bindings and classes for you, if you first extract the schema
+definitions from your WSDL (since it currently only works with standalone schema definitions,
+not schemas embedded inside WSDL). If your WSDL follows the "wrapped" style (where each
+&lt;wsdl:message> consists of a single schema element reference, and each of these elements
+consists only of a sequence of child elements) you just need to generate the data structure
+definitions used by the child elements, not the wrapper elements referenced from &lt;wsdl:message>
+definitions.</p>
+
+<p>For a discussion of the issues involved in either starting from code or
+starting from WSDL when developing a web service you can see Dennis Sosnoski's
+<a href="http://www.infoq.com/articles/sosnoski-code-first">"Code First" Web
+Services Reconsidered</a>.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

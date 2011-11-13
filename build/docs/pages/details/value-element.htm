@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: &lt;value&gt; Element</title>
+</head>
+<body class="composite">
+  <h1>JiBX: &lt;value&gt; Element</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">&lt;value&gt; Element Definition</a></h3>
+      
+<p>The <b>value</b> element defines a simple value, one that is bound to
+either an attribute or a simple element (one with no attributes or child
+elements). This always makes use of a format definition. If no format is
+explicitly named in the value definition the default format for the property
+type is used (see <a href="%conversions%">Conversions</a> for information
+on default formats.</p>
+
+<p>The <b>value</b> element supports four unique attributes along with several
+common attribute groups, listed below.</p>
+
+<h4><a name="Attributes">Attributes</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>constant</td>
+<td><p>This optional attribute is used to define a constant value. If present,
+none of the attributes from the <b>string</b> group and only the <b>usage</b>
+attribute from the <b>property</b> group can be present, the <b>format</b>
+attribute is not allowed, and the only <b>ident</b> value allowed is
+&quot;none&quot;. If the value is defined as required it must be present and
+match the constant on input; if optional, it is checked for on input and if
+found must match the constant. The constant value is always included in the
+output when marshalling.</p></td>
+</tr>
+<tr class="a">
+<td>format</td>
+<td><p>If present, this gives the name of the format to be used for converting
+the property value to and from text. The named format must be defined in an enclosing
+context to the <b>value</b> element. As of JiBX 1.1, the
+value of this attribute is interpreted as namespace qualified.</p></td>
+</tr>
+<tr class="b">
+<td>ident</td>
+<td><p>This optional attribute is used to designate a property value as an
+identifier type. Possible values are &quot;none&quot; (not an identifier type,
+the default if this attribute is not used), &quot;def&quot; (value is a unique
+identifier for the containing object), and &quot;ref&quot; (value is an object
+with an identifier property and the identifier property of the object is used in
+the XML representation rather than the actual object). Only one property with
+<b>ident=&quot;def&quot;</b> is allowed for a mapping; if one is present the
+property must be a String, and must be defined directly as a child of the
+<b>mapping</b> element; it is not allowed as a child of a <b>structure</b>
+element.</p>
+<p>Values with <b>ident</b> value &quot;ref&quot; cannot be used directly as
+children of a collection; they <i>can</i> be used if there is a wrapper object
+for the referenced object, as defined by a <b>structure</b> element with an
+object type defined. References contained directly in a collection can be
+handled by using custom marshaller/unmarshallers - see the <a
+href="%extras%">JiBX extras</a> description for a base custom
+marshaller/unmarshaller you can extend for this
+purpose, along with another custom marshaller/unmarshaller you can extend to
+include the full representation of an object only at the point of first use
+(with a reference if the same object is later used again).</p>
+</td>
+</tr>
+<tr class="a">
+<td>style</td>
+<td><p>A <b>style</b> attribute present on the <b>value</b> element determines
+the type of XML component used to represent the value. The allowed values are
+&quot;attribute&quot;, &quot;element&quot;, &quot;text&quot;, and &quot;cdata&quot;.
+The last two choices are subject to some restrictions. They cannot be used directly
+within a <b>collection</b> definition (in other words, for <b>value</b>
+elements that have a <b>collection</b> element as their parent), and also
+cannot be used for direct children of an unordered <b>mapping</b> or
+<b>structure</b>. Even within an ordered <b>mapping</b> or
+<b>structure</b>, multiple <b>value</b> elements using these choices must be
+separated by a required <b>value</b> using the &quot;element&quot; choice.</p>
+<p>The default handling for this attribute is also special. If it isn't specified,
+it defaults to the value set by the innermost containing element with a
+<b>value-style</b> attribute, which will always be either the &quot;attribute&quot;
+or &quot;element&quot; choice. See the <a
+href="%bindingattrs%#style">style attribute group</a> description
+for details of this type of usage.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#name">name</a></td>
+<td><p>Attributes from the name group supply the element or attribute name for
+this value. At least the <b>name</b> attribute is required if the XML component
+type used for this value is an attribute or element, and forbidden otherwise.
+See the <a href="%bindingattrs%#name">name attribute group description</a>
+for usage details.</p></td>
+</tr>
+<tr class="a">
+<td><a href="%bindingattrs%#property">property</a></td>
+<td><p>Attributes from the property group define a property value, including how
+it is accessed and whether it is optional or required. A property value is
+required for <b>value</b> elements unless they're contained within
+a <b>collection</b> element. In this case the value is always an item from
+the collection, so the only attributes from this group allowed are the
+&quot;usage&quot; and "type" attributes. See the <a
+href="%bindingattrs%#property">property attribute group description</a>
+for usage details.</p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#string">string</a></td>
+<td><p>Attributes from the string group set the conversion handling of this value. See the <a
+href="%bindingattrs%#string">string attribute group description</a>
+for usage details.</p></td>
+</tr>
+</table>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!-- Nest abstract mappings inside other mapping, subclassed collection with
+  only add-method and item-type overrides, and access to typed methods of base
+  class. -->
+<binding track-source="true">
+  <mapping name="customers" class="simple.Customers8">
+    <mapping class="simple.ICustomer8" abstract="true">
+      <value name="id" style="attribute" get-method="getId"
+          set-method="setId" ident="def"/>
+      <structure name="name" get-method="getName" set-method="setName">
+        <value name="first-name" field="firstName"/>
+        <value name="last-name" field="lastName"/>
+      </structure>
+      <value name="street1" get-method="getStreet" set-method="setStreet"/>
+      <value name="city" get-method="getCity" set-method="setCity"/>
+      <value name="state" get-method="getState" set-method="setState"/>
+    </mapping>
+    <mapping class="simple.ICustomer8c" abstract="true"/>
+    <mapping name="customer8a" class="simple.Customer8a"
+        extends="simple.ICustomer8">
+      <structure map-as="simple.ICustomer8"/>
+      <value name="zip" field="zip"/>
+    </mapping>
+    <mapping name="customer8b" class="simple.Customer8d"
+        extends="simple.ICustomer8">
+      <value name="id" style="attribute" get-method="getId"
+          set-method="setId" ident="def"/>
+      <structure name="name" get-method="getName" set-method="setName">
+        <value name="first-name" field="firstName"/>
+        <value name="last-name" field="lastName"/>
+      </structure>
+      <value name="street1" get-method="getStreet" set-method="setStreet"/>
+      <value name="city" get-method="getCity" set-method="setCity"/>
+      <value name="state" get-method="getState" set-method="setState"/>
+      <value name="zip" get-method="getZip" set-method="setZip"/>
+    </mapping>
+    <structure name="custcoll">
+      <collection field="customers" type="simple.Customers8$SubclassedArrayList"
+          add-method="internalAddCustomer" item-type="simple.ICustomer8"
+          usage="optional"/>
+    </structure>
+  </mapping>
+</binding>

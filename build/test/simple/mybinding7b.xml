@@ -1,0 +1,20 @@
+<!-- Collection interface with separate mapping, using factory -->
+<binding>
+  <mapping name="myelement" class="simple.MyClass7">
+    <structure field="list" usage="optional"/>
+    <collection field="array" name="strings" type="java.lang.String[]"
+        usage="optional">
+      <value name="string" type="java.lang.String"/>
+    </collection>
+    <collection field="array2" name="strings" type="java.lang.String[]">
+      <value name="string" type="java.lang.String"/>
+    </collection>
+    <structure field="list2"/>
+  </mapping>
+  <mapping name="ints" class="java.util.List"
+      factory="org.jibx.runtime.Utility.arrayListFactory">
+    <collection>
+      <value name="int" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+</binding>

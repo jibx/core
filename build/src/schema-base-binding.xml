@@ -1,0 +1,496 @@
+<!-- Binding definition for schema model. Even though the root element of a
+ schema definition is always <schema>, this is structured to allow top-level
+ components to be used directly (in keeping with the actual schema for schema,
+ such as it is). This cannot be used directly, since the schema namespace
+ handling is not specified in this binding; instead, use either
+ schema-noprefix-binding or schema-xsprefix-binding, depending on the desired
+ marshalling format. -->
+<binding value-style="attribute" track-source="true">
+  
+  <!-- Standard conversion for qualified names. -->
+  <format type="org.jibx.runtime.QName"
+      serializer="org.jibx.schema.support.QNameConverter.serialize"
+      deserializer="org.jibx.runtime.QName.deserialize"/>
+  <format type="org.jibx.runtime.QName[]"
+      serializer="org.jibx.schema.support.QNameConverter.serializeList"
+      deserializer="org.jibx.runtime.QName.deserializeList"/>
+  
+  <!-- The <schema> element. -->
+  <mapping name="schema" class="org.jibx.schema.elements.SchemaElement"
+      pre-get="preget" pre-set="preset">
+    <value name="attributeFormDefault" set-method="setAttributeFormDefaultText"
+        get-method="getAttributeFormDefaultText" usage="optional"/>
+    <structure field="m_blockDefault">
+      <value name="blockDefault" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <value name="elementFormDefault" get-method="getElementFormDefaultText"
+        set-method="setElementFormDefaultText" usage="optional"/>
+    <structure field="m_finalDefault">
+      <value name="finalDefault" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <value name="id" field="m_id" usage="optional"/>
+    <value name="targetNamespace" field="m_targetNamespace" usage="optional"/>
+    <value name="version" field="m_version" usage="optional"/>
+    <structure type="org.jibx.schema.elements.OpenAttrBase"/>
+    <collection ordered="false" field="m_schemaChildren">
+      <structure type="org.jibx.schema.elements.AnnotationElement" usage="optional"/>
+      <structure type="org.jibx.schema.elements.IncludeElement" usage="optional"/>
+      <structure type="org.jibx.schema.elements.ImportElement" usage="optional"/>
+    </collection>
+    <collection ordered="false" field="m_topLevelChildren">
+      <structure type="org.jibx.schema.elements.AnnotationElement"/>
+      <structure type="org.jibx.schema.elements.AttributeElement"/>
+      <structure type="org.jibx.schema.elements.AttributeGroupElement"/>
+      <structure type="org.jibx.schema.elements.ComplexTypeElement"/>
+      <structure type="org.jibx.schema.elements.ElementElement"/>
+      <structure type="org.jibx.schema.elements.GroupElement"/>
+      <structure type="org.jibx.schema.elements.SimpleTypeElement"/>
+      <structure type="org.jibx.schema.elements.NotationElement"/>
+    </collection>
+  </mapping>
+  
+  <!-- Common base classes. -->
+  <mapping class="org.jibx.schema.elements.SchemaBase" abstract="true"/>
+  <mapping class="org.jibx.schema.elements.OpenAttrBase" abstract="true">
+    <structure type="org.jibx.schema.elements.SchemaBase"/>
+  </mapping>
+  <mapping class="org.jibx.schema.elements.AnnotatedBase" abstract="true">
+    <value name="id" field="m_id" usage="optional"/>
+    <structure type="org.jibx.schema.elements.OpenAttrBase"/>
+    <structure field="m_annotation" usage="optional"/>
+  </mapping>
+  <mapping class="org.jibx.schema.elements.AnnotationItem" abstract="true">
+    <value name="source" field="m_source" usage="optional"/>
+    <structure field="m_content" usage="optional"
+        marshaller="org.jibx.extras.DomListMapper"
+        unmarshaller="org.jibx.extras.DomListMapper"/>
+  </mapping>
+  
+  <!-- Elements referencing other schema definitions. -->
+  <mapping class="org.jibx.schema.elements.SchemaLocationBase" abstract="true">
+    <value name="schemaLocation" field="m_location" usage="optional"/>
+  </mapping>
+  <mapping name="include" class="org.jibx.schema.elements.IncludeElement">
+    <structure type="org.jibx.schema.elements.SchemaLocationBase"/>
+  </mapping>
+  <mapping name="import" class="org.jibx.schema.elements.ImportElement">
+    <value name="namespace" field="m_namespace" usage="optional"/>
+    <structure type="org.jibx.schema.elements.SchemaLocationBase"/>
+  </mapping>
+<!--  <mapping name="redefine" class="org.jibx.schema.elements.RedefineElement">
+    <structure type="org.jibx.schema.elements.SchemaLocationBase"/>
+    <collection field="m_content" ordered="false">
+      <!- - Add structure references to simpleType, complexType, group, and
+        attributeGroup - ->
+    </collection>
+  </mapping>  -->
+  
+  <!-- Attribute class mappings. -->
+  <mapping class="org.jibx.schema.attributes.FormChoiceAttribute"
+      factory="org.jibx.schema.attributes.FormChoiceAttribute.unmarshalFactory"
+      abstract="true">
+    <value name="form" usage="optional"
+        get-method="getFormText" set-method="setFormText"/>
+  </mapping>
+  <mapping class="org.jibx.schema.attributes.DefRefAttributeGroup"
+      factory="org.jibx.schema.attributes.DefRefAttributeGroup.unmarshalFactory"
+      abstract="true">
+    <value name="name" field="m_name" usage="optional"/>
+    <value name="ref" field="m_ref" usage="optional"/>
+  </mapping>
+  <mapping class="org.jibx.schema.attributes.OccursAttributeGroup"
+      factory="org.jibx.schema.attributes.OccursAttributeGroup.unmarshalFactory"
+      abstract="true">
+    <value name="minOccurs" field="m_minOccurs" usage="optional"
+        deserializer="org.jibx.schema.types.Count.getBoundedCount"/>
+    <value name="maxOccurs" field="m_maxOccurs" usage="optional"
+        deserializer="org.jibx.schema.types.Count.getCount"/>
+  </mapping>
+  
+  <!-- Common base class mappings -->
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonTypeDerivation">
+    <value name="base" field="m_base" usage="optional"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonComplexModification">
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <structure type="org.jibx.schema.elements.CommonTypeDerivation"/>
+    <collection ordered="false" field="m_contentDefinitionList">
+      <structure type="org.jibx.schema.elements.AllElement"/>
+      <structure type="org.jibx.schema.elements.ChoiceElement"/>
+      <structure name="group" type="org.jibx.schema.elements.GroupRefElement"/>
+      <structure type="org.jibx.schema.elements.SequenceElement"/>
+    </collection>
+    <collection field="m_attributeList" ordered="false">
+      <structure type="org.jibx.schema.elements.AttributeElement"/>
+      <structure name="attributeGroup"
+          type="org.jibx.schema.elements.AttributeGroupRefElement"/>
+    </collection>
+    <collection field="m_anyAttributeList">
+      <structure type="org.jibx.schema.elements.AnyAttributeElement"/>
+    </collection>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonCompositorBase">
+    <structure field="m_occurs"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonCompositorDefinition">
+    <structure type="org.jibx.schema.elements.CommonCompositorBase"/>
+    <collection ordered="false" field="m_particleList">
+      <structure type="org.jibx.schema.elements.AllElement"/>
+      <structure type="org.jibx.schema.elements.AnyElement"/>
+      <structure type="org.jibx.schema.elements.ChoiceElement"/>
+      <structure type="org.jibx.schema.elements.ElementElement"/>
+      <structure name="group" type="org.jibx.schema.elements.GroupRefElement"/>
+      <structure type="org.jibx.schema.elements.SequenceElement"/>
+    </collection>
+  </mapping>
+  <mapping abstract="true"
+      class="org.jibx.schema.elements.CommonSimpleModification">
+    <structure type="org.jibx.schema.elements.CommonTypeDerivation"/>
+    <collection field="m_attributeList" ordered="false">
+      <structure type="org.jibx.schema.elements.AttributeElement"/>
+      <structure name="attributeGroup"
+          type="org.jibx.schema.elements.AttributeGroupRefElement"/>
+    </collection>
+    <collection field="m_anyAttributeList">
+      <structure type="org.jibx.schema.elements.AnyAttributeElement"/>
+    </collection>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement">
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" pre-set="preset" pre-get="preget"
+      class="org.jibx.schema.elements.FacetElement$NoFixedFacet">
+    <value name="value" field="m_value"/>
+    <structure type="org.jibx.schema.elements.FacetElement"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$FixedFacet"
+      pre-set="preset" pre-get="preget">
+    <value name="fixed" field="m_fixed" usage="optional"/>
+    <structure type="org.jibx.schema.elements.FacetElement"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$NumFacet"
+      pre-set="preset" pre-get="preget">
+    <value name="value" field="m_value"/>
+    <structure type="org.jibx.schema.elements.FacetElement"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.FacetElement$TextFacet">
+    <value name="value" field="m_value"/>
+    <structure type="org.jibx.schema.elements.FacetElement$FixedFacet"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.CommonTypeDefinition">
+    <value name="name" field="m_name" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.WildcardBase">
+    <value name="processContents" usage="optional"
+        get-method="getProcessContentsText" set-method="setProcessContentsText"/>
+    <value name="namespace" field="m_namespaces" usage="optional"
+        serializer="org.jibx.runtime.Utility.serializeTokenList"
+        deserializer="org.jibx.runtime.Utility.deserializeTokenList"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SelectionBase">
+    <value name="xpath" field="m_xpath"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.KeyBase">
+    <value name="name" field="m_name"/>
+    <structure name="selector" get-method="getSelector" set-method="setSelector">
+      <structure map-as="org.jibx.schema.elements.SelectionBase"/>
+    </structure>
+    <collection field="m_fieldList">
+      <structure name="field"
+          type="org.jibx.schema.elements.SelectionBase$FieldElement">
+        <structure map-as="org.jibx.schema.elements.SelectionBase"/>
+      </structure>
+    </collection>
+  </mapping>
+  
+  <!-- Reusable (non-top level) element abstract mappings. -->
+  <mapping abstract="true" class="org.jibx.schema.elements.AttributeGroupRefElement"
+      pre-set="preset" pre-get="preget">
+    <value name="ref" field="m_ref"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ComplexExtensionElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.CommonComplexModification"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.ComplexRestrictionElement"
+       pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.CommonComplexModification"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.GroupRefElement"
+      pre-set="preset" pre-get="preget">
+    <value name="ref" field="m_ref"/>
+    <structure type="org.jibx.schema.elements.CommonCompositorBase"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SimpleExtensionElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <structure type="org.jibx.schema.elements.CommonSimpleModification"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.schema.elements.SimpleRestrictionElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_inlineBaseList">
+      <structure type="org.jibx.schema.elements.SimpleTypeElement"/>
+    </collection>
+    <collection field="m_facetsList" ordered="false">
+      <structure name="enumeration" type="org.jibx.schema.elements.FacetElement$Enumeration">
+        <structure type="org.jibx.schema.elements.FacetElement$NoFixedFacet"/>
+      </structure>
+      <structure name="fractionDigits" type="org.jibx.schema.elements.FacetElement$FractionDigits">
+        <structure type="org.jibx.schema.elements.FacetElement$NumFacet"/>
+      </structure>
+      <structure name="length" type="org.jibx.schema.elements.FacetElement$Length">
+        <structure type="org.jibx.schema.elements.FacetElement$NumFacet"/>
+      </structure>
+      <structure name="maxExclusive" type="org.jibx.schema.elements.FacetElement$MaxExclusive">
+        <structure type="org.jibx.schema.elements.FacetElement$TextFacet"/>
+      </structure>
+      <structure name="maxInclusive" type="org.jibx.schema.elements.FacetElement$MaxInclusive">
+        <structure type="org.jibx.schema.elements.FacetElement$TextFacet"/>
+      </structure>
+      <structure name="maxLength" type="org.jibx.schema.elements.FacetElement$MaxLength">
+        <structure type="org.jibx.schema.elements.FacetElement$NumFacet"/>
+      </structure>
+      <structure name="minExclusive" type="org.jibx.schema.elements.FacetElement$MinExclusive">
+        <structure type="org.jibx.schema.elements.FacetElement$TextFacet"/>
+      </structure>
+      <structure name="minInclusive" type="org.jibx.schema.elements.FacetElement$MinInclusive">
+        <structure type="org.jibx.schema.elements.FacetElement$TextFacet"/>
+      </structure>
+      <structure name="minLength" type="org.jibx.schema.elements.FacetElement$MinLength">
+        <structure type="org.jibx.schema.elements.FacetElement$NumFacet"/>
+      </structure>
+      <structure name="pattern" type="org.jibx.schema.elements.FacetElement$Pattern">
+        <structure type="org.jibx.schema.elements.FacetElement$NoFixedFacet"/>
+      </structure>
+      <structure name="totalDigits" type="org.jibx.schema.elements.FacetElement$TotalDigits">
+        <value name="value" field="m_value"/>
+        <structure type="org.jibx.schema.elements.FacetElement$FixedFacet"/>
+      </structure>
+      <structure name="whiteSpace" type="org.jibx.schema.elements.FacetElement$WhiteSpace">
+        <structure type="org.jibx.schema.elements.FacetElement$TextFacet"/>
+      </structure>
+    </collection>
+    <structure type="org.jibx.schema.elements.CommonSimpleModification"/>
+  </mapping>
+  
+  <!-- Non-top level elements with concrete mappings. -->
+  <mapping name="all" class="org.jibx.schema.elements.AllElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.CommonCompositorDefinition"/>
+  </mapping>
+  <mapping name="any" class="org.jibx.schema.elements.AnyElement"
+      pre-set="preset" pre-get="preget">
+    <structure field="m_occurs"/>
+    <structure type="org.jibx.schema.elements.WildcardBase"/>
+  </mapping>
+  <mapping name="anyAttribute"
+      class="org.jibx.schema.elements.AnyAttributeElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.WildcardBase"/>
+  </mapping>
+  <mapping name="choice" class="org.jibx.schema.elements.ChoiceElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.CommonCompositorDefinition"/>
+  </mapping>
+  <mapping name="complexContent"
+      class="org.jibx.schema.elements.ComplexContentElement"
+      pre-set="preset" pre-get="preget">
+    <value name="mixed" field="m_mixed" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <structure type="org.jibx.schema.elements.CommonContentBase">
+      <collection field="m_contentDerivationList">
+        <structure name="extension"
+            type="org.jibx.schema.elements.ComplexExtensionElement"/>
+        <structure name="restriction"
+            type="org.jibx.schema.elements.ComplexRestrictionElement"/>
+      </collection>
+    </structure>
+  </mapping>
+  <mapping name="list" class="org.jibx.schema.elements.ListElement"
+      pre-set="preset" pre-get="preget">
+    <value name="itemType" field="m_itemType" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_inlineBaseList">
+      <structure type="org.jibx.schema.elements.SimpleTypeElement"/>
+    </collection>
+  </mapping>
+  <mapping name="sequence" class="org.jibx.schema.elements.SequenceElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.CommonCompositorDefinition"/>
+  </mapping>
+  <mapping name="simpleContent" class="org.jibx.schema.elements.SimpleContentElement"
+      pre-set="preset" pre-get="preget">
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <structure type="org.jibx.schema.elements.CommonContentBase">
+      <collection field="m_contentDerivationList">
+        <structure name="extension"
+            type="org.jibx.schema.elements.SimpleExtensionElement"/>
+        <structure name="restriction"
+            type="org.jibx.schema.elements.SimpleRestrictionElement"/>
+      </collection>
+    </structure>
+  </mapping>
+  <mapping name="union" class="org.jibx.schema.elements.UnionElement"
+      pre-set="preset" pre-get="preget">
+    <value name="memberTypes" field="m_memberTypes" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_inlineBaseList">
+      <structure type="org.jibx.schema.elements.SimpleTypeElement"/>
+    </collection>
+  </mapping>
+  
+  <!-- Top-level element mappings. -->
+  <mapping name="annotation" class="org.jibx.schema.elements.AnnotationElement"
+      pre-set="preset" pre-get="preget">
+    <value name="id" field="m_id" usage="optional"/>
+    <structure type="org.jibx.schema.elements.OpenAttrBase"/>
+    <collection field="m_itemsList" ordered="false">
+      <structure name="appinfo" type="org.jibx.schema.elements.AppInfoElement">
+        <structure type="org.jibx.schema.elements.AnnotationItem"/>
+      </structure>
+      <structure name="documentation"
+          type="org.jibx.schema.elements.DocumentationElement">
+        <value name="lang" ns="http://www.w3.org/XML/1998/namespace"
+            field="m_xmlLang" usage="optional"/>
+        <structure type="org.jibx.schema.elements.AnnotationItem"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping name="attribute" class="org.jibx.schema.elements.AttributeElement"
+      pre-set="preset" pre-get="preget">
+    <value name="type" field="m_type" usage="optional"/>
+    <value name="use" usage="optional"
+        get-method="getUseText" set-method="setUseText"/>
+    <value name="default" field="m_default" usage="optional"/>
+    <value name="fixed" field="m_fixed" usage="optional"/>
+    <structure field="m_formChoice"/>
+    <structure field="m_defRef"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_inlineTypeList">
+      <structure type="org.jibx.schema.elements.SimpleTypeElement"/>
+    </collection>
+  </mapping>
+  <mapping name="attributeGroup" class="org.jibx.schema.elements.AttributeGroupElement"
+      pre-set="preset" pre-get="preget">
+    <value name="name" field="m_name" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_attributeList" ordered="false">
+      <structure type="org.jibx.schema.elements.AttributeElement"/>
+      <structure name="attributeGroup" type="org.jibx.schema.elements.AttributeGroupRefElement"/>
+    </collection>
+    <collection field="m_anyAttributeList">
+      <structure type="org.jibx.schema.elements.AnyAttributeElement"/>
+    </collection>
+  </mapping>
+  <mapping name="element" class="org.jibx.schema.elements.ElementElement"
+      pre-set="preset" pre-get="preget">
+    <value name="type" field="m_type" usage="optional"/>
+    <value name="default" field="m_default" usage="optional"/>
+    <value name="fixed" field="m_fixed" usage="optional"/>
+    <value name="abstract" field="m_abstract" usage="optional"/>
+    <value name="nillable" field="m_nillable" usage="optional"/>
+    <value name="substitutionGroup" field="m_substitutionGroup" usage="optional"/>
+    <structure field="m_final">
+      <value name="final" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <structure field="m_block">
+      <value name="block" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <structure field="m_formChoice"/>
+    <structure field="m_defRef"/>
+    <structure field="m_occurs"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_inlineTypeList">
+      <structure type="org.jibx.schema.elements.ComplexTypeElement"/>
+      <structure type="org.jibx.schema.elements.SimpleTypeElement"/>
+    </collection>
+    <collection field="m_identityConstraintList" ordered="false">
+      <structure name="key" type="org.jibx.schema.elements.KeyBase$KeyElement">
+        <structure map-as="org.jibx.schema.elements.KeyBase"/>
+      </structure>
+      <structure name="keyref" type="org.jibx.schema.elements.KeyBase$KeyrefElement">
+        <value name="refer" field="m_refer"/>
+        <structure map-as="org.jibx.schema.elements.KeyBase"/>
+      </structure>
+      <structure name="unique" type="org.jibx.schema.elements.KeyBase$UniqueElement">
+        <structure map-as="org.jibx.schema.elements.KeyBase"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping name="complexType" class="org.jibx.schema.elements.ComplexTypeElement"
+      pre-set="preset" pre-get="preget">
+    <value name="abstract" field="m_abstract" usage="optional"/>
+    <value name="mixed" field="m_mixed" usage="optional"/>
+    <structure field="m_final">
+      <value name="final" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <structure field="m_block">
+      <value name="block" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <structure type="org.jibx.schema.elements.CommonTypeDefinition"/>
+    <collection ordered="false" field="m_contentTypeList">
+      <structure type="org.jibx.schema.elements.ComplexContentElement" usage="optional"/>
+      <structure type="org.jibx.schema.elements.SimpleContentElement" usage="optional"/>
+    </collection>
+    <collection ordered="false" field="m_contentDefinitionList">
+      <structure type="org.jibx.schema.elements.AllElement"/>
+      <structure type="org.jibx.schema.elements.ChoiceElement"/>
+      <structure name="group" type="org.jibx.schema.elements.GroupRefElement"/>
+      <structure type="org.jibx.schema.elements.SequenceElement"/>
+    </collection>
+    <collection field="m_attributeList" ordered="false">
+      <structure type="org.jibx.schema.elements.AttributeElement"/>
+      <structure name="attributeGroup" type="org.jibx.schema.elements.AttributeGroupRefElement"/>
+    </collection>
+    <collection field="m_anyAttributeList">
+      <structure type="org.jibx.schema.elements.AnyAttributeElement"/>
+    </collection>
+  </mapping>
+  <mapping name="group" class="org.jibx.schema.elements.GroupElement"
+      pre-set="preset" pre-get="preget">
+    <value name="name" field="m_name" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+    <collection field="m_definitionList" ordered="false">
+      <structure type="org.jibx.schema.elements.AllElement"/>
+      <structure type="org.jibx.schema.elements.ChoiceElement"/>
+      <structure type="org.jibx.schema.elements.SequenceElement"/>
+    </collection>
+  </mapping>
+  <mapping name="notation" class="org.jibx.schema.elements.NotationElement"
+      pre-set="preset" pre-get="preget">
+    <value name="name" field="m_name" usage="optional"/>
+    <value name="public" field="m_public" usage="optional"/>
+    <value name="system" field="m_system" usage="optional"/>
+    <structure type="org.jibx.schema.elements.AnnotatedBase"/>
+  </mapping>
+  <mapping name="simpleType" class="org.jibx.schema.elements.SimpleTypeElement"
+      pre-set="preset" pre-get="preget">
+    <structure field="m_final">
+      <value name="final" test-method="isPresent" get-method="toString"
+          set-method="fromString" usage="optional"/>
+    </structure>
+    <structure type="org.jibx.schema.elements.CommonTypeDefinition"/>
+    <collection field="m_contentDerivationList">
+      <structure type="org.jibx.schema.elements.ListElement"/>
+      <structure name="restriction"
+          type="org.jibx.schema.elements.SimpleRestrictionElement"/>
+      <structure type="org.jibx.schema.elements.UnionElement"/>
+    </collection>
+  </mapping>
+  
+</binding>

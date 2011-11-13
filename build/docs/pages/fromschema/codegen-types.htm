@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Schema Datatype Handling</title>
+</head>
+<body class="composite">
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3><a name="types"></a>Schema datatypes</h3>
+
+<p>CodeGen uses standard Java types to represent the most-commonly-used schema datatypes,
+as listed below. In case where both a primitive type and an object type are used to
+represent a schema datatype, the primitive type is used for required values while the
+object type is used for optional values. As shown in the table, all schema types with
+no specific Java equivalent are handled using <code>java.lang.String</code>.</p>
+
+<h4>Default representations of schema datatypes</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th>Schema type</th>
+<th>Primitive type</th>
+<th>Object type</th>
+</tr>
+<tr class="a">
+<td>xs:base64Binary</td>
+<td/>
+<td><code>byte[]</code></td>
+</tr>
+<tr class="b">
+<td>xs:boolean</td>
+<td><code>boolean</code></td>
+<td><code>java.lang.Boolean</code></td>
+</tr>
+<tr class="a">
+<td>xs:byte</td>
+<td><code>byte</code></td>
+<td><code>java.lang.Byte</code></td>
+</tr>
+<tr class="b">
+<td>xs:date</td>
+<td/>
+<td><code>java.sql.Date</code></td>
+</tr>
+<tr class="a">
+<td>xs:dateTime</td>
+<td/>
+<td><code>java.util.Date</code></td>
+</tr>
+<tr class="b">
+<td>xs:decimal</td>
+<td/>
+<td><code>java.math.BigDecimal</code></td>
+</tr>
+<tr class="a">
+<td>xs:double</td>
+<td><code>double</code></td>
+<td><code>java.lang.Double</code></td>
+</tr>
+<tr class="b">
+<td>xs:float</td>
+<td><code>float</code></td>
+<td><code>java.lang.Float</code></td>
+</tr>
+<tr class="a">
+<td>xs:hexbinary</td>
+<td/>
+<td><code>byte[]</code></td>
+</tr>
+<tr class="b">
+<td>xs:int</td>
+<td><code>int</code></td>
+<td><code>java.lang.Integer</code></td>
+</tr>
+<tr class="a">
+<td>xs:long</td>
+<td><code>long</code></td>
+<td><code>java.lang.Long</code></td>
+</tr>
+<tr class="b">
+<td>xs:short</td>
+<td><code>short</code></td>
+<td><code>java.lang.Short</code></td>
+</tr>
+<tr class="b">
+<td>xs:QName</td>
+<td/>
+<td><code>org.jibx.runtime.QName</code></td>
+</tr>
+<tr class="a">
+<td>all others</td>
+<td/>
+<td><code>java.lang.String</code></td>
+</tr>
+</table>
+
+<p>To change these defaults, you can use the <a href="%cgextends%#types">schema-type</a>
+code generation extension element to change the Java representation of a schema type,
+the way the type is serialized and deserialized, or both. You can also substitute one
+schema type (or user type) for another using the
+<a href="%cgcustoms%#type-substitutions">type-substitutions</a> nesting customization
+attribute (as in the <a href="%cgexample2%">More Customizations</a> example).</p>
+
+
+</div>
+</div>
+</div>
+</body>
+</html>

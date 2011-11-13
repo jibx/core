@@ -1,0 +1,109 @@
+<binding direction="input" track-source="true" package="org.jibx.custom.classes"
+    value-style="attribute" force-classes="true">
+  
+  <!-- Base class abstract mappings -->
+  <format type="java.lang.String[]"
+      serializer="org.jibx.runtime.Utility.serializeTokenList"
+      deserializer="org.jibx.runtime.Utility.deserializeTokenList"/>
+  <mapping abstract="true" class="org.jibx.custom.classes.SharedValueBase">
+    <value name="actual-type" field="m_actualType" usage="optional"/>
+    <value name="create-type" field="m_createType" usage="optional"/>
+    <value name="factory" field="m_factoryMethod" usage="optional"/>
+    <value name="item-name" field="m_itemName" usage="optional"/>
+    <value name="item-type" field="m_itemType" usage="optional"/>
+    <value name="required" field="m_required" usage="optional"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.custom.classes.SharedNestingBase">
+    <!-- Note that the values are accessed using reflection by the argument
+      processing code, so attribute names need to correspond to field names -->
+    <value name="javadoc-formatter" field="m_javadocFormatter" usage="optional"/>
+    <value name="namespace" field="m_namespace" usage="optional"/>
+    <value name="namespace-style" type="java.lang.String"
+        set-method="setNamespaceStyleText" usage="optional"/>
+    <value name="name-style" type="java.lang.String"
+        set-method="setNameStyleText" usage="optional"/>
+    <value name="require" type="java.lang.String" set-method="setRequireText"
+        usage="optional"/>
+    <value name="use-javadocs" field="m_useJavaDocs" usage="optional"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.custom.classes.NestingBase">
+    <!-- Note that the values are accessed using reflection by the argument
+      processing code, so attribute names need to correspond to field names -->
+    <value name="value-style" type="java.lang.String"
+        set-method="setValueStyleText" usage="optional"/>
+    <value name="property-access" field="m_propertyAccess" usage="optional"/>
+    <value name="strip-prefixes" field="m_stripPrefixes" usage="optional"/>
+    <value name="strip-suffixes" field="m_stripSuffixes" usage="optional"/>
+    <value name="map-abstract" field="m_mapAbstract" usage="optional"/>
+    <value name="force-mapping" field="m_forceMapping" usage="optional"/>
+    <value name="force-names" field="m_forceNames" usage="optional"/>
+    <value name="wrap-collections" field="m_wrapCollections" usage="optional"/>
+    <structure map-as="org.jibx.custom.classes.SharedNestingBase"/>
+  </mapping>
+
+  <!-- <custom> element is root of binding customization, with only <package>
+    and <class> elements as children; handled by custom unmarshaller to build
+    the appropriate tree structure for packages and classes -->
+  <mapping name="custom" class="org.jibx.custom.classes.GlobalCustom">
+    <structure map-as="global"/>
+  </mapping>
+  <mapping abstract="true" class="org.jibx.custom.classes.GlobalCustom"
+       type-name="global" pre-set="preSet">
+    <!-- Note that the values are accessed using reflection by the argument
+      processing code, so attribute names need to correspond to field names -->
+    <value name="add-constructors" field="m_addConstructors" usage="optional"/>
+    <value name="force-classes" field="m_forceClasses" usage="optional"/>
+    <value name="track-source" field="m_trackSource" usage="optional"/>
+    <value name="namespace-modular" field="m_namespaceModular" usage="optional"/>
+    <value name="direction" type="java.lang.String"
+        set-method="setDirectionText" usage="optional" default="both"/>
+    <structure map-as="org.jibx.custom.classes.NestingBase"/>
+    <structure type="org.jibx.custom.classes.GlobalCustom"
+        unmarshaller="org.jibx.custom.classes.GlobalCustom$Mapper"/>
+  </mapping>
+  
+  <!-- <package> element can have both <class> and <package> child elements,
+    in that order, all handled by <custom> element unmarshaller -->
+  <mapping abstract="true" class="org.jibx.custom.classes.PackageCustom"
+      type-name="package" pre-set="preSet">
+    <structure map-as="org.jibx.custom.classes.NestingBase"/>
+  </mapping>
+  
+  <!-- <class> element can have a mixture of <field> and <method> child elements
+    in any order, optionally followed by child <class> elements for inner
+    classes -->
+  <mapping abstract="true" class="org.jibx.custom.classes.ClassCustom"
+      type-name="class" pre-set="preSet">
+    <value name="deserializer" field="m_deserializer" usage="optional"/>
+    <value name="serializer" field="m_serializer" usage="optional"/>
+    <value name="element-name" field="m_elementName" usage="optional"/>
+    <value name="type-name" field="m_typeName" usage="optional"/>
+    <value name="create-type" field="m_createType" usage="optional"/>
+    <value name="enum-value-method" field="m_enumValueMethod" usage="optional"/>
+    <value name="factory" field="m_factoryMethod" usage="optional"/>
+    <value name="form" type="java.lang.String" set-method="setFormText"
+        usage="optional" default="default"/>
+    <value name="includes" field="m_includes" usage="optional"/>
+    <value name="excludes" field="m_excludes" usage="optional"/>
+    <value name="use-super" field="m_useSuper" usage="optional" default="true"/>
+    <value name="requireds" field="m_requireds" usage="optional"/>
+    <value name="optionals" field="m_optionals" usage="optional"/>
+    <structure map-as="org.jibx.custom.classes.NestingBase"/>
+    <collection field="m_children">
+      <structure name="value" pre-set="preSet" post-set="postSet"
+          factory="org.jibx.custom.classes.ValueCustom.factory"
+          type="org.jibx.custom.classes.ValueCustom">
+        <value name="attribute" type="java.lang.String" set-method="setAttribute"
+            usage="optional"/>
+        <value name="element" type="java.lang.String" set-method="setElement"
+            usage="optional"/>
+        <value name="property-name" field="m_propertyName" usage="optional"/>
+        <value name="field" field="m_fieldName" usage="optional"/>
+        <value name="get-method" field="m_getName" usage="optional"/>
+        <value name="set-method" field="m_setName" usage="optional"/>
+        <structure map-as="org.jibx.custom.classes.SharedValueBase"/>
+      </structure>
+    </collection>
+  </mapping>
+  
+</binding>

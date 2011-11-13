@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Definition XML Summary</title>
+</head>
+<body class="composite">
+  <h1>JiBX: Definition XML Summary</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="schema">Schema</a></h3>
+
+<p>Both a sample XML Schema definition (<i>binding.xsd</i>) and a sample DTD
+(<i>binding.dtd</i>) for JiBX binding definitions are included in the
+<i>/docs</i> directory of the JiBX distribution. These grammars will normally be
+kept current, and if you find any errors please report them so they can be fixed.
+However, the HTML documentation supplied on these pages is the definitive
+description of the binding definition format.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="elements">Element Summary</a></h3>
+
+<p>Below is a quick summary of the types of elements used by the binding
+definition, along with their functions and possible child elements. Most child
+elements are optional and used only where needed. All are ordered, except where
+&quot;any combination&quot; is specified.</p>
+
+<h4>Elements</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><a href="%binding%">binding</a></td>
+<td><p>The root element of the binding definition, with optional attributes for
+binding name and global settings.</p>
+<p>Children: <b>namespace</b>, <b>format</b>, <b>include</b>, <b>mapping</b> (at least 1
+<b>mapping</b> required)</p></td>
+</tr>
+<tr class="a">
+<td><a href="%namespace%">namespace</a></td>
+<td><p>Namespace declaration that defines a namespace URI and associated
+prefix (with the prefix used for marshalling).</p>
+<p>Children: none</p></td>
+</tr>
+<tr class="b">
+<td><a href="%format%">format</a></td>
+<td><p>Format definition for converting simple values to and from text. This is
+needed only if you want to use nonstandard conversions.</p>
+<p>Children: none</p></td>
+</tr>
+<tr class="a">
+<td><a href="%include%">include</a></td>
+<td><p>Include another binding definition within this binding definition.</p>
+<p>Children: none</p></td>
+</tr>
+<tr class="b">
+<td><a href="%mapping%">mapping</a></td>
+<td><p>Defines how objects of a particular class are converted to and from
+XML. Each <b>mapping</b> defines a rule that applies within a particular context,
+associating a particular element name with objects of a particular Java class.
+The mapping definition may be global or local. It's possible to redefine a
+mapping within the context of another mapping, for instance. Abstract mappings
+can be used to define handling for base classes which can be extended by mappings
+for subclasses. Abstract mappings can also be used to define a reusable binding
+structure for a Java class, which doesn't need to correspond to a particular
+element name or even to a single element of the XML representation.</p>
+<p>Children: <b>namespace</b>, <b>format</b>, <b>mapping</b>, followed by any
+combination of <b>value</b>, <b>structure</b>, and <b>collection</b> elements</p></td>
+</tr>
+<tr class="a">
+<td><a href="%value%">value</a></td>
+<td><p>Gives the conversion handling for a simple value (a primitive, or an
+object type with <b>format</b> supplied to convert it to and from text. The
+XML representation can be an attribute or simple element, or text or CDATA
+content within a sequence of elements.</p>
+<p>Children: none</p></td>
+</tr>
+<tr class="b">
+<td><a href="%structure%">structure</a></td>
+<td><p>Structure component of binding, which can represent a Java object, an
+XML element, or both. The usual case is where this represents both a Java
+object and an XML element linked to that object. A <a href="%structmap%">structure
+mapping</a> is defined when either the object or the XML element is missing from the
+definition. The child elements of the structure may be ordered or unordered.</p>
+<p>Children: any combination of <b>value</b>, <b>structure</b>, and <b>collection</b>
+elements</p></td>
+</tr>
+<tr class="a">
+<td><a href="%collection%">collection</a></td>
+<td><p>Representation of a collection object. The collection may define the
+name for an element wrapper that contains the XML representations of the items
+in the collection. If different types of items are included in the collection
+the items may be ordered or unordered.</p>
+<p>Children: any combination of <b>value</b>, <b>structure</b>, and <b>collection</b>
+elements</p></td>
+</tr>
+</table>
+
+      </div>
+      <div class="h3">
+      <h3><a name="attributes">Attribute Group Summary</a></h3>
+
+<p>The binding definition elements define a number of different attributes.
+In many cases these attributes are grouped and the attribute groups apply to
+more than one element type. The table below gives a list of the basic
+attribute groups and the elements that support them. The elements also have
+unique attributes in addition to these common groups. In almost all cases the
+attributes are optional and are used to qualify or add details to the basic
+function of the element.</p>
+
+<h4>Attribute Groups</h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td><a href="%bindingattrs%#style">style</a></td>
+<td><p>This group consists of only one attribute, the <b>value-style</b> attribute.
+It's used to control whether a simple value is expressed in XML as an element
+or an attribute.</p>
+<p>Used with: <b>binding</b>, <b>mapping</b>, <b>structure</b>,
+and <b>collection</b></p></td>
+</tr>
+<tr class="a">
+<td><a href="%bindingattrs%#name">name</a></td>
+<td><p>The name attributes define an XML element or attribute name.</p>
+<p>Used with: <b>mapping</b>, <b>value</b>, <b>structure</b>,
+and <b>collection</b></p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#object">object</a></td>
+<td><p>The object group of attributes provide handling options for Java
+objects. These include factory, pre- and post-unmarshal, and pre-marshal methods
+for objects.</p>
+<p>Used with: <b>mapping</b>, <b>structure</b>, and <b>collection</b></p></td>
+</tr>
+<tr class="a">
+<td><a href="%bindingattrs%#structure">structure</a></td>
+<td><p>The structure attributes deal with the children of a binding component.
+They include control over whether children are ordered or unordered, as well as
+linkages that allow portions of a binding definition to be referenced and reused
+within the binding.</p>
+<p>Used with: <b>value</b>, <b>structure</b>, and <b>collection</b></p></td>
+</tr>
+<tr class="b">
+<td><a href="%bindingattrs%#property">property</a></td>
+<td><p>The property attributes control how a value is accessed from a Java
+object. These include field and/or get/set/test method names.</p>
+<p>Used with: <b>value</b>, <b>structure</b>, and <b>collection</b></p></td>
+</tr>
+<tr class="a">
+<td><a href="%bindingattrs%#string">string</a></td>
+<td><p>The string attributes define conversions between Java primitive or
+object values and text representations.</p>
+<p>Used with: <b>format</b> and <b>value</b></p></td>
+</tr>
+</table>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

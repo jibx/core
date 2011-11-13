@@ -1,0 +1,23 @@
+<customer first-name="John">
+  <last-name>Smith</last-name>
+  <street1>12345 Happy Lane</street1>
+  <city>Plunk</city>
+  <state>WA</state>
+  <zip>98059</zip>
+  <phone>888.555.1234</phone>
+  <customer first-name="Mary">
+    <last-name>Smith</last-name>
+    <street1>12345 Happy Lane</street1>
+    <city>Plunk</city>
+    <state>WA</state>
+    <zip>98059</zip>
+    <phone>888.555.4321</phone>
+  </customer>
+  <customer>
+    <street1>12345 Plunket Lane</street1>
+    <city>Happy</city>
+    <state>WA</state>
+    <zip>98095</zip>
+    <phone>888.555.1234</phone>
+  </customer>
+</customer>

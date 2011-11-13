@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Going further with bindings</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="variations">Variations on a theme</a></h3>
+
+<p>The first simple example only used required elements and public fields. JiBX
+isn't limited to just these choices, though. You can also work with optional
+elements and attributes in your XML, and with both fields and get/set access
+methods using any access level. <a href="#figure2">Figure 2</a> gives an example of some of these
+features. I've shown the changes to the XML representation from <a href="%basicbind%#figure1">Figure 1</a> in blue,
+and the changes to the Java representation in green.</p>
+
+<a name="figure2"><b>Figure 2. Attributes, optional, access, and more...</b></a><br>
+<img src="images/example2.gif" width="584" height="362" alt="Attributes, optional, etc."/>
+
+<p>I added <b>value-style="attribute"</b> to the <b>structure</b>
+element of the binding definition in order to change the expression of the child
+values in the XML from the default of elements to attributes. The
+<b>value-style</b> attribute can be used on any of the binding definition
+elements that can contain <b>value</b> elements. It changes the default style for
+all nested <b>value</b> elements. The actual <b>value</b> element always has the
+final say over its XML representation, though, using the <b>style</b> attribute.
+In the <a href="#figure2">Figure 2</a> binding the <b>value</b> definition for the <code>lastName</code>
+field illustrates this, using an XML representation of <b>text</b> rather than
+the <b>attribute</b> representation used for the other fields of the
+<code>Person</code> class. The end result is the changed <b>person</b> element
+structure in the XML document, with the customer number and first name as
+attributes and the last name as text content of the element.</p>
+
+<p>The other change in the XML handling shown in <a href="#figure2">Figure 2</a> is that I made the
+<b>zip</b> element optional (and deleted it from the document shown). This change
+is shown in the binding definition by the addition of <b>usage="optional"</b> to
+the zip element value definition. Using everything as shown, the <code>zip</code>
+field will be set to <code>null</code> when unmarshalling the document. You can
+also define defaults for optional values. When you unmarshal a document with the
+value missing, the default you specify will be used instead. When you marshal
+objects to create a document, the value present will be compared to the default.
+If the value is the same as the default, JiBX will skip writing the value to the
+XML document.</p>
+
+<p>The access methods added on the Java side are reflected in the binding
+definition by the use of <b>get-method</b> and <b>set-method</b> attributes on
+the appropriate <b>value</b> elements. If both <b>get-method</b> and
+<b>set-method</b> are supplied there's no need to include a field name, as shown
+by the value definition for the customer number. You can also use a get or set
+method in conjunction with direct access to the field, as shown for the phone
+number binding. When you do this the supplied method will be used where
+possible, with direct field access used for storing values when only a get
+method is supplied, or for loading values when only a set method is supplied.</p>
+
+<p>I also changed the type of the <code>zip</code> field in the Java code, from
+<code>java.lang.Integer</code> to <code>java.lang.Object</code>. It's sometimes
+convenient to use generic types like <code>Object</code> (or interfaces) in
+code, even when you know the runtime type is going to be something more
+specific. But JiBX needs to know what type to create when unmarshalling a value,
+and <code>Object</code> can't be used directly for that purpose. The <b>type</b>
+attribute allows you to override the type defined in the source code for a field
+(or get/set methods) with a more specific type. In this case I've given
+<code>java.lang.Integer</code> as the actual type to be assumed when working
+with the <code>zip</code> field.</p>
+
+<p>For full details on the options available for the <b>value</b> element see
+the <a href="%value%">&lt;value> element</a> details page.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="mixing">Mixing it up</a></h3>
+
+<p>Another sometimes useful variation supported by JiBX is the ability to use
+either ordered or unordered lists of child elements. By default, JiBX assumes
+that elements in the XML document are in a fixed order. This allows for more
+efficient unmarshalling of documents, and also reflects the most-common usage of
+XML. For the exceptional cases where elements are not ordered JiBX allows the
+default behavior to be overridden. <a href="#figure3">Figure 3</a> shows how this works, with changes
+from <a href="%basicbind%#figure1">Figure 1</a> again highlighted in color.</p>
+ 
+<a name="figure3"><b>Figure 3. Unordered elements</b></a><br>
+<img src="images/example3.gif" width="622" height="312" alt="Unordered elements"/>
+
+<p>As compared to <a href="%basicbind%#figure1">Figure 1</a>, here I've added an
+<b>ordered="false"</b> attribute on the <b>mapping</b> element, and also added
+<b>usage="optional"</b> on all the
+child components of the <b>mapping</b> element in the binding. The first change
+tells JiBX that I want to use unordered child elements within the <b>customer</b>
+element. The second change, making all the child components optional, used to be
+required for an unordered group. As of the 1.1 release this is no longer the
+case, so the same binding would work if you took off the <b>usage="optional"</b>
+attributes (and would throw an exception at runtime if one of the required
+elements was not found when unmarshalling). I've scrambled the
+child elements within the XML document in <a href="#figure3">Figure 3</a> to
+illustrate the unordered operation.</p>
+
+<p>Note that the <b>ordered="false"</b> setting only applies to the children of
+the element with the setting. In the <a href="#figure3">Figure 3</a> example, this means that the
+<b>person</b> element of the XML document can occur in any order amoung the
+children of the <b>customer</b> element, but the children of the <b>person</b>
+element still have to be in their original order. If I wanted to change this I'd
+need to add the <b>ordered="false"</b> setting on the <b>structure</b> element
+of the binding definition and make all the child elements optional.</p>
+
+<p>As of the JiBX 1.1 release, you have the option of ignoring unknown
+elements within an unordered group. To enable this behavior you need to include
+a <b>flexible="true"</b> on the binding element containing the group (the same
+place you set the <b>ordered="false"</b>). Also as of 1.1, repeated elements
+within an unordered group will by default be treated as an error when
+unmarshalling (so if the <a href="#figure3">Figure 3</a> sample document had a
+second instance of the <b>&lt;address></b> element, for instance, the runtime
+code would throw an exception). You can disable this checking for repeated
+elements by using the <b>allow-repeats="true"</b> attribute on the containing
+element. Both these options can only be used in combination with
+<b>ordered="false"</b> - if you're using an ordered group, JiBX expects the
+elements to be exactly as specified. See the
+<a href="%bindingattrs%#structure">structure attribute</a> description for full
+details on these options.</p>
+
+<p>There's one more change I made in <a href="#figure3">Figure 3</a>, though this is a change just for
+the purpose of showing that it has no effect. This is the reordering of the
+fields within the <code>Person</code> class. The order of the fields in the
+class definition is ignored by JiBX - only the order of binding definitions that
+reference these fields matter. In this case I kept the order of the <b>value</b>
+binding components within the <b>structure</b> definition for the
+<code>Person</code> class unchanged, so the XML representation for this class
+also remained the same.</p>
+
+<div><p align="center"><a href="%structmap%"><b>Next: Structure mapping between XML and Java</b></a></p></div>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

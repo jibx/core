@@ -1,0 +1,25 @@
+<!-- Testing an abstract mapping for a system class, and using a value in an
+ attribute within a collection. -->
+<binding>
+  <mapping class="java.util.ArrayList" abstract="true">
+    <collection ordered="false" item-type="java.lang.String">
+      <structure name="order" usage="optional">
+        <value style="attribute" name="id"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping name="customer" class="simple.Customer3">
+    <structure name="name" field="name"
+        factory="simple.Customer3.nameFactory">
+      <value name="first-name" field="firstName"/>
+      <value name="last-name" field="lastName"/>
+    </structure>
+    <value name="street1" field="street1"/>
+    <value name="city" field="city"/>
+    <value name="state" field="state"/>
+    <value name="zip" field="zip"/>
+    <value name="phone" field="phone"/>
+    <structure usage="optional" field="referral"/>
+    <structure field="orderIds"/>
+  </mapping>
+</binding>

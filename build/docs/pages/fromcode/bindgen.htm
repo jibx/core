@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: BindGen Tool</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro"></a>BindGen tool</h3>
+
+<p>BindGen is the tool used to generate a binding definition and matching schema
+definition from existing Java code.</p>
+
+      </div>
+      <div class="h3">
+      <h3>Running BindGen</h3>
+      
+<p>BindGen executes as a Java application, meaning it needs to be run directly from a
+console window using the "java" command, or though some equivalent technique (such as
+an Ant <code>&lt;java></code> task, discussed below). However it's being run, you need
+to include <i>jibx-tools.jar</i> from your JiBX installation <i>lib</i> directory in the
+Java classpath, along with the path for the compiled class files you'll use as input to
+the generation. You'll also need several of the other jars from the JiBX <i>lib</i>
+directory (including <i>jibx-bind.jar</i>, <i>jibx-schema.jar</i>, and <i>jibx-run.jar</i>).
+As long as these jars are in the same directory as <i>jibx-tools.jar</i> you don't need to
+list them in the classpath, though - they'll be picked up automatically.</p>
+
+<p>The BindGen application main class is <code>org.jibx.binding.generator.BindGen</code>,
+and it takes as parameters the fully-qualified names of one or more root class(es) to be
+to be included in the binding generation. In schema terms, each of these root classes will
+be treated as a separate global definition.</p>
+
+<p>Here's a sample of running BindGen on Unix/Linux systems from the <i>examples/bindgen</i>
+directory of the distribution (in a single line, shown split here only for formatting):</p>
+
+<div id="source"><pre>java -cp ../../lib/jibx-tools.jar:bin org.jibx.binding.generator.BindGen
+ org.jibx.starter1.Order</pre></div>
+
+<p>On Windows, the corresponding command line is:</p>
+
+<div id="source"><pre>java -cp ..\..\lib\jibx-tools.jar;bin org.jibx.binding.generator.BindGen
+ org.jibx.starter.Order</pre></div>
+
+<p>By default, BindGen output just goes to the current directory where it was executed. The
+generated root binding definition is named <i>binding.xml</i>, and the generated schema
+name is derived from the target namespace (which in turn is derived from the Java package
+name).</p>
+
+      </div>
+      <div class="h3">
+      <h3>Using build tools</h3>
+
+<p>You can easily run BindGen from an Ant build, just as you would any other Java application.
+The <i>build.xml</i> in the <i>examples/bindgen</i> directory gives an example of this
+(which passes an optional source directory path parameter, in addition to a root class name),
+as shown below:</p>
+
+<div id="source"><pre>  &lt;!-- set classpath for compiling and running application with JiBX -->
+  &lt;path id="classpath">
+    &lt;fileset dir="${jibx-home}/lib" includes="*.jar"/>
+    &lt;pathelement location="bin"/>
+  &lt;/path>
+  ...
+  &lt;!-- generate default binding and schema -->
+  &lt;target name="bindgen">
+  
+    &lt;echo message="Running BindGen tool"/>
+    &lt;java classpathref="classpath" fork="true" failonerror="true"
+        classname="org.jibx.binding.generator.BindGen">
+      &lt;arg value="-s"/>
+      &lt;arg value="src"/>
+      &lt;arg value="org.jibx.starter1.Order"/>
+    &lt;/java>
+    
+  &lt;/target>
+</pre></div>
+
+<p>Most IDEs allow you to directly execute an Ant build target, so you can use the Ant
+approach to running BindGen from within your IDE.</p>
+
+      </div>
+      <div class="h3">
+      <h3>Command line parameters</h3>
+
+<p>You can pass a variety of command line parameters to BindGen, as listed below in
+alphabetical order:</p>
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th scope="col">Parameter</th>
+<th scope="col">Purpose</th>
+</tr>
+<tr class="a">
+<td><code>-a</code></td>
+<td>Force abstract mapping (equivalent to a schema complexType) generation for classes
+passed as input parameters.</td>
+</tr>
+<tr class="b">
+<td><code>-b&nbsp;name</code></td>
+<td>Generated root binding definition file name (default name is binding.xml)</td>
+</tr>
+<tr class="a">
+<td><code>-c&nbsp;path</code></td>
+<td>Path to input customizations file</td>
+</tr>
+<tr class="b">
+<td><code>-m</code></td>
+<td>Force concrete mapping (equivalent to a schema complexType plus an element of that
+type) generation for classes passed as input parameters</td>
+</tr>
+<tr class="a">
+<td><code>-n&nbsp;uri=name,...</code></td>
+<td>Give schema namespace URI and file-name pairs (default generates file names from
+schema namespace URIs)</td>
+</tr>
+<tr class="b">
+<td><code>-o</code></td>
+<td>Binding generation only (no schema generation)</td>
+</tr>
+<tr class="a">
+<td><code>-p&nbsp;path,...</code></td>
+<td>Paths for loading Java class files (default is the classpath used to run BindGen)</td>
+</tr>
+<tr class="b">
+<td><code>-s&nbsp;path,...</code></td>
+<td>Paths for loading Java source files (source is not used by default)</td>
+</tr>
+<tr class="a">
+<td><code>-t&nbsp;path</code></td>
+<td>Target directory path for generated output (default is current directory)</td>
+</tr>
+<tr class="b">
+<td><code>-v</code></td>
+<td>Verbose output</td>
+</tr>
+<tr class="a">
+<td><code>-w</code></td>
+<td>Wipe all files from target directory before generating output (ignored if the target directory is the same as the current directory)</td>
+</tr>
+</table>
+
+<p>You need to specify one or more class names as command line parameters to
+BindGen. Each class you name is used as a starting point for generating binding
+definitions. BindGen examines each class listed to find references to other classes,
+and then recursively examines the referenced classes, to find the complete set of
+classes necessary to represent your data. It then generates binding and schema
+definitions for all of these classes. The class names must be at the end of the command
+line, following any other command line parameters.</p>
+
+<p>You can pass global customizations to BindGen as command-line parameters,
+by using <code>--</code> as a special prefix to the customization attribute name.
+This is explained in more detail in the BindGen <a href="%bgcustoms%#command">customization
+reference page</a>. Before digging into the details of customizations you may find
+it useful to review the BindGen <a href="%bgexamples%">examples</a> to learn how BindGen
+works and see some basic applications of customizations.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<customer>
+  <identity/>
+  <street>12345 Happy Lane</street>
+  <city>Plunk</city>
+  <state>WA</state>
+  <zip>98059</zip>
+  <phone>888.555.1234</phone>
+  <marker/>
+</customer>

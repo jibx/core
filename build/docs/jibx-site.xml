@@ -1,0 +1,117 @@
+<site>
+
+  <menu label="JiBX" source-dir="pages">
+    <item label="JiBX Basics">
+      <item id="home" label="Overview" source-dir="overview" file="index.htm">
+        <item id="start" label="Getting Started" file="getting-started.htm"/>
+        <item id="usecomp" label="Binding Compiler" file="bindcomp.htm"/>
+        <item id="bindload" label="Binding on Load" file="bindonload.htm"/>
+        <item id="userun" label="Runtime" file="runtime.htm"/>
+        <item id="extras" label="Extras" file="extras.htm"/>
+        <item id="building" label="Building JiBX" file="building.htm"/>
+        <item label="Maven" id="maven" target="./jibx-maven-plugin/index.html"/>
+        <item label="Contributing" file="contributing.htm"/>
+        <item label="License" file="jibx-license.htm"/>
+      </item>
+      <item id="status" label="News and Status" file="status.htm"/>
+      <item id="support" label="Support" source-dir="support" file="support.htm">
+        <item id="faq" label="FAQ" file="faq.htm"/>
+        <item id="maillists" label="Mailing Lists" file="mail-lists.htm"/>
+        <item id="bugs" label="Bugs" file="bugs.htm"/>
+      </item>
+      <item id="comments" label="User Comments" file="comments.htm"/>
+      <item id="sponsors" label="Sponsors" file="sponsors.htm"/>
+    </item>
+    <item label="Start from Code" access-dir="fromcode">
+      <item id="startcode" label="Start from Code" file="index.htm" source-dir="fromcode"/>
+      <item id="bindgen" label="BindGen" file="bindgen.htm" source-dir="fromcode">
+        <item id="bgexamples" label="Example Code" file="bindgen-examples.htm">
+          <item id="bgexample1" label="Example 1" file="bindgen-example1.htm"/>
+          <item id="bgexample2" label="Example 2" file="bindgen-example2.htm"/>
+          <item id="bgexample3" label="Example 3" file="bindgen-example3.htm"/>
+          <item id="bgexample4" label="Example 4" file="bindgen-example4.htm"/>
+        </item>
+        <item id="bgcustoms" label="Customizations Reference" file="bindgen-customs.htm"/>
+      </item>
+      <item id="schemagen" label="SchemaGen" file="schemagen.htm" source-dir="fromcode"/>
+      <item id="jibx2wsdl" label="Jibx2Wsdl" file="jibx2wsdl.htm" source-dir="fromcode">
+        <item id="j2wexamples" label="Examples" file="jibx2wsdl-examples.htm"/>
+        <item id="j2wcustoms" label="Customizations" file="jibx2wsdl-customs.htm"/>
+      </item>
+    </item>
+    <item label="Start from Schema" access-dir="fromschema">
+        <!-- Add schema compatibility notes, here or in schema details -->
+      <item id="startschema" label="Start from Schema" file="index.htm" source-dir="fromschema"/>
+      <item id="codegen" label="CodeGen" file="codegen.htm" source-dir="fromschema">
+        <item id="cgtypes" label="Schema Datatype Handling" file="codegen-types.htm"/>
+        <item id="cgexamples" label="Example Code" file="codegen-examples.htm">
+          <item id="cgexample1" label="Default Generation" file="example-default.htm"/>
+          <item id="cgexample2" label="Simple Customizations" file="example-custom1.htm"/>
+          <item id="cgexample3" label="More Customizations" file="example-custom2.htm"/>
+          <item id="cgexample4" label="Modular Generation" file="example-modular.htm"/>
+        </item>
+        <item id="cgcustoms" label="Customizations Reference" file="codegen-customs.htm">
+          <item id="cgextends" label="Extensions Reference" file="codegen-extends.htm"/>
+        </item>
+      </item>
+    </item>
+    <item label="Binding Definition" access-dir="binding">
+      <item id="tutorial" label="Binding Tutorial" source-dir="tutorial"
+          access-dir="tutorial" file="binding-tutorial.htm">
+        <item id="basicbind" label="A basic binding" file="binding-start.htm"/>
+        <item id="bindextras" label="Binding extras" file="binding-extras.htm"/>
+        <item id="structmap" label="Structure mapping" file="binding-structures.htm"/>
+        <item id="bindcolls" label="Collections and arrays" file="binding-collects.htm"/>
+        <item id="bindmappings" label="Using mappings" file="binding-mappings.htm"/>
+        <item id="bindadvanced" label="Advanced binding" file="binding-advanced.htm"/>
+        <item id="bindextend" label="Method hooks" file="binding-extend.htm"/>
+        <item id="bindcustom" label="Custom code" file="binding-custom.htm"/>
+      </item>
+      <item id="precompiled" label="Precompiled Bindings" source-dir="details"
+          file="precompiled.htm"/>
+      <item id="defdetails" label="Definition details" source-dir="details"
+          file="binding-overview.htm">
+        <item label="Definition contexts" file="contexts.htm"/>
+        <item id="conversions" label="Conversions" file="conversions.htm">
+          <item id="datetime" label="Date/time conversions" file="date-time.htm"/>
+        </item>
+        <item label="XML summary" file="xml-summary.htm"/>
+        <item label="&amp;lt;binding&amp;gt; element" id="binding"
+            file="binding-element.htm"/>
+        <item label="&amp;lt;include&amp;gt; element" id="include"
+            file="include-element.htm"/>
+        <item label="&amp;lt;format&amp;gt; element" id="format"
+            file="format-element.htm"/>
+        <item label="&amp;lt;namespace&amp;gt; element" id="namespace"
+            file="namespace-element.htm"/>
+        <item label="&amp;lt;mapping&amp;gt; element" id="mapping"
+            file="mapping-element.htm"/>
+        <item label="&amp;lt;value&amp;gt; element" id="value"
+            file="value-element.htm"/>
+        <item label="&amp;lt;structure&amp;gt; element" id="structure"
+            file="structure-element.htm"/>
+        <item label="&amp;lt;collection&amp;gt; element" id="collection"
+            file="collection-element.htm"/>
+        <item label="Attribute groups" id="bindingattrs"
+            file="binding-attributes.htm"/>
+      </item>
+    </item>
+    <item label="Usage API">
+      <item label="Runtime JavaDocs" id="apidocs" target="./api/index.html"/>
+    </item>
+    <menu label="Subprojects">
+      <menu label="Eclipse Plug-in" source-dir="eclipse" access-dir="eclipse">
+        <item label="Introduction" id="eclipse" file="index.htm"/>
+        <item label="Install" id="eclipseinstall" file="install.htm"/>
+        <item label="Usage" id="eclipseusage" file="usage.htm"/>
+      </menu>
+      <item label="JiBX/WS" id="jibxws" source-dir="jibxws" access-dir="jibxws"
+          file="index.htm"/>
+      <item label="Axis2 Usage" id="axis2" source-dir="axis2" access-dir="axis2"
+          file="index.htm"/>
+      <item label="JiBX/OTA" id="jibxota" source-dir="jibxota" access-dir="jibxota"
+          file="index.htm"/>
+      <item label="Schema Library" id="schemalib" target="./schema-library/index.html"/>
+    </menu>
+  </menu>
+</site>

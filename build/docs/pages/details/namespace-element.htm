@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: &lt;namespace&gt; Element</title>
+</head>
+<body class="composite">
+  <h1>JiBX: &lt;namespace&gt; Element</h1>
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro">&lt;namespace&gt; Element Definition</a></h3>
+      
+<p>The <b>namespace</b> element defines a namespace used within the bound XML
+documents. Each namespace used within the documents must be defined using one
+of these elements. When marshalling to XML, the namespace definitions included
+in the binding are automatically added to the appropriate XML elements.</p>
+
+<p>This works differently depending upon whether the namespace definition is
+in the <b>binding</b> element context, or that of a <b>mapping</b> element. If the
+<b>namespace</b> is the child of a <b>mapping</b> element it will be defined on the
+element associated with that <b>mapping</b> when it is marshalled. Only
+<b>mapping</b> elements that define an element name are allowed to have
+<b>namespace</b> child elements for this reason. If the <b>namespace</b> is a
+child of the <b>binding</b> element, it applies to all the top-level mappings
+defined within that binding. The effect is the same as if the <b>namespace</b>
+were instead present as a child element of every top-level <b>mapping</b>
+element.</p>
+
+<p>Besides defining a namespace for the XML documents, the <b>namespace</b>
+element can also make that namespace the default for elements and/or attributes
+within the context of the definition. This is only a shortcut -
+a namespace URI can always be defined directly for each element or attribute,
+and a direct definition will always override the default defined by a
+<b>namespace</b> element. However, using a default namespace definition allows
+easy handling of common XML document structures. A default namespace for element
+names applies to the containing <b>mapping</b> element name as well as child
+element names.</p>
+
+<p>The <b>namespace</b> element uses three unique attributes, but none of the
+common attribute groups.</p>
+
+<h4><a name="Attributes">Attributes</a></h4>
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<td>uri</td>
+<td><p>This required attribute is the namespace URI being defined.</p></td>
+</tr>
+<tr class="a">
+<td>default</td>
+<td><p>Optionally gives the default usage of this namespace, which must be
+&quot;none&quot; (only used where specified, the default if this attribute is
+not given), &quot;elements&quot; (default for elements only),
+&quot;attributes&quot; (default for attributes only), or &quot;all&quot; (both
+elements and attributes use this namespace by default).</p></td>
+</tr>
+<tr class="b">
+<td>prefix</td>
+<td><p>This is the prefix to map to the namespace when marshalling. It is
+ignored when unmarshalling, since the namespace URI is used directly to identify
+elements and attributes. This attribute is required for namespaces in an output binding
+unless <b>default=&quot;elements&quot;</b> is specified.</p></td>
+</tr>
+</table>
+
+<p><b>namespace</b> elements are subject to the restrictions that namespaces with
+the same prefix cannot be defined in the same context, and no two namespaces can
+be defined with conflicting defaults within the same context (i.e., two
+namespaces each having either <b>default=&quot;elements&quot;</b>
+or <b>default=&quot;all&quot;</b>, or two namespaces each having
+<b>default=&quot;attributes&quot;</b> or <b>default=&quot;all&quot;</b>).</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

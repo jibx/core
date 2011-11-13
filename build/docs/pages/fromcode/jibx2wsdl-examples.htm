@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: Jibx2Wsdl Examples</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="start"></a>Jibx2Wsdl example code</h3>
+
+<p>The <i>/examples/jibx2wsdl</i> directory of the JiBX distribution contains some samples
+for demonstrating the use of Jibx2Wsdl, each in a separate subdirectory. All the samples
+use the same approach to build a service implementation and corresponding client, starting
+from a service definition class which implements (or at least defines) some sort of
+functionality. The service definition class is used to generate a WSDL service definition,
+and the data classes passed to or from the service methods are used to generate XML schema
+definitions. This starting code is in a <i>starter</i> directory within each example
+subdirectory.</p>
+
+<p>If you just want to try generating WSDL and schema definitions (along with the JiBX
+binding, of course), you can do that using only the JiBX code. If you want to generate and
+try the client and server code, you also need an Axis2 installation updated with the latest
+JiBX jars (using the <a
+href="https://sourceforge.net/project/showfiles.php?group_id=69358&package_id=313036">jibx-axis2</a>
+download). You may also need to edit the <i>/examples/jibx2wsdl/build.properties</i> file and
+set the paths to your JiBX and Axis2 (if used) installations. The path provided for JiBX is
+correct as long as you keep the code as part of your distribution.</p>
+
+<p>All the examples use the same directory structure, with a <i>starter</i> subdirectory for
+the service definition and data classes, a <i>client</i> directory for the client code, and
+a <i>server</i> directory for the service code. The <i>client</i> and <i>server</i> directory
+each contain some provided code to start with, for a simple test program on the client side
+and for a service implementation class on the server side (which in most cases just delegates
+to the original service definition class provided in the <i>starter</i> code). The client and
+server code can only be compiled once the linkage code has been generated using Axis2.</p>
+
+<p>An Ant <i>build.xml</i> file is included in each example. If you run <code>ant</code>
+from a console open to the example directory, without specifying a target, it'll list the
+targets available with each example.</p>
+
+      </div>
+      <div class="h3">
+      <h3>Example details</h3>
+
+<p>Here's the list of examples:</p>
+
+<ul>
+<li><i>example1</i> - library service, using books and types with Java 5 typed lists</li>
+<li><i>example2</i> - equivalent to example1, but using arrays rather than Java 5 typed list, and with customizations</li>
+<li><i>example3</i> - more complex library, using polymorphism to include both books and DVDs in the library, using Java 5 typed lists and enums, and customizations</li>
+<li><i>example4</i> - still more complex library, with multiple variations on DVDs, and multiple alternative customizations</li>
+<li><i>infoq-example</i> - updated version of code used in the <a href="http://www.infoq.com/articles/sosnoski-code-first">"Code First" Web
+Services Reconsidered</a> article</li>
+</ul>
+
+<p>Currently only the <i>infoq-example</i> uses any customizations which are specifically
+for Jibx2Wsdl, rather than just BindGen.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

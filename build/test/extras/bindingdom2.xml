@@ -1,0 +1,12 @@
+<!-- Basic mapping using the DomListMapper to handle arbitrary content 
+ -->
+<binding track-source="true">
+  <mapping name="contact" class="extras.DomContact2">
+    <value name="first-name" field="m_firstName"/>
+    <value name="last-name" field="m_lastName"/>
+    <value name="phone" field="m_phone"/>
+    <structure field="m_information" usage="optional"
+        marshaller="org.jibx.extras.DomListMapper"
+        unmarshaller="org.jibx.extras.DomListMapper"/>
+  </mapping>
+</binding>

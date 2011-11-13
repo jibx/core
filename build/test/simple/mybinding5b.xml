@@ -1,0 +1,26 @@
+<!-- Test using sets (with ordering enforced, to assure match after round
+  trip -->
+<binding value-style="attribute" track-source="true">
+  <mapping name="top" class="simple.MyClass5" post-set="unmarshalDone">
+    <collection field="childs1">
+      <structure name="b" map-as="b"/>
+    </collection>
+    <collection field="altchilds2" factory="simple.MyClass5.setFactory">
+      <structure name="d" type="simple.MyClass5d"
+        factory="simple.MyClass5.dFactory"
+        pre-set="preset" post-set="postset" pre-get="preget">
+        <value name="value" field="altvalue"/>
+        <value name="text1" field="text1"/>
+        <value name="text2" style="element" field="text2"/>
+      </structure>
+    </collection>
+    <collection field="altchilds3" factory="simple.MyClass5.setFactory">
+      <structure name="c" type="simple.MyClass5a">
+        <value name="value" field="value"/>
+      </structure>
+    </collection>
+  </mapping>
+  <mapping class="simple.MyClass5a" abstract="true" type-name="b">
+    <value name="value" field="value"/>
+  </mapping>
+</binding>

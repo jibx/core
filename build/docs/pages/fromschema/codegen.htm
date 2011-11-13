@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>JiBX: CodeGen Tool</title>
+</head>
+<body class="composite">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h3">
+      <h3><a name="intro"></a>CodeGen tool</h3>
+
+<p>CodeGen is the tool used to generate Java code and a binding definition from an
+XML schema. It currently handles most types of schema definitions, but as with most
+data binding tools some aspects of schema with are not completely supported. These
+unsupported or partially-supported schema features including the following:</p>
+
+<ul>
+<li>Schemas using &lt;xs:any> extension points, where the &lt;xs:any> is not the last
+item in a sequence. Most often &lt;xs:any> is used at the end of a content model, since
+that way it can be used to provide compatiblity with future extensions of the model
+adding more details to the content model. It doesn't have to be used in this way, though,
+and in particular it can be used anywhere within a content model if it has the attribute
+<code>namespace="##other"</code>. This usage is not currently supported by CodeGen.</li>
+<li>Schemas using &lt;xs:anyAttribute> extension points. &lt;xs:anyAttribute> handling is
+not yet implemented by CodeGen, and is unlikely to be supported until JiBX version 2.0.</li>
+<li>minOccurs values other than "0" or "1", maxOccurs values other than "1" or "unbounded";
+CodeGen treats any maxOccurs value greater than "1" as equivalent to "unbounded" (and
+ignores the minOccurs value in this case, allowing <i>any</i> number of occurrences,
+including none). It also treats minOccurs values greater than "1" as equivalent to "1".
+This means that there are really only three variations of minOccurs/maxOccurs generated
+by CodeGen: Optional components, with minOccurs="0" and maxOccurs="1"; required
+components, with minOccurs="1" and maxOccurs="1"; and repeating components, with
+maxOccurs greater than "1".</li>
+<li>&lt;xs:union> simple type derivations are currently handled as simple string values</li>
+<li>The only type of simple type &lt;xs:restriction> facet currently processed by CodeGen
+is the &lt;xs:enumeration> facet.</li>
+</ul>
+
+      </div>
+      <div class="h3">
+      <h3>Running CodeGen</h3>
+      
+<p>CodeGen executes as a Java application, meaning it needs to be run directly from a
+console window using the "java" command, or though some equivalent technique (such as
+an Ant <code>&lt;java></code> task, discussed below). However it's being run, you need
+to include <i>jibx-tools.jar</i> from your JiBX installation <i>lib</i> directory in the
+Java classpath. You'll also need several of the other jars from the JiBX <i>lib</i>
+directory (including <i>jibx-bind.jar</i>, <i>jibx-schema.jar</i>, and <i>jibx-run.jar</i>,
+along with <i>log4j.jar</i> and all the eclipse jars). As long as these jars are in the
+same directory as <i>jibx-tools.jar</i> you don't need to list them in the classpath,
+though - they'll be picked up automatically.</p>
+
+<p>The CodeGen application main class is <code>org.jibx.schema.codegen.CodeGen</code>,
+and it takes as parameters the names or name patterns (using '*' wildcard characters) for
+schemas to be used as the basis for code generation. Only "top-level" schemas need to be
+specified; schemas referenced by means of xs:include or xs:import will automatically be
+loaded by CodeGen and included in the code generation.</p>
+
+<p>Here's a sample of running CodeGen on Unix/Linux systems from the <i>examples/codegen</i>
+directory of the distribution (in a single line, shown split here only for formatting):</p>
+
+<div id="source"><pre>java -cp ../../lib/jibx-tools.jar org.jibx.schema.codegen.CodeGen
+ otasubset/OTA_AirLowFareSearchRQ.xsd</pre></div>
+
+<p>On Windows, the corresponding command line is:</p>
+
+<div id="source"><pre>java -cp ..\..\lib\jibx-tools.jar org.jibx.schema.codegen.CodeGen
+ otasubset\OTA_AirLowFareSearchRQ.xsd</pre></div>
+
+<p>By default, CodeGen output just goes to the current directory where it was executed. The
+generated root binding definition is named <i>binding.xml</i>, and the generated Java package(s)
+is derived from the schema namespace.</p>
+
+<p>When working with large schemas you may find performance to be a problem using the
+standard JVM memory settings. You should be able to dramatically improve performance by
+increasing your Java runtime memory settings (with the JVMs provided by Sun this is done
+using the <i>-Xms</i> and <i>-Xmx</i> command line flags, so passing the command line
+parameters <code>-Xms512M -Xmx512M</code> would increase the memory available to the JVM
+from the standard 16 megabytes to 512 megabytes).</p>
+
+      </div>
+      <div class="h3">
+      <h3>Using build tools</h3>
+
+<p>You can easily run CodeGen from an Ant build, just as you would any other Java application.
+The <i>build.xml</i> in the <i>examples/codegen</i> directory gives an example of this
+(which passes an optional generation directory path parameter, in addition to a schema
+file path pattern), as shown below:</p>
+
+<div id="source"><pre>  &lt;!-- set classpath for compiling and running application with JiBX -->
+  &lt;path id="classpath">
+    &lt;fileset dir="${jibx-home}/lib" includes="*.jar"/>
+    &lt;pathelement location="bin"/>
+  &lt;/path>
+  ...
+  &lt;!-- generate using default settings -->
+  &lt;target name="codegen" depends="check-runtime,clean">
+    
+    &lt;echo message="Running code generation from schema"/>
+    &lt;java classname="org.jibx.schema.codegen.CodeGen" fork="yes"
+        classpathref="classpath" failonerror="true">
+      &lt;arg value="-t"/>
+      &lt;arg value="gen/src"/>
+      &lt;arg value="otasubset/OTA_AirLowFareSearch*.xsd"/>
+    &lt;/java>
+    
+  &lt;/target></pre></div>
+
+<p>Most IDEs allow you to directly execute an Ant build target, so you can use the Ant
+approach to running CodeGen from within your IDE.</p>
+
+<p>You can change the default memory size for the &lt;java> Ant task using nested
+&lt;jvmarg> parameters. By way of example, here's how you'd change the above Ant target
+to use 512 megabytes of memory:</p>
+
+<div id="source"><pre>    &lt;java classname="org.jibx.schema.codegen.CodeGen" fork="yes"
+        classpathref="classpath" failonerror="true">
+      &lt;jvmarg value="-Xms512M"/>
+      &lt;jvmarg value="-Xmx512M"/>
+      &lt;arg value="-t"/>
+      &lt;arg value="gen/src"/>
+      &lt;arg value="otasubset/OTA_AirLowFareSearch*.xsd"/>
+    &lt;/java></pre></div>
+
+
+      </div>
+      <div class="h3">
+      <h3>Command line parameters</h3>
+
+<p>You can pass a variety of command line parameters to CodeGen, as listed below in
+alphabetical order:</p>
+
+<table cellpadding="3" cellspacing="2" border="1" width="100%">
+<tr class="b">
+<th scope="col">Parameter</th>
+<th scope="col">Purpose</th>
+</tr>
+<tr class="a">
+<td><code>-b&nbsp;name</code></td>
+<td>Generated root binding definition file name (default name is binding.xml)</td>
+</tr>
+<tr class="b">
+<td><code>-c&nbsp;path</code></td>
+<td>Path to input customizations file</td>
+</tr>
+<tr class="a">
+<td><code>-i&nbsp;path1,path2,...</code></td>
+<td>Include existing bindings and use mappings from the bindings for matching schema
+global definitions (this is the basis for <a href="%cgexample4%">modular code generation</a>)</td>
+</tr>
+<tr class="b">
+<td><code>-n&nbsp;package</code></td>
+<td>Default package for code generated from schema definitions with no namespace
+(default is the package "dflt", if not set)</td>
+</tr>
+<tr class="a">
+<td><code>-p&nbsp;package</code></td>
+<td>Default package for code generated from all schema definitions</td>
+</tr>
+<tr class="b">
+<td><code>-s&nbsp;path</code></td>
+<td>Root directory path for schema definitions (so that simple names can be used when
+specifying multiple schemas)</td>
+</tr>
+<tr class="a">
+<td><code>-t&nbsp;path</code></td>
+<td>Target directory path for generated output (default is current directory)</td>
+</tr>
+<tr class="b">
+<td><code>-u&nbsp;uri</code></td>
+<td>Namespace applied in code generation when no-namespaced schema definitions are
+found (to generate no-namespaced schemas as though they were included in a particular
+namespace)</td>
+</tr>
+<tr class="a">
+<td><code>-v</code></td>
+<td>Verbose output</td>
+</tr>
+<tr class="b">
+<td><code>-w</code></td>
+<td>Wipe all files from target directory before generating output (ignored if the target directory is the same as the current directory)</td>
+</tr>
+</table>
+
+<p>You need to specify one or more schema paths or file path patterns as command
+line parameters to CodeGen. Each schema you specify is used as a starting point for
+generating code and binding definitions. CodeGen examines each specified schema to
+find references to other schemas, and then recursively examines the referenced schemas,
+to find the complete set of schemas used to represent the data. It then generates code
+and binding definitions for all of these schemas. The schema names or file path
+patterns must be at the end of the command line, following any other command line
+parameters. '*' wildcard characters can be used in schema names, but only as part of
+file paths. Schema names can also be specified using HTTP or other forms of URLs, but
+wildcard characters are not allowed in this case.</p>
+
+<p>Finally, you can pass global customizations to CodeGen as command-line parameters,
+by using <code>--</code> as a special prefix to the customization attribute name.
+This is explained in more detail in the CodeGen <a href="%cgcustoms%#command">customization
+reference page</a>. Before digging into the details of customizations you may find
+it useful to review the CodeGen <a href="%cgexamples%">examples</a> to learn how CodeGen
+works and see some basic applications of customizations.</p>
+
+      </div>
+      <div class="h3">
+      <h3><a name="logging"></a>Logging support</h3>
+
+<p>CodeGen includes logging code at a variety of levels of detail, using the <i>log4j</i>
+library. The <i>jibx-tools.jar</i> includes a default <i>log4j.properties</i> which
+only supports ERROR level logging, with output to the console. This default properties
+file can be overridden by another <i>log4j.properties</i> which is placed earlier in
+the classpath. The <i>log4j.properties</i> file in the <i>examples/codegen</i>
+directory is supplied as a sample, which can be activated by changing the classpath
+definition in the Ant <i>build.xml</i> as follows:</p>
+
+<div id="source"><pre>  &lt;!-- set classpath for compiling and running application with JiBX -->
+  &lt;path id="classpath">
+    &lt;pathelement location="."/>
+    &lt;fileset dir="${jibx-home}/lib" includes="*.jar"/>
+    &lt;pathelement location="bin"/>
+  &lt;/path></pre></div>
+
+<p>This logging support is only intended for use by JiBX developers and others who
+are investigating the operation of the CodeGen program. The logging information is
+generally not useful to end users.</p>
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>

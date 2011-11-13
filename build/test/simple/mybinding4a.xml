@@ -1,0 +1,51 @@
+<!-- Different types within an unordered collection. -->
+
+<binding>
+  <format type="char" serializer="org.jibx.runtime.Utility.serializeCharString"
+    deserializer="org.jibx.runtime.Utility.deserializeCharString"/>
+  <format type="char" label="alt-char"
+    serializer="org.jibx.runtime.Utility.serializeChar"
+    deserializer="org.jibx.runtime.Utility.parseChar"/>
+  <mapping name="myelement" class="simple.MyClass4" post-set="postSet">
+    <value style="text" field="a" usage="optional"/>
+    <value name="b" field="b"/>
+    <value style="cdata" field="c" usage="optional"/>
+    <structure name="dwrap">
+      <value name="d" style="attribute" field="d"/>
+    </structure>
+    <value name="e" field="e" deserializer="java.lang.Integer.valueOf"
+      usage="optional"/>
+    <value name="f" field="f" serializer="simple.MyClass4.serializeInteger"/>
+    <structure name="gwrap" usage="optional" test-method="testG">
+      <value style="cdata" field="g" usage="optional"/>
+    </structure>
+    <value name="h" field="h" serializer="simple.MyClass4.yesNoSerializer"
+      deserializer="simple.MyClass4.yesNoDeserializer" usage="optional"
+      default="yes"/>
+    <value name="i" field="i" serializer="simple.MyClass4Format.yesNoSerializer"
+      deserializer="simple.MyClass4Format.yesNoDeserializer" usage="optional"/>
+    <value name="j" test-method="testJ" get-method="getJ" set-method="setJ"
+        usage="optional"/>
+    <value name="k" field="k" usage="optional"/>
+    <value name="l" field="l"/>
+    <value name="m" field="m" default="-128"/>
+    <value name="n" field="n"/>
+    <structure name="o" usage="optional" test-method="testO">
+      <value style="attribute" field="o" set-method="setO" name="value"/>
+    </structure>
+    <value name="p" field="p" usage="optional"/>
+    <structure name="wrapper">
+      <value field="q" style="text" usage="optional"/>
+      <structure name="split"/>
+      <value field="r" style="cdata" usage="optional"/>
+    </structure>
+<!-- This doesn't work at present, but needs to be fixed for 2.0
+    <structure name="s" usage="optional">
+      <value style="text" field="s" usage="optional"/>
+    </structure>  -->
+    <collection field="intsAndStrings" usage="optional" ordered="false">
+      <value name="int" type="java.lang.Integer" usage="optional"/>
+      <value name="string" type="java.lang.String" usage="optional"/>
+    </collection>
+  </mapping>
+</binding>

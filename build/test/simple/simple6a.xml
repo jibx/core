@@ -1,0 +1,16 @@
+<customers>
+  <count>4</count>
+  <customerA repeat-customer="true" state="WA" zip="98059" customer-id="12345"
+    order-count="3"/>
+  <customerA repeat-customer="false" state="WA" zip="98059" customer-id="83838"/>
+  <customerB repeat-customer="true" state="WA" zip="98095">
+    <customer-id>12346</customer-id>
+    <name first-name="Larry" last-name="Adams"/>
+    <order-count>4</order-count>
+  </customerB>
+  <customerB repeat-customer="true" state="WA" zip="98095" discount="0.9">
+    <customer-id>83222</customer-id>
+    <name first-name="Gary" last-name="Adams"/>
+    <order-count>2</order-count>
+  </customerB>
+</customers>

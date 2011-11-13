@@ -1,0 +1,12 @@
+<!-- Basic mapping using the Dom4JListMapper to handle arbitrary content 
+ -->
+<binding>
+  <mapping name="contact" class="extras.Dom4JContact2">
+    <value name="first-name" field="m_firstName"/>
+    <value name="last-name" field="m_lastName"/>
+    <value name="phone" field="m_phone"/>
+    <structure field="m_information" usage="optional"
+        marshaller="org.jibx.extras.Dom4JListMapper"
+        unmarshaller="org.jibx.extras.Dom4JListMapper"/>
+  </mapping>
+</binding>

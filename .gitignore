@@ -6,3 +6,5 @@ target
 .metadata
 *.releaseBackup
 release.properties
+lib/*.jar
+

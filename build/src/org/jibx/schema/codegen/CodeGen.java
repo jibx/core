@@ -2105,6 +2105,8 @@ public class CodeGen
                 abs = false;
             }
         }
+        if (!diriter.hasNext())
+            filestep = (String)fileiter.next();	// Relative to target directory
         
         // check whether relative path can be used
         if (abs) {

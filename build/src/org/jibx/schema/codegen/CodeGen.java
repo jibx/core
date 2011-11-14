@@ -1748,6 +1748,8 @@ public class CodeGen
                             url = ClasspathUrlExtender.buildURL(null, path);
                         } else {
                             file = new File(path);
+                            if (!file.isAbsolute())
+                                file = new File(m_targetDir, path);
                             url = file.toURI().toURL();
                         }
                         try {

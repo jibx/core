@@ -23,4 +23,5 @@ docs/jibxws
 docs/eclipse/*.html
 examples/codegen/jibx.log
 jibx_1_2_3_SNAPSHOT.zip
+examples/starter/bin
 

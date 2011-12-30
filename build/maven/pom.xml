@@ -6,6 +6,7 @@
     <groupId>org.jibx.config</groupId>
     <artifactId>core-reactor</artifactId>
     <version>1.2.4-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>main-reactor</artifactId>

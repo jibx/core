@@ -108,46 +108,55 @@
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.core.contenttype</artifactId>
           <version>3.4.100.v20110423-0524</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.core.jobs</artifactId>
           <version>3.5.100.v20110404</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.core.resources</artifactId>
           <version>3.7.100.v20110510-0712</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.core.runtime</artifactId>
           <version>3.7.0.v20110110</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.equinox.common</artifactId>
           <version>3.6.0.v20110523</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.equinox.preferences</artifactId>
           <version>3.4.0.v20110502</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.jdt.core</artifactId>
           <version>3.7.0.v_B61</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.osgi</artifactId>
           <version>3.7.0.v20110613</version>
+          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.jibx.config.3rdparty.org.eclipse</groupId>
           <artifactId>org.eclipse.text</artifactId>
           <version>3.5.100.v20110505-0800</version>
+          <scope>compile</scope>
       </dependency>
   </dependencies>
 

@@ -1,6 +1,7 @@
 target
 .settings
 .project
+.attach*
 .classpath
 *~
 .metadata

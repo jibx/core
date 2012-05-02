@@ -17,7 +17,7 @@
 
   <properties>
     <!-- Make jibx location relative for jibx-xxx (core) projects -->
-    <jibxRootDir>../../..</jibxRootDir>
+    <jibxRootDir>../../../..</jibxRootDir>
   </properties>
 
   <profiles>

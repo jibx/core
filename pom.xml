@@ -18,9 +18,9 @@
   <description>JiBX core code</description>
 
   <scm>
-    <url>https://github.com/jibx/jibx-core</url>
-    <connection>scm:git:git://github.com/jibx/jibx-core.git</connection>
-    <developerConnection>scm:git:git@github.com:jibx/jibx-core.git</developerConnection>
+    <url>https://github.com/jibx/core</url>
+    <connection>scm:git:git://github.com/jibx/core.git</connection>
+    <developerConnection>scm:git:git@github.com:jibx/core.git</developerConnection>
   </scm>
 
   <modules>

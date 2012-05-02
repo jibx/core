@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jibx.config</groupId>
     <artifactId>core-reactor</artifactId>
-    <version>1.2.5-SNAPSHOT</version>
+    <version>1.2.4-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
@@ -14,11 +14,6 @@
   <packaging>pom</packaging>
   <name>main-reactor - JiBX main reactor</name>
   <description>JiBX main reactor</description>
-
-  <properties>
-    <!-- Make jibx location relative for jibx-xxx (core) projects -->
-    <jibxRootDir>../../../..</jibxRootDir>
-  </properties>
 
   <profiles>
     <profile> 

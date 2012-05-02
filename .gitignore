@@ -8,6 +8,7 @@ target
 *.releaseBackup
 release.properties
 lib/*.jar
+lib/*.zip
 build/classes
 build/docs/classes
 build/docs/lib/site.jar
@@ -23,6 +24,5 @@ docs/jibxota
 docs/jibxws
 docs/eclipse/*.html
 examples/codegen/jibx.log
-jibx_1_2_3_SNAPSHOT.zip
 examples/starter/bin
 

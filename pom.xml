@@ -11,16 +11,16 @@
 
   <groupId>org.jibx.config</groupId>
   <artifactId>core-reactor</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.4-SNAPSHOT</version>
   
   <packaging>pom</packaging>
   <name>core-reactor - JiBX core reactor</name>
   <description>JiBX core code</description>
 
   <scm>
-    <url>https://github.com/jibx/core</url>
-    <connection>scm:git:git://github.com/jibx/core.git</connection>
-    <developerConnection>scm:git:git@github.com:jibx/core.git</developerConnection>
+    <url>https://github.com/jibx/jibx-core</url>
+    <connection>scm:git:git://github.com/jibx/jibx-core.git</connection>
+    <developerConnection>scm:git:git@github.com:jibx/jibx-core.git</developerConnection>
   </scm>
 
   <modules>

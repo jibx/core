@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.jibx.config</groupId>
-    <artifactId>core-reactor2</artifactId>
+    <artifactId>core-reactor</artifactId>
     <version>1.2.5-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>main-reactor2</artifactId>
+  <artifactId>main-reactor</artifactId>
   
   <packaging>pom</packaging>
   <name>main-reactor - JiBX main reactor</name>
@@ -38,11 +38,11 @@
   </profiles>
 
   <modules>
-    <!-- module>jibx-run</module>
+    <module>jibx-run</module>
     <module>jibx-extras</module>
     <module>jibx-bind</module>
     <module>jibx-schema</module>
-    <module>jibx-tools</module -->
+    <module>jibx-tools</module>
     <module>obr</module>
     <module>external-obr</module>
   </modules>

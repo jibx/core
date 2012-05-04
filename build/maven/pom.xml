@@ -38,11 +38,11 @@
   </profiles>
 
   <modules>
-    <module>jibx-run</module>
+    <!-- module>jibx-run</module>
     <module>jibx-extras</module>
     <module>jibx-bind</module>
     <module>jibx-schema</module>
-    <module>jibx-tools</module>
+    <module>jibx-tools</module -->
     <module>obr</module>
     <module>obr-external</module>
     <module>obr-all</module>

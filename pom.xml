@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>org.jibx.config</groupId>
-  <artifactId>core-reactor</artifactId>
-  <version>1.2.5-SNAPSHOT</version>
+  <artifactId>core-reactor2</artifactId>
+  <version>1.2.4-SNAPSHOT</version>
   
   <packaging>pom</packaging>
   <name>core-reactor - JiBX core reactor</name>

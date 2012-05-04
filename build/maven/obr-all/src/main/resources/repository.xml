@@ -1,5 +1,5 @@
-<repository lastmodified="20120503060643.247">
+<repository lastmodified="20120503060643.257">
   <referral depth="10" url="http://repo2.maven.org/maven2/org/jibx/config/jibx-obr/${project.version}/jibx-obr-${project.version}-repository.xml"/>
   <referral depth="10" url="http://repo2.maven.org/maven2/org/jibx/config/jibx-obr-external/${project.version}/jibx-obr-external-${project.version}-repository.xml"/>
-  <referral depth="10" url="http://repo2.maven.org/maven2/org/jibx/schema/config/obr/1.0.4/obr-1.0.4-repository.xml"/>
+  <referral depth="10" url="http://repo2.maven.org/maven2/org/jibx/schema/config/obr/${jibx-schema-version}/obr-${jibx-schema-version}-repository.xml"/>
 </repository>

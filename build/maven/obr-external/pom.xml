@@ -4,14 +4,14 @@
 
   <parent>
     <groupId>org.jibx.config</groupId>
-    <artifactId>main-reactor</artifactId>
-    <version>1.2.5-SNAPSHOT</version>
+    <artifactId>main-reactor3</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
 
-  <artifactId>external-obr</artifactId>
+  <artifactId>jibx-obr-external</artifactId>
   <packaging>pom</packaging>
 
-  <name>external-obr - JiBX External OBR repository</name>
+  <name>jibx-external-obr - JiBX External OBR repository</name>
   <description>JiBX external OBR repository</description>
   
     <build>

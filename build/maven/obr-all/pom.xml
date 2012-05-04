@@ -8,11 +8,11 @@
     <version>1.2.4-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jibx-obr</artifactId>
+  <artifactId>jibx-obr-all</artifactId>
   <packaging>pom</packaging>
 
-  <name>jibx-obr - JiBX OBR repository</name>
-  <description>JiBX OBR repository</description>
+  <name>jibx-obr-all - Top level OBR repository</name>
+  <description>JiBX Top-Level OBR repository</description>
   
     <build>
         <resources>

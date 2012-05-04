@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.jibx.config</groupId>
-    <artifactId>core-reactor</artifactId>
-    <version>1.2.5-SNAPSHOT</version>
+    <artifactId>core-reactor3</artifactId>
+    <version>1.2.4-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>main-reactor</artifactId>
+  <artifactId>main-reactor3</artifactId>
   
   <packaging>pom</packaging>
   <name>main-reactor - JiBX main reactor</name>
@@ -44,7 +44,8 @@
     <module>jibx-schema</module>
     <module>jibx-tools</module>
     <module>obr</module>
-    <module>external-obr</module>
+    <module>obr-external</module>
+    <module>obr-all</module>
   </modules>
 
 </project>

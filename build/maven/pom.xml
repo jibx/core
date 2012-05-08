@@ -43,9 +43,6 @@
     <module>jibx-bind</module>
     <module>jibx-schema</module>
     <module>jibx-tools</module>
-    <module>obr</module>
-    <module>obr-external</module>
-    <module>obr-all</module>
   </modules>
 
 </project>

@@ -40,7 +40,7 @@ file has been tested with ant version 1.6.1.
   <property name="project" value="JiBX Java data binding to XML"/>
   <property name="projname" value="jibx"/>
   <property name="version" value="1.2.5-SNAPSHOT"/>
-  <property name="distribname" value="jibx_1_2_5-SNAPSHOT"/>
+  <property name="distribname" value="jibx_1_2_5_SNAPSHOT"/>
   <property name="packages" value="org.jibx"/>
   <property environment="env"/>
   <condition property="skip21">

@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.jibx.config</groupId>
     <artifactId>jibx-parent</artifactId>
-    <version>4</version>
+    <version>5</version>
     <relativePath>../jibx-parent</relativePath>
   </parent>
 
   <groupId>org.jibx.config</groupId>
   <artifactId>core-reactor</artifactId>
-  <version>1.2.4.3-SNAPSHOT</version>
+  <version>1.2.4.5-SNAPSHOT</version>
   
   <packaging>pom</packaging>
   <name>core-reactor - JiBX core reactor</name>

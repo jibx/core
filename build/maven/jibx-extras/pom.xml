@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jibx.config</groupId>
     <artifactId>main-reactor</artifactId>
-    <version>1.2.4.1-SNAPSHOT</version>
+    <version>1.2.4.1</version>
   </parent>
 
   <groupId>org.jibx</groupId>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jibx-run</artifactId>
-      <version>1.2.4.1-SNAPSHOT</version>
+      <version>1.2.4.1</version>
     </dependency>
 
 	<dependency>

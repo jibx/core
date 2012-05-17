@@ -322,7 +322,8 @@ public class SourceBuilder
         if (gendir != null) {
             try {
                 File file = new File(gendir, m_name + ".java");
-                FileWriter fwrit = new FileWriter(file);
+//x don JIBX-434  FileWriter fwrit = new FileWriter(file);
+                OutputStreamWriter fwrit = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
                 WriterVisitor visitor = new WriterVisitor(text, fwrit);
                 edits.accept(visitor);
                 visitor.finish();

@@ -22,7 +22,8 @@
 package org.jibx.schema.codegen;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;

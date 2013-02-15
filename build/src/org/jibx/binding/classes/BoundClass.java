@@ -83,7 +83,12 @@ public class BoundClass
     /** Bound class file information. */
     private final ClassFile m_boundClass;
 
-    /** Class receiving code generated for target class. */
+    /** Munged version of target class (<code>null</code> if target class
+     * completely unmodifiable). */
+    private final MungedClass m_directMungedClass;
+
+    /** Class receiving code generated for target class (may be same as {@link
+     * #m_directMungedClass}. */
     private final MungedClass m_mungedClass;
 
     /**
@@ -102,10 +107,14 @@ public class BoundClass
      * Constructor.
      * 
      * @param bound target class file information
-     * @param munge class file for class hosting generated code
+     * @param dmunge information for bound class (<code>null</code> if not
+     * modifiable)
+     * @param munge class file for class hosting generated code (may be same as
+     * {@link dmunge}
      */
-    private BoundClass(ClassFile bound, MungedClass munge) {
+    private BoundClass(ClassFile bound, MungedClass dmunge, MungedClass munge) {
         m_boundClass = bound;
+        m_directMungedClass = dmunge;
         m_mungedClass = munge;
     }
 
@@ -128,9 +137,21 @@ public class BoundClass
     }
 
     /**
+     * Get direct munged class file information, if available.
+     * 
+     * @return class file information for class receiving binding code
+     */
+    public ClassFile getDirectMungedFile() {
+    	if (m_directMungedClass == null) {
+    		throw new IllegalStateException("Internal error - no direct access to class " + m_boundClass.getName());
+    	}
+    	return m_directMungedClass.getClassFile();
+    }
+
+    /**
      * Get munged class file information.
      * 
-     * @return class file information for class being modified
+     * @return class file information for class receiving binding code
      */
     public ClassFile getMungedFile() {
         return m_mungedClass.getClassFile();
@@ -144,6 +165,20 @@ public class BoundClass
      */
     public boolean isDirectAccess() {
         return m_boundClass == m_mungedClass.getClassFile();
+    }
+    
+    /**
+     * Check if class being changed directly with restrictions. This is used for
+     * the special case of modifiable Java 7 class files, which still require a
+     * separate class for most of the code generation but are modified directly
+     * with binding factory information and basic implementations of the binding
+     * interface methods.
+     * 
+     * @return <code>true</code> if bound class can be modified directly with
+     * basic binding information, <code>false</code> if using a surrogate
+     */
+    public boolean isLimitedDirectAccess() {
+    	return isDirectAccess() || m_boundClass.isModifiable();
     }
 
     /**
@@ -189,7 +224,7 @@ public class BoundClass
             mb.appendReturn(type);
 
             // track unique instance of this method
-            method = m_mungedClass.getUniqueMethod(mb, true);
+            method = m_directMungedClass.getUniqueMethod(mb, true);
             m_loadMap.put(item, method);
         }
 
@@ -250,7 +285,7 @@ public class BoundClass
             mb.appendReturn();
 
             // track unique instance of this method
-            method = m_mungedClass.getUniqueMethod(mb, true);
+            method = m_directMungedClass.getUniqueMethod(mb, true);
             m_storeMap.put(item, method);
         }
 
@@ -282,7 +317,11 @@ public class BoundClass
      */
     public BindingMethod getUniqueNamed(MethodBuilder builder)
         throws JiBXException {
-        return m_mungedClass.getUniqueMethod(builder, false);
+    	if (builder.getClassFile() == m_boundClass) {
+    		return m_directMungedClass.getUniqueMethod(builder, false);
+    	} else {
+    		return m_mungedClass.getUniqueMethod(builder, false);
+    	}
     }
 
     /**
@@ -292,23 +331,8 @@ public class BoundClass
      * @param fact binding factory name
      */
     public void addFactory(String fact) {
-        if (isDirectAccess()) {
-            m_mungedClass.addFactory(fact);
-        } else {
-            throw new IllegalStateException(
-                "Internal error: not directly modifiable class");
-        }
-    }
-
-    /**
-     * Generate factory list. Makes sure that there's no surrogate class for
-     * code generation, then delegates to the modified class handling.
-     * 
-     * @throws JiBXException on configuration error
-     */
-    public void setFactoryList() throws JiBXException {
-        if (isDirectAccess()) {
-            m_mungedClass.setFactoryList();
+        if (isLimitedDirectAccess()) {
+        	m_directMungedClass.addFactory(fact);
         } else {
             throw new IllegalStateException(
                 "Internal error: not directly modifiable class");
@@ -323,13 +347,15 @@ public class BoundClass
      * @param key text identifier for this bound class and munged class
      * combination
      * @param bound class information for bound class
-     * @param munge information for surrogate class receiving generated code, or
-     * <code>null</code> if no separate class
+     * @param dmunge information for bound class (<code>null</code> if not
+     * modifiable)
+     * @param munge information for class receiving generated code (may be the
+     * same as {@link dmunge}
      * @return binding information for class
      */
     private static BoundClass createInstance(String key, ClassFile bound,
-        MungedClass munge) {
-        BoundClass inst = new BoundClass(bound, munge);
+        MungedClass dmunge, MungedClass munge) {
+        BoundClass inst = new BoundClass(bound, dmunge, munge);
         s_nameMap.put(key, inst);
         return inst;
     }
@@ -348,7 +374,7 @@ public class BoundClass
         String key = bound.getName() + ':' + munge.getClassFile().getName();
         BoundClass inst = (BoundClass)s_nameMap.get(key);
         if (inst == null) {
-            inst = createInstance(key, bound, munge);
+            inst = createInstance(key, bound, null, munge);
         }
         return inst;
     }
@@ -376,12 +402,33 @@ public class BoundClass
         BoundClass inst = (BoundClass)s_nameMap.get(cf.getName());
         if (inst == null) {
 
-            // load the basic class information and check for modifiable
+            // load the basic class information and check for extendable
             if (!cf.isInterface() && cf.isModifiable()) {
-
-                // return instance directly
-                inst = createInstance(cf.getName(), cf, MungedClass
-                    .getInstance(cf));
+            	if (cf.isExtendable()) {
+                	
+	                // return configuration for all modification direct to class
+	                MungedClass munge = MungedClass.getInstance(cf);
+					inst = createInstance(cf.getName(), cf, munge, munge);
+                	
+                } else {
+                	
+	                // return configuration with separate munge file
+	                MungedClass dmunge = MungedClass.getInstance(cf);
+					inst = createInstance(cf.getName(), cf, dmunge,
+					    getGenericMunge());
+                	
+                }
+            	
+            	// set information used for munge class if not already set
+            	if (s_modifyRoot == null) {
+            		s_modifyRoot = cf.getRoot();
+            	}
+            	if (s_modifyPackage == null) {
+            		s_modifyPackage = cf.getPackage();
+            		if (s_modifyPackage != null && s_modifyPackage.length() == 0) {
+            			s_modifyPackage = null;
+            		}
+            	}
 
             } else {
 
@@ -395,32 +442,43 @@ public class BoundClass
                 } else {
 
                     // use catch-all munge class as surrogate for all else
-                    if (s_genericMunge == null) {
-                        String mname;
-                        if (s_modifyPackage == null) {
-                            mname = s_mungeName;
-                            MungedClass.checkDirectory(s_modifyRoot, "");
-                        } else {
-                            mname = s_modifyPackage + '.' + s_mungeName;
-                            MungedClass.checkDirectory(s_modifyRoot,
-                                s_modifyPackage);
-                        }
-                        ClassFile base = ClassCache
-                            .requireClassFile("java.lang.Object");
-                        int acc = Constants.ACC_PUBLIC | Constants.ACC_ABSTRACT;
-                        ClassFile gen = new ClassFile(mname, s_modifyRoot,
-                            base, acc, new String[0]);
-                        gen.addDefaultConstructor();
-                        s_genericMunge = MungedClass.getInstance(gen);
-                        MungedClass.delayedAddUnique(gen);
-                    }
-                    inst = findOrCreateInstance(cf, s_genericMunge);
+                    inst = findOrCreateInstance(cf, getGenericMunge());
 
                 }
             }
         }
         return inst;
     }
+
+	/**
+	 * Get the generic munge class. If one does not already exist, this will
+	 * create it.
+	 *
+	 * @return munge
+	 * @throws JiBXException
+	 */
+	private static MungedClass getGenericMunge() throws JiBXException {
+		if (s_genericMunge == null) {
+		    String mname;
+		    if (s_modifyPackage == null) {
+		        mname = s_mungeName;
+		        MungedClass.checkDirectory(s_modifyRoot, "");
+		    } else {
+		        mname = s_modifyPackage + '.' + s_mungeName;
+		        MungedClass.checkDirectory(s_modifyRoot,
+		            s_modifyPackage);
+		    }
+		    ClassFile base = ClassCache
+		        .requireClassFile("java.lang.Object");
+		    int acc = Constants.ACC_PUBLIC | Constants.ACC_ABSTRACT;
+		    ClassFile gen = new ClassFile(mname, s_modifyRoot,
+		        base, acc, new String[0]);
+		    gen.addDefaultConstructor();
+		    s_genericMunge = MungedClass.getInstance(gen);
+		    MungedClass.delayedAddUnique(gen);
+		}
+		return s_genericMunge;
+	}
 
     /**
      * Get binding information for class. This version takes a fully-qualified
@@ -461,19 +519,23 @@ public class BoundClass
      * Set override modification information. This allows the binding to
      * control directly the root directory and package for added classes, and
      * also to set the binding name used as a modifier on the generic munge
-     * adapter class.
+     * adapter class. It may be called multiple times with <code>null</code>
+     * values for unknown parameters that may later be overridden.
      * 
      * @param root classpath root directory for added classes
      * @param pkg package for added classes
      * @param name binding name
      */
     public static void setModify(File root, String pkg, String name) {
-        s_modifyRoot = root;
-        s_modifyPackage = pkg;
-        if (s_modifyPackage.length() == 0) {
-            s_modifyPackage = null;
-        }
-        s_mungeName = BindingDirectory.GENERATE_PREFIX + name + "MungeAdapter";
+    	if (s_modifyRoot == null) {
+    		s_modifyRoot = root;
+    	}
+    	if (s_modifyPackage == null && pkg != null && pkg.length() > 0) {
+    		s_modifyPackage = pkg;
+    	}
+    	if (s_mungeName == null) {
+    		s_mungeName = BindingDirectory.GENERATE_PREFIX + name + "MungeAdapter";
+    	}
     }
 
     /**

@@ -137,7 +137,7 @@ public class MappingDirect extends MappingBase
     
     public void generateCode(boolean force) throws JiBXException {
         if (!m_isGenerated) {
-            if (m_boundClass.isDirectAccess()) {
+            if (m_boundClass.isLimitedDirectAccess()) {
                 addIMarshallableMethod();
                 addIUnmarshallableMethod();
             }

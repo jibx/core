@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2010, Dennis M. Sosnoski
+Copyright (c) 2003-2012, Dennis M. Sosnoski
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

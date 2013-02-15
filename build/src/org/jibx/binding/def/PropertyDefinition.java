@@ -542,8 +542,9 @@ public class PropertyDefinition
      *
      * @param mb method builder
      * @return wrapper for branch instruction taken when property is missing
+     * @throws JiBXException 
      */
-    public BranchWrapper genTest(ContextMethodBuilder mb) {
+    public BranchWrapper genTest(ContextMethodBuilder mb) throws JiBXException {
         
         // first check for supplied test method
         if (m_testMethod != null) {
@@ -565,10 +566,7 @@ public class PropertyDefinition
                 // generated instruction either loads a field value or calls a
                 //  "get" method, as appropriate
                 if (m_getMethod == null) {
-                    if (m_fieldItem.isStatic()) {
-                        discardValue(mb);
-                    }
-                    mb.appendGet(m_fieldItem);
+                	genLoad(mb);
                 } else {
                     if (m_getMethod.isStatic()) {
                         discardValue(mb);

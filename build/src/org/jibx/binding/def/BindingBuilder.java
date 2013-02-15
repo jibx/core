@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.apache.bcel.Constants;
+import org.jibx.binding.classes.BindingMethod;
 import org.jibx.binding.classes.BoundClass;
 import org.jibx.binding.classes.BranchTarget;
 import org.jibx.binding.classes.BranchWrapper;
@@ -495,18 +496,36 @@ public abstract class BindingBuilder
         } else {
             
             // build the serializer method (just delegates to value method)
-            ClassFile cf = bndclas.getMungedFile();
+            ClassFile cf = bndclas.getDirectMungedFile();
             ExceptionMethodBuilder smeth = new ExceptionMethodBuilder
                 (CUSTOM_ENUM_SERIALIZER_NAME, sersig, cf,
                 Constants.ACC_PUBLIC | Constants.ACC_STATIC);
-            smeth.appendLoadLocal(0);
-            BranchWrapper nonnull = smeth.appendIFNONNULL(smeth);
-            smeth.appendACONST_NULL();
-            smeth.appendReturn("java.lang.String");
-            smeth.targetNext(nonnull);
-            smeth.appendLoadLocal(0);
-            smeth.appendCallVirtual(evfull, "()Ljava/lang/String;");
-            smeth.appendReturn("java.lang.String");
+            if (bndclas.isLimitedDirectAccess()) {
+                
+                // build support method to handle actual serialization
+                String supname = '_' + type.replace('.', '_') +
+                    CUSTOM_ENUM_SERIALIZER_NAME;
+                ClassFile supfile = bndclas.getMungedFile();
+                ExceptionMethodBuilder supmeth = new ExceptionMethodBuilder
+                    (supname, sersig, supfile,
+                    Constants.ACC_PUBLIC | Constants.ACC_STATIC);
+                buildEnumSerializeMethod(evfull, supmeth);
+                BindingMethod supfinal = bndclas.getUniqueNamed(supmeth);
+                
+                // delegate to support method
+                smeth.appendLoadLocal(0);
+                smeth.appendCallStatic(supfile.getName() + '.' +
+                    supfinal.getName(), sersig);
+                smeth.appendReturn("java.lang.String");
+            	
+            } else {
+                
+                // handle serialization inline
+            	buildEnumSerializeMethod(evfull, smeth);
+            	
+            }
+            
+            // add completed serializer method to class
             bndclas.getUniqueNamed(smeth);
             
             // create the deserializer method
@@ -514,72 +533,126 @@ public abstract class BindingBuilder
                 (CUSTOM_ENUM_DESERIALIZER_NAME, dsersig, cf,
                 Constants.ACC_PUBLIC | Constants.ACC_STATIC);
             dmeth.addException(MethodBuilder.FRAMEWORK_EXCEPTION_CLASS);
+            if (bndclas.isLimitedDirectAccess()) {
+            	
+            	// build support method to handle actual deserialization
+            	String supname = '_' + type.replace('.', '_') +
+        			CUSTOM_ENUM_DESERIALIZER_NAME;
+                ClassFile supfile = bndclas.getMungedFile();
+				ExceptionMethodBuilder supmeth = new ExceptionMethodBuilder
+                    (supname, dsersig, supfile,
+                    Constants.ACC_PUBLIC | Constants.ACC_STATIC);
+                buildEnumDeserializeMethod(type, typesig, evfull, supmeth);
+                BindingMethod supfinal = bndclas.getUniqueNamed(supmeth);
+            	
+                // delegate to support method
+                dmeth.appendLoadLocal(0);
+                dmeth.appendCallStatic(supfile.getName() + '.' +
+                	supfinal.getName(), dsersig);
+        		dmeth.appendReturn(type);
+            	
+            } else {
+            	
+            	// handle deserialization inline
+            	buildEnumDeserializeMethod(type, typesig, evfull, dmeth);
+            	
+            }
             
-            // start by handling the null string case
-            dmeth.appendLoadLocal(0);
-            nonnull = dmeth.appendIFNONNULL(dmeth);
-            dmeth.appendACONST_NULL();
-            dmeth.appendReturn(type);
-            dmeth.targetNext(nonnull);
-            
-            // set up locals for array of values and decrementing index
-            dmeth.appendCallStatic(type + ".values", "()[" + typesig);
-            dmeth.appendDUP();
-            int arraylocal = dmeth.addLocal("values",
-                ClassItem.typeFromName(type + "[]"));
-            dmeth.appendARRAYLENGTH();
-            int arrayindex = dmeth.addLocal("index",
-                ClassItem.typeFromName("int"));
-            
-            // start comparison loop with check for off bottom of array
-            BranchTarget start = dmeth.appendTargetNOP();
-            dmeth.appendIncrementLocal(-1, arrayindex);
-            dmeth.appendLoadLocal(arrayindex);
-            BranchWrapper loadnext = dmeth.appendIFGE(dmeth);
-            
-            // throw an exception for value not found
-            dmeth.appendCreateNew("java.lang.StringBuffer");
-            dmeth.appendDUP();
-            dmeth.appendLoadConstant("No match found for value '");
-            dmeth.appendCallInit("java.lang.StringBuffer",
-                "(Ljava/lang/String;)V");
-            dmeth.appendLoadLocal(0);
-            dmeth.appendCallVirtual("java.lang.StringBuffer.append",
-                "(Ljava/lang/String;)Ljava/lang/StringBuffer;");
-            dmeth.appendLoadConstant("' in enum class " + type);
-            dmeth.appendCallVirtual("java.lang.StringBuffer.append",
-                "(Ljava/lang/String;)Ljava/lang/StringBuffer;");
-            dmeth.appendCallVirtual("java.lang.StringBuffer.toString",
-                "()Ljava/lang/String;");
-            dmeth.appendCreateNew(MethodBuilder.FRAMEWORK_EXCEPTION_CLASS);
-            dmeth.appendDUP_X1();
-            dmeth.appendSWAP();
-            dmeth.appendCallInit(MethodBuilder.FRAMEWORK_EXCEPTION_CLASS,
-                MethodBuilder.EXCEPTION_CONSTRUCTOR_SIGNATURE1);
-            dmeth.appendThrow();
-            
-            // load and compare the value
-            dmeth.targetNext(loadnext);
-            dmeth.appendLoadLocal(0);
-            dmeth.appendLoadLocal(arraylocal);
-            dmeth.appendLoadLocal(arrayindex);
-            dmeth.appendALOAD(type);
-            dmeth.appendCallVirtual(evfull, "()Ljava/lang/String;");
-            dmeth.appendCallVirtual("java.lang.Object.equals",
-                "(Ljava/lang/Object;)Z");
-            BranchWrapper tonext = dmeth.appendIFEQ(dmeth);
-            tonext.setTarget(start, dmeth);
-            
-            // return the matching instance
-            dmeth.appendLoadLocal(arraylocal);
-            dmeth.appendLoadLocal(arrayindex);
-            dmeth.appendALOAD(type);
-            dmeth.appendReturn(type);
-            
-            // add completed method to class
+            // add completed deserializer method to class
             bndclas.getUniqueNamed(dmeth);
         }
     }
+
+	/**
+	 * Fill in the body of an enum serialization method.
+	 *
+	 * @param evfull
+	 * @param smeth
+	 */
+	private static void buildEnumSerializeMethod(String evfull,
+		ExceptionMethodBuilder smeth) {
+		smeth.appendLoadLocal(0);
+		BranchWrapper nonnull = smeth.appendIFNONNULL(smeth);
+		smeth.appendACONST_NULL();
+		smeth.appendReturn("java.lang.String");
+		smeth.targetNext(nonnull);
+		smeth.appendLoadLocal(0);
+		smeth.appendCallVirtual(evfull, "()Ljava/lang/String;");
+		smeth.appendReturn("java.lang.String");
+	}
+
+	/**
+	 * Fill in the body of an enum deserialization method.
+	 *
+	 * @param type
+	 * @param typesig
+	 * @param evfull
+	 * @param dmeth
+	 */
+	private static void buildEnumDeserializeMethod(String type, String typesig,
+        String evfull, ExceptionMethodBuilder dmeth) {
+		
+		// start by handling the null string case
+		dmeth.appendLoadLocal(0);
+		BranchWrapper nonnull = dmeth.appendIFNONNULL(dmeth);
+		dmeth.appendACONST_NULL();
+		dmeth.appendReturn(type);
+		dmeth.targetNext(nonnull);
+		
+		// set up locals for array of values and decrementing index
+		dmeth.appendCallStatic(type + ".values", "()[" + typesig);
+		dmeth.appendDUP();
+		int arraylocal = dmeth.addLocal("values",
+		    ClassItem.typeFromName(type + "[]"));
+		dmeth.appendARRAYLENGTH();
+		int arrayindex = dmeth.addLocal("index",
+		    ClassItem.typeFromName("int"));
+		
+		// start comparison loop with check for off bottom of array
+		BranchTarget start = dmeth.appendTargetNOP();
+		dmeth.appendIncrementLocal(-1, arrayindex);
+		dmeth.appendLoadLocal(arrayindex);
+		BranchWrapper loadnext = dmeth.appendIFGE(dmeth);
+		
+		// throw an exception for value not found
+		dmeth.appendCreateNew("java.lang.StringBuffer");
+		dmeth.appendDUP();
+		dmeth.appendLoadConstant("No match found for value '");
+		dmeth.appendCallInit("java.lang.StringBuffer",
+		    "(Ljava/lang/String;)V");
+		dmeth.appendLoadLocal(0);
+		dmeth.appendCallVirtual("java.lang.StringBuffer.append",
+		    "(Ljava/lang/String;)Ljava/lang/StringBuffer;");
+		dmeth.appendLoadConstant("' in enum class " + type);
+		dmeth.appendCallVirtual("java.lang.StringBuffer.append",
+		    "(Ljava/lang/String;)Ljava/lang/StringBuffer;");
+		dmeth.appendCallVirtual("java.lang.StringBuffer.toString",
+		    "()Ljava/lang/String;");
+		dmeth.appendCreateNew(MethodBuilder.FRAMEWORK_EXCEPTION_CLASS);
+		dmeth.appendDUP_X1();
+		dmeth.appendSWAP();
+		dmeth.appendCallInit(MethodBuilder.FRAMEWORK_EXCEPTION_CLASS,
+		    MethodBuilder.EXCEPTION_CONSTRUCTOR_SIGNATURE1);
+		dmeth.appendThrow();
+		
+		// load and compare the value
+		dmeth.targetNext(loadnext);
+		dmeth.appendLoadLocal(0);
+		dmeth.appendLoadLocal(arraylocal);
+		dmeth.appendLoadLocal(arrayindex);
+		dmeth.appendALOAD(type);
+		dmeth.appendCallVirtual(evfull, "()Ljava/lang/String;");
+		dmeth.appendCallVirtual("java.lang.Object.equals",
+		    "(Ljava/lang/Object;)Z");
+		BranchWrapper tonext = dmeth.appendIFEQ(dmeth);
+		tonext.setTarget(start, dmeth);
+		
+		// return the matching instance
+		dmeth.appendLoadLocal(arraylocal);
+		dmeth.appendLoadLocal(arrayindex);
+		dmeth.appendALOAD(type);
+		dmeth.appendReturn(type);
+	}
 
     /**
      * Unmarshal string conversion. Unmarshals conversion information directly
@@ -2142,6 +2215,9 @@ public abstract class BindingBuilder
         boolean trim = ctx.attributeBoolean(URI_ATTRIBUTES, BINDING_TRIM, false);
         int major = ctx.attributeInt(URI_ATTRIBUTES, BINDING_MAJORVER, 0);
         int minor = ctx.attributeInt(URI_ATTRIBUTES, BINDING_MINORVER, 0);
+        
+        // initialize binding name and target package, if not already set
+        BoundClass.setModify(null, tpack, name);
         
         // create actual binding instance
         BindingDefinition bdef = new BindingDefinition(name, ibind, obind, tpack,

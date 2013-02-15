@@ -668,7 +668,7 @@ public class MappingDefinition extends MappingBase
         mb.addMethod();
         
         // add interface if mapped class is directly unmarshallable
-        if (hasname && m_class.getClassFile() == m_class.getMungedFile()) {
+        if (hasname && m_class.isLimitedDirectAccess()) {
             addIUnmarshallableMethod();
         }
     }
@@ -874,7 +874,7 @@ public class MappingDefinition extends MappingBase
             generateIfExtendingCheck(cf, hasname);
             
             // add interface if mapped class is directly marshallable
-            if (hasname && m_class.getClassFile() == m_class.getMungedFile()) {
+            if (hasname && m_class.isLimitedDirectAccess()) {
                 addIMarshallableMethod();
             }
             

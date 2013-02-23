@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2010, Dennis M. Sosnoski.
+Copyright (c) 2003-2012, Dennis M. Sosnoski.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -77,7 +77,9 @@ import org.jibx.runtime.JiBXException;
  */
 public class ClassFile
 {
-    //
+    /** Major version number for Java 7. */
+	private static final int JAVA7_MAJOR_VERSION = 51;
+	//
     // Constants for code generation.
     
     public static final int PRIVATE_ACCESS = 0;
@@ -129,6 +131,9 @@ public class ClassFile
 
     /** File is writable flag. */
     private boolean m_isWritable;
+    
+    /** Binding code can be added to class flag. */
+    private boolean m_isExtendable;
 
     /** Super class of this class (set by caller, since it may require
      additional information to find the class file). */
@@ -206,6 +211,7 @@ public class ClassFile
         m_path = root.getAbsolutePath();
         m_file = file;
         m_isWritable = file.canWrite() && !ClassCache.isPreserveClass(name);
+        m_isExtendable = m_isWritable && m_curClass.getMajor() < JAVA7_MAJOR_VERSION;
     }
 
     /**
@@ -254,6 +260,7 @@ public class ClassFile
         m_interfaceNames = impls;
         m_file = file;
         m_isWritable = true;
+        m_isExtendable = true;
         m_genClass = new ClassGen(name, sclas.getName(), "",
             access | SYNTHETIC_ACCESS_FLAG, impls);
         m_genPool = m_genClass.getConstantPool();
@@ -399,6 +406,15 @@ public class ClassFile
      */
     public boolean isModifiable() {
         return m_isWritable && !isInterface();
+    }
+    
+    /**
+     * Check if binding methods can be added to class.
+     *
+     * @return <code>true</code> if methods can be added, <code>false</code> if not
+     */
+    public boolean isExtendable() {
+    	return m_isExtendable;
     }
 
     /**

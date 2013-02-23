@@ -155,7 +155,7 @@ public abstract class MappingBase extends LinkableBase implements IMapping
 	    
 	    // set up for constructing actual marshal method
         BoundClass clas = getBoundClass();
-	    ClassFile cf = clas.getMungedFile();
+	    ClassFile cf = clas.getDirectMungedFile();
 	    ContextMethodBuilder mb = new ContextMethodBuilder
 	        (MARSHALLABLE_METHODNAME, MARSHALLABLE_SIGNATURE, cf,
 	        Constants.ACC_PUBLIC, 0, clas.getClassFile().getName(),
@@ -199,7 +199,7 @@ public abstract class MappingBase extends LinkableBase implements IMapping
 	    
 	    // set up for constructing new method
         BoundClass clas = getBoundClass();
-	    ClassFile cf = clas.getMungedFile();
+	    ClassFile cf = clas.getDirectMungedFile();
 	    ContextMethodBuilder mb = new ContextMethodBuilder
 	        (UNMARSHALLABLE_METHODNAME, UNMARSHALLABLE_SIGNATURE, cf,
 	        Constants.ACC_PUBLIC, 0, clas.getClassFile().getName(),

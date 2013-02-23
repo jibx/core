@@ -223,12 +223,15 @@ public class MungedClass
      * in the target directory and loads any that start with the JiBX
      * identifier string which have not been added to the preserve list.
      *
-     * @param root class path root for directory
+     * @param root class path root for directory (non-<code>null</code>)
      * @param pack package relative to root directory
      * @throws JiBXException on configuration error
      */
     /*package*/ static void checkDirectory(File root, String pack)
         throws JiBXException {
+    	if (root == null) {
+    		throw new IllegalArgumentException("Should never be called with null root");
+    	}
         try {
             File directory = new File
                 (root, pack.replace('.', File.separatorChar));
@@ -316,7 +319,10 @@ public class MungedClass
                         ("Existing class conflicts with load");
                 }
                 String pack = cf.getPackage();
-                checkDirectory(cf.getRoot(), pack);
+                File root = cf.getRoot();
+                if (root != null) {
+                	checkDirectory(root, pack);
+                }
             }
         }
         inst.m_classFile.incrementUseCount();

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, Dennis M. Sosnoski.
+Copyright (c) 2003-2012, Dennis M. Sosnoski.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -592,56 +592,58 @@ implements IComponent, IContextObj
      * information, and also adds the appropriate interfaces to the class.
      */
     private void genTrackSourceCode() {
-        ClassFile cf = m_class.getMungedFile();
-        if (m_class.isDirectAccess() && !cf.isAbstract() &&
-            cf.addInterface(SOURCE_TRACKING_INTERFACE)) {
-        
-            // add position tracking fields to class
-            ClassItem srcname = cf.addPrivateField("java.lang.String;",
-                SOURCEDOCUMENT_FIELDNAME);
-            ClassItem srcline = cf.addPrivateField("int", SOURCELINE_FIELDNAME);
-            ClassItem srccol = cf.addPrivateField("int",
-                SOURCECOLUMN_FIELDNAME);
-        
-            // add method for setting the source information
-            MethodBuilder mb = new ExceptionMethodBuilder(SETSOURCE_METHODNAME,
-                Type.VOID, SETSOURCE_ARGS, cf, Constants.ACC_PUBLIC);
-            mb.appendLoadLocal(0);
-            mb.appendLoadLocal(1);
-            mb.appendPutField(srcname);
-            mb.appendLoadLocal(0);
-            mb.appendLoadLocal(2);
-            mb.appendPutField(srcline);
-            mb.appendLoadLocal(0);
-            mb.appendLoadLocal(3);
-            mb.appendPutField(srccol);
-            mb.appendReturn();
-            mb.codeComplete(false);
-            mb.addMethod();
-        
-            // add methods for getting the source information
-            mb = new ExceptionMethodBuilder(SOURCENAME_METHODNAME,
-                Type.STRING, EMPTY_ARGS, cf, Constants.ACC_PUBLIC);
-            mb.appendLoadLocal(0);
-            mb.appendGetField(srcname);
-            mb.appendReturn(Type.STRING);
-            mb.codeComplete(false);
-            mb.addMethod();
-            mb = new ExceptionMethodBuilder(SOURCELINE_METHODNAME,
-                Type.INT, EMPTY_ARGS, cf, Constants.ACC_PUBLIC);
-            mb.appendLoadLocal(0);
-            mb.appendGetField(srcline);
-            mb.appendReturn("int");
-            mb.codeComplete(false);
-            mb.addMethod();
-            mb = new ExceptionMethodBuilder(SOURCECOLUMN_METHODNAME,
-                Type.INT, EMPTY_ARGS, cf, Constants.ACC_PUBLIC);
-            mb.appendLoadLocal(0);
-            mb.appendGetField(srccol);
-            mb.appendReturn("int");
-            mb.codeComplete(false);
-            mb.addMethod();
-        }
+    	if (m_class.isDirectAccess()) {
+	        ClassFile cf = m_class.getDirectMungedFile();
+	        if (!cf.isAbstract() &&
+	            cf.addInterface(SOURCE_TRACKING_INTERFACE)) {
+	        
+	            // add position tracking fields to class
+	            ClassItem srcname = cf.addPrivateField("java.lang.String;",
+	                SOURCEDOCUMENT_FIELDNAME);
+	            ClassItem srcline = cf.addPrivateField("int", SOURCELINE_FIELDNAME);
+	            ClassItem srccol = cf.addPrivateField("int",
+	                SOURCECOLUMN_FIELDNAME);
+	        
+	            // add method for setting the source information
+	            MethodBuilder mb = new ExceptionMethodBuilder(SETSOURCE_METHODNAME,
+	                Type.VOID, SETSOURCE_ARGS, cf, Constants.ACC_PUBLIC);
+	            mb.appendLoadLocal(0);
+	            mb.appendLoadLocal(1);
+	            mb.appendPutField(srcname);
+	            mb.appendLoadLocal(0);
+	            mb.appendLoadLocal(2);
+	            mb.appendPutField(srcline);
+	            mb.appendLoadLocal(0);
+	            mb.appendLoadLocal(3);
+	            mb.appendPutField(srccol);
+	            mb.appendReturn();
+	            mb.codeComplete(false);
+	            mb.addMethod();
+	        
+	            // add methods for getting the source information
+	            mb = new ExceptionMethodBuilder(SOURCENAME_METHODNAME,
+	                Type.STRING, EMPTY_ARGS, cf, Constants.ACC_PUBLIC);
+	            mb.appendLoadLocal(0);
+	            mb.appendGetField(srcname);
+	            mb.appendReturn(Type.STRING);
+	            mb.codeComplete(false);
+	            mb.addMethod();
+	            mb = new ExceptionMethodBuilder(SOURCELINE_METHODNAME,
+	                Type.INT, EMPTY_ARGS, cf, Constants.ACC_PUBLIC);
+	            mb.appendLoadLocal(0);
+	            mb.appendGetField(srcline);
+	            mb.appendReturn("int");
+	            mb.codeComplete(false);
+	            mb.addMethod();
+	            mb = new ExceptionMethodBuilder(SOURCECOLUMN_METHODNAME,
+	                Type.INT, EMPTY_ARGS, cf, Constants.ACC_PUBLIC);
+	            mb.appendLoadLocal(0);
+	            mb.appendGetField(srccol);
+	            mb.appendReturn("int");
+	            mb.codeComplete(false);
+	            mb.addMethod();
+	        }
+    	}
     }
     
     /**

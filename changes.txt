@@ -1,3 +1,8 @@
+
+Main change from 1.2.3 to 1.2.5
+
+1. Added support for binding class files compiled with Java 7.
+
 Main changes from 1.2.2 to 1.2.3
 
 1. Corrected several related issues in code generation from schema for schema using substitution groups, or group reference as base for complexType extension or restriction.

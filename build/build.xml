@@ -39,8 +39,8 @@ file has been tested with ant version 1.6.1.
   <!-- Other definitions -->
   <property name="project" value="JiBX Java data binding to XML"/>
   <property name="projname" value="jibx"/>
-  <property name="version" value="1.2.5"/>
-  <property name="distribname" value="jibx_1_2_5"/>
+  <property name="version" value="1.2.6"/>
+  <property name="distribname" value="jibx_1_2_6"/>
   <property name="packages" value="org.jibx"/>
   <property environment="env"/>
   <condition property="skip21">
@@ -53,6 +53,7 @@ file has been tested with ant version 1.6.1.
       <equals arg1="${ant.java.version}" arg2="1.5"/>
       <equals arg1="${ant.java.version}" arg2="1.6"/>
       <equals arg1="${ant.java.version}" arg2="1.7"/>
+      <equals arg1="${ant.java.version}" arg2="1.8"/>
     </or>
   </condition>
 

@@ -187,7 +187,7 @@ public class Utility
      */
     public static String fileName(String path) {
         if (File.separatorChar != '/') {
-            path = path.replace('/', File.separatorChar);
+            path = path.replaceAll('/', File.separatorChar);
         }
         int split = path.lastIndexOf(File.separatorChar);
         return path.substring(split+1);

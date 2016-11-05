@@ -840,11 +840,11 @@ file has been tested with ant version 1.6.1.
     <echo message="Compiling the Java 5 specific code"/>
     <javac srcdir="${testsrc}"
       destdir="${testdest}"
-      target="1.5"
+      target="1.6"
       includes="org/jibx/match/**/*.java,java5/**/*.java,org/jibx/binding/generator/*.java,org/jibx/ws/**/*.java"
       optimize="off"
       debug="on"
-      source="1.5"
+      source="1.6"
       deprecation="on">
       <classpath>
         <fileset dir="${lib}" includes="${runname}.jar,${extrasname}.jar,${bindname}.jar,${schemaname}.jar,${toolsname}.jar,asm*.jar,joda*.jar,qdox*.jar,log4j*.jar,org.eclipse.*.jar,junit*.jar"/>

@@ -7,6 +7,6 @@
   <dependencies>
     <!--dependency org="org.jibx" name="jibx-bind" rev="latest.integration" />
     <dependency org="org.jibx" name="jibx-extras" rev="latest.integration" /-->
-    <dependency org="bcel" name="bcel" rev="5.1" transitive="false" conf="*->default"/>
+    <dependency org="org.apache.bcel" name="bcel" rev="5.2" transitive="false" conf="*->default"/>
   </dependencies>
 </ivy-module>

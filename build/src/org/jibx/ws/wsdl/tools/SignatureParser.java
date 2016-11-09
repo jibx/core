@@ -75,6 +75,12 @@ public class SignatureParser
         if (sig.startsWith("Signature(") && sig.endsWith(")")) {
             m_signature = sig.substring(10, sig.length() - 1);
             m_event = -1;
+        } else if (sig.startsWith("Signature: (") && sig.indexOf(")") != -1) { // jdk 1.6+ dcorley
+        	if (sig.indexOf(")") == sig.length())
+        		m_signature = sig.substring(12, sig.length() - 1);
+        	else
+        		m_signature = sig.substring(11, sig.length());
+            m_event = -1;
         } else {
             throw new IllegalArgumentException("Internal error: not a valid Signature");
         }

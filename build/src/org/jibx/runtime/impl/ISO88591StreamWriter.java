@@ -329,7 +329,7 @@ public class ISO88591StreamWriter extends StreamWriterBase
      * @param uris ordered array of URIs for namespaces used in document
      * (see {@link #ISO88591StreamWriter(String[])})
      * @return child writer
-     * @throws IOException 
+     * @throws IOException If error
      */
     public IXMLWriter createChildWriter(String[] uris) throws IOException {
         flagContent();

@@ -251,8 +251,8 @@ public abstract class BindingFactoryBase implements IBindingFactory
     /**
      * Create a new marshalling context.
      *
-     * @return context
-     * @throws JiBXException
+     * @return context Marshalling context
+     * @throws JiBXException If error
      */
     public IMarshallingContext createMarshallingContext() throws JiBXException {
         return new MarshallingContext(m_mapNames, m_marshallers, m_uris, this);
@@ -261,8 +261,8 @@ public abstract class BindingFactoryBase implements IBindingFactory
     /**
      * Create a new unmarshalling context.
      *
-     * @return context
-     * @throws JiBXException
+     * @return context Unmarshalling context
+     * @throws JiBXException If error
      */
     public IUnmarshallingContext createUnmarshallingContext()
         throws JiBXException {
@@ -273,7 +273,7 @@ public abstract class BindingFactoryBase implements IBindingFactory
     /**
      * Get the binding name.
      *
-     * @return name
+     * @return name Binding name
      */
     public String getBindingName() {
         return m_bindingName;

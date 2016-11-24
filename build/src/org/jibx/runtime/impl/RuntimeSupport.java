@@ -179,7 +179,7 @@ public abstract class RuntimeSupport
      * This is used by the binding factory initialization, so that arrays of
      * ints can be represented efficiently in the generated code.
      *
-     * @param blob
+     * @param blob Data
      * @return expanded index array
      */
     public static int[] splitInts(String blob) {

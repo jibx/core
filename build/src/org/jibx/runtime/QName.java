@@ -76,7 +76,7 @@ public class QName
      * irrelevant.
      * 
      * @param uri namespace uri, <code>null</code> if no-namespace namespace
-     * @param name
+     * @param name Namespace
      */
     public QName(String uri, String name) {
         this(uri, null, name);
@@ -86,7 +86,7 @@ public class QName
      * Constructor from local name only. This constructor is provided as a
      * convenience for names in the no-namespace namespace.
      * 
-     * @param name
+     * @param name Name
      */
     public QName(String name) {
         this(null, null, name);

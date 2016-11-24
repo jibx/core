@@ -45,7 +45,7 @@ public interface IExtensibleWriter extends IXMLWriter
      * 
      * @param uris ordered array of URIs for namespaces used in document
      * @return child writer
-     * @throws IOException 
+     * @throws IOException I/O Error
      */
     IXMLWriter createChildWriter(String[] uris) throws IOException;
 }

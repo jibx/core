@@ -147,7 +147,7 @@ public abstract class StreamWriterBase extends XMLWriterBase
     /**
      * Set the byte buffer.
      *
-     * @param buff
+     * @param buff Out buffer
      */
     public void setBuffer(IOutByteBuffer buff) {
         m_byteBuffer = buff;
@@ -170,7 +170,7 @@ public abstract class StreamWriterBase extends XMLWriterBase
      * existing writer for reuse.
      *
      * @param uris ordered array of URIs for namespaces used in document
-     * @throws IOException 
+     * @throws IOException If IO Exception
      */
     public void setNamespaceUris(String[] uris) throws IOException {
         reset();

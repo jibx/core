@@ -56,9 +56,9 @@ public class QName
     /**
      * Constructor from full set of components.
      * 
-     * @param uri
-     * @param prefix
-     * @param name
+     * @param uri Namespace URL
+     * @param prefix Prefix
+     * @param name namespace
      */
     public QName(String uri, String prefix, String name) {
         m_uri = uri;

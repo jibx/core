@@ -117,7 +117,7 @@ public class OutByteBuffer implements IOutByteBuffer
      * Set the current offset. This must be used to update the stored buffer
      * state after reading any data.
      * 
-     * @param offset 
+     * @param offset Current offset
      */
     public void setOffset(int offset) {
         m_offset = offset;
@@ -136,7 +136,7 @@ public class OutByteBuffer implements IOutByteBuffer
      * @param reserve offset of data to be preserved in buffer (nothing
      * preserved if greater than or equal to current offset)
      * @param size desired number of bytes
-     * @throws IOException 
+     * @throws IOException If error
      */
     public void free(int reserve, int size) throws IOException {
         if (m_buffer.length - m_offset < size) {
@@ -179,7 +179,7 @@ public class OutByteBuffer implements IOutByteBuffer
      * Empty the buffer. Writes all data from the buffer to the output stream,
      * resetting the offset to the start of the buffer.
      * 
-     * @throws IOException 
+     * @throws IOException If error
      */
     public void flush() throws IOException {
         if (m_offset > 0) {
@@ -194,7 +194,7 @@ public class OutByteBuffer implements IOutByteBuffer
      * this method is called, a call to {@link #setOutput(OutputStream)} is
      * required before the buffer can again be used.
      * 
-     * @throws IOException 
+     * @throws IOException If error
      */
     public void finish() throws IOException {
         if (m_stream != null) {

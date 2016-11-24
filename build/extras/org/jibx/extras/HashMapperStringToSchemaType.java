@@ -70,15 +70,17 @@ import org.jibx.runtime.impl.UnmarshallingContext;
  * 
  * <p>The net effect is that the XML structure will always be of the form:</p>
  *
- * <pre>&lt;map-name size="6" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
- *     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
- *   &lt;entry key="name" xsi:type="xsd:string">John Smith&lt;/entry>
- *   &lt;entry key="street" xsi:type="xsd:string">12345 Happy Lane&lt;/entry>
- *   &lt;entry key="city" xsi:type="xsd:string">Plunk&lt;/entry>
- *   &lt;entry key="state" xsi:type="xsd:string">WA&lt;/entry>
- *   &lt;entry key="rating" xsi:type="xsd:int">6&lt;/entry>
- *   &lt;entry key="joined" xsi:type="xsd:dateTime">2002-08-06T00:13:31Z&lt;/entry>
- * &lt;/map-name></pre>
+ * <pre>
+ * &lt;map-name size="6" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+ *     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+ *   &lt;entry key="name" xsi:type="xsd:string"&gt;John Smith&lt;/entry&gt;
+ *   &lt;entry key="street" xsi:type="xsd:string"&gt;12345 Happy Lane&lt;/entry&gt;
+ *   &lt;entry key="city" xsi:type="xsd:string"&gt;Plunk&lt;/entry&gt;
+ *   &lt;entry key="state" xsi:type="xsd:string"&gt;WA&lt;/entry&gt;
+ *   &lt;entry key="rating" xsi:type="xsd:int"&gt;6&lt;/entry&gt;
+ *   &lt;entry key="joined" xsi:type="xsd:dateTime"&gt;2002-08-06T00:13:31Z&lt;/entry&gt;
+ * &lt;/map-name&gt;
+ * </pre>
  *
  * <p>where "map-name" is the configured top-level element name, the "size"
  * attribute is the number of pairs in the hash map, and the "entry" elements

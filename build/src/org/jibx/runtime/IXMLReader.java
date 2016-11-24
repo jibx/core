@@ -55,7 +55,7 @@ public interface IXMLReader
     /**
      * Initialize reader.
      * 
-     * @throws IOException 
+     * @throws IOException If I/O error
      */
     void init() throws IOException;
 

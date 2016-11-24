@@ -62,6 +62,7 @@ public class JDOMWriter extends XMLWriterNamespaceBase {
     
     /**
      * Creates a new instance with the given namespace URIs.
+     * @param namespaces namespaces
      */
     public JDOMWriter(String[] namespaces) {
         super(namespaces);
@@ -70,7 +71,8 @@ public class JDOMWriter extends XMLWriterNamespaceBase {
     
     /**
      * Creates a new instance with the given Document as target for marshalling.
-     * 
+     *
+     * @param namespaces Namespaces list
      * @param document must not be null
      */
     public JDOMWriter(String[] namespaces, Document document) {
@@ -83,7 +85,8 @@ public class JDOMWriter extends XMLWriterNamespaceBase {
 
     /**
      * Creates a new instance with the given Element as target for marshalling.
-     * 
+     *
+     * @param namespaces Namespaces list
      * @param currentElement must not be null
      */
     public JDOMWriter(String[] namespaces, Element currentElement) {

@@ -43,7 +43,7 @@ public interface IXMLWriter
     /**
      * Initialize writer.
      * 
-     * @throws IOException 
+     * @throws IOException I/O Error on init
      */
     void init() throws IOException;
     

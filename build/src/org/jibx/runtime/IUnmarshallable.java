@@ -41,7 +41,7 @@ package org.jibx.runtime;
 public interface IUnmarshallable
 {
     /**
-     * Get the name of the class associated with the &lt;mapping> definition.
+     * Get the name of the class associated with the &lt;mapping&gt; definition.
      *
      * @return fully-qualified class name
      */

@@ -82,6 +82,7 @@ public abstract class IdDefRefMapperBase
     /**
      * Get the ID value from object being marshalled.
      *
+     * @param item to get ID
      * @return ID value
      */
     protected abstract String getIdValue(Object item);
@@ -89,6 +90,7 @@ public abstract class IdDefRefMapperBase
     /**
      * Method which can be overridden to supply a different name for the ID
      * reference attribute. The attribute name used by default is just "ref".
+     * @return Attribute name
      */
     protected String getAttributeName() {
         return "ref";

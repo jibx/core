@@ -65,7 +65,7 @@ public class InputStreamWrapper
     /**
      * Set the input buffer.
      *
-     * @param buff
+     * @param buff Buffer in
      */
     public void setBuffer(IInByteBuffer buff) {
         m_byteBuffer = buff;
@@ -145,7 +145,7 @@ public class InputStreamWrapper
     /**
      * Check if a character is XML whitespace.
      * 
-     * @param chr
+     * @param chr Character to check
      * @return <code>true</code> if whitespace, <code>false</code> if not
      */
     private boolean isWhite(int chr) {

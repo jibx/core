@@ -74,10 +74,10 @@ public abstract class JodaConvert
     /**
      * Deserialize date value as a midnight date in the specified time zone.
      *
-     * @param text
-     * @param zone 
+     * @param text Date in text
+     * @param zone Timezone
      * @return date
-     * @throws JiBXException
+     * @throws JiBXException On conversion error
      */
     protected static DateMidnight deserializeDateMidnight(String text, DateTimeZone zone) throws JiBXException {
         
@@ -112,8 +112,8 @@ public abstract class JodaConvert
      *
      * @param text xs:date or xs:dateTime value
      * @param dflt default zone to be returned if no zone specified
-     * @return zone
-     * @throws JiBXException
+     * @return zone Timezone
+     * @throws JiBXException If error
      */
     protected static DateTimeZone findZone(String text, DateTimeZone dflt) throws JiBXException {
 
@@ -308,11 +308,11 @@ public abstract class JodaConvert
      * CCYY-MM-DDThh:mm:ss.fff, with optional leading sign and trailing time zone (with the time zone used to convert
      * the value to the target time zone). If the time zone is absent and not required the target time zone is assumed.
      *
-     * @param text
+     * @param text Date to parse from text
      * @param full zoned time required flag (exception thrown if missing)
      * @param zone time zone used for returned date/time
      * @return converted date/time
-     * @throws JiBXException
+     * @throws JiBXException If error
      */
     protected static DateTime parseDateTime(String text, boolean full, DateTimeZone zone) throws JiBXException {
         

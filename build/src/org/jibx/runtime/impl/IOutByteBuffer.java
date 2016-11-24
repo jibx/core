@@ -53,7 +53,7 @@ public interface IOutByteBuffer extends IByteBuffer
      * @param reserve offset of data to be preserved in buffer (nothing
      * preserved if greater than or equal to current offset)
      * @param size desired number of bytes
-     * @throws IOException 
+     * @throws IOException If error
      */
     void free(int reserve, int size) throws IOException;
     
@@ -65,7 +65,7 @@ public interface IOutByteBuffer extends IByteBuffer
      * {@link IByteBuffer#getOffset()} must always be called again before any
      * further use of the buffer.
      * 
-     * @throws IOException 
+     * @throws IOException If error
      */
     void flush() throws IOException;
 }

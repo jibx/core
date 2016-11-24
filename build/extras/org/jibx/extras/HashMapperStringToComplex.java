@@ -49,7 +49,7 @@ import org.jibx.runtime.impl.UnmarshallingContext;
  * key objects are marshalled as simple text values, using the
  * <code>toString()</code> method to convert them to <code>String</code>. When
  * unmarshalling the keys are always treated as <code>String</code> values. The
- * corresponding values can be any complex type with a &lt;mapping> defined in
+ * corresponding values can be any complex type with a &lt;mapping&gt; defined in
  * the binding. The name of the top-level element in the XML structure can be
  * configured in the binding definition, but the rest of the names are
  * predefined and set in the code (though the namespace configured for the
@@ -57,29 +57,31 @@ import org.jibx.runtime.impl.UnmarshallingContext;
  * 
  * <p>The net effect is that the XML structure will always be of the form:</p>
  *
- * <pre>&lt;map-name size="3">
- *   &lt;entry key="38193">
- *     &lt;customer state="WA" zip="98059">
- *       &lt;name first-name="John" last-name="Smith"/>
- *       &lt;street>12345 Happy Lane&lt;/street>
- *       &lt;city>Plunk&lt;/city>
- *     &lt;/customer>
- *   &lt;/entry>
- *   &lt;entry key="39122">
- *     &lt;customer state="WA" zip="98094">
- *       &lt;name first-name="Sally" last-name="Port"/>
- *       &lt;street>932 Easy Street&lt;/street>
- *       &lt;city>Fort Lewis&lt;/city>
- *     &lt;/customer>
- *   &lt;/entry>
- *   &lt;entry key="83132">
- *     &lt;customer state="WA" zip="98059">
- *       &lt;name first-name="Mary" last-name="Smith"/>
- *       &lt;street>12345 Happy Lane&lt;/street>
- *       &lt;city>Plunk&lt;/city>
- *     &lt;/customer>
- *   &lt;/entry>
- * &lt;/map-name></pre>
+ * <pre>
+ * &lt;map-name size="3"&gt;
+ *   &lt;entry key="38193"&gt;
+ *     &lt;customer state="WA" zip="98059"&gt;
+ *       &lt;name first-name="John" last-name="Smith"/&gt;
+ *       &lt;street&gt;12345 Happy Lane&lt;/street&gt;
+ *       &lt;city&gt;Plunk&lt;/city&gt;
+ *     &lt;/customer&gt;
+ *   &lt;/entry&gt;
+ *   &lt;entry key="39122"&gt;
+ *     &lt;customer state="WA" zip="98094"&gt;
+ *       &lt;name first-name="Sally" last-name="Port"/&gt;
+ *       &lt;street&gt;932 Easy Street&lt;/street&gt;
+ *       &lt;city&gt;Fort Lewis&lt;/city&gt;
+ *     &lt;/customer&gt;
+ *   &lt;/entry&gt;
+ *   &lt;entry key="83132"&gt;
+ *     &lt;customer state="WA" zip="98059"&gt;
+ *       &lt;name first-name="Mary" last-name="Smith"/&gt;
+ *       &lt;street&gt;12345 Happy Lane&lt;/street&gt;
+ *       &lt;city&gt;Plunk&lt;/city&gt;
+ *     &lt;/customer&gt;
+ *   &lt;/entry&gt;
+ * &lt;/map-name&gt;
+ * </pre>
  *
  * <p>where "map-name" is the configured top-level element name, the "size"
  * attribute is the number of pairs in the hash map, and the "entry" elements
@@ -134,6 +136,7 @@ public class HashMapperStringToComplex
      * this attribute is used when unmarshalling to set the initial size of the
      * hashmap. It will be generated when marshalling if the supplied name is
      * non-<code>null</code>.
+     * @return size
      */
     protected String getSizeAttributeName() {
         return "size";
@@ -142,6 +145,7 @@ public class HashMapperStringToComplex
     /**
      * Method which can be overridden to supply a different name for the element
      * used to represent each item in the map.
+     * @return Element name
      */
     protected String getEntryElementName() {
         return "entry";
@@ -150,6 +154,7 @@ public class HashMapperStringToComplex
     /**
      * Method which can be overridden to supply a different name for the
      * attribute defining the key value for each item in the map.
+     * @return Key attribute
      */
     protected String getKeyAttributeName() {
         return "key";
@@ -157,6 +162,7 @@ public class HashMapperStringToComplex
     
     /* (non-Javadoc)
      * @see org.jibx.runtime.IMarshaller#isExtension(java.lang.String)
+     * @return true if extension
      */
     public boolean isExtension(String mapname) {
         return false;
@@ -206,6 +212,7 @@ public class HashMapperStringToComplex
 
     /* (non-Javadoc)
      * @see org.jibx.runtime.IUnmarshaller#isPresent(org.jibx.runtime.IUnmarshallingContext)
+     * @return true if present
      */
     public boolean isPresent(IUnmarshallingContext ctx) throws JiBXException {
         return ctx.isAt(m_uri, m_name);
@@ -214,6 +221,7 @@ public class HashMapperStringToComplex
     /* (non-Javadoc)
      * @see org.jibx.runtime.IUnmarshaller#unmarshal(java.lang.Object,
      *  org.jibx.runtime.IUnmarshallingContext)
+     *  @return unmarshalled context
      */
     public Object unmarshal(Object obj, IUnmarshallingContext ictx)
         throws JiBXException {

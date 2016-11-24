@@ -43,7 +43,7 @@ public abstract class Java5DecimalConvert
     /**
      * Serialize decimal value to text using the 
      *
-     * @param value
+     * @param value BigDecimal value to serialize
      * @return converted decimal text
      */
     public static String serializeDecimal(BigDecimal value) {

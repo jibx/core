@@ -252,7 +252,7 @@ public class EnumSet
      * Check value with exception. Throws an exception if the supplied value is
      * not defined by this enumeration.
      *
-     * @param value
+     * @param value Value to check
      */
     public void checkValue(int value) {
         if (value < 0 || value >= m_indexedNames.length ||

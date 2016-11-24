@@ -1875,8 +1875,8 @@ public abstract class Utility
      * Safe equals test. This does an equals comparison for objects which may be
      * <code>null</code>.
      *
-     * @param a
-     * @param b
+     * @param a Object to compare
+     * @param b Object to compare
      * @return <code>true</code> if both <code>null</code> or a.equals(b),
      * <code>false</code> otherwise
      */
@@ -2022,7 +2022,7 @@ public abstract class Utility
     /**
      * Check if a portion of a text string consists of decimal digits.
      *
-     * @param text
+     * @param text String to scan
      * @param offset starting offset
      * @param limit ending offset plus one (<code>false</code> return if the
      * text length is less than this value)
@@ -2090,9 +2090,9 @@ public abstract class Utility
      * digits. This is used for checking fixed-length decimal fields with a
      * maximum value.
      *
-     * @param text
-     * @param offset
-     * @param bound
+     * @param text String to check
+     * @param offset Offset
+     * @param bound Bound
      * @return <code>true</code> if bounded decimal, <code>false</code> if not
      */
     public static boolean ifFixedDigits(String text, int offset, String bound) {
@@ -2118,8 +2118,8 @@ public abstract class Utility
      * Check if a text string ends with a valid zone suffix. This accepts an
      * empty suffix, the single letter 'Z', or an offset of +/-HH:MM.
      *
-     * @param text
-     * @param offset
+     * @param text String to scan
+     * @param offset Offset
      * @return <code>true</code> if valid suffix, <code>false</code> if not
      */
     public static boolean ifZoneSuffix(String text, int offset) {
@@ -2179,8 +2179,8 @@ public abstract class Utility
      * format HH:MM:SS with optional training fractional seconds and optional
      * time zone.
      *
-     * @param text
-     * @param offset
+     * @param text String to check
+     * @param offset Offset
      * @return <code>true</code> if valid suffix, <code>false</code> if not
      */
     public static boolean ifTimeSuffix(String text, int offset) {

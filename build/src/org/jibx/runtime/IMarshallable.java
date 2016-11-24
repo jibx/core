@@ -35,20 +35,20 @@ package org.jibx.runtime;
  * themselves directly (if there's only one marshalling format defined), or
  * obtain an instance of the appropriate marshaller from the context and use
  * that. This interface is automatically added by the binding compiler to all
- * classes targeted by &lt;mapping> elements in a binding.
+ * classes targeted by &lt;mapping&gt; elements in a binding.
  *
  * @author Dennis M. Sosnoski
  */
 public interface IMarshallable
 {
     /**
-     * Get the name of the class or type associated with the &lt;mapping>
+     * Get the name of the class or type associated with the &lt;mapping&gt;
      * definition.
      *
      * @return fully-qualified class name, or type name
      */
     String JiBX_getName();
-    
+
     /**
      * Marshal self. This method call is responsible for all handling of the
      * marshalling of an object to XML text.

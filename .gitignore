@@ -25,4 +25,5 @@ docs/jibxws
 docs/eclipse/*.html
 examples/codegen/jibx.log
 examples/starter/bin
+*.iml
 

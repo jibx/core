@@ -225,8 +225,8 @@ public class DocumentComparator
      * 'false' and '1' to match 'true', and comparing values using date or
      * dateTime structure as decoded values.
      *
-     * @param texta
-     * @param textb
+     * @param texta String to compare
+     * @param textb String to compare
      * @return <code>true</code> if values match, <code>false</code> if not
      */
     protected boolean equalValues(String texta, String textb) {
@@ -342,8 +342,8 @@ public class DocumentComparator
      * Check if two text strings match, ignoring leading and trailing spaces.
      * Any mismatch is printed immediately, with the supplied lead text.
      *
-     * @param texta
-     * @param textb
+     * @param texta String to compare
+     * @param textb String to compare
      * @param lead error text lead
      * @return <code>true</code> if the texts match, <code>false</code> if
      * not

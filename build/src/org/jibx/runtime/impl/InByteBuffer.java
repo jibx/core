@@ -173,7 +173,7 @@ public class InByteBuffer implements IInByteBuffer
      * Set the current offset. This must be used to update the stored buffer
      * state after reading any data.
      * 
-     * @param offset 
+     * @param offset Set offset
      */
     public void setOffset(int offset) {
         m_offset = offset;
@@ -199,7 +199,7 @@ public class InByteBuffer implements IInByteBuffer
      * 
      * @param size desired number of bytes
      * @return <code>true</code> if request satisfied, <code>false</code> if not
-     * @throws IOException 
+     * @throws IOException If error
      */
     public boolean require(int size) throws IOException {
         if (m_limit - m_offset < size) {
@@ -215,7 +215,7 @@ public class InByteBuffer implements IInByteBuffer
      * this method is called, a call to {@link #setInput(InputStream)} is
      * required before the buffer can again be used.
      * 
-     * @throws IOException 
+     * @throws IOException If error
      */
     public void finish() throws IOException {
         if (m_stream != null) {

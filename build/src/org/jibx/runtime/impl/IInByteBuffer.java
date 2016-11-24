@@ -52,7 +52,7 @@ public interface IInByteBuffer extends IByteBuffer
      * @param size desired number of bytes
      * @return <code>true</code> if request satisfied, <code>false</code> if end
      * with less than request available
-     * @throws IOException 
+     * @throws IOException If error
      */
     boolean require(int size) throws IOException;
     

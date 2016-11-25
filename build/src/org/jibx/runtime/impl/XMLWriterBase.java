@@ -119,6 +119,7 @@ implements IExtensibleWriter
      * Request output indent with bias from current element nesting level. This
      * is used internally for proper indenting in special cases.
      *
+     * @param bias Bias
      * @throws IOException on error writing to document
      */
     protected abstract void indent(int bias) throws IOException;

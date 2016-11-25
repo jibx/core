@@ -236,7 +236,7 @@ public abstract class Utility
     /**
      * Check if a text string is a valid boolean representation.
      *
-     * @param text
+     * @param text to check
      * @return <code>true</code> if valid boolean, <code>false</code> if not
      */
     public static boolean ifBoolean(String text) {

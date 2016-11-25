@@ -62,7 +62,7 @@ public interface IByteBuffer
      * Set the current offset. This method must be used to update the internal
      * buffer state after reading or writing any data.
      * 
-     * @param offset 
+     * @param offset Offset
      */
     void setOffset(int offset);
     
@@ -72,7 +72,7 @@ public interface IByteBuffer
      * called the buffer may need to be reinitialized (such as by setting a new
      * input or output stream) before it is reused.
      * 
-     * @throws IOException 
+     * @throws IOException error
      */
     void finish() throws IOException;
 }

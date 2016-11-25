@@ -258,7 +258,7 @@ public class ValidationContext extends TreeContext
     
     /**
      * Inner class for handling prevalidation. This visitor implementation just
-     * calls the {@link org.jibx.binding.model#prevalidate} method for each
+     * calls the {@link org.jibx.binding.model.ElementBase#prevalidate} method for each
      * element visited in preorder.
      */
     protected class PrevalidationVisitor extends ModelVisitor
@@ -280,7 +280,7 @@ public class ValidationContext extends TreeContext
     
     /**
      * Inner class for handling validation. This visitor implementation just
-     * calls the {@link org.jibx.binding.model#validate} method for each
+     * calls the {@link org.jibx.binding.model.ElementBase#validate} method for each
      * element visited in postorder.
      */
     protected class ValidationVisitor extends ModelVisitor

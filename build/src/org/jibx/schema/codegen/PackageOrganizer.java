@@ -93,8 +93,8 @@ public class PackageOrganizer
      * Set the namespace lead replacement patterns. This consists of lead texts to be matches and paired replacement
      * texts. When a particular lead text is found in a URI the replacement text is substituted.
      * 
-     * @param leads
-     * @param repls
+     * @param leads replacement patterns
+     * @param repls replacement patterns
      */
     public void setNamespaceLeadReplaces(String[] leads, String[] repls) {
         m_namespaceLeadMatches = leads;
@@ -177,7 +177,7 @@ public class PackageOrganizer
     /**
      * Convert namespace URI to package name.
      * 
-     * @param uri
+     * @param uri URI
      * @return package name
      */
     public String uriToPackage(String uri) {
@@ -331,7 +331,7 @@ public class PackageOrganizer
     /**
      * Get package information based on package name.
      * 
-     * @param pname
+     * @param pname Package name
      * @return package information
      */
     public PackageHolder getPackage(String pname) {

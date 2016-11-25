@@ -309,7 +309,7 @@ public class StructureClassHolder extends ClassHolder
     /**
      * Set the binding component linked to this class.
      * 
-     * @param container binding definition element (&lt;mapping> or &lt;structure>)
+     * @param container binding definition element (&lt;mapping&gt; or &lt;structure&gt;)
      */
     public void setBinding(ContainerElementBase container) {
         m_bindingElement = container;
@@ -320,7 +320,7 @@ public class StructureClassHolder extends ClassHolder
      * &lt;format> elements for all nested enumerations, which need to be direct children of the &lt;mapping> element
      * for the top-level class.
      * 
-     * @param mapping
+     * @param mapping Mapping
      */
     private void addInnerFormats(MappingElementBase mapping) {
         for (int i = 0; i < m_inners.size(); i++) {
@@ -2093,7 +2093,7 @@ public class StructureClassHolder extends ClassHolder
     /**
      * Generate this class.
      * 
-     * @param verbose 
+     * @param verbose Flag
      * @param builder class source file builder
      */
     public void generate(boolean verbose, SourceBuilder builder) {

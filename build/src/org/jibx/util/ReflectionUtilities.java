@@ -43,8 +43,8 @@ public class ReflectionUtilities
      * wrapper parameter) or fields (named m_ZZZ). The ZZZ in the names is based on the key name, with hyphenation
      * converted to camel case (leading upper camel case, for the method names).
      * 
-     * @param map
-     * @param obj
+     * @param map Map
+     * @param obj Object
      * @return map for key/values not found in the supplied object
      */
     public static Map applyKeyValueMap(Map map, Object obj) {

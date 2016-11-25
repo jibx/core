@@ -56,7 +56,7 @@ public abstract class BaseExtension
     /**
      * Constructor.
      * 
-     * @param comp
+     * @param comp Comp
      */
     public BaseExtension(OpenAttrBase comp) {
         m_component = comp;
@@ -76,7 +76,7 @@ public abstract class BaseExtension
      * Set type replacer. This type replacer will apply to this extension and any child extensions which do not have
      * their own type replacers.
      *
-     * @param replacer
+     * @param replacer type replacer
      */
     public void setTypeReplacer(TypeReplacer replacer) {
         m_typeReplacer = replacer;

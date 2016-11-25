@@ -83,7 +83,7 @@ public class CustomBase
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent Parent base
      */
     public CustomBase(SharedNestingBase parent) {
         m_parent = parent;

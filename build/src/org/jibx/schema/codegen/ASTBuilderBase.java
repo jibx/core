@@ -40,7 +40,7 @@ public class ASTBuilderBase
     /**
      * Constructor.
      * 
-     * @param ast 
+     * @param ast AST
      */
     public ASTBuilderBase(AST ast) {
         m_ast = ast;
@@ -49,7 +49,7 @@ public class ASTBuilderBase
     /**
      * Set the public access flag for a declaration.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setPublic(BodyDeclaration decl) {
         decl.modifiers().add(m_ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
@@ -58,7 +58,7 @@ public class ASTBuilderBase
     /**
      * Set the private access flag for a declaration.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setPrivate(BodyDeclaration decl) {
         decl.modifiers().add(m_ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
@@ -67,7 +67,7 @@ public class ASTBuilderBase
     /**
      * Set the static flag for a declaration.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setStatic(BodyDeclaration decl) {
         decl.modifiers().add(m_ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
@@ -76,7 +76,7 @@ public class ASTBuilderBase
     /**
      * Set the final flag for a declaration.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setFinal(BodyDeclaration decl) {
         decl.modifiers().add(m_ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
@@ -85,7 +85,7 @@ public class ASTBuilderBase
     /**
      * Set declaration as private final.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setPrivateFinal(BodyDeclaration decl) {
         setPrivate(decl);
@@ -95,7 +95,7 @@ public class ASTBuilderBase
     /**
      * Set declaration as private static final.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setPrivateStaticFinal(BodyDeclaration decl) {
         setPrivate(decl);
@@ -106,7 +106,7 @@ public class ASTBuilderBase
     /**
      * Set declaration as public static.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setPublicStatic(BodyDeclaration decl) {
         setPublic(decl);
@@ -116,7 +116,7 @@ public class ASTBuilderBase
     /**
      * Set declaration as public static final.
      *
-     * @param decl
+     * @param decl Body Declaration
      */
     public void setPublicStaticFinal(BodyDeclaration decl) {
         setPublic(decl);

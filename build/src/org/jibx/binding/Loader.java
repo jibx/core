@@ -142,7 +142,7 @@ public class Loader extends URLClassLoader
      * Method builds an array of URL for items in the class path.
      *
      * @return array of classpath URLs
-     * @throws MalformedURLException 
+     * @throws MalformedURLException URL Exception
      */
     public static URL[] getClassPaths() throws MalformedURLException {
         String[] paths = Utility.getClassPaths();
@@ -340,7 +340,7 @@ public class Loader extends URLClassLoader
     public static class NondelegatingLoader extends Loader
     {
         /**
-         * @throws MalformedURLException
+         * @throws MalformedURLException URL Exception
          */
         public NondelegatingLoader() throws MalformedURLException {
             super(getClassPaths(), ClassLoader.getSystemClassLoader());

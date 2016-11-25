@@ -108,7 +108,7 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent parent
      */
     public NestingCustomBase(NestingCustomBase parent) {
         super(parent);
@@ -127,7 +127,7 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
     /**
      * Set type substitution pairs list.
      *
-     * @param subs
+     * @param subs type substitution pairs list
      */
     public void setSubstitutions(QName[] subs) {
         m_substitutions = subs;
@@ -136,8 +136,8 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
     /**
      * Set the list of facet elements to be enforced.
      *
-     * @param facets
-     * @param ictx
+     * @param facets facets
+     * @param ictx Unmarshalling Context
      */
     public void setEnforcedFacets(String[] facets, IUnmarshallingContext ictx) {
         ValidationContext vctx = (ValidationContext)ictx.getUserContext();
@@ -159,8 +159,8 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
     /**
      * Set the list of facet elements to be ignored.
      *
-     * @param facets
-     * @param ictx
+     * @param facets Facets
+     * @param ictx Unmarshalling Context
      */
     public void setIgnoredFacets(String[] facets, IUnmarshallingContext ictx) {
         ValidationContext vctx = (ValidationContext)ictx.getUserContext();
@@ -200,8 +200,8 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
     /**
      * Set a type replacement.
      *
-     * @param original
-     * @param replace
+     * @param original original
+     * @param replace replace
      */
     protected void setReplacement(QName original, QName replace) {
         m_typeSubstitutionMap.put(original, replace);
@@ -210,7 +210,7 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
     /**
      * Get replacement type.
      *
-     * @param qname
+     * @param qname QName
      * @return replacement type (<code>null</code> if deletion; original type, if no replacement defined)
      */
     public QName getReplacement(QName qname) {
@@ -268,7 +268,7 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
      * Set the xs:any handling text value. This method is provided only for use when unmarshalling.
      * 
      * @param text (<code>null</code> if not set)
-     * @param ictx
+     * @param ictx Unmarshalling Context
      */
     private void setAnyHandling(String text, IUnmarshallingContext ictx) {
         if (text != null) {
@@ -341,7 +341,7 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
      * Set the xs:choice handling text value. This method is provided only for use when unmarshalling.
      * 
      * @param text (<code>null</code> if not set)
-     * @param ictx
+     * @param ictx Unmarshalling Context
      */
     private void setChoiceHandling(String text, IUnmarshallingContext ictx) {
         if (text != null) {
@@ -414,7 +414,7 @@ public abstract class NestingCustomBase extends CustomBase implements TypeReplac
      * Set the xs:union handling text value. This method is provided only for use when unmarshalling.
      * 
      * @param text (<code>null</code> if not set)
-     * @param ictx
+     * @param ictx Unmarshalling Context
      */
     private void setUnionHandling(String text, IUnmarshallingContext ictx) {
         if (text != null) {

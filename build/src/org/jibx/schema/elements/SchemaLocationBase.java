@@ -86,10 +86,10 @@ public abstract class SchemaLocationBase extends AnnotatedBase
      * Load a schema from a resolver.
      *
      * @param vctx validation context
-     * @param resolver
+     * @param resolver Schema Resolver
      * @return loaded schema
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException error
+     * @throws IOException error
      */
     protected SchemaElement readSchema(ValidationContext vctx,
         ISchemaResolver resolver) throws JiBXException, IOException {

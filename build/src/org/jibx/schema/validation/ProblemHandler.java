@@ -29,28 +29,28 @@ public interface ProblemHandler
     /**
      * Handle unimplemented feature.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     void handleUnimplemented(ValidationProblem prob);
     
     /**
      * Handle warning.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     void handleWarning(ValidationProblem prob);
     
     /**
      * Handle error.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     void handleError(ValidationProblem prob);
     
     /**
      * Handle fatal.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     void handleFatal(ValidationProblem prob);
     

@@ -29,7 +29,7 @@ public class ProblemConsoleLister implements ProblemHandler
     /**
      * Handle unimplemented feature.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleUnimplemented(ValidationProblem prob) {
         System.out.print("Unimplemented: ");
@@ -39,7 +39,7 @@ public class ProblemConsoleLister implements ProblemHandler
     /**
      * Handle warning.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleWarning(ValidationProblem prob) {
         System.out.print("Warning: ");
@@ -49,7 +49,7 @@ public class ProblemConsoleLister implements ProblemHandler
     /**
      * Handle error.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleError(ValidationProblem prob) {
         System.out.print("Error: ");
@@ -59,7 +59,7 @@ public class ProblemConsoleLister implements ProblemHandler
     /**
      * Handle fatal.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleFatal(ValidationProblem prob) {
         System.out.print("Fatal: ");

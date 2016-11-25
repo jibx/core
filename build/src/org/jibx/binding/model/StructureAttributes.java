@@ -82,7 +82,7 @@ public class StructureAttributes extends AttributeBase
     /**
      * Set flexible flag.
      * 
-     * @param flexible
+     * @param flexible Flag
      */
     public void setFlexible(boolean flexible) {
         m_isFlexible = flexible;

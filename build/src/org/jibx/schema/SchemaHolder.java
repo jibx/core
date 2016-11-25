@@ -123,8 +123,8 @@ public class SchemaHolder extends HolderBase
      * Implementation method to handle adding a namespace declaration. This sets up the namespace declaration for output
      * in the generated XML.
      * 
-     * @param prefix
-     * @param uri
+     * @param prefix Prefix
+     * @param uri URI
      */
     protected void addNamespaceDecl(String prefix, String uri) {
         m_schema.addNamespaceDeclaration(prefix, uri);

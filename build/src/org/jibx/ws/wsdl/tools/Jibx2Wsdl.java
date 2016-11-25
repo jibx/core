@@ -470,7 +470,7 @@ public class Jibx2Wsdl
     /**
      * Accumulate data type(s) from value to be included in binding.
      * 
-     * @param value
+     * @param value Value
      * @param clasmap map with classes to be excluded as keys
      * @param dataset set of types for binding
      */
@@ -487,7 +487,7 @@ public class Jibx2Wsdl
     }
     
     /**
-     * Add the &lt;mapping> definition for a typed collection to a binding. This always creates an abstract mapping with
+     * Add the &lt;mapping&gt; definition for a typed collection to a binding. This always creates an abstract mapping with
      * the type name based on both the item type and the collection type, except in the case where an array is being
      * used in unwrapped (non-plain doc/lit) form.
      * 

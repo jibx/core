@@ -44,8 +44,8 @@ public class UrlResolver implements ISchemaResolver
     /**
      * Constructor. This converts paths to a standard form by eliminating "./" and "../" relative path components.
      * 
-     * @param path 
-     * @param url
+     * @param path Path
+     * @param url URL
      */
     public UrlResolver(String path, URL url) {
         m_url = url;

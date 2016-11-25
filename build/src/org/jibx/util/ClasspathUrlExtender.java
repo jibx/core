@@ -43,7 +43,7 @@ public class ClasspathUrlExtender
     /**
      * Set the classloader to be used for accessing resources.
      * 
-     * @param loader
+     * @param loader Classloader
      */
     public static void setClassLoader(ClassLoader loader) {
         s_handler = new ClasspathHandler(loader);
@@ -52,7 +52,7 @@ public class ClasspathUrlExtender
     /**
      * Check if a URL string represents a resource from the classpath.
      * 
-     * @param url
+     * @param url URL
      * @return <code>true</code> if classpath resource, <code>false</code> if not
      */
     public static boolean isClasspathUrl(String url) {

@@ -217,7 +217,7 @@ public abstract class SchemaBase implements IComponent
      * Set parent element. This method is provided for use by subclasses and other classes in this package (particularly
      * {@link FilteredSegmentList}).
      * 
-     * @param parent
+     * @param parent Parent
      */
     protected final void setParent(OpenAttrBase parent) {
         m_parent = parent;
@@ -261,7 +261,7 @@ public abstract class SchemaBase implements IComponent
     /**
      * Set extension data. The actual type of object used for extension data (if any) is defined by the application.
      *
-     * @param extension
+     * @param extension data
      */
     public void setExtension(Object extension) {
         m_extension = extension;

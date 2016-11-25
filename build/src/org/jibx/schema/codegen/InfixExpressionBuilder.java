@@ -39,8 +39,8 @@ public class InfixExpressionBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr 
+     * @param source ClassBuilder
+     * @param expr InfixExpression
      */
     public InfixExpressionBuilder(ClassBuilder source, InfixExpression expr) {
         super(source, expr);
@@ -50,9 +50,9 @@ public class InfixExpressionBuilder extends ExpressionBuilderBase
     /**
      * Constructor with left operand supplied.
      * 
-     * @param source 
-     * @param expr
-     * @param operand
+     * @param source ClassBuilder
+     * @param expr InfixExpression
+     * @param operand operand
      */
     public InfixExpressionBuilder(ClassBuilder source, InfixExpression expr, Expression operand) {
         super(source, expr);
@@ -64,7 +64,7 @@ public class InfixExpressionBuilder extends ExpressionBuilderBase
      * Add operand to expression. If the right operand has not yet been set this will set it; otherwise, it will add the
      * operand as an extended operand of the expression. 
      *
-     * @param operand
+     * @param operand Expression
      */
     protected void addOperand(Expression operand) {
         if (m_operandCount == 0) {

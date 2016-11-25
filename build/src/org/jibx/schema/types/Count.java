@@ -92,7 +92,7 @@ public class Count
      * which avoids the need to separately check unbounded and then compare the
      * count.
      * 
-     * @param value
+     * @param value to check
      * @return equal flag
      */
     public boolean isEqual(int value) {
@@ -104,7 +104,7 @@ public class Count
      * method which avoids the need to separately check unbounded and then
      * compare the count.
      * 
-     * @param value
+     * @param value to check
      * @return greater than flag
      */
     public boolean isGreaterThan(int value) {
@@ -152,8 +152,8 @@ public class Count
      * Check if a count attribute is equal to a specified value. If the count is <code>null</code>, the value is
      * taken as '1'.
      * 
-     * @param value
-     * @param count
+     * @param value to check
+     * @param count times
      * @return <code>true</code> if value equal, <code>false</code> if not
      */
     public static boolean isCountEqual(int value, Count count) {

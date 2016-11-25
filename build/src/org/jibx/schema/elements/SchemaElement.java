@@ -174,7 +174,7 @@ public class SchemaElement extends OpenAttrBase
     /**
      * Set 'attributeFormDefault' attribute type code.
      * 
-     * @param type
+     * @param type code
      */
     public void setAttributeFormDefault(int type) {
         FormChoiceAttribute.s_formValues.checkValue(type);
@@ -220,7 +220,7 @@ public class SchemaElement extends OpenAttrBase
     /**
      * Set 'elementFormDefault' attribute type code.
      * 
-     * @param type
+     * @param type code
      */
     public void setElementFormDefault(int type) {
         FormChoiceAttribute.s_formValues.checkValue(type);
@@ -330,7 +330,7 @@ public class SchemaElement extends OpenAttrBase
     /**
      * Set 'version' attribute.
      * 
-     * @param version
+     * @param version attribute
      */
     public void setVersion(String version) {
         m_version = version;
@@ -348,7 +348,7 @@ public class SchemaElement extends OpenAttrBase
     /**
      * Set resolver.
      *
-     * @param resolver
+     * @param resolver Schema Resolver
      */
     public void setResolver(ISchemaResolver resolver) {
         m_resolver = resolver;

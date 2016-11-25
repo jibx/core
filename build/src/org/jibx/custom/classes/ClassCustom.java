@@ -198,7 +198,7 @@ public class ClassCustom extends NestingBase implements IApply
     /**
      * Set the type name to be used when creating an instance of this class.
      * 
-     * @param type
+     * @param type name
      */
     public void setCreateType(String type) {
         m_createType = type;
@@ -334,7 +334,7 @@ public class ClassCustom extends NestingBase implements IApply
     /**
      * Add child.
      * 
-     * @param child
+     * @param child custom base
      */
     protected void addChild(CustomBase child) {
         if (child.getParent() == this) {
@@ -347,8 +347,8 @@ public class ClassCustom extends NestingBase implements IApply
     /**
      * Form set text method. This is intended for use during unmarshalling. TODO: add validation
      * 
-     * @param text
-     * @param ictx
+     * @param text method
+     * @param ictx context
      */
     private void setFormText(String text, IUnmarshallingContext ictx) {
         m_form = s_representationEnum.getValue(text);
@@ -357,7 +357,7 @@ public class ClassCustom extends NestingBase implements IApply
     /**
      * Form get text method. This is intended for use during marshalling.
      * 
-     * @return text
+     * @return text method
      */
     private String getFormText() {
         return s_representationEnum.getName(m_form);
@@ -368,7 +368,7 @@ public class ClassCustom extends NestingBase implements IApply
      * method which returns a value and has a name beginning with "get" or "is" is a property read access method. It
      * maps the corresponding property name to the method, and returns the map.
      * 
-     * @param methods
+     * @param methods items
      * @param inclset set of member names to be included (<code>null</code> if not specified)
      * @param exclset set of member names to be excluded (<code>null</code> if not specified, ignored if inclset is
      * non-<code>null</code>)
@@ -587,7 +587,7 @@ public class ClassCustom extends NestingBase implements IApply
      * values defined by the class will be processed. It is an error if the same name occurs on both an 'excludes' list
      * and any other list, or if a name on the 'excludes' list has a child element present. It is also an error if the
      * same name occurs on both the 'optionals' and 'requireds' list. Each list name can also be flagged with a leading
-     * indicator character to say whether the value should be represented as an attribute ('@') or element ('<'). The
+     * indicator character to say whether the value should be represented as an attribute ('@') or element ('&lt;'). The
      * order of child elements is also partially determined by the lists, with the 'includes' list processed first, then
      * the 'requireds' list, then the 'optionals' list, then the child elements, then any values not yet processed.
      * 
@@ -839,7 +839,7 @@ public class ClassCustom extends NestingBase implements IApply
      * Get customization information for a member by name. This method may only be called after
      * {@link #apply(IClassLocator)}.
      * 
-     * @param name
+     * @param name Member name
      * @return customization, or <code>null</code> if none
      */
     public ValueCustom getMember(String name) {

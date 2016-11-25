@@ -99,8 +99,8 @@ public class ValueItem extends Item
      * Copy the item under a different parent.
      *
      * @param ref reference (for overrides to copy; <code>null</code> if none)
-     * @param parent
-     * @return copy
+     * @param parent Parent
+     * @return copy Reference
      */
     protected Item copy(Item ref, GroupItem parent) {
         return new ValueItem(this, ref, parent);

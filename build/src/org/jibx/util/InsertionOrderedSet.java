@@ -159,7 +159,7 @@ public class InsertionOrderedSet implements Set
     /**
      * Convenience method to add every item in an array.
      *
-     * @param objs
+     * @param objs Objects
      */
     public void addAll(Object[] objs) {
         for (int i = 0; i < objs.length; i++) {

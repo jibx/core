@@ -183,7 +183,7 @@ public class ObjectStringConversion extends StringConversion
      * leaves the converted value on the stack.
      *
      * @param mb method builder
-     * @throws JiBXException 
+     * @throws JiBXException Error if no de-serializer
      */
     public void genFromText(ContextMethodBuilder mb) throws JiBXException {
         

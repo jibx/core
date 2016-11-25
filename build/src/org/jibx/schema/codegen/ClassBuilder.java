@@ -81,8 +81,8 @@ public class ClassBuilder
     /**
      * Constructor.
      * 
-     * @param clas
-     * @param source 
+     * @param clas Class
+     * @param source Source
      */
     ClassBuilder(AbstractTypeDeclaration clas, SourceBuilder source) {
         m_source = source;
@@ -96,8 +96,8 @@ public class ClassBuilder
     /**
      * Constructor for an inner class.
      * 
-     * @param clas
-     * @param outer
+     * @param clas Class
+     * @param outer ClassBuilder
      */
     ClassBuilder(AbstractTypeDeclaration clas, ClassBuilder outer) {
         this(clas, outer.m_source);
@@ -107,8 +107,8 @@ public class ClassBuilder
     /**
      * Constructor for an anonymous inner class.
      * 
-     * @param clas
-     * @param outer
+     * @param clas Class
+     * @param outer ClassBuilder
      */
     public ClassBuilder(AnonymousClassDeclaration clas, ClassBuilder outer) {
         m_source = outer.m_source;
@@ -131,7 +131,7 @@ public class ClassBuilder
     /**
      * Add separately-constructed field declaration.
      *
-     * @param field
+     * @param field declaration
      */
     public void addField(FieldDeclaration field) {
         m_fields.add(ASTNode.copySubtree(getAST(), field));
@@ -140,7 +140,7 @@ public class ClassBuilder
     /**
      * Add separately-constructed method declaration.
      *
-     * @param method
+     * @param method declaration
      */
     public void addMethod(MethodDeclaration method) {
         m_methods.add(ASTNode.copySubtree(getAST(), method));
@@ -149,7 +149,7 @@ public class ClassBuilder
     /**
      * Add separately-constructed inner class declaration.
      *
-     * @param type
+     * @param type inner class declaration
      */
     public void addType(TypeDeclaration type) {
         m_innerClasses.add(ASTNode.copySubtree(getAST(), type));
@@ -158,7 +158,7 @@ public class ClassBuilder
     /**
      * Set the superclass for this class.
      *
-     * @param name
+     * @param name superclass name
      */
     public void setSuperclass(String name) {
         if (m_class instanceof TypeDeclaration) {
@@ -172,7 +172,7 @@ public class ClassBuilder
      * Create type name.
      *
      * @param type fully qualified type name
-     * @return name
+     * @return name Type name
      */
     Name createTypeName(String type) {
         return m_source.createTypeName(type);
@@ -181,7 +181,7 @@ public class ClassBuilder
     /**
      * Clone an AST node. The cloned node will have no parent.
      *
-     * @param node
+     * @param node ASTNode
      * @return clone
      */
     public ASTNode clone(ASTNode node) {
@@ -316,7 +316,7 @@ public class ClassBuilder
      * Add JavaDoc to a declaration.
      *
      * @param doc documentation text, or <code>null</code> if none
-     * @param decl
+     * @param decl BodyDeclaration
      */
     public void addJavaDoc(String doc, BodyDeclaration decl) {
         if (doc != null) {
@@ -333,7 +333,7 @@ public class ClassBuilder
     /**
      * Add a constant to a Java 5 enum definition. This method is used for enums which use the name as the value.
      *
-     * @param value 
+     * @param value constant
      * @param doc documentation text, or <code>null</code> if none
      */
     public void addEnumConstant(String value, String doc) {
@@ -352,9 +352,9 @@ public class ClassBuilder
      * Add a constant to a Java 5 enum definition. This method is used for enums which have a value separate from the
      * name.
      *
-     * @param name
+     * @param name constant
      * @param doc documentation text, or <code>null</code> if none
-     * @param value
+     * @param value Value
      */
     public void addEnumConstant(String name, String doc, String value) {
         if (m_class instanceof EnumDeclaration) {
@@ -498,8 +498,8 @@ public class ClassBuilder
     /**
      * Add method declaration.
      *
-     * @param name
-     * @param type
+     * @param name Method name
+     * @param type Method type
      * @return method builder
      */
     public MethodBuilder addMethod(String name, Type type) {
@@ -518,7 +518,7 @@ public class ClassBuilder
     /**
      * Add method declaration.
      *
-     * @param name
+     * @param name Method name
      * @param type fully qualified type name or primitive type name, with optional array suffixes
      * @return method builder
      */
@@ -679,8 +679,8 @@ public class ClassBuilder
     /**
      * Build array access expression for a named array variable and named index variable.
      *
-     * @param aname
-     * @param iname
+     * @param aname array variable
+     * @param iname index variable
      * @return array access
      */
     public ArrayAccessBuilder buildArrayIndexAccess(String aname, String iname) {

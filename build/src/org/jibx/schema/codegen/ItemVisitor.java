@@ -66,7 +66,7 @@ public class ItemVisitor extends SchemaVisitor
      * Build the item structure corresponding to a schema global definition component. This sets the structure on the
      * global component extension before filling in the details, so that circular references won't cause a problem.
      *
-     * @param comp
+     * @param comp Annotated Base
      * @return constructed structure
      */
     public DefinitionItem buildGlobal(AnnotatedBase comp) {
@@ -163,8 +163,8 @@ public class ItemVisitor extends SchemaVisitor
      * Build an item from a type reference. For a predefined schema type this will be a simple {@link ValueItem}
      * wrapped in a {@link GroupItem}; for a global type it will be a reference to a global definition.
      *
-     * @param comp
-     * @param def
+     * @param comp Annotated Base
+     * @param def Common Type Definition
      */
     private void addTypeRefItem(AnnotatedBase comp, CommonTypeDefinition def) {
         if (def.isPredefinedType()) {
@@ -179,9 +179,9 @@ public class ItemVisitor extends SchemaVisitor
     // Visit methods for generating values to classes
 
     /**
-     * Visit &lt;any> definition.
+     * Visit &lt;any&gt; definition.
      * 
-     * @param node
+     * @param node Element
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(AnyElement node) {
@@ -192,9 +192,9 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit &lt;attribute> definition.
+     * Visit &lt;attribute&gt; definition.
      * 
-     * @param node
+     * @param node node to visit
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(AttributeElement node) {
@@ -225,9 +225,9 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit &lt;attributeGroup> reference.
+     * Visit &lt;attributeGroup&gt; reference.
      * 
-     * @param node
+     * @param node Node
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(AttributeGroupRefElement node) {
@@ -238,7 +238,7 @@ public class ItemVisitor extends SchemaVisitor
     /**
      * Visit compositor.
      * 
-     * @param node
+     * @param node Node
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(CommonCompositorDefinition node) {
@@ -247,10 +247,10 @@ public class ItemVisitor extends SchemaVisitor
     }
 
     /**
-     * Visit complex type &lt;extension> definition. This adds a reference item for the base type, then continues
+     * Visit complex type &lt;extension&gt; definition. This adds a reference item for the base type, then continues
      * expansion to handle the items added by extension.
      *
-     * @param node
+     * @param node Node
      * @return <code>true</code> to continue expansion
      */
     public boolean visit(ComplexExtensionElement node) {
@@ -262,10 +262,10 @@ public class ItemVisitor extends SchemaVisitor
     }
 
     /**
-     * Visit complex type &lt;restriction> definition. This adds a reference item for the base type, blocking further
+     * Visit complex type &lt;restriction&gt; definition. This adds a reference item for the base type, blocking further
      * expansion.
      *
-     * @param node
+     * @param node Node
      * @return <code>false</code> to end expansion
      */
     public boolean visit(ComplexRestrictionElement node) {
@@ -277,9 +277,9 @@ public class ItemVisitor extends SchemaVisitor
     }
 
     /**
-     * Visit &lt;element> definition.
+     * Visit &lt;element&gt; definition.
      * 
-     * @param node
+     * @param node Node
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(ElementElement node) {
@@ -310,9 +310,9 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit &lt;group> reference.
+     * Visit &lt;group&gt; reference.
      * 
-     * @param node
+     * @param node Node
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(GroupRefElement node) {
@@ -321,9 +321,9 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit &lt;list> element. This adds a collection value matching the type of list.
+     * Visit &lt;list&gt; element. This adds a collection value matching the type of list.
      *
-     * @param node
+     * @param node Node
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(ListElement node) {
@@ -337,9 +337,9 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit simple type &lt;extension> element.
+     * Visit simple type &lt;extension&gt; element.
      *
-     * @param node
+     * @param node Node
      * @return <code>true</code> to continue expansion
      */
     public boolean visit(SimpleExtensionElement node) {
@@ -348,9 +348,9 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit simple type &lt;restriction> element.
+     * Visit simple type &lt;restriction&gt; element.
      *
-     * @param node
+     * @param node Node
      * @return <code>false</code> to block further expansion
      */
     public boolean visit(SimpleRestrictionElement node) {
@@ -364,10 +364,10 @@ public class ItemVisitor extends SchemaVisitor
     }
     
     /**
-     * Visit &lt;simpleType> element. This checks for the special case of a type definition which consists of an
+     * Visit &lt;simpleType&gt; element. This checks for the special case of a type definition which consists of an
      * enumeration, and adds a group to represent the enumeration if found.
      *
-     * @param node
+     * @param node Node
      * @return <code>true</code> to continue expansion, unless processed as group
      */
     public boolean visit(SimpleTypeElement node) {
@@ -385,10 +385,10 @@ public class ItemVisitor extends SchemaVisitor
     }
 
     /**
-     * Visit &lt;union> element. This directly builds a structure matching the component types of the union, with the
+     * Visit &lt;union&gt; element. This directly builds a structure matching the component types of the union, with the
      * nested types handled directly and the referenced types added separately.
      * 
-     * @param node
+     * @param node Node
      * @return <code>true</code> to expand any inline types
      */
     public boolean visit(UnionElement node) {

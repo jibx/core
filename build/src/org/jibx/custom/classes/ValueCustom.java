@@ -68,7 +68,7 @@ public class ValueCustom extends SharedValueBase
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent base
      */
     protected ValueCustom(SharedNestingBase parent) {
         super(parent);
@@ -77,8 +77,8 @@ public class ValueCustom extends SharedValueBase
     /**
      * Constructor with name known.
      * 
-     * @param parent
-     * @param name
+     * @param parent base
+     * @param name Name
      */
     protected ValueCustom(SharedNestingBase parent, String name) {
         super(parent, name);
@@ -88,7 +88,7 @@ public class ValueCustom extends SharedValueBase
      * Get the member name for a property from the read method name. This means stripping off the leading "get" or "is"
      * prefix, then case-converting the result.
      * 
-     * @param name
+     * @param name Name
      * @return member name
      * @see #convertMemberNameCase(String)
      * @see #memberNameFromSetMethod(String)
@@ -107,7 +107,7 @@ public class ValueCustom extends SharedValueBase
      * Get the member name for a property from the write method name. This means stripping off the leading "set" prefix,
      * then case-converting the result.
      * 
-     * @param name
+     * @param name Name
      * @return member name
      * @see #convertMemberNameCase(String)
      * @see #memberNameFromGetMethod(String)
@@ -124,7 +124,7 @@ public class ValueCustom extends SharedValueBase
      * Get the member name for a field from the field name. This means stripping off and leading field name prefix
      * and/or trailing suffix, then case-converting the result.
      * 
-     * @param name
+     * @param name Name
      * @param prefs field prefixes to be stripped
      * @param suffs field suffixes to be stripped
      * @return member name
@@ -247,7 +247,7 @@ public class ValueCustom extends SharedValueBase
     /**
      * Post-set method that handles checking attribute combinations and sets the actual member name.
      * 
-     * @throws JiBXException
+     * @throws JiBXException error
      */
     protected void postSet() throws JiBXException {
         if (m_fieldName != null) {

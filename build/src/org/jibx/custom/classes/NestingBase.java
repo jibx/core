@@ -72,7 +72,7 @@ public abstract class NestingBase extends SharedNestingBase
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent Parent
      */
     public NestingBase(SharedNestingBase parent) {
         super(parent);
@@ -101,7 +101,7 @@ public abstract class NestingBase extends SharedNestingBase
     /**
      * Set abstract mapping flag.
      * 
-     * @param abs
+     * @param abs Flag
      */
     public void setMapAbstract(Boolean abs) {
         m_mapAbstract = abs;

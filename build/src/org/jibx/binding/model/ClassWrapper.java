@@ -52,8 +52,8 @@ public class ClassWrapper implements IClass
     /**
      * Constructor.
      * 
-     * @param loc
-     * @param clas
+     * @param loc Locator
+     * @param clas Class
      */
     public ClassWrapper(IClassLocator loc, ClassFile clas) {
         m_locator = loc;
@@ -64,8 +64,8 @@ public class ClassWrapper implements IClass
      * Build an item wrapper. This method may be overridden by subclasses to
      * return a specialized form of wrapper.
      *
-     * @param item
-     * @return wrapper
+     * @param item Class Item
+     * @return wrapper Class Item Wrapper
      */
     protected IClassItem buildItem(ClassItem item) {
         return new ClassItemWrapper(this, item);

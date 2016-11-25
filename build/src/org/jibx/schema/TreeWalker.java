@@ -92,7 +92,7 @@ public class TreeWalker
      * Control the logging level for this class. Since the generated logs at debug level can become huge, this gives a
      * way for external code to provide granular control over the logging.
      *
-     * @param level
+     * @param level Logging Level
      * @return prior level
      */
     public static Level setLogging(Level level) {

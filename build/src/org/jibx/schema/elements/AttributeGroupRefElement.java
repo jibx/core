@@ -91,7 +91,7 @@ public class AttributeGroupRefElement extends AnnotatedBase implements IReferenc
     /**
      * Set 'ref' attribute value.
      * 
-     * @param ref
+     * @param ref attribute value
      */
     public void setRef(QName ref) {
         m_ref = ref;

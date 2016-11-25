@@ -116,7 +116,7 @@ public class ValidationContext extends SchemaContextTracker implements ISkipElem
     /**
      * Get schema element by identifier. This uses the unique schema identifier to locate a loaded schema instance.
      * 
-     * @param id
+     * @param id ID
      * @return schema, or <code>null</code> if not loaded
      */
     public SchemaElement getSchemaById(String id) {
@@ -135,8 +135,8 @@ public class ValidationContext extends SchemaContextTracker implements ISkipElem
     /**
      * Add schema element with identifier. TODO: is the namespace handling sufficient?
      * 
-     * @param id
-     * @param schema
+     * @param id ID
+     * @param schema Schema Element
      */
     public void setSchema(String id, SchemaElement schema) {
         if (s_logger.isDebugEnabled()) {
@@ -408,7 +408,7 @@ public class ValidationContext extends SchemaContextTracker implements ISkipElem
     /**
      * Add element to set to be skipped.
      * 
-     * @param skip
+     * @param skip element to set to be skipped
      */
     protected void addSkip(Object skip) {
         if (skip instanceof SchemaBase) {

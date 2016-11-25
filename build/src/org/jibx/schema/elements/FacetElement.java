@@ -88,7 +88,7 @@ public abstract class FacetElement extends AnnotatedBase
     /**
      * Constructor.
      * 
-     * @param type
+     * @param type Type
      * @param bit mask
      * @param exclude exclusion bit mask
      */
@@ -134,7 +134,7 @@ public abstract class FacetElement extends AnnotatedBase
         /**
          * Constructor. Just passes on the element type to base class.
          * 
-         * @param type
+         * @param type Type
          * @param bit mask
          * @param exclude exclusion bit mask
          */
@@ -192,7 +192,7 @@ public abstract class FacetElement extends AnnotatedBase
         /**
          * Constructor. Just passes on the element type to base class.
          * 
-         * @param type
+         * @param type Type
          * @param bit mask
          * @param exclude exclusion bit mask
          */
@@ -336,7 +336,7 @@ public abstract class FacetElement extends AnnotatedBase
         /**
          * Constructor. Just passes on the element type to base class.
          * 
-         * @param type
+         * @param type Type
          * @param bit mask
          * @param exclude exclusion bit mask
          */
@@ -474,7 +474,7 @@ public abstract class FacetElement extends AnnotatedBase
         /**
          * Constructor. Just passes on the element type to base class.
          * 
-         * @param type
+         * @param type Type
          * @param bit mask
          * @param exclude exclusion bit mask
          */

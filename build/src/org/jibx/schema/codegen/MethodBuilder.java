@@ -38,8 +38,8 @@ public class MethodBuilder extends BodyBuilderBase
     /**
      * Constructor.
      * 
-     * @param source
-     * @param method 
+     * @param source Source
+     * @param method  Method
      */
     public MethodBuilder(ClassBuilder source, MethodDeclaration method) {
         super(source, method);
@@ -58,8 +58,8 @@ public class MethodBuilder extends BodyBuilderBase
     /**
      * Add a method parameter.
      * 
-     * @param name
-     * @param type 
+     * @param name Name
+     * @param type Type
      * @return declaration
      */
     public SingleVariableDeclaration addParameter(String name, Type type) {
@@ -73,7 +73,7 @@ public class MethodBuilder extends BodyBuilderBase
     /**
      * Add a method parameter.
      * 
-     * @param name
+     * @param name Name
      * @param type fully-qualfied type name, or primitive name, with optional array suffixes
      * @return declaration
      */

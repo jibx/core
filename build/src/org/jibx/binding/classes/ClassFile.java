@@ -1874,7 +1874,7 @@ public class ClassFile
      * interfaces, superclass, methods, and fields (but not the actual class
      * name). It is only valid after the {@link #codeComplete} method is called.
      * 
-     * @param obj 
+     * @param obj Object to compare
      * @return <code>true</code> if equal objects, <code>false</code> if not
      */
     public boolean equals(Object obj) {

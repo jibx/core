@@ -148,6 +148,7 @@ public class NamespaceDefinition
      * 
      * @param uri namespace URI
      * @param prefix namespace prefix
+     * @return NamespaceDefinition
      */
     public static NamespaceDefinition buildNamespace(String uri,
         String prefix) {

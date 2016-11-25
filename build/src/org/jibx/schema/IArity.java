@@ -39,7 +39,7 @@ public interface IArity
     /**
      * Set maximum number of times this item can occur.
      * 
-     * @param count
+     * @param count Count
      * @see org.jibx.schema.attributes.OccursAttributeGroup#setMaxOccurs(Count)
      */
     public void setMaxOccurs(Count count);
@@ -55,7 +55,7 @@ public interface IArity
     /**
      * Set minimum number of times this item can occur.
      * 
-     * @param count
+     * @param count Count
      * @see org.jibx.schema.attributes.OccursAttributeGroup#setMinOccurs(Count)
      */
     public void setMinOccurs(Count count);

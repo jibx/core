@@ -90,7 +90,7 @@ public class GroupRefElement extends CommonCompositorBase implements IReference
     /**
      * Set 'ref' attribute value.
      * 
-     * @param ref
+     * @param ref attribute value
      */
     public void setRef(QName ref) {
         m_ref = ref;

@@ -72,7 +72,7 @@ public class SchemaVisitorDelegate extends SchemaVisitor
     /**
      * Constructor.
      * 
-     * @param delegate
+     * @param delegate Delegate
      */
     public SchemaVisitorDelegate(final SchemaVisitor delegate) {
         super();

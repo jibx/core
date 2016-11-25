@@ -56,7 +56,7 @@ public abstract class SharedNestingBase extends CustomBase
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent base
      */
     public SharedNestingBase(SharedNestingBase parent) {
         super(parent);
@@ -157,7 +157,7 @@ public abstract class SharedNestingBase extends CustomBase
     /**
      * Set the namespace to be used for schema definitions. This method is only intended for use by subclasses.
      * 
-     * @param ns
+     * @param ns Namespace
      */
     protected void setNamespace(String ns) {
         m_actualNamespace = ns;

@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Java types corresponding to schema types. The schema type list here should always match that in
  * {@link org.jibx.schema.support.SchemaTypes}. As a special case, an instance of this class is also used to represent
- * the special &lt;any> schema component.
+ * the special &lt;any&gt; schema component.
  * 
  * @author Dennis M. Sosnoski
  */
@@ -86,10 +86,10 @@ public class JavaType
         addType("unsignedShort", "java.lang.String", map);
         s_schemaTypesMap = Collections.unmodifiableMap(map);    }
     
-    /** &lt;any> schema component type. */
+    /** &lt;any&gt; schema component type. */
     public static final JavaType s_anyType = new JavaType(null, null, "org.w3c.dom.Element");
     
-    /** &lt;anyAttribute> schema component type. */
+    /** &lt;anyAttribute&gt; schema component type. */
     public static final JavaType s_anyAttributeType = new JavaType(null, null, "org.w3c.dom.Attribute");
     
     /** Schema type local name (may be needed for special handling in binding - ID and IDREF, in particular). */

@@ -38,7 +38,7 @@ import org.jibx.schema.validation.ValidationContext;
 import org.jibx.util.StringArray;
 
 /**
- * &lt;element> element definition. The same code is used for both global and local element definitions, with the
+ * &lt;element&gt; element definition. The same code is used for both global and local element definitions, with the
  * differences checked during validation.
  * 
  * TODO: implement common base class for attribute and element?
@@ -421,7 +421,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Set 'name' attribute value.
      * 
-     * @param name
+     * @param name attribute value
      * @see org.jibx.schema.attributes.DefRefAttributeGroup#setName(java.lang.String)
      */
     public void setName(String name) {
@@ -431,7 +431,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Set 'ref' attribute value.
      * 
-     * @param ref
+     * @param ref attribute value
      * @see org.jibx.schema.attributes.DefRefAttributeGroup#setRef(org.jibx.runtime.QName)
      */
     public void setRef(QName ref) {
@@ -442,7 +442,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Get 'form' attribute type code.
      * 
-     * @return form
+     * @return form attribute type code
      * @see org.jibx.schema.attributes.FormChoiceAttribute#getForm()
      */
     public int getForm() {
@@ -452,7 +452,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Get 'form' attribute name value.
      * 
-     * @return form
+     * @return form attribute name value
      * @see org.jibx.schema.attributes.FormChoiceAttribute#getFormText()
      */
     public String getFormText() {
@@ -462,7 +462,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Set 'form' attribute type code.
      * 
-     * @param type
+     * @param type code
      * @see org.jibx.schema.attributes.FormChoiceAttribute#setForm(int)
      */
     public void setForm(int type) {
@@ -492,7 +492,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Set 'maxOccurs' attribute value.
      * 
-     * @param count
+     * @param count attribute value
      * @see org.jibx.schema.attributes.OccursAttributeGroup#setMaxOccurs(org.jibx.schema.types.Count)
      */
     public void setMaxOccurs(Count count) {
@@ -502,7 +502,7 @@ public class ElementElement extends AnnotatedBase implements IArity, INamed, IRe
     /**
      * Get 'maxOccurs' attribute value.
      * 
-     * @param count
+     * @param count Count
      * @see org.jibx.schema.attributes.OccursAttributeGroup#setMinOccurs(org.jibx.schema.types.Count)
      */
     public void setMinOccurs(Count count) {

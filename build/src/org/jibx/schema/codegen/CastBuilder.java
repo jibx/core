@@ -39,8 +39,8 @@ public class CastBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr 
+     * @param source ClassBuilder
+     * @param expr Cast Expression
      */
     public CastBuilder(ClassBuilder source, CastExpression expr) {
         super(source, expr);
@@ -51,7 +51,7 @@ public class CastBuilder extends ExpressionBuilderBase
      * Add operand to expression. This just sets the supplied operand expression as the target, as long as the target
      * has not been set previously.
      *
-     * @param operand
+     * @param operand Expression
      */
     protected void addOperand(Expression operand) {
         if (m_set) {

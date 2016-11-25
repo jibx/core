@@ -55,7 +55,7 @@ public abstract class ClassCustomizationBase extends CustomizationCommandLineBas
     /**
      * Constructor.
      * 
-     * @param lines
+     * @param lines Array of lines
      */
     protected ClassCustomizationBase(String[] lines) {
         super(mergeUsageLines(lines, BASE_USAGE_LINES));
@@ -105,7 +105,7 @@ public abstract class ClassCustomizationBase extends CustomizationCommandLineBas
      * specified on the command line. Subclasses which override this method need to call this base class implementation
      * as part of their processing.
      * 
-     * @param alist 
+     * @param alist Arg list
      */
     protected void finishParameters(ArgList alist) {
         
@@ -147,8 +147,8 @@ public abstract class ClassCustomizationBase extends CustomizationCommandLineBas
      *
      * @param path customization file path
      * @return <code>true</code> if successful, <code>false</code> if an error
-     * @throws JiBXException 
-     * @throws IOException 
+     * @throws JiBXException JiBX error
+     * @throws IOException I/O error
      */
     protected boolean loadCustomizations(String path) throws JiBXException, IOException {
         
@@ -178,8 +178,8 @@ public abstract class ClassCustomizationBase extends CustomizationCommandLineBas
      * @param path customizations file path, <code>null</code> if none
      * @param loc class locator
      * @param vctx validation context
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException JiBX error
+     * @throws IOException I/O error
      */
     protected abstract void loadCustomizations(String path, IClassLocator loc, ValidationContext vctx)
         throws JiBXException, IOException;

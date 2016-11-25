@@ -46,7 +46,7 @@ public class UniqueNameSet
     /**
      * Constructor from existing name collection. Creates a name set initialized to contain all the supplied names.
      * 
-     * @param base 
+     * @param base Collection
      */
     public UniqueNameSet(Collection base) {
         m_nameSet = new HashSet(base);
@@ -55,7 +55,7 @@ public class UniqueNameSet
     /**
      * Copy constructor. Creates a name set initialized to contain all the names from another name set.
      * 
-     * @param original
+     * @param original Name Set
      */
     public UniqueNameSet(UniqueNameSet original) {
         this();
@@ -76,7 +76,7 @@ public class UniqueNameSet
      * Add all the names from another name set to this set. This does not check for conflicts between the names in the
      * two sets.
      * 
-     * @param other
+     * @param other Unique Name Set
      */
     public void addAll(UniqueNameSet other) {
         m_nameSet.addAll(other.m_nameSet);

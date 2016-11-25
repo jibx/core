@@ -141,7 +141,7 @@ public class NameUtils
     /**
      * Check if a name is reserved in Java.
      * 
-     * @param name
+     * @param name Name
      * @return is reserved
      */
     public static boolean isReserved(String name) {
@@ -151,7 +151,7 @@ public class NameUtils
     /**
      * Convert name if it is reserved in Java.
      * 
-     * @param name
+     * @param name Name
      * @return non-reserved name
      */
     public static String convertReserved(String name) {
@@ -165,7 +165,7 @@ public class NameUtils
     /**
      * Check if a class name is a default import in Java.
      * 
-     * @param name
+     * @param name Name
      * @return is reserved
      */
     public static boolean isDefaultImport(String name) {
@@ -210,7 +210,7 @@ public class NameUtils
      * case. Finally, if the result either begins with a digit or is the word "Class" this prepends a leading underscore
      * back on.
      *
-     * @param word
+     * @param word Word
      * @return word with uppercase initial letter
      */
     public static String toNameWord(String word) {
@@ -236,7 +236,7 @@ public class NameUtils
      * Convert a word to a leading name component. If the supplied word starts with an uppercase letter which is not
      * followed by another uppercase letter, this converts the initial uppercase to lowercase.
      *
-     * @param word
+     * @param word Word
      * @return word with lowercase initial letter
      */
     public static String toNameLead(String word) {

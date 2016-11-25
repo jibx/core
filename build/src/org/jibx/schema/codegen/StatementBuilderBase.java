@@ -37,7 +37,7 @@ public abstract class StatementBuilderBase extends ASTBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
+     * @param source Class builder
      */
     public StatementBuilderBase(ClassBuilder source) {
         super(source.getAST());

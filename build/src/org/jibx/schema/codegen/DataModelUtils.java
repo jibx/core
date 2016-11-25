@@ -34,7 +34,7 @@ public class DataModelUtils
     /**
      * Get the complete data model.
      *
-     * @param directory 
+     * @param directory directory
      * @return ordered list of class name-values array pairs
      */
     public static StringObjectPair[] getImage(PackageOrganizer directory) {
@@ -52,9 +52,9 @@ public class DataModelUtils
     /**
      * Write a complete generated data model.
      *
-     * @param directory
-     * @param writer
-     * @throws IOException
+     * @param directory directory
+     * @param writer writer
+     * @throws IOException error
      */
     public static void writeImage(PackageOrganizer directory, BufferedWriter writer) throws IOException {
         ArrayList packs = directory.getPackages();
@@ -81,9 +81,9 @@ public class DataModelUtils
     /**
      * Read a complete generated data model.
      *
-     * @param reader
+     * @param reader Reader
      * @return ordered list of class name-values array pairs
-     * @throws IOException
+     * @throws IOException error
      */
     public static StringObjectPair[] readImage(BufferedReader reader) throws IOException {
         String line;
@@ -112,8 +112,8 @@ public class DataModelUtils
     /**
      * List the values in a class.
      *
-     * @param values
-     * @param buff
+     * @param values array
+     * @param buff string buffer
      */
     private static void listClass(StringPair[] values, StringBuffer buff) {
         for (int i = 0; i < values.length; i++) {
@@ -128,10 +128,10 @@ public class DataModelUtils
     /**
      * Find the difference between two class value lists.
      *
-     * @param name
-     * @param pairs1
-     * @param pairs2
-     * @param buff
+     * @param name name
+     * @param pairs1 array
+     * @param pairs2 array
+     * @param buff string buffer
      */
     private static void classDiff(String name, StringPair[] pairs1, StringPair[] pairs2, StringBuffer buff) {
         int index1 = 0;

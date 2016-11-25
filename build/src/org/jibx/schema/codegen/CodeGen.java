@@ -187,8 +187,8 @@ public class CodeGen
     /**
      * Constructor used by tests. This uses supplied schemas and skips writing to the file system.
      * 
-     * @param custom
-     * @param vctx
+     * @param custom Schemaset
+     * @param vctx Validation Context
      */
     public CodeGen(SchemasetCustom custom, ValidationContext vctx) {
         m_global = custom;
@@ -227,7 +227,7 @@ public class CodeGen
      * Find the most specific schemaset owning a schema. If multiple matches are found which are not in line of
      * containment the first match is returned and the conflict is reported as an error.
      * 
-     * @param schema
+     * @param schema schema element
      * @param custom schema set customization
      * @return owning schemaset, <code>null</code> if none
      */
@@ -1597,8 +1597,8 @@ public class CodeGen
      * @param pack target package for binding (<code>null</code> if unspecified)
      * @param pregens pregenerated bindings to be included in root binding
      * @param handler validation error and code generation problem handler
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException error
+     * @throws IOException error
      */
     public void writeBindings(String name, String pack, List pregens, ProblemHandler handler)
     throws JiBXException, IOException {
@@ -1700,8 +1700,8 @@ public class CodeGen
      * @param model file to be used for dumping generated data model (<code>null</code> if none)
      * @param handler validation error and code generation problem handler
      * @return <code>true</code> if successful, <code>false</code> if failure
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException error
+     * @throws IOException error
      */
     public boolean generate(boolean verbose, String usens, String dfltpkg, String bindname, List fileset,
         List inclpaths, File model, ProblemHandler handler) throws JiBXException, IOException {
@@ -1997,8 +1997,8 @@ public class CodeGen
      * @param typemap map from type qualified name to class data
      * @param handler validation error and problem handler
      * @return binding
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException error
+     * @throws IOException error
      */
     public static BindingElement processPregeneratedBinding(URL url, Map elemmap, Map typemap, ProblemHandler handler)
         throws JiBXException, IOException {
@@ -2043,8 +2043,8 @@ public class CodeGen
     /**
      * Report problems found in binding.
      * 
-     * @param vctx
-     * @param handler
+     * @param vctx Validation Context
+     * @param handler Problem Handler
      */
     private static void reportBindingProblems(org.jibx.binding.model.ValidationContext vctx, ProblemHandler handler) {
         StringBuffer buff = new StringBuffer();
@@ -2063,9 +2063,9 @@ public class CodeGen
     /**
      * Find the steps in the canonical path to a file.
      *
-     * @param file
-     * @return steps
-     * @throws IOException
+     * @param file File
+     * @return steps List
+     * @throws IOException error
      */
     public static List findPathSteps(File file) throws IOException {
         LinkedList steps = new LinkedList();
@@ -2141,7 +2141,7 @@ public class CodeGen
      * Check if a binding definition uses the no-namespace namespace. This calls itself to recursively check on included
      * bindings.
      *
-     * @param binding
+     * @param binding element
      * @return <code>true</code> if no-namespace namespace used, <code>false</code> if not
      */
     public static boolean checkNoNamespace(BindingElement binding) {
@@ -2172,8 +2172,8 @@ public class CodeGen
     /**
      * Run the binding generation using command line parameters.
      * 
-     * @param args
-     * @throws Exception
+     * @param args initial params
+     * @throws Exception error
      */
     public static void main(String[] args) throws Exception {
         TreeWalker.setLogging(Level.ERROR);

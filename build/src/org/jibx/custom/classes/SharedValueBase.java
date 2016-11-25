@@ -97,7 +97,7 @@ public class SharedValueBase extends CustomBase
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent Base
      */
     protected SharedValueBase(SharedNestingBase parent) {
         super(parent);
@@ -106,8 +106,8 @@ public class SharedValueBase extends CustomBase
     /**
      * Constructor with name known.
      * 
-     * @param parent
-     * @param name
+     * @param parent Base
+     * @param name Name
      */
     protected SharedValueBase(SharedNestingBase parent, String name) {
         this(parent);
@@ -136,7 +136,7 @@ public class SharedValueBase extends CustomBase
     /**
      * Set value name as used in code. This is only for use by subclasses.
      * 
-     * @param name
+     * @param name Base name
      * @see SharedValueBase#getBaseName()
      */
     protected void setBaseName(String name) {
@@ -166,7 +166,7 @@ public class SharedValueBase extends CustomBase
      * followed by a lowercase letter, the initial letter is converted to lowercase in order to obtain a standard form
      * of the name.
      * 
-     * @param name
+     * @param name Name string
      * @return converted name
      */
     public static String convertMemberNameCase(String name) {
@@ -201,7 +201,7 @@ public class SharedValueBase extends CustomBase
     /**
      * Set style code to apply to value. This method is only intended for use by subclasses.
      * 
-     * @param style
+     * @param style code
      */
     protected void setStyle(Integer style) {
         m_style = style;
@@ -219,7 +219,7 @@ public class SharedValueBase extends CustomBase
     /**
      * Set XML element or attribute name from customization. This method is only intended for use by subclasses.
      * 
-     * @param name
+     * @param name XML name
      */
     public void setXmlName(String name) {
         m_xmlName = name;
@@ -320,7 +320,7 @@ public class SharedValueBase extends CustomBase
     /**
      * Set item type. This method is intended only for use by subclasses.
      * 
-     * @param type
+     * @param type Item
      */
     protected void setItemType(String type) {
         m_itemWorkingType = type;
@@ -338,7 +338,7 @@ public class SharedValueBase extends CustomBase
     /**
      * Set item name. This method is intended only for use by subclasses.
      * 
-     * @param name
+     * @param name item
      */
     protected void setItemName(String name) {
         m_itemWorkingName = name;

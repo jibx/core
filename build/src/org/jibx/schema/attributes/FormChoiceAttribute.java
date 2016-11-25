@@ -98,7 +98,7 @@ public class FormChoiceAttribute extends AttributeBase
     /**
      * Set 'form' attribute type code.
      * 
-     * @param type
+     * @param type code
      */
     public void setForm(int type) {
         s_formValues.checkValue(type);

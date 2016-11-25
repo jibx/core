@@ -36,8 +36,8 @@ public class InvocationBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param invoke 
+     * @param source Source
+     * @param invoke Invoke
      */
     public InvocationBuilder(ClassBuilder source, MethodInvocation invoke) {
         super(source, invoke);
@@ -47,7 +47,7 @@ public class InvocationBuilder extends ExpressionBuilderBase
     /**
      * Add operand to expression. This just adds the supplied operand expression as a new method parameter.
      *
-     * @param operand
+     * @param operand expression
      */
     protected void addOperand(Expression operand) {
         m_invoke.arguments().add(operand);

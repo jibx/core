@@ -78,7 +78,7 @@ public class NameUtilities
      * Checks if a name matches a pattern. This method accepts one or more '*' wildcard
      * characters in the pattern, calling itself recursively in order to handle multiple wildcards.
      * 
-     * @param name
+     * @param name Name
      * @param pattern match pattern
      * @return <code>true</code> if pattern matched, <code>false</code> if not
      */

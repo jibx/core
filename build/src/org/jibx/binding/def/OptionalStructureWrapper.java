@@ -51,6 +51,7 @@ public class OptionalStructureWrapper extends PassThroughComponent
      *
      * @param wrap wrapped binding component
      * @param load flag for need to load object for marshalling code
+     * @param prop Property Definition
      */
 
     public OptionalStructureWrapper(IComponent wrap, PropertyDefinition prop,

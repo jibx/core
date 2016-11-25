@@ -273,7 +273,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
      * returned documentation text is suitable for use as JavaDoc content, with any JavaDoc end sequences ('*' followed
      * by '/') substituted with a space added.
      *
-     * @param element
+     * @param element Element
      * @return content of <b>documentation</b> elements, or <code>null</code> if none
      */
     protected String extractDocumentation(AnnotatedBase element) {
@@ -323,7 +323,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
      * can't find an element or attribute name but does find a named type, it uses that type as the name. If all else
      * fails, it just returns the type of the highest level component found.
      *
-     * @param node
+     * @param node Data node
      * @return name
      */
     protected static String describe(DataNode node) {
@@ -366,7 +366,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
     /**
      * Derive group names from the containing group prefix and the simple name of the group.
      *
-     * @param group
+     * @param group names
      * @param container (<code>null</code> if none)
      * @return name
      */
@@ -388,7 +388,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
     /**
      * Import the type associated with an item, if not directly accessible
      *
-     * @param value
+     * @param value Type associated with an item
      */
     protected void importValueType(DataNode value) {
         String type = value.getType();
@@ -617,7 +617,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
     /**
      * Add separately-constructed field to this class definition.
      *
-     * @param field
+     * @param field to add
      */
     public void addField(FieldDeclaration field) {
         m_classBuilder.addField(field);
@@ -626,7 +626,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
     /**
      * Add separately-constructed method declaration to this class definition.
      *
-     * @param method
+     * @param method to add
      */
     public void addMethod(MethodDeclaration method) {
         m_classBuilder.addMethod(method);
@@ -635,7 +635,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
     /**
      * Add separately-constructed inner class declaration to this class definition.
      *
-     * @param type
+     * @param type to add
      */
     public void addType(TypeDeclaration type) {
         m_classBuilder.addType(type);
@@ -654,8 +654,8 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
      * Initialize the class construction. This is a support method for use by subclasses, which handles common setup
      * including superclass generation.
      *
-     * @param verbose 
-     * @param builder
+     * @param verbose Flag
+     * @param builder Class builder
      * @param root data structure tree root node
      */
     protected void initClass(boolean verbose, ClassBuilder builder, ParentNode root) {
@@ -722,7 +722,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
     /**
      * Generate any inner classes of this class.
      *
-     * @param verbose 
+     * @param verbose Flag
      * @param builder class source file builder
      */
     protected void generateInner(boolean verbose, SourceBuilder builder) {
@@ -735,7 +735,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
      * Generate this class. Subclasses must implement this method to first do the appropriate setup and then call
      * {@link #initClass(boolean, ClassBuilder, ParentNode)} before doing their own code generation.
      * 
-     * @param verbose 
+     * @param verbose Flag
      * @param builder class source file builder
      */
     public abstract void generate(boolean verbose, SourceBuilder builder);
@@ -1027,7 +1027,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
         /**
          * Set schema documentation for this node.
          *
-         * @param text
+         * @param text schema documentation
          */
         public void setDocumentation(String text) {
             m_documentation = text;
@@ -1221,7 +1221,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
          * for the component to the description text under construction, also trimming whitespace and replacing line
          * breaks with pipe characters to keep the description text to a single line.
          *
-         * @param buff
+         * @param buff String Buffer
          */
         protected void appendDocText(StringBuffer buff) {
             String doctext = getDocumentation();
@@ -1239,7 +1239,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
         /**
          * Append selection constant text to description, if selection constant defined.
          *
-         * @param buff
+         * @param buff String Buffer
          */
         protected void appendSelectConstText(StringBuffer buff) {
             if (getSelectConstName() != null) {
@@ -1258,8 +1258,8 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
         /**
          * Constructor. This automatically links to the containing node.
          * 
-         * @param item
-         * @param parent
+         * @param item Item
+         * @param parent Parent
          */
         public LeafNode(Item item, ParentNode parent) {
             super(item, parent);
@@ -1445,7 +1445,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
         }
         
         /**
-         * Adjust name based on group nesting. This has special handling for the case of &lt;sequence> compositors,
+         * Adjust name based on group nesting. This has special handling for the case of &lt;sequence&gt; compositors,
          * substituting the name of the first value in the sequence for the value name if a fixed name has not been
          * assigned to the sequence.
          */
@@ -1476,7 +1476,7 @@ public abstract class ClassHolder extends TypeData implements IClassHolder
          * Add a child node (which may be another parent) to this parent. This method is normally only used by the
          * superclass, when creating a new instance. The instance must be fully initialized before it is added.
          *
-         * @param value
+         * @param value Data Node
          */
         protected void addChild(DataNode value) {
             m_values.add(value);

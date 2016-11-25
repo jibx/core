@@ -143,7 +143,7 @@ public class BindingHolder
      * Set the binding element. This method is provided so that the generated binding element can be replaced by one
      * which has been read in from a file after being written.
      * 
-     * @param bind
+     * @param bind Binding Element
      */
     public void setBinding(BindingElement bind) {
         m_binding = bind;
@@ -152,7 +152,7 @@ public class BindingHolder
     /**
      * Add a format definition to the binding. In actual generation, formats may be moved to a root binding definition.
      *
-     * @param format
+     * @param format element
      */
     public void addFormat(FormatElement format) {
         m_organizer.addFormat(format);
@@ -203,7 +203,7 @@ public class BindingHolder
     /**
      * Set the file name to be used for this file.
      * 
-     * @param name
+     * @param name Name
      */
     public void setFileName(String name) {
         m_fileName = name;
@@ -212,7 +212,7 @@ public class BindingHolder
     /**
      * Add a mapping definition to the binding.
      *
-     * @param mapping
+     * @param mapping element base
      */
     public void addMapping(MappingElementBase mapping) {
         checkModifiable();

@@ -31,7 +31,7 @@ import org.jibx.schema.elements.SchemaBase;
 /**
  * Representations for predefined schema types. These are structured as elements to be consistent with user definitions,
  * but are only generated as static instances. Note that the schema type list here should always match that in
- * {@link org.jibx.schema.codegen.JavaType}.
+ * link org.jibx.schema.codegen.JavaType.
  * 
  * @author Dennis M. Sosnoski
  */

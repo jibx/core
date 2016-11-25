@@ -37,8 +37,8 @@ public class NewArrayBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr 
+     * @param source Source
+     * @param expr Array
      */
     public NewArrayBuilder(ClassBuilder source, ArrayCreation expr) {
         super(source, expr);
@@ -48,7 +48,7 @@ public class NewArrayBuilder extends ExpressionBuilderBase
     /**
      * Add operand to expression. This just adds the supplied operand expression as a new initializer value.
      *
-     * @param operand
+     * @param operand to add
      */
     protected void addOperand(Expression operand) {
         ArrayInitializer init = m_arrayCreation.getInitializer();
@@ -62,7 +62,7 @@ public class NewArrayBuilder extends ExpressionBuilderBase
     /**
      * Set the size of the array.
      * 
-     * @param size
+     * @param size of the array
      */
     public void setSize(ExpressionBuilderBase size) {
         m_arrayCreation.dimensions().add(size.getExpression());

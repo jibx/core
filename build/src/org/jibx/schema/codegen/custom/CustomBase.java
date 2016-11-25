@@ -42,7 +42,7 @@ public class CustomBase
     /**
      * Constructor.
      * 
-     * @param parent
+     * @param parent Parent
      */
     public CustomBase(NestingCustomBase parent) {
         m_parent = parent;
@@ -60,7 +60,7 @@ public class CustomBase
     /**
      * Set container.
      *
-     * @param parent
+     * @param parent parent
      */
     protected void setParent(NestingCustomBase parent) {
         m_parent = parent;

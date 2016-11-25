@@ -97,7 +97,7 @@ public class UsageFinder
      * Add usage counts for a schema tree. This counts all references from the supplied schema, including references in
      * other schemas referenced by the schema.
      * 
-     * @param schema
+     * @param schema Schema Element
      */
     public void countSchemaTree(SchemaElement schema) {
         TreeWalker wlkr = new TreeWalker(null, m_visitor.getListener());
@@ -129,7 +129,7 @@ public class UsageFinder
      * schema tree using {@link #countSchemaTree(SchemaElement)}, which always sets the register associated with the
      * supplied schema.
      * 
-     * @param reg
+     * @param reg Name register
      */
     public void setNameRegister(NameRegister reg) {
         m_visitor.setNameRegister(reg);

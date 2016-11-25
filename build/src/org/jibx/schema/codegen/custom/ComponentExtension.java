@@ -88,7 +88,7 @@ public class ComponentExtension extends BaseExtension
     /**
      * Constructor.
      * 
-     * @param comp
+     * @param comp Component
      * @param global containing global definition extension (<code>null</code> allowed only as special case when
      * calling this constructor from the global extension subclass constructor)
      */
@@ -128,7 +128,7 @@ public class ComponentExtension extends BaseExtension
     /**
      * Set flag for component to be removed from schema.
      * 
-     * @param removed
+     * @param removed Flag
      */
     public void setRemoved(boolean removed) {
         m_removed = removed;
@@ -159,7 +159,7 @@ public class ComponentExtension extends BaseExtension
     /**
      * Set optional component.
      * 
-     * @param optional
+     * @param optional Flag
      */
     public void setOptional(boolean optional) {
         m_optional = optional;
@@ -177,7 +177,7 @@ public class ComponentExtension extends BaseExtension
     /**
      * Set repeated component.
      * 
-     * @param repeated
+     * @param repeated Flag
      */
     public void setRepeated(boolean repeated) {
         m_repeated = repeated;

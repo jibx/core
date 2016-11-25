@@ -35,7 +35,7 @@ public class MemoryResolver implements ISchemaResolver
     /**
      * Constructor.
      * 
-     * @param id 
+     * @param id ID
      */
     public MemoryResolver(String id) {
         m_id = id;

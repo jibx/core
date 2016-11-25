@@ -232,8 +232,8 @@ public class MappingReference extends PassThroughComponent
      * Patch the generated code to remove the unmarshalled object when it's a
      * "this" reference with both elements and attributes.
      *
-     * @param mb
-     * @throws JiBXException
+     * @param mb Context Method Builder
+     * @throws JiBXException If error
      */
     public void genContentUnmarshal(ContextMethodBuilder mb)
         throws JiBXException {

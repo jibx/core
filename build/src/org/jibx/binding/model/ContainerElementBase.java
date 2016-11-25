@@ -434,7 +434,7 @@ public abstract class ContainerElementBase extends NestingElementBase
     /**
      * Set flexible flag.
      * 
-     * @param flexible
+     * @param flexible Flexible
      */
     public void setFlexible(boolean flexible) {
         m_structureAttrs.setFlexible(flexible);
@@ -613,7 +613,7 @@ public abstract class ContainerElementBase extends NestingElementBase
      * method calls itself on the child component prior to checking the child
      * component's contribution.
      *
-     * @param vctx
+     * @param vctx Validatation context
      */
     protected void classifyComponents(ValidationContext vctx) {
         if (m_attributeComponents == null && !m_inClassify) {
@@ -664,10 +664,10 @@ public abstract class ContainerElementBase extends NestingElementBase
     /**
      * Set child attribute and content components directly. This is provided for
      * use by subclasses requiring special handling, in particular the
-     * &lt;structure> element used as a mapping reference.
+     * &lt;structure&gt; element used as a mapping reference.
      *
-     * @param attribs
-     * @param contents
+     * @param attribs Array of attributes
+     * @param contents Array of Contents
      */
     protected void setComponents(ArrayList attribs, ArrayList contents) {
         m_attributeComponents = attribs;

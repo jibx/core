@@ -351,7 +351,7 @@ public class AttributeElement extends AnnotatedBase implements INamed, IReferenc
     /**
      * Set 'name' attribute value.
      * 
-     * @param name
+     * @param name Name
      * @see org.jibx.schema.attributes.DefRefAttributeGroup#setName(java.lang.String)
      */
     public void setName(String name) {
@@ -361,7 +361,7 @@ public class AttributeElement extends AnnotatedBase implements INamed, IReferenc
     /**
      * Set 'ref' attribute value.
      * 
-     * @param ref
+     * @param ref attribute value
      * @see org.jibx.schema.attributes.DefRefAttributeGroup#setRef(org.jibx.runtime.QName)
      */
     public void setRef(QName ref) {
@@ -392,7 +392,7 @@ public class AttributeElement extends AnnotatedBase implements INamed, IReferenc
     /**
      * Set 'form' attribute type code.
      * 
-     * @param type
+     * @param type code
      * @see org.jibx.schema.attributes.FormChoiceAttribute#setForm(int)
      */
     public void setForm(int type) {

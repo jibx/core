@@ -34,7 +34,7 @@ import org.jibx.schema.validation.ValidationContext;
 import org.jibx.util.LazyList;
 
 /**
- * Class for all schema component elements, with the exception of the &lt;schema> element itself. Almost all of these
+ * Class for all schema component elements, with the exception of the &lt;schema&gt; element itself. Almost all of these
  * schema elements can contain other elements, so this extends the nesting base to handle inherited values.
  * 
  * @author Dennis M. Sosnoski
@@ -91,7 +91,7 @@ public class ComponentCustom extends NestingCustomBase
      * Constructor.
      * 
      * @param name schema element name
-     * @param parent
+     * @param parent NestingCustomBase
      */
     public ComponentCustom(String name, NestingCustomBase parent) {
         super(parent);
@@ -101,7 +101,7 @@ public class ComponentCustom extends NestingCustomBase
     /**
      * Get the schema element name for the component.
      *
-     * @return name
+     * @return name component
      */
     public final String getElementName() {
         return m_elementName;
@@ -176,7 +176,7 @@ public class ComponentCustom extends NestingCustomBase
      * Set the inline text value. This method is provided only for use when unmarshalling.
      * 
      * @param text (<code>null</code> if not set)
-     * @param ictx
+     * @param ictx UnmarshallingContext
      */
     private void setInline(String text, IUnmarshallingContext ictx) {
         if (text != null) {

@@ -255,7 +255,7 @@ public class CompileTask extends Task {
     
     /**
      * 
-     * @param fSet
+     * @param fSet Fileset
      */    
     public void addClassPathSet(FileSet fSet){
         m_fileSet.add(fSet);
@@ -263,6 +263,7 @@ public class CompileTask extends Task {
     
     /**
      * Returns the current classpath.
+     * @return Classpath
      */
     public Path getClasspath() {
         return m_classpath;
@@ -286,6 +287,7 @@ public class CompileTask extends Task {
      * Creates the classpath for this task and returns
      * it. If the classpath has already been created,
      * the method just returns that one.
+     * @return path
      */
     public Path createClasspath() {
         if (m_classpath == null) {
@@ -296,7 +298,7 @@ public class CompileTask extends Task {
     }
 
     /**
-     * @param file
+     * @param file Binding file
      */
     public void setBinding(String file) {
         m_bindingFile = file;
@@ -304,21 +306,21 @@ public class CompileTask extends Task {
     
     /**
      * 
-     * @param bfSet
+     * @param bfSet Fileset
      */
     public void addBindingFileSet(FileSet bfSet) {
         m_bindingFileSet.add(bfSet);
     }
     
     /**
-     * @param bool
+     * @param bool Load flag
      */
     public void setLoad(boolean bool) {
         m_load = bool;
     }
     
     /**
-     * @param bool
+     * @param bool Verbose flag
      */
     public void setVerbose(boolean bool) {
         m_verbose = bool;

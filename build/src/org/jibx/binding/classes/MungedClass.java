@@ -348,7 +348,7 @@ public class MungedClass
      * to prevent duplicate entries in the list, so that classes which are still
      * under construction can be handled.
      *
-     * @param cf
+     * @param cf Class file
      */
     public static void addModifiedClass(ClassFile cf) {
         String name = cf.getName();

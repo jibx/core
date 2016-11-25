@@ -70,8 +70,8 @@ public abstract class CommonContentBase extends AnnotatedBase
     public abstract boolean isComplexContent();
 
     /**
-     * Get derivation child element. This is either an &lt;extension> or a
-     * &lt;restriction> element.
+     * Get derivation child element. This is either an &lt;extension&gt; or a
+     * &lt;restriction&gt; element.
      *
      * @return derivation element, or <code>null</code> if not yet set
      */
@@ -81,8 +81,8 @@ public abstract class CommonContentBase extends AnnotatedBase
     }
 
     /**
-     * Set derivation child element. This is either an &lt;extension> or a
-     * &lt;restriction> element.
+     * Set derivation child element. This is either an &lt;extension&gt; or a
+     * &lt;restriction&gt; element.
      *
      * @param element derivation element, or <code>null</code> if unsetting
      */

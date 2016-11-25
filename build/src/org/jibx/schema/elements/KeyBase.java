@@ -55,7 +55,7 @@ public class KeyBase extends AnnotatedBase
     /**
      * Constructor.
      * 
-     * @param type
+     * @param type Type
      */
     public KeyBase(int type) {
         super(type);
@@ -91,7 +91,7 @@ public class KeyBase extends AnnotatedBase
     /**
      * Set 'name' attribute value.
      * 
-     * @param name
+     * @param name attribute value
      */
     public void setName(String name) {
         m_name = name;
@@ -207,7 +207,7 @@ public class KeyBase extends AnnotatedBase
         /**
          * Set 'refer' attribute value.
          * 
-         * @param refer
+         * @param refer attribute value
          */
         public void setName(QName refer) {
             m_refer = refer;

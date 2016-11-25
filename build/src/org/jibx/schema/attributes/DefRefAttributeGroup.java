@@ -67,7 +67,7 @@ public class DefRefAttributeGroup extends AttributeBase
      * from the unmarshalling context, and creates an instance of the attribute
      * tied to that element.
      *
-     * @param ictx
+     * @param ictx Context
      * @return constructed instance
      */
     private static DefRefAttributeGroup
@@ -87,7 +87,7 @@ public class DefRefAttributeGroup extends AttributeBase
     /**
      * Set 'name' attribute value.
      * 
-     * @param name
+     * @param name Name
      */
     public void setName(String name) {
         m_name = name;
@@ -105,7 +105,7 @@ public class DefRefAttributeGroup extends AttributeBase
     /**
      * Set 'ref' attribute value.
      * 
-     * @param ref
+     * @param ref Reference attribute
      */
     public void setRef(QName ref) {
         m_ref = ref;

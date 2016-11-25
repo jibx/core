@@ -236,8 +236,8 @@ public class BindingOrganizer
     /**
      * Force specified prefix to be used for binding.
      *
-     * @param prefix
-     * @param holder
+     * @param prefix Binding prefix
+     * @param holder Binding holder
      */
     public void forceBindingPrefix(String prefix, BindingHolder holder) {
         holder.setPrefix(prefix);
@@ -329,7 +329,7 @@ public class BindingOrganizer
     /**
      * Add a format definition to the binding.
      *
-     * @param format
+     * @param format Format Element
      */
     public void addFormat(FormatElement format) {
         checkModifiable();
@@ -349,7 +349,7 @@ public class BindingOrganizer
     /**
      * Adds a collection of namespace URIs to be referenced at root binding level.
      * 
-     * @param uris
+     * @param uris URIs
      */
     public void addRootUris(Collection uris) {
         m_nsRootUris.addAll(uris);
@@ -571,7 +571,7 @@ public class BindingOrganizer
     /**
      * Configure the names to be used for writing bindings to files. If only one binding has been defined, it just gets
      * the supplied name. If multiple bindings have been defined, a single root binding is constructed which includes
-     * all the other bindings and defines namespaces for those bindings, all &lt;format> definitions are moved to that
+     * all the other bindings and defines namespaces for those bindings, all &lt;format&gt; definitions are moved to that
      * root binding, and is is given the supplied name while the other bindings are given unique names within the same
      * directory.
      * 
@@ -799,7 +799,7 @@ public class BindingOrganizer
      * @param dir target directory for writing binding definitions
      * @param vctx validation context to use
      * @return <code>true</code> if valid, <code>false</code> if error
-     * @throws IOException
+     * @throws IOException Error
      */
     public boolean validateBindings(BindingHolder root, File dir, ValidationContext vctx)
     throws IOException {
@@ -825,8 +825,8 @@ public class BindingOrganizer
      * before this method is called, in order to configure the file names and complete the root binding definition.
      * 
      * @param dir target directory for writing binding definitions
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException Error
+     * @throws IOException I/O Error
      */
     public void writeBindings(File dir) throws JiBXException, IOException {
         IBindingFactory fact = BindingDirectory.getFactory("normal", BindingElement.class);

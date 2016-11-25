@@ -41,7 +41,7 @@ public class IfBuilder extends StatementBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
+     * @param source Source
      * @param expr expression 
      */
     public IfBuilder(ClassBuilder source, Expression expr) {
@@ -73,7 +73,7 @@ public class IfBuilder extends StatementBuilderBase
     /**
      * Set the "else" conditional statement.
      *
-     * @param stmt
+     * @param stmt Statement
      */
     public void setElse(StatementBuilderBase stmt) {
         m_if.setElseStatement(stmt.getStatement());

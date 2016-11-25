@@ -22,7 +22,7 @@
 package org.jibx.binding.model;
 
 /**
- * Built-in &lt;format> definitions.
+ * Built-in &lt;format&gt; definitions.
  * 
  * @author Dennis M. Sosnoski
  */

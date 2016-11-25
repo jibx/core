@@ -37,7 +37,7 @@ public class ValidationVisitor extends SchemaVisitor
     /**
      * Constructor.
      * 
-     * @param context
+     * @param context Validation Context
      */
     public ValidationVisitor(ValidationContext context) {
         m_context = context;

@@ -271,7 +271,7 @@ public class DefinitionContext
     /**
      * Get namespace for prefix.
      * 
-     * @param prefix
+     * @param prefix Prefix
      * @return namespace definition in this context, <code>null</code> if none
      */
     public NamespaceElement getNamespaceForPrefix(String prefix) {

@@ -39,8 +39,8 @@ public class ClassSourceWrapper extends ClassWrapper
     /**
      * Constructor.
      * 
-     * @param loc
-     * @param clas
+     * @param loc Locator
+     * @param clas Class
      */
     public ClassSourceWrapper(IClassSourceLocator loc, ClassFile clas) {
         super(loc, clas);
@@ -50,7 +50,7 @@ public class ClassSourceWrapper extends ClassWrapper
      * Build an item wrapper. This override of the base class implementation always creates a wrapper which will support
      * source operations.
      * 
-     * @param item
+     * @param item Item
      * @return wrapper
      */
     protected IClassItem buildItem(ClassItem item) {

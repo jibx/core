@@ -70,7 +70,7 @@ public class SchemaContextTracker implements ISchemaListener
      * Set name register. This is provided for cases where components are being processed individually, so that the user
      * can set the appropriate register for a component directly.
      * 
-     * @param reg
+     * @param reg Name Register
      */
     public void setNameRegister(NameRegister reg) {
         m_nameRegister = reg;

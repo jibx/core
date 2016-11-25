@@ -139,7 +139,7 @@ public class SchemaUtils
     /**
      * Check if a definition component is nillable (an element with nillable='true').
      *
-     * @param comp
+     * @param comp Component
      * @return <code>true</code> if nillable, <code>false</code> if not
      */
     public static boolean isNillable(OpenAttrBase comp) {
@@ -153,7 +153,7 @@ public class SchemaUtils
     /**
      * Check if a definition component has a name.
      *
-     * @param comp
+     * @param comp Component
      * @return <code>true</code> if named, <code>false</code> if not
      */
     public static boolean isNamed(OpenAttrBase comp) {
@@ -171,7 +171,7 @@ public class SchemaUtils
      * Get indentation string. This returns a string of the requested number of indents to the maximum value supported,
      * and otherwise just returns the maximum indentation.
      *
-     * @param depth
+     * @param depth Indentation depth
      * @return indentation string
      */
     public static String getIndentation(int depth) {
@@ -285,10 +285,10 @@ public class SchemaUtils
 
     /**
      * Check if a particular schema definition component is an enumeration type definition. Formally, this returns
-     * <code>true</code> if and only if the component is a &lt;simpleType> element which is a restriction using one or
-     * more &lt;enumeration> facets.
+     * <code>true</code> if and only if the component is a &lt;simpleType&gt; element which is a restriction using one or
+     * more &lt;enumeration&gt; facets.
      *
-     * @param comp
+     * @param comp Component
      * @return <code>true</code> if an enumeration definition, <code>false</code> if not
      */
     public static boolean isEnumeration(AnnotatedBase comp) {

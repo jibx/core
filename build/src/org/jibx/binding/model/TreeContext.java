@@ -325,7 +325,7 @@ public class TreeContext
     /**
      * Add element to set to be skipped.
      * 
-     * @param skip
+     * @param skip Element to be skipped
      */
     protected void addSkip(Object skip) {
         if (skip instanceof ElementBase) {
@@ -566,7 +566,7 @@ public class TreeContext
      * context may be changed by recursive checks outside the normal tree
      * traversal.
      *
-     * @param node
+     * @param node Element Base
      */
     public void pushNode(ElementBase node) {
         m_treeHierarchy.push(node);

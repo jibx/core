@@ -44,7 +44,7 @@ public class SwitchBuilder extends StatementBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
+     * @param source ClassBuilder source
      * @param expr expression 
      */
     public SwitchBuilder(ClassBuilder source, Expression expr) {

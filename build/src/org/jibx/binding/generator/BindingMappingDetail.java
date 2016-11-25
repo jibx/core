@@ -94,36 +94,36 @@ public class BindingMappingDetail
     }
 
     /**
-     * Get the abstract &lt;mapping> for the target class.
+     * Get the abstract &lt;mapping&gt; for the target class.
      *
-     * @return abstract <mapping>, <code>null</code> if none
+     * @return abstract &lt;mapping&gt;, <code>null</code> if none
      */
     public MappingElement getAbstractMapping() {
         return m_abstractMapping;
     }
     
     /**
-     * Set the abstract &lt;mapping> for the target class.
+     * Set the abstract &lt;mapping&gt; for the target class.
      *
-     * @param abs abstract <mapping>, <code>null</code> if none
+     * @param abs abstract &lt;mapping&gt;, <code>null</code> if none
      */
     public void setAbstractMapping(MappingElement abs) {
         m_abstractMapping = abs;
     }
     
     /**
-     * Get the concrete &lt;mapping> for the target class.
+     * Get the concrete &lt;mapping&gt; for the target class.
      *
-     * @return concrete <mapping>, <code>null</code> if none
+     * @return concrete &lt;mapping&gt;, <code>null</code> if none
      */
     public MappingElementBase getConcreteMapping() {
         return m_concreteMapping;
     }
     
     /**
-     * Set the concrete &lt;mapping> for the target class.
+     * Set the concrete &lt;mapping&gt; for the target class.
      *
-     * @param con concrete <mapping>, <code>null</code> if none
+     * @param con concrete &lt;mapping&gt;, <code>null</code> if none
      */
     public void setConcreteMapping(MappingElementBase con) {
         m_concreteMapping = con;
@@ -140,7 +140,7 @@ public class BindingMappingDetail
     
     /**
      * Set target class extended by other mapped class(es). Setting this <code>true</code> forces a concrete
-     * &lt;mapping> to be used.
+     * &lt;mapping&gt; to be used.
      *
      * @param ext
      */
@@ -152,7 +152,7 @@ public class BindingMappingDetail
     }
     
     /**
-     * Check if this &lt;mapping> has been generated.
+     * Check if this &lt;mapping&gt; has been generated.
      *
      * @return <code>true</code> if generated, <code>false</code> if not
      */
@@ -161,16 +161,16 @@ public class BindingMappingDetail
     }
     
     /**
-     * Set flag for &lt;mapping> generated.
+     * Set flag for &lt;mapping&gt; generated.
      *
-     * @param gen
+     * @param gen Flag
      */
     public void setGenerated(boolean gen) {
         m_isGenerated = gen;
     }
     
     /**
-     * Check if an abstract &lt;mapping> used for this class.
+     * Check if an abstract &lt;mapping&gt; used for this class.
      *
      * @return <code>true</code> if abstract mapping used, <code>false</code> if not
      */
@@ -179,7 +179,7 @@ public class BindingMappingDetail
     }
     
     /**
-     * Set flag for abstract &lt;mapping> used for this class.
+     * Set flag for abstract &lt;mapping&gt; used for this class.
      *
      * @param abs <code>true</code> if abstract mapping used, <code>false</code> if not
      */
@@ -188,7 +188,7 @@ public class BindingMappingDetail
     }
     
     /**
-     * Check if a concrete &lt;mapping> used for this class.
+     * Check if a concrete &lt;mapping&gt; used for this class.
      *
      * @return <code>true</code> if concrete mapping used, <code>false</code> if not
      */
@@ -197,7 +197,7 @@ public class BindingMappingDetail
     }
     
     /**
-     * Set flag for concrete &lt;mapping> used for this class.
+     * Set flag for concrete &lt;mapping&gt; used for this class.
      *
      * @param con <code>true</code> if concrete mapping used, <code>false</code> if not
      */
@@ -229,7 +229,7 @@ public class BindingMappingDetail
     }
     
     /**
-     * Get the fully-qualified class name of the type extended by this &lt;mapping>.
+     * Get the fully-qualified class name of the type extended by this &lt;mapping&gt;.
      *
      * @return class name, or <code>null</code> if none
      */
@@ -250,9 +250,9 @@ public class BindingMappingDetail
     
     /**
      * Get map from access method name to property customization information for properties covered by this
-     * &lt;mapping>. This map includes both properties defined directly, and those inherited from any base mapping.
+     * &lt;mapping&gt;. This map includes both properties defined directly, and those inherited from any base mapping.
      * 
-     * @return map (non-<code>null</code> after &lt;mapping> constructed)
+     * @return map (non-<code>null</code> after &lt;mapping&gt; constructed)
      */
     public Map getAccessMethodMap() {
         return m_propertyMethodMap;
@@ -260,7 +260,7 @@ public class BindingMappingDetail
     
     /**
      * Set map from access method name to property customization information for properties covered by this
-     * &lt;mapping>. This must be done at the time the &lt;mapping> is constructed.
+     * &lt;mapping&gt;. This must be done at the time the &lt;mapping&gt; is constructed.
      * 
      * @param map (non-<code>null</code>, use empty map if not applicable)
      */

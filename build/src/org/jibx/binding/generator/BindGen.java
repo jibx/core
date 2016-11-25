@@ -108,7 +108,7 @@ public class BindGen
     /**
      * Create a generator based on a particular set of customizations.
      * 
-     * @param glob
+     * @param glob Customizations
      */
     public BindGen(GlobalCustom glob) {
         m_global = glob;
@@ -266,13 +266,13 @@ public class BindGen
     
     /**
      * Define the details of a collection binding. Collection bindings may be empty (in the case where the item type is
-     * directly mapped), have a &lt;value> child element, or have either a mapping reference or direct definition
-     * &lt;structure> child element. This determines the appropriate form based on the item type.
+     * directly mapped), have a &lt;value&gt; child element, or have either a mapping reference or direct definition
+     * &lt;structure$gt; child element. This determines the appropriate form based on the item type.
      * 
      * @param itype item type
      * @param iname item name
-     * @param coll
-     * @param hold
+     * @param coll Collection
+     * @param hold Binding Holder
      */
     public void defineCollection(String itype, String iname, CollectionElement coll, BindingHolder hold) {
         
@@ -1108,8 +1108,8 @@ public class BindGen
     }
     
     /**
-     * Generate binding(s) for a list of classes. This creates a &lt;mapping> definition for each class in the list, and
-     * either embeds &lt;structure> definitions or creates separate &lt;mapping>s for other classes referenced by these
+     * Generate binding(s) for a list of classes. This creates a &lt;mapping&gt; definition for each class in the list, and
+     * either embeds &lt;structure&gt; definitions or creates separate &lt;mapping&gt;s for other classes referenced by these
      * classes. If all the classes use the same namespace only the binding for that namespace will be created;
      * otherwise, a separate binding will be created for each namespace.
      * 
@@ -1142,8 +1142,8 @@ public class BindGen
     }
     
     /**
-     * Generate binding(s) for lists of classes. This creates a &lt;mapping> definition for each class in the lists, and
-     * either embeds &lt;structure> definitions or creates separate &lt;mapping>s for other classes referenced by these
+     * Generate binding(s) for lists of classes. This creates a &lt;mapping&gt; definition for each class in the lists, and
+     * either embeds &lt;structure&gt; definitions or creates separate &lt;mapping&gt;s for other classes referenced by these
      * classes. If all the classes use the same namespace only the binding for that namespace will be created;
      * otherwise, a separate binding will be created for each namespace.
      * 
@@ -1197,7 +1197,7 @@ public class BindGen
      * after the {@link #generate(Boolean, List)} method has been called. It delegates to the
      * {@link org.jibx.binding.model.BindingOrganizer} implementation.
      * 
-     * @param uri
+     * @param uri URI
      * @return binding holder
      */
     public BindingHolder getBinding(String uri) {
@@ -1207,7 +1207,7 @@ public class BindGen
     /**
      * Adds a collection of namespace URIs to be referenced at root binding level.
      * 
-     * @param uris
+     * @param uris URIs
      */
     public void addRootUris(Collection uris) {
         m_directory.addRootUris(uris);
@@ -1218,7 +1218,7 @@ public class BindGen
      * be used after the {@link #generate(Boolean, List)} method has been called. It delegates to the
      * {@link org.jibx.binding.model.BindingOrganizer} implementation.
      * 
-     * @param uri
+     * @param uri URI
      * @param dflt namespace is default for elements in binding flag
      * @return binding holder
      */
@@ -1248,8 +1248,8 @@ public class BindGen
      * @param loc class locator for binding validation (ignored if no target directory supplied)
      * @param root holder for root binding definition
      * @return binding definitions, or <code>null</code> if validation error
-     * @throws IOException
-     * @throws JiBXException
+     * @throws IOException I/O Error
+     * @throws JiBXException JiBX Error
      */
     public List validateFiles(File dir, IClassLocator loc, BindingHolder root) throws IOException, JiBXException {
         
@@ -1289,9 +1289,9 @@ public class BindGen
     /**
      * Run the binding generation using command line parameters.
      * 
-     * @param args
-     * @throws JiBXException
-     * @throws IOException
+     * @param args Initial params
+     * @throws JiBXException JiBX error
+     * @throws IOException I/O error
      */
     public static void main(String[] args) throws JiBXException, IOException {
         BindGenCommandLine parms = new BindGenCommandLine();

@@ -36,8 +36,8 @@ import org.jibx.util.StringArray;
 
 /**
  * Base class for all complex content model compositors. This includes the
- * special case of the &lt;group> (reference) compositor, which doesn't contain
- * any children but acts as a placeholder for the compositor in the &lt;group>
+ * special case of the &lt;group&gt; (reference) compositor, which doesn't contain
+ * any children but acts as a placeholder for the compositor in the &lt;group&gt;
  * definition.
  *
  * @author Dennis M. Sosnoski

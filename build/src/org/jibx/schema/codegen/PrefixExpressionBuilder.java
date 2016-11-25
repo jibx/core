@@ -36,9 +36,9 @@ public class PrefixExpressionBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr 
-     * @param operand
+     * @param source ClassBuilder
+     * @param expr PrefixExpression
+     * @param operand Expression
      */
     public PrefixExpressionBuilder(ClassBuilder source, PrefixExpression expr, Expression operand) {
         super(source, expr);
@@ -49,7 +49,7 @@ public class PrefixExpressionBuilder extends ExpressionBuilderBase
     /**
      * Add operand to expression. This class is not modifiable, so a call to this method just throws an exception.
      *
-     * @param operand
+     * @param operand Expression
      */
     protected void addOperand(Expression operand) {
         throw new IllegalStateException("Internal error: attempt to change operand expression");

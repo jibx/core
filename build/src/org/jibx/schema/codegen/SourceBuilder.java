@@ -99,10 +99,10 @@ public class SourceBuilder
     /**
      * Constructor.
      * 
-     * @param ast 
-     * @param pack
-     * @param name 
-     * @param imports
+     * @param ast AST
+     * @param pack Package holder
+     * @param name Name
+     * @param imports Imports
      */
     public SourceBuilder(AST ast, PackageHolder pack, String name, ImportsTracker imports) {
         
@@ -274,7 +274,7 @@ public class SourceBuilder
     /**
      * Generate the actual source file.
      * 
-     * @param verbose
+     * @param verbose Flag
      */
     public void finish(boolean verbose) {
         

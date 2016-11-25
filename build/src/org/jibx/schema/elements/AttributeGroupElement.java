@@ -95,7 +95,7 @@ public class AttributeGroupElement extends AnnotatedBase implements INamed
     /**
      * Set 'name' attribute value.
      *
-     * @param name
+     * @param name Name
      */
     public void setName(String name) {
         m_name = name;

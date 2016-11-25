@@ -32,7 +32,7 @@ import org.jibx.schema.types.Count;
 import org.jibx.schema.validation.ValidationContext;
 
 /**
- * &lt;all> element definition. Even though &lt;all> is considered a compositor
+ * &lt;all&gt; element definition. Even though &lt;all&gt; is considered a compositor
  * by the schema specification, it has substantial restrictions on use.
  *
  * @author Dennis M. Sosnoski

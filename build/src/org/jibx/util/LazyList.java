@@ -215,8 +215,8 @@ public class LazyList extends AbstractList
      * Remove range of values. This is just a public version of the protected base class method
      * {@link #removeRange(int, int)}
      * 
-     * @param from
-     * @param to
+     * @param from From
+     * @param to To
      */
     public void remove(int from, int to) {
         removeRange(from, to);

@@ -45,7 +45,7 @@ public class NameRegistrationVisitor extends SchemaVisitor
     /**
      * Constructor.
      * 
-     * @param context
+     * @param context Validation Context
      */
     public NameRegistrationVisitor(ValidationContext context) {
         m_context = context;

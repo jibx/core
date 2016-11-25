@@ -39,7 +39,7 @@ import org.jibx.util.IClassLocator;
 import org.jibx.util.StringArray;
 
 /**
- * Global customization information. This includes some options specific to the &lt;binding> element of the definition,
+ * Global customization information. This includes some options specific to the &lt;binding&gt; element of the definition,
  * as well as controls for structuring of the generated binding(s). It handles the binding customization child elements
  * directly, by invoking the abstract unmarshallers for the child elements to process the content. It also allows for
  * extension elements which are not part of the binding customization structure, as long as the binding in use defines
@@ -99,7 +99,7 @@ public class GlobalCustom extends NestingBase
     /**
      * Constructor with class locator supplied.
      * 
-     * @param loc
+     * @param loc Class Locator
      */
     public GlobalCustom(IClassLocator loc) {
         super(null);
@@ -217,7 +217,7 @@ public class GlobalCustom extends NestingBase
     /**
      * Set input binding flag.
      * 
-     * @param input
+     * @param input Flag
      */
     public void setInput(boolean input) {
         m_isInput = input;
@@ -235,7 +235,7 @@ public class GlobalCustom extends NestingBase
     /**
      * Set output binding falg.
      * 
-     * @param output
+     * @param output Flag
      */
     public void setOutput(boolean output) {
         m_isOutput = output;
@@ -261,7 +261,7 @@ public class GlobalCustom extends NestingBase
     }
     
     /**
-     * Get the extension elements used in this customization. This does not include the &lt;package> or &lt;class> child
+     * Get the extension elements used in this customization. This does not include the &lt;package&gt; or &lt;class&gt; child
      * elements, which are added directly to the customization structures.
      * 
      * @return child list
@@ -277,7 +277,7 @@ public class GlobalCustom extends NestingBase
     /**
      * Internal method used during unmarshalling to add a child extension element.
      * 
-     * @param child
+     * @param child Extension
      */
     protected void internalAddExtensionChild(Object child) {
         if (m_extensionChildren == null) {
@@ -290,7 +290,7 @@ public class GlobalCustom extends NestingBase
      * Add a child extension element. This both adds the child to the list and invokes the extension element's
      * {@link IApply#apply(IClassLocator)} method, if present.
      * 
-     * @param child
+     * @param child Extension
      */
     public void addExtensionChild(Object child) {
         internalAddExtensionChild(child);
@@ -478,7 +478,7 @@ public class GlobalCustom extends NestingBase
      * Get package customizations. If the requested package is already defined the existing instance will be returned,
      * otherwise a new instance will be created (along with any ancestor packages) and added to the structure.
      * 
-     * @param name
+     * @param name Package name
      * @return package
      */
     public PackageCustom getPackage(String name) {
@@ -604,7 +604,7 @@ public class GlobalCustom extends NestingBase
          * @param obj root element object (must be an instance of the GlobalCustom type)
          * @param ictx unmarshalling context
          * @return unmarshalled root object element
-         * @throws JiBXException
+         * @throws JiBXException Error
          */
         public Object unmarshal(Object obj, IUnmarshallingContext ictx) throws JiBXException {
             

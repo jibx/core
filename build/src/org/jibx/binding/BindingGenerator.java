@@ -815,6 +815,7 @@ public class BindingGenerator
      * @param ignores list of non-interface classes to be treated as interfaces
      * (no mapping, but mapped subclasses are used at runtime)
      * @exception JiBXException if error in generating the binding definition
+     * @return BindingElement
      */
     public BindingElement generate(ArrayList names, HashSet abstracts,
         HashMap customs, HashMap beans, HashMap enums, ArrayList ignores)

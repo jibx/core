@@ -50,7 +50,7 @@ import org.jibx.util.IClass;
 import org.jibx.util.Types;
 
 /**
- * Directory for components included in schema generation. This includes both &lt;mapping> elements of the bindings and
+ * Directory for components included in schema generation. This includes both &lt;mapping&gt; elements of the bindings and
  * special formats, with the latter currently limited to enumeration types. The building code works from a supplied list
  * of bindings, walking the tree structure of the bindings to find all mappings and processing each mapping directly
  * using the lists of child components. It creates mapping details and sets flags for the types of access to each
@@ -66,13 +66,13 @@ public class DetailDirectory
     /** Validation context for bindings. */
     private final ValidationContext m_context;
     
-    /** Map from &lt;mapping> definition to mapping detail. */
+    /** Map from &lt;mapping$gt; definition to mapping detail. */
     private final Map m_mappingMap;
     
     /** Map from class name to enumeration detail. */
     private final Map m_enumMap;
     
-    /** Set of &lt;mapping> definitions used as base types. */
+    /** Set of &lt;mapping&gt; definitions used as base types. */
     private final Set m_forceTypeMappings;
     
     /**
@@ -112,7 +112,7 @@ public class DetailDirectory
     }
     
     /**
-     * Check if a &lt;structure> element represents a type derivation. If the element is empty, has no name or property,
+     * Check if a &lt;structure&gt; element represents a type derivation. If the element is empty, has no name or property,
      * is required, and is a mapping reference, then it can be handled as a type derivation.
      * 
      * @param struct
@@ -414,7 +414,7 @@ public class DetailDirectory
     }
     
     /**
-     * Find detail information for a &lt;mapping>. If this is the first time a particular mapping was requested, a new
+     * Find detail information for a &lt;mapping&gt;. If this is the first time a particular mapping was requested, a new
      * detail information will be created for that mapping and returned.
      * 
      * @param map
@@ -429,7 +429,7 @@ public class DetailDirectory
     }
     
     /**
-     * Get detail information for a &lt;mapping>. If the detail information does not exist, this throws an exception.
+     * Get detail information for a &lt;mapping&gt;. If the detail information does not exist, this throws an exception.
      * 
      * @param map
      * @return detail

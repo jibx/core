@@ -67,7 +67,7 @@ public class MappingElement extends MappingElementBase
      * check is ignored.
      * TODO: check that at least one of the extensions can be created
      *
-     * @param vctx
+     * @param vctx Validation Context
      */
     public void verifyConstruction(ValidationContext vctx) {
         if (!m_constructVerified && getExtensionTypes().size() == 0) {

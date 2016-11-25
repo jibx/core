@@ -50,7 +50,7 @@ public class ShortBitSet
     /**
      * Check for value in set.
      * 
-     * @param value
+     * @param value in set
      * @return <code>true</code> if in set, <code>false</code> if not
      */
     public boolean isSet(int value) {
@@ -60,7 +60,7 @@ public class ShortBitSet
     /**
      * Include value in set.
      * 
-     * @param value
+     * @param value in set
      */
     public void add(int value) {
         m_bits |= s_bitMasks[value];
@@ -69,7 +69,7 @@ public class ShortBitSet
     /**
      * Exclude value from set.
      * 
-     * @param value
+     * @param value from set
      */
     public void remove(int value) {
         m_bits &= ~s_bitMasks[value];

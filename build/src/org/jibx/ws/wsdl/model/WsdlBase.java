@@ -117,7 +117,7 @@ public abstract class WsdlBase
     }
     
     /**
-     * Get documentation. This is the content of the optional &lt;documentation> child element, which consists of DOM
+     * Get documentation. This is the content of the optional &lt;documentation&gt; child element, which consists of DOM
      * Nodes.
      *
      * @return documentation (<code>null</code> if no documentation present)
@@ -127,7 +127,7 @@ public abstract class WsdlBase
     }
 
     /**
-     * Set documentation. This is the content of the optional &lt;documentation> child element, which consists of DOM
+     * Set documentation. This is the content of the optional &lt;documentation&gt; child element, which consists of DOM
      * Nodes.
      *
      * @param documentation

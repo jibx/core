@@ -98,7 +98,7 @@ public class AnyElement extends WildcardBase implements IArity
     /**
      * Set 'maxOccurs' attribute value.
      * 
-     * @param count
+     * @param count Count
      * @see org.jibx.schema.attributes.OccursAttributeGroup#setMaxOccurs(org.jibx.schema.types.Count)
      */
     public void setMaxOccurs(Count count) {
@@ -108,7 +108,7 @@ public class AnyElement extends WildcardBase implements IArity
     /**
      * Get 'maxOccurs' attribute value.
      * 
-     * @param count
+     * @param count Count
      * @see org.jibx.schema.attributes.OccursAttributeGroup#setMinOccurs(org.jibx.schema.types.Count)
      */
     public void setMinOccurs(Count count) {

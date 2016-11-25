@@ -60,7 +60,7 @@ public class Name
     /**
      * Copy constructor.
      * 
-     * @param base
+     * @param base Base name
      */
     public Name(Name base) {
         m_fixed = base.m_fixed;
@@ -91,7 +91,7 @@ public class Name
      * Set flag for name checked for conflicts. This flag is used by the actual class generated code ({@link
      * ClassHolder}) to track which names have already been entered into the set of names used by a class.
      *
-     * @param checked
+     * @param checked Flag
      */
     public void setChecked(boolean checked) {
         m_checked = checked;

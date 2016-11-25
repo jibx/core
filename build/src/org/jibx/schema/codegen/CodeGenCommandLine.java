@@ -223,7 +223,7 @@ public class CodeGenCommandLine extends CustomizationCommandLineBase
     /**
      * Finish processing of command line parameters. This just sets up the schema directory.
      * 
-     * @param alist 
+     * @param alist Arg list
      */
     protected void finishParameters(ArgList alist) {
         super.finishParameters(alist);
@@ -267,8 +267,8 @@ public class CodeGenCommandLine extends CustomizationCommandLineBase
      *
      * @param path customization file path
      * @return <code>true</code> if successful, <code>false</code> if an error
-     * @throws JiBXException 
-     * @throws IOException 
+     * @throws JiBXException error
+     * @throws IOException error
      */
     protected boolean loadCustomizations(String path) throws JiBXException, IOException {
         

@@ -145,7 +145,7 @@ public class GroupItem extends Item
     /**
      * Set value represents an enumeration flag.
      *
-     * @param enumeration
+     * @param enumeration flag
      */
     public void setEnumeration(boolean enumeration) {
         m_enumeration = enumeration;
@@ -154,7 +154,7 @@ public class GroupItem extends Item
     /**
      * Append an item to the list of children.
      *
-     * @param item
+     * @param item child to append
      */
     private void appendChild(Item item) {
         if (m_head == null) {
@@ -267,7 +267,7 @@ public class GroupItem extends Item
     /**
      * Set structure to be inlined flag.
      *
-     * @param inline
+     * @param inline structure to be inlined
      */
     public void setInline(boolean inline) {
         m_inline = inline;
@@ -276,7 +276,7 @@ public class GroupItem extends Item
     /**
      * Get effective item name, applying inheritance if necessary.
      * 
-     * @return name
+     * @return name effective item name
      */
     public String getEffectiveClassName() {
         GroupItem item = this;
@@ -351,7 +351,7 @@ public class GroupItem extends Item
      * Set information for class to be generated. If this group is a complexType extension and the base type is not
      * being inlined, this sets the generated class to extend the base type class.
      *
-     * @param clas
+     * @param clas Class
      */
     public void setGenerateClass(TypeData clas) {
         m_generateClass = clas;
@@ -391,7 +391,7 @@ public class GroupItem extends Item
      * Copy the item under a different parent.
      *
      * @param ref reference (for overrides to copy; <code>null</code> if none)
-     * @param parent
+     * @param parent parent
      * @return copy
      */
     protected Item copy(Item ref, GroupItem parent) {

@@ -69,7 +69,7 @@ public class MultipleValueMap
     /**
      * Internal cached lookup.
      * 
-     * @param key
+     * @param key Key
      * @return value
      */
     private Object getMapped(Object key) {
@@ -91,7 +91,7 @@ public class MultipleValueMap
     /**
      * Get number of values present for key.
      * 
-     * @param key
+     * @param key Key
      * @return value count
      */
     public int getCount(Object key) {
@@ -108,8 +108,8 @@ public class MultipleValueMap
     /**
      * Get indexed value for key.
      * 
-     * @param key
-     * @param index
+     * @param key Key
+     * @param index Index
      * @return value
      */
     public Object get(Object key, int index) {
@@ -128,8 +128,8 @@ public class MultipleValueMap
     /**
      * Add value for key.
      * 
-     * @param key
-     * @param value
+     * @param key Key
+     * @param value Value
      */
     public void add(Object key, Object value) {
         
@@ -156,7 +156,7 @@ public class MultipleValueMap
      * Get all values for key. This returns the value(s) from the map and
      * returns them in the form of a list.
      * 
-     * @param key
+     * @param key Key
      * @return list of values
      */
     public ArrayList get(Object key) {
@@ -176,7 +176,7 @@ public class MultipleValueMap
      * Extract all values for key. This removes the value(s) from the map and
      * returns them in the form of a list.
      * 
-     * @param key
+     * @param key Key
      * @return prior list of values
      */
     public ArrayList extract(Object key) {
@@ -218,7 +218,7 @@ public class MultipleValueMap
     /**
      * Check key present in map.
      * 
-     * @param key
+     * @param key Key
      * @return key present flag
      */
     public boolean containsKey(Object key) {

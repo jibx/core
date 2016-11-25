@@ -100,7 +100,7 @@ public abstract class Item
     /**
      * Copy constructor. This creates a copy with a new parent.
      * 
-     * @param original
+     * @param original Item
      * @param ref reference (for name override; <code>null</code> if none)
      * @param ext component extension to be linked with copy
      * @param parent (non-<code>null</code>)
@@ -127,7 +127,7 @@ public abstract class Item
     /**
      * Replace the parent for this item.
      *
-     * @param parent
+     * @param parent item
      */
     protected void reparent(GroupItem parent) {
         m_parent = parent;
@@ -286,7 +286,7 @@ public abstract class Item
     /**
      * Set item represented implicitly by subclassing flag.
      *
-     * @param implicit
+     * @param implicit flag
      */
     public void setImplicit(boolean implicit) {
         m_implicit = implicit;
@@ -297,7 +297,7 @@ public abstract class Item
      * reference to override settings from the original.
      *
      * @param ref reference (for overrides to copy; <code>null</code> if none)
-     * @param parent
+     * @param parent Parent
      * @return copy
      */
     protected abstract Item copy(Item ref, GroupItem parent);

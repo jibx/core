@@ -332,7 +332,7 @@ public class PropertyDefinition
     /**
      * Copy constructor.
      * 
-     * @param original
+     * @param original Property Definition
      */
     public PropertyDefinition(PropertyDefinition original) {
         m_isThis = original.m_isThis;
@@ -542,7 +542,7 @@ public class PropertyDefinition
      *
      * @param mb method builder
      * @return wrapper for branch instruction taken when property is missing
-     * @throws JiBXException 
+     * @throws JiBXException If error
      */
     public BranchWrapper genTest(ContextMethodBuilder mb) throws JiBXException {
         

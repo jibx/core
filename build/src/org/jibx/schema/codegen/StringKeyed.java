@@ -33,7 +33,7 @@ public class StringKeyed implements Comparable
     /**
      * Constructor.
      * 
-     * @param key
+     * @param key Key
      */
     public StringKeyed(String key) {
         m_key = key;

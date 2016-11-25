@@ -160,7 +160,7 @@ implements IComplexStructure
     /**
      * Set 'abstract' attribute value.
      *
-     * @param abs
+     * @param abs attribute value
      */
     public void setAbstract(boolean abs) {
         m_abstract = abs ? Boolean.TRUE : Boolean.FALSE;
@@ -187,7 +187,7 @@ implements IComplexStructure
     /**
      * Set 'mixed' attribute value.
      *
-     * @param mixed
+     * @param mixed attribute value
      */
     public void setMixed(boolean mixed) {
         m_mixed = mixed ? Boolean.TRUE : Boolean.FALSE;
@@ -196,7 +196,7 @@ implements IComplexStructure
     /**
      * Get 'block' attribute value.
      *
-     * @return block
+     * @return block attribute value
      */
     public AllEnumSet getBlock() {
         return m_block;

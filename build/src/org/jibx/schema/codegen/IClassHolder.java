@@ -131,21 +131,21 @@ public interface IClassHolder
     /**
      * Add field declaration to class.
      *
-     * @param field
+     * @param field Declaration
      */
     void addField(FieldDeclaration field);
     
     /**
      * Add method declaration to class.
      *
-     * @param method
+     * @param method Declaration
      */
     void addMethod(MethodDeclaration method);
     
     /**
      * Add inner type declaration to class.
      *
-     * @param type
+     * @param type declaration
      */
     void addType(TypeDeclaration type);
 }

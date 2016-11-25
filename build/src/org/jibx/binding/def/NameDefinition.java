@@ -54,8 +54,8 @@ public class NameDefinition
     /**
      * Constructor.
      *
-     * @param name
-     * @param ns 
+     * @param name Name
+     * @param ns Namespace
      * @param attr flag for attribute name
      */
     public NameDefinition(String name, String ns, boolean attr) {

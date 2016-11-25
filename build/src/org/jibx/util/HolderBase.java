@@ -97,7 +97,7 @@ public abstract class HolderBase
      * Get the prefix for a namespace URI. The first time this is called for a particular namespace URI a prefix is
      * assigned and returned. This assumes that the default namespace is always the no-namespace.
      * 
-     * @param uri
+     * @param uri URI
      * @return prefix
      */
     public String getPrefix(String uri) {
@@ -121,8 +121,8 @@ public abstract class HolderBase
      * Subclass hook method to handle adding a namespace declaration. The implementation of this method needs to set up
      * the namespace declaration for output in the generated XML.
      * 
-     * @param prefix
-     * @param uri
+     * @param prefix Prefix
+     * @param uri URI
      */
     protected abstract void addNamespaceDecl(String prefix, String uri);
     
@@ -147,7 +147,7 @@ public abstract class HolderBase
     /**
      * Set the file name to be used for this file.
      * 
-     * @param name
+     * @param name Fielname
      */
     public void setFileName(String name) {
         if (!isModifiable()) {
@@ -160,7 +160,7 @@ public abstract class HolderBase
      * Record a reference from this file to another file of the same type. This adds the reference to the set of
      * references. Self-references are ignored.
      * 
-     * @param ref
+     * @param ref to file
      */
     public void addReference(HolderBase ref) {
         if (ref != this && (m_referenceSet == null || !m_referenceSet.contains(ref))) {

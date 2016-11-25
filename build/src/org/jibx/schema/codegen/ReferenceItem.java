@@ -44,9 +44,9 @@ public class ReferenceItem extends Item
     /**
      * Copy constructor.
      * 
-     * @param original
+     * @param original Reference Item
      * @param ref reference (for overrides to copy; <code>null</code> if none)
-     * @param parent
+     * @param parent Group Item
      */
     private ReferenceItem(ReferenceItem original, Item ref, GroupItem parent) {
         super(original, ref, original.getComponentExtension(), parent);
@@ -70,8 +70,8 @@ public class ReferenceItem extends Item
      * Internal constructor for converting group to reference. This is used when an embedded group is converted to a
      * separate definition, as needed for class reuse.
      * 
-     * @param group
-     * @param def
+     * @param group Group Item
+     * @param def Definition Item
      */
     /*package*/ ReferenceItem(GroupItem group, DefinitionItem def) {
         super(group, null, group.getComponentExtension(), group.getParent());
@@ -132,7 +132,7 @@ public class ReferenceItem extends Item
      * Copy the item under a different parent.
      *
      * @param ref reference (for overrides to copy; <code>null</code> if none)
-     * @param parent
+     * @param parent Group Item
      * @return copy
      */
     protected Item copy(Item ref, GroupItem parent) {

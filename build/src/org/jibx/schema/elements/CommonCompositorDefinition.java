@@ -32,7 +32,7 @@ import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
 
 /**
- * Compositor for complex content model, including the special case of &lt;all>.
+ * Compositor for complex content model, including the special case of &lt;all&gt;.
  * The subclasses implement the different models for how nested particles are
  * combined.
  *
@@ -40,7 +40,7 @@ import org.jibx.runtime.JiBXException;
  */
 public abstract class CommonCompositorDefinition extends CommonCompositorBase
 {
-    /** Mask for child elements allowed by &lt;choice> and &lt;sequence>. */
+    /** Mask for child elements allowed by &lt;choice&gt; and &lt;sequence&gt;. */
     protected static long CHOICE_SEQUENCE_PARTICLE_MASK =
         ELEMENT_MASKS[ANY_TYPE] | ELEMENT_MASKS[CHOICE_TYPE] |
         ELEMENT_MASKS[ELEMENT_TYPE] | ELEMENT_MASKS[GROUP_TYPE] |

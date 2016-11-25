@@ -54,7 +54,7 @@ public class ResourceMatcher
      * @param paths resource paths to be found, with wildcards allowed in name portion if using file system
      * @param report match reporting interface
      * @return error message list (empty list if no errors)
-     * @throws IOException
+     * @throws IOException I/O Error
      */
     public static List matchPaths(File basedir, URL baseurl, List paths, ReportMatch report)
     throws IOException {
@@ -131,8 +131,8 @@ public class ResourceMatcher
         /**
          * Match found for pattern.
          * 
-         * @param path
-         * @param url
+         * @param path Path
+         * @param url URL
          */
         void foundMatch(String path, URL url);
     }

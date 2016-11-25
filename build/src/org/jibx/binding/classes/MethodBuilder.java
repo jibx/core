@@ -1058,6 +1058,7 @@ public abstract class MethodBuilder extends BindingMethod
      * 
      * @param name local variable name (may be <code>null</code> to use default)
      * @param type variable type
+     * @return Generated local variable
      */
     protected LocalVariableGen createLocal(String name, Type type) {
         
@@ -1574,6 +1575,7 @@ public abstract class MethodBuilder extends BindingMethod
      * subclasses when they need access to the actual instruction handle.
      *
      * @param name fully qualified class name
+     * @return Instruction handle
      */
     protected InstructionHandle internalAppendCreateNew(String name) {
         InstructionHandle handle = m_instructionList.append

@@ -37,8 +37,8 @@ public class NewInstanceBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr 
+     * @param source Source
+     * @param expr Expression
      */
     public NewInstanceBuilder(ClassBuilder source, ClassInstanceCreation expr) {
         super(source, expr);
@@ -48,7 +48,7 @@ public class NewInstanceBuilder extends ExpressionBuilderBase
     /**
      * Add operand to expression. This just adds the supplied operand expression as a new constructor parameter.
      *
-     * @param operand
+     * @param operand to add
      */
     protected void addOperand(Expression operand) {
         m_newInstance.arguments().add(operand);

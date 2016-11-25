@@ -77,7 +77,7 @@ public abstract class CustomizationCommandLineBase
      * Constructor. This just merges the usage line defined by subclasses with those at this level, and checks for any
      * duplication (by comparing the first n characters of the lines).
      * 
-     * @param lines
+     * @param lines to merge
      */
     protected CustomizationCommandLineBase(String[] lines) {
         m_usageLines = mergeUsageLines(lines, COMMON_USAGE_LINES);
@@ -92,10 +92,10 @@ public abstract class CustomizationCommandLineBase
     /**
      * Process command line arguments array.
      * 
-     * @param args
+     * @param args Arguments
      * @return <code>true</code> if valid, <code>false</code> if not
-     * @throws JiBXException
-     * @throws IOException
+     * @throws JiBXException JiBX error
+     * @throws IOException I/O error
      */
     public boolean processArgs(String[] args) throws JiBXException, IOException {
         boolean wipe = false;
@@ -234,8 +234,10 @@ public abstract class CustomizationCommandLineBase
      * Set a key=value definition in a map. This is a command line processing assist method that prints an error message
      * directly if the expected format is not found.
      * 
-     * @param def
-     * @param map
+     * @param def Value
+     *
+     *
+     * @param map Map
      * @return <code>true</code> if successful, <code>false</code> if error
      */
     public static boolean putKeyValue(String def, Map map) {
@@ -267,8 +269,8 @@ public abstract class CustomizationCommandLineBase
     /**
      * Merge two arrays of strings, returning an ordered array containing all the strings from both provided arrays.
      * 
-     * @param base
-     * @param adds
+     * @param base Array of base strings
+     * @param adds Array of string to add
      * @return ordered merged
      */
     protected static String[] mergeUsageLines(String[] base, String[] adds) {
@@ -298,7 +300,7 @@ public abstract class CustomizationCommandLineBase
      * Finish processing of command line parameters. This method may be overridden by subclasses to implement any added
      * processing after all the command line parameters have been handled.
      * 
-     * @param alist 
+     * @param alist Arg list
      */
     protected void finishParameters(ArgList alist) {}
     
@@ -314,8 +316,8 @@ public abstract class CustomizationCommandLineBase
      *
      * @param path customization file path, <code>null</code> if none
      * @return <code>true</code> if successful, <code>false</code> if an error
-     * @throws JiBXException 
-     * @throws IOException 
+     * @throws JiBXException error
+     * @throws IOException error
      */
     protected abstract boolean loadCustomizations(String path) throws JiBXException, IOException;
     
@@ -346,7 +348,7 @@ public abstract class CustomizationCommandLineBase
         /**
          * Constructor.
          * 
-         * @param args
+         * @param args array
          */
         protected ArgList(String[] args) {
             m_offset = -1;
@@ -390,7 +392,7 @@ public abstract class CustomizationCommandLineBase
         /**
          * Set valid state.
          * 
-         * @param valid
+         * @param valid State
          */
         public void setValid(boolean valid) {
             m_valid = valid;

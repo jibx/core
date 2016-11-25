@@ -37,8 +37,8 @@ public class FieldBuilder extends BodyBuilderBase
     /**
      * Constructor.
      * 
-     * @param source
-     * @param field 
+     * @param source Source
+     * @param field Field declaration
      */
     public FieldBuilder(ClassBuilder source, FieldDeclaration field) {
         super(source, field);
@@ -57,7 +57,7 @@ public class FieldBuilder extends BodyBuilderBase
     /**
      * Set initializer expression for field declaration.
      *
-     * @param expr
+     * @param expr base
      */
     public void setInitializer(ExpressionBuilderBase expr) {
         VariableDeclarationFragment frag = (VariableDeclarationFragment)m_field.fragments().get(0);
@@ -67,7 +67,7 @@ public class FieldBuilder extends BodyBuilderBase
     /**
      * Set initializer as a string literal.
      *
-     * @param value
+     * @param value initializer
      */
     public void setStringInitializer(String value) {
         VariableDeclarationFragment frag = (VariableDeclarationFragment)m_field.fragments().get(0);
@@ -79,7 +79,7 @@ public class FieldBuilder extends BodyBuilderBase
     /**
      * Set initializer as a number literal.
      *
-     * @param value
+     * @param value number literal
      */
     public void setNumberInitializer(String value) {
         VariableDeclarationFragment frag = (VariableDeclarationFragment)m_field.fragments().get(0);

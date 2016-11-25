@@ -92,7 +92,7 @@ public abstract class OpenAttrBase extends SchemaBase
     /**
      * Get child by index.
      *
-     * @param index
+     * @param index Index
      * @return child element
      */
     public SchemaBase getChild(int index) {
@@ -102,7 +102,7 @@ public abstract class OpenAttrBase extends SchemaBase
     /**
      * Replace child by index. 
      *
-     * @param index
+     * @param index Index
      * @param repl replacement element
      * @return detached child
      */
@@ -119,7 +119,7 @@ public abstract class OpenAttrBase extends SchemaBase
      * called to remove the <code>null</code>(s) from the list and restore it to a legal state. These methods are
      * provided to avoid the overhead otherwise associated with multiple removals from a list. 
      *
-     * @param index
+     * @param index Index
      * @return detached child
      */
     public SchemaBase detachChild(int index) {

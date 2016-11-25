@@ -32,8 +32,8 @@ public class StringPair extends StringKeyed
     /**
      * Constructor.
      * 
-     * @param key
-     * @param value
+     * @param key Key
+     * @param value Value
      */
     public StringPair(String key, String value) {
         super(key);

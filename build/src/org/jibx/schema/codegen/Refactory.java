@@ -176,8 +176,8 @@ public class Refactory
     /**
      * Constructor used by tests. This uses supplied schemas and skips writing to the file system.
      * 
-     * @param custom
-     * @param vctx
+     * @param custom Custom
+     * @param vctx Context
      */
     public Refactory(SchemasetCustom custom, ValidationContext vctx) {
         m_global = custom;
@@ -192,7 +192,7 @@ public class Refactory
      * Find the most specific schemaset owning a schema. If multiple matches are found which are not in line of
      * containment the first match is returned and the conflict is reported as an error.
      * 
-     * @param schema
+     * @param schema Schema
      * @param custom schema set customization
      * @return owning schemaset, <code>null</code> if none
      */
@@ -700,8 +700,8 @@ public class Refactory
     /**
      * Run the schema refactoring using command line parameters.
      * 
-     * @param args
-     * @throws Exception
+     * @param args Arguments
+     * @throws Exception error
      */
     public static void main(String[] args) throws Exception {
         TreeWalker.setLogging(Level.ERROR);

@@ -34,7 +34,7 @@ public interface ISchemaListener
      * Enter schema. This is called before beginning the traversal of a schema, including both standalone schemas and
      * referenced schemas.
      * 
-     * @param schema
+     * @param schema Schema
      * @return <code>true</code> if schema should be entered, <code>false</code> if not
      */
     public boolean enterSchema(SchemaElement schema);

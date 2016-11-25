@@ -89,7 +89,7 @@ public class WildcardBase extends AnnotatedBase
     /**
      * Set 'namespace' attribute value.
      *
-     * @param namespaces
+     * @param namespaces attribute value
      */
     public void setNamespaces(String[] namespaces) {
         m_namespaces = namespaces;

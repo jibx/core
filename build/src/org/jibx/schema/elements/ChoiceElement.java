@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.jibx.schema.elements;
 
 /**
- * &lt;choice> element definition. This is just a trivial variation of the base
+ * &lt;choice&gt; element definition. This is just a trivial variation of the base
  * compositor class.
  *
  * @author Dennis M. Sosnoski

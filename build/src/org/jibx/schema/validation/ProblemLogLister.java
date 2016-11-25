@@ -34,7 +34,7 @@ public class ProblemLogLister implements ProblemHandler
     /**
      * Constructor.
      * 
-     * @param logger
+     * @param logger Logger
      */
     public ProblemLogLister(Logger logger) {
         m_logger = logger;
@@ -43,7 +43,7 @@ public class ProblemLogLister implements ProblemHandler
     /**
      * Handle unimplemented feature.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleUnimplemented(ValidationProblem prob) {
         m_logger.info("Unimplemented feature - " + prob.getDescription());
@@ -52,7 +52,7 @@ public class ProblemLogLister implements ProblemHandler
     /**
      * Handle warning.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleWarning(ValidationProblem prob) {
         m_logger.warn(prob.getDescription());
@@ -61,7 +61,7 @@ public class ProblemLogLister implements ProblemHandler
     /**
      * Handle error.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleError(ValidationProblem prob) {
         m_logger.error(prob.getDescription());
@@ -70,7 +70,7 @@ public class ProblemLogLister implements ProblemHandler
     /**
      * Handle fatal.
      * 
-     * @param prob
+     * @param prob Validation Problem
      */
     public void handleFatal(ValidationProblem prob) {
         m_logger.fatal(prob.getDescription());

@@ -46,7 +46,7 @@ public class SelectionBase extends AnnotatedBase
     /**
      * Constructor.
      * 
-     * @param type
+     * @param type Type
      */
     public SelectionBase(int type) {
         super(type);
@@ -80,7 +80,7 @@ public class SelectionBase extends AnnotatedBase
     /**
      * Set 'xpath' attribute value.
      * 
-     * @param xpath
+     * @param xpath attribute value
      */
     public void setXPath(String xpath) {
         m_xpath = xpath;

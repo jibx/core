@@ -202,7 +202,7 @@ public class FilteredSegmentList extends AbstractList
     /**
      * Removes the item at the index position.
      *
-     * @param index
+     * @param index of item to remove
      * @return removed item
      */
     public Object remove(int index) {

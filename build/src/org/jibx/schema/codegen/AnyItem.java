@@ -56,7 +56,7 @@ public class AnyItem extends Item
      * Copy the item under a different parent.
      *
      * @param ref reference (for overrides to copy; <code>null</code> if none)
-     * @param parent
+     * @param parent Parent
      * @return copy
      */
     protected Item copy(Item ref, GroupItem parent) {

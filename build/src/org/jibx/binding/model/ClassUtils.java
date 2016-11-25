@@ -74,7 +74,7 @@ public class ClassUtils
 	/**
 	 * Check if type name is a primitive.
 	 *
-     * @param type 
+     * @param type Type
 	 * @return <code>true</code> if a primitive, <code>false</code> if not
 	 */
 	public static boolean isPrimitive(String type) {

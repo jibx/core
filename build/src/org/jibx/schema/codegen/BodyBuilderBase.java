@@ -43,8 +43,8 @@ public class BodyBuilderBase extends ASTBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param decl
+     * @param source ClassBuilder
+     * @param decl BodyDeclaration
      */
     public BodyBuilderBase(ClassBuilder source, BodyDeclaration decl) {
         super(source.getAST());

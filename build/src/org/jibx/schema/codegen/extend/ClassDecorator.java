@@ -58,8 +58,8 @@ public interface ClassDecorator
     /**
      * Method called after completing code generation for the target class.
      *
-     * @param binding binding definition element for class, a &lt;format> if the class is an enumeration, a &lt;mapping>
-     * or &lt;structure> if it's a normal class 
+     * @param binding binding definition element for class, a &lt;format&gt; if the class is an enumeration, a &lt;mapping&gt;
+     * or &lt;structure&gt; if it's a normal class
      * @param holder
      */
     void finish(ElementBase binding, IClassHolder holder);

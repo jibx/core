@@ -36,8 +36,8 @@ public class ArrayAccessBuilder extends ExpressionBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr 
+     * @param source Class builder
+     * @param expr array
      */
     public ArrayAccessBuilder(ClassBuilder source, ArrayAccess expr) {
         super(source, expr);
@@ -48,7 +48,7 @@ public class ArrayAccessBuilder extends ExpressionBuilderBase
      * Add operand to expression. This just sets the supplied operand expression as the index value, as long as the
      * index has not been set previously.
      *
-     * @param operand
+     * @param operand to expression
      */
     protected void addOperand(Expression operand) {
         Expression index = m_arrayAccess.getIndex();

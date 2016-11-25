@@ -38,7 +38,7 @@ public class NameMergeVisitor extends SchemaVisitor
     /**
      * Constructor.
      * 
-     * @param context
+     * @param context Validation Context
      */
     public NameMergeVisitor(ValidationContext context) {
         m_context = context;

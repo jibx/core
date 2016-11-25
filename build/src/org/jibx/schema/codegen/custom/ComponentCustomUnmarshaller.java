@@ -34,7 +34,7 @@ import org.jibx.schema.validation.ValidationContext;
 import org.jibx.util.StringArray;
 
 /**
- * Unmarshaller class for all nested customizations. This is used for all the customizations below the &lt;schema>
+ * Unmarshaller class for all nested customizations. This is used for all the customizations below the &lt;schema&gt;
  * level.
  */
 public class ComponentCustomUnmarshaller implements IUnmarshaller
@@ -112,9 +112,9 @@ public class ComponentCustomUnmarshaller implements IUnmarshaller
     /**
      * Check if element present. If there's a start tag, we want to handle it.
      *
-     * @param ctx
+     * @param ctx Unmarshalling Context
      * @return <code>true</code> if at a start tag
-     * @throws JiBXException
+     * @throws JiBXException error
      */
     public boolean isPresent(IUnmarshallingContext ctx) throws JiBXException {
         return ctx.isStart();

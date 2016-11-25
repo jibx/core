@@ -37,7 +37,7 @@ public class PrevalidationVisitor extends SchemaVisitor
     /**
      * Constructor.
      * 
-     * @param context
+     * @param context Validation Context
      */
     public PrevalidationVisitor(ValidationContext context) {
         m_context = context;

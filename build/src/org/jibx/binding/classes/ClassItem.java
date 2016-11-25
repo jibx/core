@@ -387,7 +387,7 @@ public class ClassItem
     /**
      * Check if type is a primitive.
      *
-     * @param type
+     * @param type to check
      * @return <code>true</code> if a primitive, <code>false</code> if not
      */
     public static boolean isPrimitive(String type) {
@@ -397,7 +397,7 @@ public class ClassItem
     /**
      * Get the signature for a primitive.
      *
-     * @param type
+     * @param type to check
      * @return signature for a primitive type
      */
     public static String getPrimitiveSignature(String type) {

@@ -123,6 +123,7 @@ public class DirectGeneric implements IComponent
      * better error reporting.
      *
      * @param mb method builder
+     * @throws JiBXException Error
      */
 
     public void genUnmarshal(ContextMethodBuilder mb) throws JiBXException {
@@ -161,6 +162,7 @@ public class DirectGeneric implements IComponent
      * calls the marshal method of that interface.
      *
      * @param mb method builder
+     * @throws JiBXException Error
      */
 
     public void genMarshal(ContextMethodBuilder mb) throws JiBXException {

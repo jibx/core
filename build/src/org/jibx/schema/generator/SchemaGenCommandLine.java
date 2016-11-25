@@ -88,7 +88,7 @@ public class SchemaGenCommandLine extends ClassCustomizationBase
     /**
      * Set class locator.
      *
-     * @param locator
+     * @param locator Class Locator
      */
     protected void setLocator(IClassLocator locator) {
         m_locator = locator;

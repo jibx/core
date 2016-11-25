@@ -47,8 +47,8 @@ public class ClassItemWrapper implements IClassItem
     /**
      * Constructor.
      * 
-     * @param clas
-     * @param item
+     * @param clas Class
+     * @param item Item
      */
     protected ClassItemWrapper(IClass clas, ClassItem item) {
         m_class = clas;

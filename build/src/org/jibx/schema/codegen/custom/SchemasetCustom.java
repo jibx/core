@@ -263,8 +263,8 @@ public class SchemasetCustom extends SchemaRootBase
     }
     
     /**
-     * Load a customizations file. The specified file must exist and have as root element either a &lt;schema-set> or
-     * &lt;schema> element.
+     * Load a customizations file. The specified file must exist and have as root element either a &lt;schema-set&gt; or
+     * &lt;schema&gt; element.
      *
      * @param path customization file path (<code>null</code> if none)
      * @param handler validation problem handler

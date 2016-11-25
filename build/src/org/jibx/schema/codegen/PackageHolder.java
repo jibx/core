@@ -178,7 +178,7 @@ public class PackageHolder
     /**
      * Add an inner class to package.
      *
-     * @param clas
+     * @param clas Class
      */
     public void addInnerClass(IClassHolder clas) {
         m_allClasses.add(clas);
@@ -188,9 +188,9 @@ public class PackageHolder
      * Generate a specific class within this package. This first tests if the class has already been generated, and if
      * it has does nothing.
      *
-     * @param verbose 
+     * @param verbose Flag
      * @param clasdata class data
-     * @param ast
+     * @param ast AST
      */
     public void generate(boolean verbose, TypeData clasdata, AST ast) {
         if (!clasdata.isPregenerated()) {
@@ -217,8 +217,8 @@ public class PackageHolder
     /**
      * Generate this package.
      * 
-     * @param verbose 
-     * @param ast
+     * @param verbose Flag
+     * @param ast AST
      * @param directory binding directory
      */
     public void generate(boolean verbose, AST ast, BindingOrganizer directory) {

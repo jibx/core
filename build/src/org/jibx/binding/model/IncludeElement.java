@@ -72,7 +72,7 @@ public class IncludeElement extends NestingElementBase
     /**
      * Set path to included binding.
      * 
-     * @param path
+     * @param path Path
      */
     public void setIncludePath(String path) {
         m_includePath = path;
@@ -81,7 +81,7 @@ public class IncludeElement extends NestingElementBase
     /**
      * Get path to included binding.
      * 
-     * @return path
+     * @return path Path
      */
     public String getIncludePath() {
         return m_includePath;
@@ -109,7 +109,7 @@ public class IncludeElement extends NestingElementBase
     /**
      * Set precompiled binding flag.
      *
-     * @param precomp
+     * @param precomp Flag
      */
     public void setPrecompiled(boolean precomp) {
         m_precompiled = precomp;

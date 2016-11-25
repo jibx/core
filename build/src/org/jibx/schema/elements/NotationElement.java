@@ -129,7 +129,7 @@ public class NotationElement extends AnnotatedBase implements INamed
     /**
      * Set 'name' attribute value.
      *
-     * @param name
+     * @param name attribute value
      */
     public void setName(String name) {
         m_name = name;

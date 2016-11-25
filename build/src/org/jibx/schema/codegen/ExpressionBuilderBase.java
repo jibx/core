@@ -40,8 +40,8 @@ public abstract class ExpressionBuilderBase extends ASTBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param expr
+     * @param source Class Builder
+     * @param expr Expression
      */
     public ExpressionBuilderBase(ClassBuilder source, Expression expr) {
         super(source.getAST());
@@ -61,14 +61,14 @@ public abstract class ExpressionBuilderBase extends ASTBuilderBase
     /**
      * Add operand to expression. This must be implemented by each subclass to handle adding another operand.
      *
-     * @param operand
+     * @param operand to expression
      */
     protected abstract void addOperand(Expression operand);
     
     /**
      * Add a local variable or field name operand to expression.
      *
-     * @param name
+     * @param name local variable or field name
      */
     public void addVariableOperand(String name) {
         addOperand(m_ast.newSimpleName(name));
@@ -77,7 +77,7 @@ public abstract class ExpressionBuilderBase extends ASTBuilderBase
     /**
      * Add a string literal operand to expression.
      *
-     * @param value
+     * @param value string literal operand
      */
     public void addStringLiteralOperand(String value) {
         StringLiteral strlit = m_ast.newStringLiteral();
@@ -88,7 +88,7 @@ public abstract class ExpressionBuilderBase extends ASTBuilderBase
     /**
      * Add a character literal operand to expression.
      *
-     * @param value
+     * @param value character literal operand
      */
     public void addCharacterLiteralOperand(char value) {
         CharacterLiteral literal = m_ast.newCharacterLiteral();
@@ -99,7 +99,7 @@ public abstract class ExpressionBuilderBase extends ASTBuilderBase
     /**
      * Add a number literal operand to expression.
      *
-     * @param value
+     * @param value number literal operand
      */
     public void addNumberLiteralOperand(String value) {
         addOperand(m_ast.newNumberLiteral(value));

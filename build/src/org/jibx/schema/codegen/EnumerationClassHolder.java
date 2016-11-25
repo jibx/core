@@ -124,7 +124,7 @@ public class EnumerationClassHolder extends ClassHolder
     /**
      * Generate this class.
      * 
-     * @param verbose 
+     * @param verbose Flag
      * @param builder class source file builder
      */
     public void generate(boolean verbose, SourceBuilder builder) {

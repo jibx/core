@@ -87,7 +87,7 @@ public abstract class CommonTypeDefinition extends AnnotatedBase implements INam
     /**
      * Set 'name' attribute value.
      *
-     * @param name
+     * @param name attribute value
      */
     public void setName(String name) {
         m_name = name;

@@ -198,7 +198,7 @@ public class ServiceCustom extends NestingBase
     }
     
     /**
-     * Get the namespace for WSDL definitions of this service. This value is set by the {@link #apply(IClassLocator)}
+     * Get the namespace for WSDL definitions of this service. This value is set by the link #apply(IClassLocator)
      * method.
      * 
      * @return WSDL namespace

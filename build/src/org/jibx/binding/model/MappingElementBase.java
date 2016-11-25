@@ -220,7 +220,7 @@ public abstract class MappingElementBase extends TemplateElementBase
     /**
      * Set name of mapped class extended by this one.
      * 
-     * @param name
+     * @param name Name
      */
     public void setExtendsName(String name) {
         m_extendsName = name;
@@ -229,7 +229,7 @@ public abstract class MappingElementBase extends TemplateElementBase
     /**
      * Get name of mapped class extended by this one.
      * 
-     * @return name
+     * @return name Name of mapped class
      */
     public String getExtendsName() {
         return m_extendsName;

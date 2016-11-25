@@ -33,7 +33,7 @@ public interface TypeReplacer
     /**
      * Get replacement type.
      *
-     * @param qname
+     * @param qname Name
      * @return replacement type (the same as the supplied type, if no replacement defined)
      */
     QName getReplacement(QName qname);

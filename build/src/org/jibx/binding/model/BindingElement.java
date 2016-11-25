@@ -329,7 +329,7 @@ public class BindingElement extends NestingElementBase
     /**
      * Set base URL for relative include paths.
      * 
-     * @param base
+     * @param base URL
      */
     public void setBaseUrl(URL base) {
         m_baseUrl = base;
@@ -410,7 +410,7 @@ public class BindingElement extends NestingElementBase
     /**
      * Set precompiled binding flag.
      *
-     * @param precomp
+     * @param precomp Precompiled flag
      */
     public void setPrecompiled(boolean precomp) {
         m_precompiled = precomp;
@@ -419,7 +419,7 @@ public class BindingElement extends NestingElementBase
     /**
      * Add include path to set processed.
      *
-     * @param path
+     * @param path Path
      * @param precomp precompiled binding flag
      * @return <code>true</code> if new path, <code>false</code> if duplicate
      */
@@ -444,9 +444,9 @@ public class BindingElement extends NestingElementBase
      * @param url binding path
      * @param root binding containing the include
      * @param vctx validation context
-     * @return binding
-     * @throws IOException
-     * @throws JiBXException
+     * @return binding element
+     * @throws IOException I/O error
+     * @throws JiBXException Jibx error
      */
     public BindingElement getIncludeBinding(URL url, BindingElement root,
         ValidationContext vctx) throws IOException, JiBXException {
@@ -491,7 +491,7 @@ public class BindingElement extends NestingElementBase
      * directly, without needing to be parsed from an input document.
      *
      * @param path URL string identifying the binding (virtual path)
-     * @param bind
+     * @param bind Binding Element
      */
     public void addIncludeBinding(String path, BindingElement bind) {
         if (addIncludePath(path, false)) {

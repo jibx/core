@@ -107,7 +107,7 @@ public class DefinitionItem extends GroupItem
     /**
      * Set inlining blocked flag.
      *
-     * @param blocked
+     * @param blocked flag
      */
     public void setInlineBlocked(boolean blocked) {
         if (!blocked && isPregenerated()) {
@@ -132,7 +132,7 @@ public class DefinitionItem extends GroupItem
     /**
      * Set definition has been processed flag.
      *
-     * @param checked
+     * @param checked flag
      */
     public void setChecked(boolean checked) {
         m_checked = checked;
@@ -150,7 +150,7 @@ public class DefinitionItem extends GroupItem
     /**
      * Set definition has been referenced during inline checking flag.
      *
-     * @param refed
+     * @param refed flag
      */
     public void setReferenced(boolean refed) {
         m_referenced = refed;

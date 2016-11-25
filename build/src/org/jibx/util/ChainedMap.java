@@ -60,7 +60,7 @@ public class ChainedMap implements Map
      * Check if a key has a defined value. This will return <code>true</code> if the key is present in the overrides map
      * with a non-null value, or if the key is not present in the overrides map but is present in the defaults map.
      *
-     * @param key
+     * @param key Key
      * @return <code>true</code> if key defined, <code>false</code> if not
      */
     public boolean containsKey(Object key) {
@@ -74,7 +74,7 @@ public class ChainedMap implements Map
     /**
      * Check if a value is present. This only checks for the value in the overrides map.
      *
-     * @param value
+     * @param value to check
      * @return <code>true</code> if value present as an override, <code>false</code> if not
      */
     public boolean containsValue(Object value) {
@@ -94,7 +94,7 @@ public class ChainedMap implements Map
      * Get value for key. If the key is present in the overrides map, the value from that map is returned; otherwise,
      * the value for the key in the defaults map is returned.
      *
-     * @param key
+     * @param key Key
      * @return value (<code>null</code> if key not present)
      */
     public Object get(Object key) {
@@ -126,8 +126,8 @@ public class ChainedMap implements Map
     /**
      * Set an override value. This just adds the key-value pair to the override map.
      *
-     * @param key
-     * @param value
+     * @param key Key
+     * @param value to set
      * @return previous value for key (from default map, if not present in overrides)
      */
     public Object put(Object key, Object value) {
@@ -144,7 +144,7 @@ public class ChainedMap implements Map
     /**
      * Add all key-value pairs from another map into the overrides map.
      *
-     * @param map
+     * @param map to add
      */
     public void putAll(Map map) {
         m_overrides.putAll(map);
@@ -155,7 +155,7 @@ public class ChainedMap implements Map
      * map. If it was not present in the overrides map but is present in the defaults map, a null entry is added to the
      * overrides map for that key.
      *
-     * @param key
+     * @param key Key
      * @return previous value for key
      */
     public Object remove(Object key) {

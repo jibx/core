@@ -54,8 +54,8 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Constructor.
      * 
-     * @param source 
-     * @param block
+     * @param source ClassBuilder
+     * @param block Block
      */
     public BlockBuilder(ClassBuilder source, Block block) {
         super(source);
@@ -74,8 +74,8 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append an assignment from an expression to a field or local variable.
      *
-     * @param expr
-     * @param name
+     * @param expr Expression
+     * @param name Name
      */
     public void addAssignToName(Expression expr, String name) {
         Assignment asgn = m_ast.newAssignment();
@@ -88,8 +88,8 @@ public class BlockBuilder extends StatementBuilderBase
      * Append an assignment from a local variable to a field. This handles the case where the local variable name is the
      * same as the field name.
      *
-     * @param vname
-     * @param fname
+     * @param vname Variable name
+     * @param fname Field name
      */
     public void addAssignVariableToField(String vname, String fname) {
         Assignment asgn = m_ast.newAssignment();
@@ -108,8 +108,8 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append a local variable declaration.
      *
-     * @param type 
-     * @param vname
+     * @param type Type
+     * @param vname Variable name
      */
     public void addLocalVariableDeclaration(String type, String vname) {
         VariableDeclarationFragment vfrag = m_ast.newVariableDeclarationFragment();
@@ -123,8 +123,8 @@ public class BlockBuilder extends StatementBuilderBase
      * Append a local variable declaration with initializer expression. This variation takes the actual type as a
      * parameter.
      *
-     * @param type 
-     * @param vname
+     * @param type Type
+     * @param vname Variable name
      * @param expr initializer expression
      */
     public void addLocalVariableDeclaration(Type type, String vname, ExpressionBuilderBase expr) {
@@ -140,8 +140,8 @@ public class BlockBuilder extends StatementBuilderBase
      * Append a local variable declaration with initializer expression. This variation takes the type name as a
      * parameter.
      *
-     * @param tname 
-     * @param vname
+     * @param tname Type
+     * @param vname Variable name
      * @param expr initializer expression
      */
     public void addLocalVariableDeclaration(String tname, String vname, ExpressionBuilderBase expr) {
@@ -316,7 +316,7 @@ public class BlockBuilder extends StatementBuilderBase
      * Append a throw new exception statement.
      *
      * @param type exception type
-     * @param text
+     * @param text Error Text
      */
     public void addThrowException(String type, String text) {
         ThrowStatement thrwstmt = m_ast.newThrowStatement();
@@ -345,7 +345,7 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append a method call statement.
      *
-     * @param call
+     * @param call Invocation Builder
      */
     public void addCall(InvocationBuilder call) {
         m_block.statements().add(m_ast.newExpressionStatement(call.getExpression()));
@@ -361,7 +361,7 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append a 'switch' statement using a local variable or field name as the switch value.
      *
-     * @param name
+     * @param name Switch statement name
      * @return statement builder
      */
     public SwitchBuilder addSwitch(String name) {
@@ -373,7 +373,7 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append a 'switch' statement using a constructed expression as the switch value.
      *
-     * @param expr
+     * @param expr Expression Builder
      * @return statement builder
      */
     public SwitchBuilder addSwitch(ExpressionBuilderBase expr) {
@@ -385,7 +385,7 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append an expression statement.
      *
-     * @param expr
+     * @param expr Expression Builder
      */
     public void addExpressionStatement(ExpressionBuilderBase expr) {
         m_block.statements().add(m_ast.newExpressionStatement(expr.getExpression()));
@@ -394,7 +394,7 @@ public class BlockBuilder extends StatementBuilderBase
     /**
      * Append a constructed statement.
      *
-     * @param stmt
+     * @param stmt Statement Builder Base
      */
     public void addStatement(StatementBuilderBase stmt) {
         m_block.statements().add(stmt.getStatement());

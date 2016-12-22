@@ -592,7 +592,7 @@ implements IComponent, IContextObj
      * information, and also adds the appropriate interfaces to the class.
      */
     private void genTrackSourceCode() {
-    	if (m_class.isDirectAccess()) {
+    	if (m_class.isLimitedDirectAccess()) {
 	        ClassFile cf = m_class.getDirectMungedFile();
 	        if (!cf.isAbstract() &&
 	            cf.addInterface(SOURCE_TRACKING_INTERFACE)) {

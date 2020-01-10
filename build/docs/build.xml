@@ -55,7 +55,7 @@
   <target name="jibx">
     <echo message="Building the site..."/>
     <delete>
-      <fileset dir="${jibx-home}/docs" includes="**/*.html" excludes="api/**/*,schema-library/**/*,maven-jibx-plugin/**/*"/>
+      <fileset dir="${jibx-home}/docs" includes="**/*.html" excludes="api/**/*,schema-library/**/*,jibx-maven-plugin/**/*"/>
     </delete>
     <java classname="com.sosnoski.site.Builder" fork="true">
       <classpath>

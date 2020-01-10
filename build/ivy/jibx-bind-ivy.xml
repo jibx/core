@@ -6,9 +6,9 @@
 
   <dependencies>
     <!--dependency org="org.jibx" name="jibx-run" rev="latest.integration" /-->
-    <dependency org="org.apache.bcel" name="bcel" rev="6.0" transitive="false" conf="*->default"/>
+    <dependency org="org.apache.bcel" name="bcel" rev="6.4.1" transitive="false" conf="*->default"/>
     <dependency org="log4j" name="log4j" rev="1.2.17" transitive="false" conf="*->default" />
-    <dependency org="org.apache.ant" name="ant" rev="1.8.4" transitive="false" conf="*->default"/>
+    <dependency org="org.apache.ant" name="ant" rev="1.9.14" transitive="false" conf="*->default"/>
     <dependency org="com.thoughtworks.qdox" name="qdox" rev="1.12.1" transitive="false" conf="*->default"/>
   </dependencies>
 </ivy-module>

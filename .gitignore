@@ -7,6 +7,7 @@ target
 .metadata
 *.releaseBackup
 release.properties
+*.versionsBackup
 lib/*.jar
 lib/*.zip
 build/classes

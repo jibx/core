@@ -161,10 +161,10 @@ public class IncludeElement extends NestingElementBase
                 }
                 
             } catch (JiBXException e) {
-                vctx.addFatal("Error unmarshalling included binding '" + m_includePath + "': " + e.getMessage());
+                vctx.addFatal("Error unmarshalling included binding '" + m_includePath + "': " + e.getMessage(), e);
             } catch (IOException e) {
                 vctx.addFatal("Error accessing included binding with path \"" +
-                    m_includePath + "\": " + e.getMessage());
+                    m_includePath + "\": " + e.getMessage(), e);
             }
         }
     }

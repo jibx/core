@@ -321,7 +321,7 @@ public class Loader extends URLClassLoader
 				
 			} catch (IOException e) {
 				throw new ClassNotFoundException
-                    ("Unable to load modified class " + name);
+                    ("Unable to load modified class " + name, e);
 			}
         } else {
             

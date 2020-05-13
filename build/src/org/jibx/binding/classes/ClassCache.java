@@ -165,7 +165,7 @@ public class ClassCache
                 return cf;
                 
             } catch (IOException ex) {
-                throw new JiBXException("Error loading class " + name);
+                throw new JiBXException("Error loading class " + name, ex);
             }
         }
     }
@@ -288,7 +288,7 @@ public class ClassCache
                     return new ClassWrapper(this, cf);
                 }
             } catch (JiBXException e) {
-                throw new IllegalStateException("Error loading class " + name + ": " + e.getMessage());
+                throw new IllegalStateException("Error loading class " + name + ": " + e.getMessage(), e);
             }
         }
         public IClass getRequiredClassInfo(String name) {

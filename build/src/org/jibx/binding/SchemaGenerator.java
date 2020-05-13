@@ -182,10 +182,10 @@ public class SchemaGenerator
             
         } catch (ParserConfigurationException e) {
             throw new IllegalStateException("Parser configuration error " +
-                e.getMessage());
+                e.getMessage(), e);
         } catch (FactoryConfigurationError e) {
             throw new IllegalStateException("Factory configuration error " +
-                e.getMessage());
+                e.getMessage(), e);
         }
     }
     

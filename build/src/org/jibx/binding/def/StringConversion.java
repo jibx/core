@@ -160,7 +160,7 @@ public abstract class StringConversion
                 setDeserializer(deser);
             }
         } catch (JiBXException ex) {
-            throw new IllegalArgumentException(ex.getMessage());
+            throw new IllegalArgumentException(ex.getMessage(), ex);
         }
     }
 

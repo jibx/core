@@ -421,7 +421,7 @@ public abstract class MethodBuilder extends BindingMethod
             } catch (JiBXException e) {
                 throw new RuntimeException
                     ("Internal error: Attempting to compare types " + need +
-                    " and " + type);
+                    " and " + type, e);
             }
         }
     }

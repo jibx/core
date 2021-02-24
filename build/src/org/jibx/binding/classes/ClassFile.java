@@ -326,6 +326,7 @@ public class ClassFile
      */
     private void init(String name, String path, InputStream ins)
         throws JiBXException {
+      try{
         m_name = name;
         m_signature = Utility.getSignature(name);
         m_type = ClassItem.typeFromName(name);
@@ -344,6 +345,17 @@ public class ClassFile
             } catch (Exception ex) {
                 throw new JiBXException("Error reading path " +
                     path + " for class " + name);
+                }
+        }
+      }
+      finally {
+        if (null != ins) {
+          try {
+            ins.close();
+          }
+          catch (IOException ex) {
+            throw new JiBXException("could not close:" + ins + "while reading path " + path + " for class " + name + " because:" + ex);
+          }
             }
         }
         initInterface();

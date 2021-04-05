@@ -427,6 +427,8 @@ public class InputStreamWrapper
      */
     private class WrappedStreamUTF8Reader extends Reader
     {
+        private int pendingLowSurrogate;
+
         /* (non-Javadoc)
          * @see java.io.Reader#close()
          */
@@ -438,59 +440,12 @@ public class InputStreamWrapper
          * @see java.io.Reader#read(char[], int, int)
          */
         public int read(char[] b, int off, int len) throws IOException {
-            
-            // load up local variables for conversion loop
-            int end = off + len;
-            int empty = m_emptyOffset;
-            byte[] buff = m_buffer;
-            while (off < end) {
-                
-                // fill buffer if less than maximum byte count in character
-                if (empty + 3 > m_endOffset) {
-                    m_emptyOffset = empty;
-                    fillBuffer();
-                    empty = m_emptyOffset;
-                    if (empty == m_endOffset) {
-                        int actual = len + off - end;
-                        return actual > 0 ? actual : -1;
-                    }
-                }
-                
-                // check for single-byte vs multi-byte character next
-                int byt = buff[empty++];
-                if (byt >= 0) {
-                    
-                    // single-byte character, just store to output array
-                    b[off++] = (char)byt;
-                    
-                } else if ((byt & 0xE0) == 0xC0) {
-                    
-                    // double-byte character, check bytes available and store
-                    if (empty < m_endOffset) {
-                        // TODO: check second byte value
-                        b[off++] = (char)(((byt & 0x1F) << 6) +
-                            (buff[empty++] & 0x3F));
-                    } else {
-                        throw new IOException("UTF-8 conversion error");
-                    }
-                    
-                } else if ((byt & 0xF0) == 0xE0) {
-                    
-                    // three-byte character, check bytes available and store
-                    if (empty + 1 < m_endOffset) {
-                        // TODO: check second and third byte values
-                        int byt2 = buff[empty++] & 0x3F;
-                        b[off++] = (char)((((byt & 0x0F) << 6) +
-                            byt2 << 6) + (buff[empty++] & 0x3F));
-                    } else {
-                        throw new IOException("UTF-8 conversion error");
-                    }
-                } else {
-                    // TODO: implement surrogate pair handling
-                    throw new IOException("Surrogate pairs not yet supported");
-                }
+            for (int count = 0; count < len; count++) {
+                int ch = this.read();
+                if (ch == -1)
+                    return count > 0 ? count : -1;
+                b[off++] = (char)ch;
             }
-            m_emptyOffset = empty;
             return len;
         }
         
@@ -505,49 +460,60 @@ public class InputStreamWrapper
          * @see java.io.Reader#read()
          */
         public int read() throws IOException {
+
+            // if we have a pending low surrogate, return it first
+            if (this.pendingLowSurrogate != 0) {
+                final int ch = this.pendingLowSurrogate;
+                this.pendingLowSurrogate = 0;
+                return ch;
+            }
             
             // fill buffer if less than maximum byte count in character
-            if (m_emptyOffset + 3 > m_endOffset) {
+            if (m_emptyOffset + 4 > m_endOffset) {
                 fillBuffer();
                 if (m_emptyOffset == m_endOffset) {
                     return -1;
                 }
             }
-            
-            // check for single-byte vs multi-byte character next
-            int byt = m_buffer[m_emptyOffset++];
-            if (byt >= 0) {
-                
-                // single-byte character, just store to output array
-                return byt & 0xFF;
-                
-            } else if ((byt & 0xE0) == 0xC0) {
-                
-                // double-byte character, check bytes available and store
-                if (m_emptyOffset < m_endOffset) {
-                    // TODO: check second byte value
-                    return ((byt & 0x1F) << 6) +
-                        (m_buffer[m_emptyOffset++] & 0x3F);
-                } else {
-                    throw new IOException("UTF-8 conversion error");
-                }
-                
-            } else if ((byt & 0xF0) == 0xE0) {
-                
-                // three-byte character, check bytes available and store
-                if (m_emptyOffset + 1 < m_endOffset) {
-                    // TODO: check second and third byte values
-                    int byt2 = m_buffer[m_emptyOffset++] & 0x3F;
-                    return (((byt & 0x0F) << 6) +
-                        byt2 << 6) + (m_buffer[m_emptyOffset++] & 0x3F);
-                } else {
-                    throw new IOException("UTF-8 conversion error");
-                }
-                
-            } else {
-                // TODO: implement surrogate pair handling
-                throw new IOException("Surrogate pairs not yet supported");
+
+            // check for single-byte code point
+            final int first = m_buffer[m_emptyOffset++];
+            if (first >= 0)
+                return first & 0xFF;
+
+            // determine how many additional bytes there are and slurp them in
+            int value;
+            int numExtra;
+            if ((first & 0xE0) == 0xC0) {
+                value = first & 0x1F;
+                numExtra = 1;
+            } else if ((first & 0xF0) == 0xE0) {
+                value = first & 0x0F;
+                numExtra = 2;
+            } else if ((first & 0xF8) == 0xF0) {
+                value = first & 0x07;
+                numExtra = 3;
+            } else
+                throw new IOException(String.format("%s: invalid first byte 0x%02x", "UTF-8 conversion error", first & 0xFF));
+            while (numExtra-- > 0) {
+                if (m_emptyOffset >= m_endOffset)
+                    throw new IOException(String.format("%s: truncated code point", "UTF-8 conversion error"));
+                final int next = m_buffer[m_emptyOffset++];
+                if ((next & 0xC0) != 0x80)
+                    throw new IOException(String.format("%s: invalid extra byte 0x%02x", "UTF-8 conversion error", next & 0xFF));
+                value = (value << 6) | (next & 0x3F);
             }
+
+            // for surrogate pairs, grab the high surrogate, remember the low surrogate for next time
+            if (value >= 0x10000) {
+                if ((value -= 0x10000) > 0xFFFFF)
+                    throw new IOException(String.format("%s: invalid Unicode character 0x%06x", "UTF-8 conversion error", value));
+                this.pendingLowSurrogate = 0xDC00 | (value & 0x3FF);
+                value = 0xD800 | (value >> 10);
+            }
+
+            // return value
+            return (char)value;
         }
         
         /* (non-Javadoc)

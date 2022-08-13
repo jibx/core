@@ -2,7 +2,7 @@
 <project name="jibx-ivy" default="retrieve" xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <property name="lib.dir" value="../lib" />
-  <property name="ivy.install.version" value="2.2.0" />
+  <property name="ivy.install.version" value="2.5.0" />
   <property name="ivy.jar.dir" value="${user.home}/.ivy2" />
   <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy-${ivy.install.version}.jar" />
   <available property="ivy.jar.exists" file="${ivy.jar.file}" />
@@ -10,7 +10,7 @@
   <target name="-ivy-download" unless="ivy.jar.exists">
     <mkdir dir="${ivy.jar.dir}" />
     <property name="ivy.url"
-              value="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" />
+              value="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" />
     <get src="${ivy.url}" dest="${ivy.jar.file}" usetimestamp="true" />
   </target>
 

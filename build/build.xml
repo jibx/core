@@ -1373,7 +1373,7 @@ file has been tested with ant version 1.6.1.
     <jar jarfile="${lib}/${toolsname}.jar" basedir="${toolsdest}">
       <manifest>
         <attribute name="Main-Class" value="org.jibx.ws.wsdl.tools.Jibx2Wsdl"/>
-        <attribute name="Class-Path" value="bcel.jar ${runname}.jar ${bindname}.jar ${extrasname}.jar ${schemaname}.jar xpp3.jar stax-api.jar wstx-asl.jar joda-time.jar log4j.jar qdox.jar org.eclipse.core.contenttype.jar org.eclipse.core.jobs.jar org.eclipse.core.resources.jar org.eclipse.core.runtime.jar org.eclipse.equinox.common.jar org.eclipse.equinox.preferences.jar org.eclipse.jdt.core.jar org.eclipse.jdt.core.manipulation.jar org.eclipse.osgi.jar org.eclipse.text.jar"/>
+        <attribute name="Class-Path" value="bcel.jar ${runname}.jar ${bindname}.jar ${extrasname}.jar ${schemaname}.jar xpp3.jar stax-api.jar wstx-asl.jar joda-time.jar log4j-api.jar log4j-core.jar log4j-1.2-api qdox.jar org.eclipse.core.contenttype.jar org.eclipse.core.jobs.jar org.eclipse.core.resources.jar org.eclipse.core.runtime.jar org.eclipse.equinox.common.jar org.eclipse.equinox.preferences.jar org.eclipse.jdt.core.jar org.eclipse.jdt.core.manipulation.jar org.eclipse.osgi.jar org.eclipse.text.jar"/>
         <attribute name="Implementation-Version" value="${version}"/>
       </manifest>
     </jar>

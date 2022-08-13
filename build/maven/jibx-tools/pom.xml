@@ -83,7 +83,7 @@
 	    <Include-Resource>@${jibxLibDir}/jibx-tools.jar;inline=**</Include-Resource>
 	    <Main-Class>org.jibx.ws.wsdl.tools.Jibx2Wsdl</Main-Class>
 	    <Class-Path>bcel.jar jibx-run.jar jibx-bind.jar jibx-extras.jar
-	    jibx-schema.jar xpp3.jar stax-api.jar wstx-asl.jar joda-time.jar log4j.jar
+	    jibx-schema.jar xpp3.jar stax-api.jar wstx-asl.jar joda-time.jar log4j-api.jar log4j-core.jar log4j-1.2-api
 	    qdox.jar org.eclipse.core.contenttype.jar org.eclipse.core.jobs.jar
 	    org.eclipse.core.resources.jar org.eclipse.core.runtime.jar
 	    org.eclipse.equinox.common.jar org.eclipse.equinox.preferences.jar

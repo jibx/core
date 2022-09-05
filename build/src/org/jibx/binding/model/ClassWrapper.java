@@ -120,7 +120,7 @@ public class ClassWrapper implements IClass
         } catch (JiBXException e) {
             // TODO need to handle this differently - perhaps get all when created
             throw new IllegalStateException("Internal error: instance " +
-                "signatures not found for class " + m_class.getName());
+                "signatures not found for class " + m_class.getName(), e);
         }
     }
 
@@ -133,7 +133,7 @@ public class ClassWrapper implements IClass
         } catch (JiBXException e) {
             // TODO need to handle this differently - perhaps get all when created
             throw new IllegalStateException("Internal error: instance " +
-                "signatures not found for class " + m_class.getName());
+                "signatures not found for class " + m_class.getName(), e);
         }
     }
     
@@ -261,7 +261,7 @@ public class ClassWrapper implements IClass
             sigs = m_class.getInstanceSigs();
         } catch (JiBXException e) {
             throw new IllegalStateException
-                ("Internal error: class information not available");
+                ("Internal error: class information not available", e);
         }
         String match = other.getSignature();
         for (int i = 0; i < sigs.length; i++) {

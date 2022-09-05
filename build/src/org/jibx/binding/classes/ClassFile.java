@@ -343,7 +343,7 @@ public class ClassFile
                 }
             } catch (Exception ex) {
                 throw new JiBXException("Error reading path " +
-                    path + " for class " + name);
+                    path + " for class " + name, ex);
             }
         }
         initInterface();
@@ -989,7 +989,7 @@ public class ClassFile
                 throw new IllegalStateException
                     ("Internal error: Unable to access data for " +
                     have.toString() + " or " + need.toString() + ":\n" +
-                    e.getMessage());
+                    e.getMessage(), e);
             }
         }
     }
@@ -2069,7 +2069,7 @@ public class ClassFile
             
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException
-                ("Error initializing classloading: " + ex.getMessage());
+                ("Error initializing classloading: " + ex.getMessage(), ex);
         }
     }
 

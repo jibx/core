@@ -122,7 +122,7 @@ public class ObjectStringConversion extends StringConversion
         try {
             initMethods(false);
         } catch (JiBXException ex) {
-            throw new IllegalArgumentException(ex.getMessage());
+            throw new IllegalArgumentException(ex.getMessage(), ex);
         }
     }
 

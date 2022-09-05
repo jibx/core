@@ -158,7 +158,7 @@ public class NameDefinition
                     (m_namespace, m_isAttribute);
             } catch (JiBXException ex) {
                 throw new JiBXException("Undefined or unusable namespace \"" +
-                    m_namespace + '"');
+                    m_namespace + '"', ex);
             }
         }
     }

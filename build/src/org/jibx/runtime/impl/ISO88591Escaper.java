@@ -63,9 +63,10 @@ public class ISO88591Escaper implements ICharacterEscaper
      */
 
     public void writeAttribute(String text, Writer writer) throws IOException {
+        int chr;
         int mark = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char chr = text.charAt(i);
+        for (int i = 0; i < text.length(); i += Character.charCount(chr)) {
+            chr = text.codePointAt(i);
             if (chr == '"') {
                 writer.write(text, mark, i-mark);
                 mark = i+1;
@@ -91,7 +92,7 @@ public class ISO88591Escaper implements ICharacterEscaper
             } else if (chr >= 0x80) {
                 if (chr < 0xA0 || chr > 0xFF) {
                     writer.write(text, mark, i-mark);
-                    mark = i+1;
+                    mark = i+Character.charCount(chr);
                     if (chr > 0xD7FF && (chr < 0xE000 || chr == 0xFFFE ||
                         chr == 0xFFF || chr > 0x10FFFF)) {
                         throw new IOException("Illegal character code 0x" +
@@ -116,9 +117,10 @@ public class ISO88591Escaper implements ICharacterEscaper
      */
 
     public void writeContent(String text, Writer writer) throws IOException {
+        int chr;
         int mark = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char chr = text.charAt(i);
+        for (int i = 0; i < text.length(); i += Character.charCount(chr)) {
+            chr = text.codePointAt(i);
             if (chr == '&') {
                 writer.write(text, mark, i-mark);
                 mark = i+1;
@@ -140,7 +142,7 @@ public class ISO88591Escaper implements ICharacterEscaper
             } else if (chr >= 0x80) {
                 if (chr < 0xA0 || chr > 0xFF) {
                     writer.write(text, mark, i-mark);
-                    mark = i+1;
+                    mark = i+Character.charCount(chr);
                     if (chr > 0xD7FF && (chr < 0xE000 || chr == 0xFFFE ||
                         chr == 0xFFF || chr > 0x10FFFF)) {
                         throw new IOException("Illegal character code 0x" +
@@ -166,9 +168,10 @@ public class ISO88591Escaper implements ICharacterEscaper
      */
 
     public void writeCData(String text, Writer writer) throws IOException {
+        int chr;
         writer.write("<![CDATA[");
-        for (int i = 0; i < text.length(); i++) {
-            char chr = text.charAt(i);
+        for (int i = 0; i < text.length(); i += Character.charCount(chr)) {
+            chr = text.codePointAt(i);
             if (chr == '>' && i > 2 && text.charAt(i-1) == ']' &&
                 text.charAt(i-2) == ']') {
                 throw new IOException("Sequence \"]]>\" is not allowed " +

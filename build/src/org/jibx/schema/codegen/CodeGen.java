@@ -1356,7 +1356,7 @@ public class CodeGen
                     mapping.setAbstract(element.isAbstract());
                     QName group = element.getSubstitutionGroup();
                     if (group != null) {
-                        ElementElement base = m_validationContext.findElement(group);
+                        ElementElement base = schema.getRegister().findElement(group);
                         DefinitionItem basedef = ((GlobalExtension)base.getExtension()).getDefinition();
                         mapping.setExtendsName(basedef.getGenerateClass().getFullName());
                     }
@@ -1390,7 +1390,7 @@ public class CodeGen
                     // handle linking to substitution group head using extends mapping
                     QName group = element.getSubstitutionGroup();
                     if (group != null) {
-                        ElementElement base = m_validationContext.findElement(group);
+                        ElementElement base = schema.getRegister().findElement(group);
                         DefinitionItem basedef = ((GlobalExtension)base.getExtension()).getDefinition();
                         elmapping.setExtendsName(basedef.getGenerateClass().getFullName());
                     }

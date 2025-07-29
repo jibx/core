@@ -843,6 +843,48 @@ file has been tested with ant version 1.6.1.
     </java>
   </target>
 
+  <!-- Test issue #17 -->
+  <target name="run-issue-17-test">
+
+    <!-- Add the bindings for issue 17. -->
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="${lib}" includes="*.jar"/>
+      </classpath>
+    </taskdef>
+    <bind>
+      <classpath>
+        <pathelement path="${testdest}"/>
+        <pathelement location="${lib}/${runname}.jar"/>
+      </classpath>
+      <bindingfileset dir="${simpledata}">
+      	<include name="mybinding-stringholder.xml"/>
+      </bindingfileset>
+    </bind>		
+  	
+    <bind load="true">
+      <classpath>
+        <pathelement path="${testdest}"/>
+        <pathelement location="${lib}/${runname}.jar"/>
+      </classpath>
+      <bindingfileset dir="${simpledata}">
+        <include name="binding3d.xml"/>
+        <include name="binding0.xml"/>
+        <include name="binding0a.xml"/>
+        <include name="binding6b.xml"/>
+        <include name="mybinding2.xml"/>
+        <include name="mybinding2a.xml"/>
+      </bindingfileset>
+    </bind>
+  	
+    <!-- Run the issue 17 tests. -->
+    <echo message="Running issue #17 test"/>
+    <java classname="org.jibx.match.TestStringHolder" fork="yes" dir="${simpledata}"
+        failonerror="true">
+      <classpath refid="tests-classpath"/>
+    </java>
+  </target>
+	
   <!-- Run tests which use non-J2ME features. -->
   <target name="run-nonj2me-tests" unless="j2me-build">
     
@@ -1400,8 +1442,8 @@ file has been tested with ant version 1.6.1.
   </target>
   
   <!-- Test run targets, used during normal build steps -->
-  <target name="run-basic-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-nonj2me-tests,run-extras-tests,clean-tests"/>
-  <target name="run-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-nonj2me-tests,run-extras-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
+  <target name="run-basic-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-issue-17-test,run-nonj2me-tests,run-extras-tests,clean-tests"/>
+  <target name="run-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-issue-17-test,run-nonj2me-tests,run-extras-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
   <target name="junit" depends="disablej2me,clean-tests,prepare-tests,junit-tests"/>
   
   <!-- Targets for running blackbox tests on framework - these should be run
@@ -1410,7 +1452,7 @@ file has been tested with ant version 1.6.1.
     between test runs, etc.). -->
   <target name="test-tutorial" depends="basenames,set-tests-classpath,clean-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
   <target name="test-multiples" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,clean-tests"/>
-  <target name="test-singles" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-single-tests,run-nonj2me-tests,clean-tests"/>
+  <target name="test-singles" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-single-tests,run-issue-17-test,run-nonj2me-tests,clean-tests"/>
   <target name="test-extras" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-extras-tests,clean-tests"/>
   <target name="basic-blackbox" depends="basenames,run-basic-blackbox"/>
   <target name="blackbox" depends="basenames,run-blackbox"/>

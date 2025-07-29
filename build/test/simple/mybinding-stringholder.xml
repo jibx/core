@@ -1,0 +1,7 @@
+<binding>
+  <mapping name="holder" class="simple.StringHolder">
+    <structure name="property" field="property" value-style="attribute">
+      <value name="value" set-method="setValue" get-method="getValue" />
+    </structure>
+  </mapping>
+</binding>

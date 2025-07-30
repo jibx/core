@@ -843,10 +843,10 @@ file has been tested with ant version 1.6.1.
     </java>
   </target>
 
-  <!-- Test issue #17 -->
-  <target name="run-issue-17-test">
+  <!-- Test StringHolder (For issue jibx/core/issues/17) -->
+  <target name="run-stringholder-test">
 
-    <!-- Add the bindings for issue 17. -->
+    <!-- Add the bindings for StringHolder. -->
     <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
       <classpath>
         <fileset dir="${lib}" includes="*.jar"/>
@@ -862,8 +862,8 @@ file has been tested with ant version 1.6.1.
       </bindingfileset>
     </bind>		
   	
-    <!-- Run the issue 17 tests. -->
-    <echo message="Running issue #17 test"/>
+    <!-- Run the StringHolder tests. -->
+    <echo message="Running StringHolder test"/>
     <java classname="org.jibx.match.TestStringHolder" fork="yes" dir="${simpledata}"
         failonerror="true">
       <classpath refid="tests-classpath"/>
@@ -1427,8 +1427,8 @@ file has been tested with ant version 1.6.1.
   </target>
   
   <!-- Test run targets, used during normal build steps -->
-  <target name="run-basic-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-issue-17-test,run-nonj2me-tests,run-extras-tests,clean-tests"/>
-  <target name="run-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-issue-17-test,run-nonj2me-tests,run-extras-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
+  <target name="run-basic-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-stringholder-test,run-nonj2me-tests,run-extras-tests,clean-tests"/>
+  <target name="run-blackbox" depends="set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,run-single-tests,run-stringholder-test,run-nonj2me-tests,run-extras-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
   <target name="junit" depends="disablej2me,clean-tests,prepare-tests,junit-tests"/>
   
   <!-- Targets for running blackbox tests on framework - these should be run
@@ -1437,7 +1437,7 @@ file has been tested with ant version 1.6.1.
     between test runs, etc.). -->
   <target name="test-tutorial" depends="basenames,set-tests-classpath,clean-tests,compile-tutorial,run-tutorial-tests,clean-tests"/>
   <target name="test-multiples" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-multiple-tests,clean-tests"/>
-  <target name="test-singles" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-single-tests,run-issue-17-test,run-nonj2me-tests,clean-tests"/>
+  <target name="test-singles" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-single-tests,run-stringholder-test,run-nonj2me-tests,clean-tests"/>
   <target name="test-extras" depends="basenames,set-tests-classpath,clean-tests,prepare-tests,run-extras-tests,clean-tests"/>
   <target name="basic-blackbox" depends="basenames,run-basic-blackbox"/>
   <target name="blackbox" depends="basenames,run-blackbox"/>

@@ -169,11 +169,12 @@ public class ISO88591StreamWriter extends StreamWriterBase
      * @throws IOException if error writing to document
      */
     protected void writeAttributeText(String text) throws IOException {
-        int length = text.length();
+        final int length = text.length();
         makeSpace(length * 6);
         int fill = m_fillOffset;
-        for (int i = 0; i < length; i++) {
-            char chr = text.charAt(i);
+        int chr;
+        for (int i = 0; i < length; i += Character.charCount(chr)) {
+            chr = text.codePointAt(i);
             if (chr == '"') {
                 fill = writeEntity(m_quotEntityBytes, fill);
             } else if (chr == '&') {
@@ -232,11 +233,12 @@ public class ISO88591StreamWriter extends StreamWriterBase
      */
     public void writeTextContent(String text) throws IOException {
         flagTextContent();
-        int length = text.length();
+        final int length = text.length();
         makeSpace(length * 5);
         int fill = m_fillOffset;
-        for (int i = 0; i < length; i++) {
-            char chr = text.charAt(i);
+        int chr;
+        for (int i = 0; i < length; i += Character.charCount(chr)) {
+            chr = text.codePointAt(i);
             if (chr == '&') {
                 fill = writeEntity(m_ampEntityBytes, fill);
             } else if (chr == '<') {
@@ -291,12 +293,13 @@ public class ISO88591StreamWriter extends StreamWriterBase
      */
     public void writeCData(String text) throws IOException {
         flagTextContent();
-        int length = text.length();
+        final int length = text.length();
         makeSpace(length + 12);
         int fill = m_fillOffset;
         fill = writeEntity(m_cdataStartBytes, fill);
-        for (int i = 0; i < length; i++) {
-            char chr = text.charAt(i);
+        int chr;
+        for (int i = 0; i < length; i += Character.charCount(chr)) {
+            chr = text.codePointAt(i);
             if (chr == '>' && i > 2 && text.charAt(i-1) == ']' &&
                 text.charAt(i-2) == ']') {
                 throw new IOException("Sequence \"]]>\" is not allowed " +

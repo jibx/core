@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jibx.config</groupId>
     <artifactId>main-reactor</artifactId>
-    <version>1.4.5-SNAPSHOT</version>
+    <version>1.4.5</version>
   </parent>
 
   <groupId>org.jibx</groupId>
@@ -99,7 +99,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jibx-schema</artifactId>
-      <version>1.4.5-SNAPSHOT</version>
+      <version>1.4.5</version>
     </dependency>
 
       <!-- Eclipse dependencies -->
